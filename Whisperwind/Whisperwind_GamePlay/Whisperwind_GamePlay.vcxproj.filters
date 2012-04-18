@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{0361d103-2ce2-4fb4-b10d-0205b0880189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePlayHeder">
+      <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Framework.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GamePlay.h">
+      <Filter>GamePlayHeder</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Framework.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
