@@ -9,6 +9,24 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="UtilTest">
+      <UniqueIdentifier>{8d1cdec6-d8e0-48d3-8e70-c3858afffc54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineTest">
+      <UniqueIdentifier>{6a03cd4f-3baa-401a-981b-927e81039699}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ApplicationTest">
+      <UniqueIdentifier>{83db9719-967d-4189-8340-abba92e8149b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PluginsTest">
+      <UniqueIdentifier>{f348b907-601e-4966-9c05-6a998b0ce644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePlayTest">
+      <UniqueIdentifier>{7e2c95a4-a4ea-4fbc-8446-41b1ad2a4fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ToolsTest">
+      <UniqueIdentifier>{f5eccc6a-4684-4e93-b864-1b6e73233e85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\TestCommon.h">
@@ -20,7 +38,7 @@
       <Filter>Test Src</Filter>
     </ClCompile>
     <ClCompile Include="src\UTIL_TEST.cpp">
-      <Filter>Test Src</Filter>
+      <Filter>UtilTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

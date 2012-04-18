@@ -7,6 +7,9 @@
     <Filter Include="GamePlayHeder">
       <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ScriptContent">
+      <UniqueIdentifier>{d05e9480-7362-498e-b503-168efe1ef814}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GamePlay.h">
