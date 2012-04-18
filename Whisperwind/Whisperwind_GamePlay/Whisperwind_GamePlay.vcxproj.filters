@@ -9,15 +9,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Framework.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="include\GamePlay.h">
       <Filter>GamePlayHeder</Filter>
     </ClInclude>
+    <ClInclude Include="include\GamePlayFramework.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Framework.cpp">
+    <ClCompile Include="src\GamePlayFramework.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>

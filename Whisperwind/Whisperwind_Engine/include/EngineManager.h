@@ -22,3 +22,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _ENGINE_NAMAGER_H_
+#define _ENGINE_NAMAGER_H_
+
+#include "util.h"
+
+namespace Engine
+{
+	class WHISPERWIND_API EngineManager
+	{
+	public:
+		EngineManager() : 
+		  mQuitLooping(false),
+		  mWindow(NULL)
+		{}
+
+	public:
+		void preRunning(const Util::wstring & appName);
+		void run();
+		void postRunning();
+
+	private:
+		void createWindow(const Util::wstring & windowName);
+		void createDevice();
+		void loadPlugins();
+		void loadResources();
+
+		void handleWindowsMsg();
+		void handleGamePlayLogical();
+
+		void clearResources();
+		void clearPlugins();
+		void destroyDevice();
+		void destroyWindow();
+
+		// TODO:Following functions should remove to other place!
+	private:
+		static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+		HWND mWindow;
+
+	private:
+		SET_GET_VALUE(bool, QuitLooping);
+	};
+}
+
+#endif

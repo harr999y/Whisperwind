@@ -22,11 +22,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_DEVICE_H_
-#define _RENDER_DEVICE_H_
+#ifndef _GAMEPLAY_FRAMEWORK_H_
+#define _GAMEPLAY_FRAMEWORK_H_
 
-namespace Engine
+#include "util.h"
+#include "EngineForwardDeclare.h"
+
+namespace GamePlay
 {
+	class WHISPERWIND_API GamePlayFramework
+	{
+	public:
+		GamePlayFramework();
+		~GamePlayFramework();
+
+	public:
+		void run(const Util::wstring & appName);
+
+	private:
+		void init();
+
+	private:
+		/// Note and Todo:Here has a problem when I use Engine::EngineManagerPtr--a shared_ptr wrapper.
+		//Engine::EngineManagerPtr mEngineManger;
+		Engine::EngineManager * mEngineManger;
+	};
 }
 
 #endif

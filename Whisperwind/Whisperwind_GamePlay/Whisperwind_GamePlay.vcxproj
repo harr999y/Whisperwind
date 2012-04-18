@@ -11,11 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Framework.h" />
+    <ClInclude Include="include\GamePlayFramework.h" />
     <ClInclude Include="include\GamePlay.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Framework.cpp" />
+    <ClCompile Include="src\GamePlayFramework.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C438CBE8-938E-469E-B7F2-4208F63E2E71}</ProjectGuid>
@@ -72,13 +72,15 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Engine/include;../Whisperwind_Util/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Engine/include;../Whisperwind_Util/include;./include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>Whisperwind_Engine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib/$(configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -97,7 +99,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Engine/include;../Whisperwind_Util/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Engine/include;../Whisperwind_Util/include;./include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +107,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>Whisperwind_Engine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib/$(configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

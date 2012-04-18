@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _GAMEPLAY_H_
 
 /** Include all GamePlay headers. */
-#include "Framework.h"
+#include "GamePlayFramework.h"
+#include "Engine.h"
 
 #endif

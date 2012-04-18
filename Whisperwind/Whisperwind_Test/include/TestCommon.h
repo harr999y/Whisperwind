@@ -22,8 +22,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _TEST_COMMON_HEADER_H_
-#define _TEST_COMMON_HEADER_H_
+#ifndef _TEST_COMMON_H_
+#define _TEST_COMMON_H_
 
 #include <iostream>
 

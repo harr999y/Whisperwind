@@ -12,9 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\EngineForwardDeclare.h" />
+    <ClInclude Include="include\EngineManager.h" />
     <ClInclude Include="include\RenderDevice.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\RenderDevice.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -72,7 +75,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include;./include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,7 +100,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include;./include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

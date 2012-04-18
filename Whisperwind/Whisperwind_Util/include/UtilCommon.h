@@ -33,6 +33,7 @@ THE SOFTWARE
 # define UNICODE
 #endif
 
+// TODO:Write here first,need move to someplace.
 /* for windows.h's warning level */
 #pragma warning(push, 3)
 #include <windows.h>
@@ -40,12 +41,16 @@ THE SOFTWARE
 
 /* for common headers */
 #pragma warning(push, 4)
-#include <memory> // for shared_ptr
 
 #ifdef TEXT
 #undef TEXT
 #endif
 #define TEXT(x) L##x
+
+#include "string"
+
+#include <memory> // for shared_ptr
+#include "boost/shared_ptr.hpp"
 
 #if DEBUG || _DEBUG
 #define BOOST_ENABLE_ASSERT_HANDLER
@@ -82,13 +87,13 @@ namespace boost
 	(x) = NULL; }
 
 #define IF_NULL_RETURN(x) \
-	if (!x) return;
+	if (!(x)) return;
 #define IF_NULL_RETURN_VALUE(x, y) \
-	if (!x) return y;
+	if (!(x)) return (y);
 #define IF_NULL_CONTINUE(x) \
-	if (!x) continue;
+	if (!(x)) continue;
 #define IF_NULL_BREAK(x) \
-	if (!x) break;
+	if (!(x)) break;
 
 #if DEBUG || _DEBUG
 #define DEBUGPRINT(x) \
@@ -108,6 +113,31 @@ namespace boost
 #else
 #define WHISPERWIND_API _declspec(dllimport)
 #endif
+
+#define SET_GET_VALUE(type, name) \
+	type m##name; \
+	void set##name(type  val) { m##name = val; } \
+	type get##name() { return m##name; }
+
+namespace Util
+{
+	/** The data defines. */
+	typedef float real;
+	typedef double double_real;
+	typedef unsigned __int32 u_int;
+	typedef signed __int32 s_int;
+	typedef u_int size_t;
+	typedef unsigned __int64 u_int64;
+	typedef signed __int64 s_int64;
+	typedef unsigned __int16 u_short;
+	typedef signed __int16 s_short;
+	typedef unsigned __int8 u_char;
+	typedef signed __int8 s_char;
+
+	/** The common classes defines. */
+	typedef std::string string;
+	typedef std::wstring wstring;
+}
 
 
 #endif

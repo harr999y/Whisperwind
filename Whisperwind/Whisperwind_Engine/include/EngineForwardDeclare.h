@@ -22,11 +22,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_DEVICE_H_
-#define _RENDER_DEVICE_H_
+#ifndef _ENGINE_FORWARD_DECLARE_H_
+#define _ENGINE_FORWARD_DECLARE_H_
 
 namespace Engine
 {
+	class WHISPERWIND_API EngineManager;
+	typedef boost::shared_ptr<EngineManager> EngineManagerPtr;
+
 }
 
 #endif

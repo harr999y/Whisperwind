@@ -28,9 +28,10 @@ THE SOFTWARE
       and of course, here you can do many things such as crash dump generation and 
 	  dump collection to the server and so on.
 */
-INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
 {
-
+	GamePlay::GamePlayFramework framework;
+	framework.run(TEXT("Whisperwind V0.1"));
 
 	return 0;
 }

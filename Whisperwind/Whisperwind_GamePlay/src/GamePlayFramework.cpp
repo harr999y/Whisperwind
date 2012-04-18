@@ -22,17 +22,35 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _FRAMEWORK_H_
-#define _FRAMEWORK_H_
 
-#include "Engine.h"
+#include "GamePlayFramework.h"
+#include "EngineManager.h"
 
 namespace GamePlay
 {
-	class Framework
+	//---------------------------------------------------------------------
+	GamePlayFramework::GamePlayFramework() : 
+	    mEngineManger(NULL)
 	{
-
-	};
+		init();
+	}
+	//---------------------------------------------------------------------
+	GamePlayFramework::~GamePlayFramework()
+	{
+		SAFE_DELETE(mEngineManger);
+	}
+	//---------------------------------------------------------------------
+	void GamePlayFramework::run(const Util::wstring & appName)
+	{
+		mEngineManger->preRunning(appName);
+		mEngineManger->run();
+		mEngineManger->postRunning();
+	}
+	//---------------------------------------------------------------------
+	void GamePlayFramework::init()
+	{
+		/// Note and Todo:Here has a problem when I use Engine::EngineManagerPtr--a shared_ptr wrapper.
+		//mEngineManger = Engine::EngineManagerPtr(WHISPERWIND_NEW Engine::EngineManager);
+		mEngineManger = WHISPERWIND_NEW Engine::EngineManager;
+	}
 }
-
-#endif
