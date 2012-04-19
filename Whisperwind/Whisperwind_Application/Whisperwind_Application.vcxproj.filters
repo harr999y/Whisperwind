@@ -9,10 +9,18 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="App Header">
+      <UniqueIdentifier>{3a8e9298-7fbf-41b1-bfd8-69fd292e8a44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RunGame.cpp">
       <Filter>App Src</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ApplicationCofig.h">
+      <Filter>App Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

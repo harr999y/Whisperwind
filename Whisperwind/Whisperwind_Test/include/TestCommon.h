@@ -27,6 +27,9 @@ THE SOFTWARE
 
 #include <iostream>
 
+/** To link the gtest as a dll,define this 1. */
+#define GTEST_LINKED_AS_SHARED_LIBRARY 1
+
 #include "gtest.h"
 
 #endif

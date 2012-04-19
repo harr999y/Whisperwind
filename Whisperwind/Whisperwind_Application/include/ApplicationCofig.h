@@ -22,23 +22,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "ApplicationCofig.h"
+#ifndef _APPLICATION_CONFIG_H_
+#define _APPLICATION_CONFIG_H_
 
-#if USE_VLD != 0
-  /** Add for visual leak detector. */
-  #include "vld.h"
+/** This is the flag to open visual leak detector. */
+#define USE_VLD 0
+
 #endif
-
-#include "GamePlay.h"
-
-/** In this project,the main purpose is trying to run the game with any launchers,
-      and of course, here you can do many things such as crash dump generation and 
-	  dump collection to the server and so on.
-*/
-Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
-{
-	GamePlay::GamePlayFramework framework;
-	framework.run(TEXT("Whisperwind V0.1"));
-
-	return 0;
-}
