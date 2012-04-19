@@ -28,7 +28,7 @@ THE SOFTWARE
 namespace Engine
 {
 	class WHISPERWIND_API EngineManager;
-	typedef boost::shared_ptr<EngineManager> EngineManagerPtr;
+	typedef boost::shared_ptr<Engine::EngineManager> EngineManagerPtr;
 
 }
 

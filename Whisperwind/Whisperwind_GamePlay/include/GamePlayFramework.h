@@ -43,9 +43,14 @@ namespace GamePlay
 		void init();
 
 	private:
-		/// Note and Todo:Here has a problem when I use Engine::EngineManagerPtr--a shared_ptr wrapper.
-		//Engine::EngineManagerPtr mEngineManger;
-		Engine::EngineManager * mEngineManger;
+		/** Need attention!
+		@note:
+		   Here comes a warning when I use a template class,because the ralationship
+		   between template and dll_export is a little implicy.More infomation as followed:
+		   http://stackoverflow.com/questions/767579/exporting-classes-containing-std-objects-vector-map-etc-from-a-dll
+		*/     
+#pragma warning(disable : 4251)
+		Engine::EngineManagerPtr mEngineManger;
 	};
 }
 

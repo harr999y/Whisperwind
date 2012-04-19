@@ -109,9 +109,11 @@ namespace boost
 	void operator=(Type const &);
 
 #ifdef DLL_AS_EXPORT
-#define WHISPERWIND_API _declspec(dllexport)
+  #define WHISPERWIND_API _declspec(dllexport)
+  #define EXPIMP_TEMPLATE 
 #else
-#define WHISPERWIND_API _declspec(dllimport)
+  #define WHISPERWIND_API _declspec(dllimport)
+  #define EXPIMP_TEMPLATE extern
 #endif
 
 #define SET_GET_VALUE(type, name) \

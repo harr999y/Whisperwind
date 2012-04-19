@@ -29,16 +29,13 @@ THE SOFTWARE
 namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	GamePlayFramework::GamePlayFramework() : 
-	    mEngineManger(NULL)
+	GamePlayFramework::GamePlayFramework()
 	{
 		init();
 	}
 	//---------------------------------------------------------------------
 	GamePlayFramework::~GamePlayFramework()
-	{
-		SAFE_DELETE(mEngineManger);
-	}
+	{}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::run(const Util::wstring & appName)
 	{
@@ -49,8 +46,6 @@ namespace GamePlay
 	//---------------------------------------------------------------------
 	void GamePlayFramework::init()
 	{
-		/// Note and Todo:Here has a problem when I use Engine::EngineManagerPtr--a shared_ptr wrapper.
-		//mEngineManger = Engine::EngineManagerPtr(WHISPERWIND_NEW Engine::EngineManager);
-		mEngineManger = WHISPERWIND_NEW Engine::EngineManager;
+		mEngineManger = Engine::EngineManagerPtr(WHISPERWIND_NEW Engine::EngineManager);
 	}
 }
