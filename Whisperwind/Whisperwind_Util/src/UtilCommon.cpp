@@ -22,14 +22,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
 
-namespace
+#include "UtilCommon.h"
+#include "boost/format.hpp"
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
+namespace boost
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	void assertion_failed(char const * expr, char const * function, char const * file, long line)
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+		boost::wformat wfmt(TO_UNICODE("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
+		wfmt % expr% function% file% line;
+		::MessageBox(0, wfmt.str().c_str(), NULL, MB_OK);
+		::DebugBreak();
+	}
 }

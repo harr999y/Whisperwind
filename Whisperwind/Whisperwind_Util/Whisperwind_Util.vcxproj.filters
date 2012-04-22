@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="MemoryManagement">
-      <UniqueIdentifier>{dd7c065f-112b-434b-b4c2-862866d13505}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Util Header">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Exception">
+      <UniqueIdentifier>{4261a927-e316-44f6-b01d-e4f202315a30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{dd7c065f-112b-434b-b4c2-862866d13505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{e88522c9-32ce-4ee5-9466-4ee3d684b151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util Src">
+      <UniqueIdentifier>{5e33aa97-8a06-42e0-9196-e41179393c6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -17,15 +26,33 @@
       <Filter>Util Header</Filter>
     </ClInclude>
     <ClInclude Include="include\MemoryDefines.h">
-      <Filter>MemoryManagement</Filter>
+      <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\util.h">
+    <ClInclude Include="include\ExceptionDefines.h">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Util.h">
+      <Filter>Util Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UtilForwardDeclare.h">
+      <Filter>Util Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugin.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Singleton.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UtilWarningDisable.h">
       <Filter>Util Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MemoryManagement.cpp">
-      <Filter>MemoryManagement</Filter>
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UtilCommon.cpp">
+      <Filter>Util Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

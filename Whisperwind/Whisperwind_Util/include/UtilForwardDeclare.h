@@ -22,14 +22,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
+#ifndef _UTIL_FORWARD_DECLARE_H_
+#define _UTIL_FORWARD_DECLARE_H_
 
-namespace
+#include "boost/shared_ptr.hpp"
+
+namespace Util
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
-	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+	class Plugin_Interface;
+	typedef boost::shared_ptr<Plugin_Interface> PluginPtr;
+
 }
+
+#endif

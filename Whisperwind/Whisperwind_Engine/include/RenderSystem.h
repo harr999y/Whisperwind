@@ -22,14 +22,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
+#ifndef _RENDER_SYSTEM_H_
+#define _RENDER_SYSTEM_H_
+
 #include "Util.h"
 
-namespace
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	class WHISPERWIND_API RenderSystem
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
+	public:
+		explicit RenderSystem(const Util::wstring & windowName);
+		virtual ~RenderSystem() 
+		{}
+
+	public:
+		virtual void init() = 0;
+		virtual bool render() = 0;
+
+	public:
+		SET_GET_VALUE(Util::wstring, WindowName);
+
+	private:
+		Util::wstring mWindowName;
 	};
 }
+
+#endif

@@ -22,14 +22,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
+#ifndef _D3D9_PLUGIN_H_
+#define _D3D9_PLUGIN_H_
 
-namespace
+#include "Plugin.h"
+
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	class WHISPERWIND_API D3D9Plugin : public Util::Plugin_Interface
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
+	public:
+		explicit D3D9Plugin(const Util::wstring & name) : Plugin_Interface(name)
+		{}
+		~D3D9Plugin()
+		{}
+
+	public:
+		virtual void install();
+		virtual void uninstall();
 	};
 }
+
+#endif

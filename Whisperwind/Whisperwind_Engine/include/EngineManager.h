@@ -25,44 +25,52 @@ THE SOFTWARE
 #ifndef _ENGINE_NAMAGER_H_
 #define _ENGINE_NAMAGER_H_
 
-#include "util.h"
+#include "Util.h"
+#include <vector>
+
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
 	class WHISPERWIND_API EngineManager
 	{
 	public:
-		EngineManager() : 
-		  mQuitLooping(false),
-		  mWindow(NULL)
-		{}
+		EngineManager();
+		~EngineManager();
 
 	public:
-		void preRunning(const Util::wstring & appName);
+		static EngineManager & getSingleton();
+
+		void preRunning();
 		void run();
 		void postRunning();
 
+		void installPlugin(const Util::PluginPtr & plugin);
+
+	public:
+		SET_GET_CONST_VALUE(Util::wstring, WindowName);
+		SET_GET_VALUE(RenderSystemPtr, RenderSystem);
+		SET_GET_CONST_VALUE(bool, QuitLooping);
+
 	private:
-		void createWindow(const Util::wstring & windowName);
-		void createDevice();
 		void loadPlugins();
 		void loadResources();
 
-		void handleWindowsMsg();
 		void handleGamePlayLogical();
 
 		void clearResources();
 		void clearPlugins();
-		void destroyDevice();
-		void destroyWindow();
-
-		// TODO:Following functions should remove to other place!
-	private:
-		static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-		HWND mWindow;
 
 	private:
-		SET_GET_VALUE(bool, QuitLooping);
+		bool mQuitLooping;
+		Util::wstring mWindowName;
+
+		typedef std::vector<Util::PluginPtr> PluginVector;
+		PluginVector mPluginVector;
+
+		RenderSystemPtr mRenderSystem;
+
+		static EngineManager mSingleton;
 	};
 }
 

@@ -24,14 +24,40 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "EngineManager.h"
+#include "Plugin.h"
+#include "RenderSystem.h"
+#include "WindowsEventHandle.h"
+#include "boost/foreach.hpp"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void EngineManager::preRunning(const Util::wstring & appName)
+	EngineManager EngineManager::mSingleton;
+	EngineManager & EngineManager::getSingleton()
 	{
-		createWindow(appName);
-		createDevice();
+		return mSingleton;
+	}
+	//---------------------------------------------------------------------
+	EngineManager::EngineManager()
+	{
+		setQuitLooping(false);
+		setWindowName(Util::BLANK_WSTRING);
+	}
+	//---------------------------------------------------------------------
+	EngineManager::~EngineManager()
+	{
+		mRenderSystem.reset();
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::installPlugin(const Util::PluginPtr & plugin)
+	{
+		plugin->install();
+
+		mPluginVector.push_back(plugin);
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::preRunning()
+	{
 		loadPlugins();
 		loadResources();
 	}
@@ -40,7 +66,7 @@ namespace Engine
 	{
 		while (!getQuitLooping())
 		{
-			handleWindowsMsg();
+			WindowsEventHandle::handleWindowsMsg();
 			handleGamePlayLogical();
 		}
 	}
@@ -49,46 +75,26 @@ namespace Engine
 	{
 		clearResources();
 		clearPlugins();
-		destroyDevice();
-		destroyWindow();
 	}
-	//---------------------------------------------------------------------
-	void EngineManager::createWindow(const Util::wstring & windowName)
-	{
-		/// TODO:Write here first,need move to someplace.
-		HINSTANCE hInst = ::GetModuleHandle(NULL);
-
-		WNDCLASSEXW wc;
-		wc.cbSize = sizeof(wc);
-		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = WndProc;
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = sizeof(this);
-		wc.hInstance = hInst;
-		wc.hIcon = NULL;
-		wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(BLACK_BRUSH));
-		wc.lpszMenuName = NULL;
-		wc.lpszClassName = windowName.c_str();
-		wc.hIconSm = NULL;
-
-		::RegisterClassEx(&wc);
-
-		Util::u_int style = WS_OVERLAPPEDWINDOW;
-		RECT rc = {0, 0, 1024, 768};
-		::AdjustWindowRect(&rc, style, false);
-
-		mWindow = ::CreateWindow(windowName.c_str(), windowName.c_str(), style, 
-			                                                  0, 0, 1024, 768, NULL, NULL, hInst, NULL);
-		::ShowWindow(mWindow, SW_SHOWNORMAL);
-		::UpdateWindow(mWindow);
-	}
-	//---------------------------------------------------------------------
-	void EngineManager::createDevice()
-	{}
 	//---------------------------------------------------------------------
 	void EngineManager::loadPlugins()
-	{}
+	{
+		/// TODO:Need read from .cfg
+#ifdef WHISPERWIND_DEBUG
+		Util::string dllName("Whisperwind_D3D9RenderSystem_d.dll");
+#else
+		Util::string dllName("D3D9RenderSystem.dll");
+#endif
+
+		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+		IF_NULL_EXCEPTION(dllHandle, (dllName + " Loading Failed!").c_str());
+
+		Util::DLL_LOAD_ENTRY dllLoadFunc = 
+			reinterpret_cast<Util::DLL_LOAD_ENTRY>(::GetProcAddress(dllHandle, "dllLoadEntry"));
+		IF_NULL_EXCEPTION(dllLoadFunc, (dllName + " doesn't have dllLoadEntry!").c_str());
+
+		dllLoadFunc();
+	}
 	//---------------------------------------------------------------------
 	void EngineManager::loadResources()
 	{}
@@ -97,32 +103,15 @@ namespace Engine
 	{}
 	//---------------------------------------------------------------------
 	void EngineManager::clearPlugins()
-	{}
-	//---------------------------------------------------------------------
-	void EngineManager::destroyDevice()
-	{}
-	//---------------------------------------------------------------------
-	void EngineManager::destroyWindow()
-	{}
+	{
+		BOOST_FOREACH(Util::PluginPtr plugin, mPluginVector)
+		{
+			plugin->uninstall();
+		}
+
+		mPluginVector.clear();
+	}
 	//---------------------------------------------------------------------
 	void EngineManager::handleGamePlayLogical()
 	{}
-	//---------------------------------------------------------------------
-	void EngineManager::handleWindowsMsg()
-	{
-		/// TODO:Write here first,need move to someplace.
-		static MSG msg;
-		memset(&msg, 0, sizeof(MSG));
-		while (::PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
-		{
-			::TranslateMessage(&msg);
-			::DispatchMessage(&msg);
-		}
-	}
-	//---------------------------------------------------------------------
-	LRESULT EngineManager::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		/// TODO:First we do nothing,it'll change after days.
-		return DefWindowProc(hWnd, uMsg, wParam, lParam);
-	}
 }

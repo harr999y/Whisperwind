@@ -25,11 +25,13 @@ THE SOFTWARE
 #ifndef _ENGINE_FORWARD_DECLARE_H_
 #define _ENGINE_FORWARD_DECLARE_H_
 
+#include "boost/shared_ptr.hpp"
+
 namespace Engine
 {
-	class WHISPERWIND_API EngineManager;
-	typedef boost::shared_ptr<Engine::EngineManager> EngineManagerPtr;
-
+	class EngineManager;
+	class RenderSystem;
+	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
 }
 
 #endif

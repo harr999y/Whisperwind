@@ -26,6 +26,8 @@ THE SOFTWARE
 #define _APPLICATION_CONFIG_H_
 
 /** This is the flag to open visual leak detector. */
-#define USE_VLD 0
+#ifdef WHISPERWIND_DEBUG
+    #define USE_VLD 1
+#endif
 
 #endif

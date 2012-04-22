@@ -22,14 +22,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
 
-namespace
+#include "RenderSystem.h"
+
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	//---------------------------------------------------------------------
+	RenderSystem::RenderSystem(const Util::wstring & windowName)
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+		setWindowName(windowName);
+	}
 }

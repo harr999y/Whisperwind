@@ -11,13 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ExceptionDefines.h" />
     <ClInclude Include="include\MemoryDefines.h" />
-    <ClInclude Include="include\util.h" />
+    <ClInclude Include="include\Plugin.h" />
+    <ClInclude Include="include\Singleton.h" />
+    <ClInclude Include="include\Util.h" />
     <ClInclude Include="include\UtilCommon.h" />
     <ClInclude Include="include\UtilConfig.h" />
+    <ClInclude Include="include\UtilForwardDeclare.h" />
+    <ClInclude Include="include\UtilWarningDisable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MemoryManagement.cpp" />
+    <ClCompile Include="src\UtilCommon.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}</ProjectGuid>
@@ -70,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DLL_AS_EXPORT;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>false</EnablePREfast>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;./include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -95,7 +101,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DLL_AS_EXPORT;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>false</EnablePREfast>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;./include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>

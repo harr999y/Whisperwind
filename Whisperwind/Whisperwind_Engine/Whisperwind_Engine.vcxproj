@@ -15,10 +15,14 @@
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
     <ClInclude Include="include\RenderDevice.h" />
+    <ClInclude Include="include\RenderSystem.h" />
+    <ClInclude Include="include\WindowsEventHandle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\RenderDevice.cpp" />
+    <ClCompile Include="src\RenderSystem.cpp" />
+    <ClCompile Include="src\WindowsEventHandle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}</ProjectGuid>

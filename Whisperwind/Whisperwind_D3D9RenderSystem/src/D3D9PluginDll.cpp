@@ -22,14 +22,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
 
-namespace
+#include "D3D9Plugin.h"
+#include "EngineManager.h"
+
+static const Util::wstring DLL_NAME(TO_UNICODE("D3D9RenderSystem"));
+
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	extern "C" void WHISPERWIND_API dllLoadEntry(void)
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+		Util::PluginPtr plugin = boost::make_shared<D3D9Plugin>(DLL_NAME);
+		EngineManager::getSingleton().installPlugin(plugin);
+	}
 }

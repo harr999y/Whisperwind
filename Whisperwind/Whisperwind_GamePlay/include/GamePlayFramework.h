@@ -25,7 +25,7 @@ THE SOFTWARE
 #ifndef _GAMEPLAY_FRAMEWORK_H_
 #define _GAMEPLAY_FRAMEWORK_H_
 
-#include "util.h"
+#include "Util.h"
 #include "EngineForwardDeclare.h"
 
 namespace GamePlay
@@ -33,24 +33,14 @@ namespace GamePlay
 	class WHISPERWIND_API GamePlayFramework
 	{
 	public:
-		GamePlayFramework();
+		explicit GamePlayFramework(const Util::wstring & name);
 		~GamePlayFramework();
 
 	public:
-		void run(const Util::wstring & appName);
+		void run();
 
 	private:
 		void init();
-
-	private:
-		/** Need attention!
-		@note:
-		   Here comes a warning when I use a template class,because the ralationship
-		   between template and dll_export is a little implicy.More infomation as followed:
-		   http://stackoverflow.com/questions/767579/exporting-classes-containing-std-objects-vector-map-etc-from-a-dll
-		*/     
-#pragma warning(disable : 4251)
-		Engine::EngineManagerPtr mEngineManger;
 	};
 }
 

@@ -22,14 +22,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
+#ifndef _PLUGIN_H_
+#define _PLUGIN_H_
+
 #include "Util.h"
 
-namespace
+namespace Util
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	class WHISPERWIND_API Plugin_Interface
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
+	public:
+		explicit Plugin_Interface(const wstring & name) : mName(name)
+		{}
+		virtual ~Plugin_Interface()
+		{}
+
+	public:
+		const wstring & getName() const
+		{ return mName; }
+
+		virtual void install() = 0;
+		virtual void uninstall() = 0;
+
+	private:
+		wstring mName;
 	};
+
+	typedef void (* DLL_LOAD_ENTRY)(void);
 }
+
+#endif

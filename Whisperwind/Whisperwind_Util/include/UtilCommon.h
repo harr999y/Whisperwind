@@ -25,66 +25,56 @@ THE SOFTWARE
 #ifndef _UTIL_COMMON_H_
 #define _UTIL_COMMON_H_
 
+#include "UtilWarningDisable.h"
+
 /** for unicode */
 #ifndef UNICODE
-# ifndef _UNICODE
-#  define _UNICODE
-# endif
-# define UNICODE
+    #ifndef _UNICODE
+        #define _UNICODE
+    # endif
+    #define UNICODE
 #endif
-
-// TODO:Write here first,need move to someplace.
-/* for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
 
 /* for common headers */
 #pragma warning(push, 4)
 
-#ifdef TEXT
-#undef TEXT
-#endif
-#define TEXT(x) L##x
+#define TO_UNICODE(x) L##x
 
-#include "string"
+#if defined(DEBUG) || defined(_DEBUG)
+    #define WHISPERWIND_DEBUG
+#endif
+
+#include <string>
+
+#define BOOST_SYSTEM_NO_LIB /// Don't auto link boost lib.
 
 #include <memory> // for shared_ptr
 #include "boost/shared_ptr.hpp"
+#include "boost/make_shared.hpp"
 
-#if DEBUG || _DEBUG
-#define BOOST_ENABLE_ASSERT_HANDLER
+#ifdef WHISPERWIND_DEBUG
+    #define BOOST_ENABLE_ASSERT_HANDLER
 #endif
 #include "boost/assert.hpp"
-#include "boost/format.hpp"
-
-namespace boost
-{
-	void assertion_failed(char const * expr, char const * function, char const * file, long line)
-	{
-		boost::wformat wfmt(TEXT("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
-		wfmt % expr% function% file% line;
-		::MessageBox(0, wfmt.str().c_str(), NULL, MB_OK);
-		::DebugBreak();
-	}
-}
 
 #include "MemoryDefines.h"
 
 #define SAFE_DELETE(x) \
 	if (x) { \
-	WHISPERWIND_DELETE  (x); \
+	WHISPERWIND_DELETE(x); \
 	(x) = NULL; }
 
 #define SAFE_DELETE_ARRAY(x) \
 	if (x) { \
-	WHISPERWIND_DELETE [] (x); \
+	WHISPERWIND_DELETE_ARRAY(x); \
 	(x) = NULL; }
 
 #define SAFE_RELEASE(x) \
 	if (x) { \
 	(x)->Release(); \
 	(x) = NULL; }
+
+#include "ExceptionDefines.h"
 
 #define IF_NULL_RETURN(x) \
 	if (!(x)) return;
@@ -94,12 +84,14 @@ namespace boost
 	if (!(x)) continue;
 #define IF_NULL_BREAK(x) \
 	if (!(x)) break;
+#define IF_NULL_EXCEPTION(x, y) \
+	if (!(x)) EXCEPTION((y));
 
-#if DEBUG || _DEBUG
-#define DEBUGPRINT(x) \
-	::OutputDebugString(TEXT(x))
+#ifdef WHISPERWIND_DEBUG
+    #define DEBUG_PRINT(x) \
+	::OutputDebugString(TO_UNICODE(x))
 #else
-#define DEBUGPRINT(x) (0)
+    #define DEBUGPRINT(x) (0)
 #endif
 
 	/** Define DISALLOW_COPY_AND_ASSIGN macro for copy-constructor
@@ -109,17 +101,18 @@ namespace boost
 	void operator=(Type const &);
 
 #ifdef DLL_AS_EXPORT
-  #define WHISPERWIND_API _declspec(dllexport)
-  #define EXPIMP_TEMPLATE 
+    #define WHISPERWIND_API _declspec(dllexport)
 #else
-  #define WHISPERWIND_API _declspec(dllimport)
-  #define EXPIMP_TEMPLATE extern
+    #define WHISPERWIND_API _declspec(dllimport)
 #endif
 
 #define SET_GET_VALUE(type, name) \
-	type m##name; \
-	void set##name(type  val) { m##name = val; } \
-	type get##name() { return m##name; }
+	inline void set##name(const type & val) { m##name = val; } \
+	inline type & get##name() { return m##name; }
+
+#define SET_GET_CONST_VALUE(type, name) \
+	inline void set##name(const type & val) { m##name = val; } \
+	inline const type & get##name() const { return m##name; }
 
 namespace Util
 {
@@ -139,7 +132,7 @@ namespace Util
 	/** The common classes defines. */
 	typedef std::string string;
 	typedef std::wstring wstring;
+	const static wstring BLANK_WSTRING(TO_UNICODE(""));
 }
-
 
 #endif

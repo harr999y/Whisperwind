@@ -16,3 +16,10 @@
 *.ipp
 *.ilk
 /Whisperwind/Whisperwind_Dependencies/boost_1_49_0
+*.dll
+*.lib
+*.exp
+*.exe
+*.html
+/Whisperwind/Whisperwind_Dependencies/Visual Leak Detector
+/Whisperwind/Whisperwind_OctreeSceneManager/1.cpp

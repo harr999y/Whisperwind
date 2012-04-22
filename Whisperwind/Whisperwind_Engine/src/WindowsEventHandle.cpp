@@ -22,14 +22,61 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
 
-namespace
+#include "WindowsEventHandle.h"
+#include "EngineManager.h"
+
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	HWND WindowsEventHandle::mWindow;
+	//---------------------------------------------------------------------
+	void WindowsEventHandle::handleWindowsMsg()
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+		MSG msg;
+		while (::PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+		{
+			::TranslateMessage(&msg);
+			::DispatchMessage(&msg);
+		}
+	}
+	//---------------------------------------------------------------------
+	LRESULT CALLBACK WindowsEventHandle::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		switch(uMsg)
+		{
+		case WM_ACTIVATE:
+			{
+				break;
+			}
+		case WM_CLOSE:
+			{
+				EngineManager::getSingleton().setQuitLooping(true);
+				break;
+			}
+		case WM_CHAR:
+			{
+				switch(wParam)
+				{
+				case VK_ESCAPE:
+					{
+						EngineManager::getSingleton().setQuitLooping(true);
+						break;
+					}
+				}
+				break;
+			}
+		}
+
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	}
+	//---------------------------------------------------------------------
+	const HWND WindowsEventHandle::getWindow()
+	{
+		return mWindow;
+	}
+	//---------------------------------------------------------------------
+	void WindowsEventHandle::setWindow(HWND window)
+	{
+		mWindow = window;
+	}
 }

@@ -22,14 +22,42 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
+#ifndef _D3D9_RENDER_SYSTEM_H_
+#define _D3D9_RENDER_SYSTEM_H_
 
-namespace
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
+#include "RenderSystem.h"
+
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	class WHISPERWIND_API D3D9RenderSystem : public RenderSystem
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
+	public:
+		explicit D3D9RenderSystem(const Util::wstring & windowName) :
+		    RenderSystem(windowName),
+			mWindow(NULL)
+		{}
+		~D3D9RenderSystem()
+		{
+			::DestroyWindow(mWindow);
+		}
+
+	public:
+		void init();
+		bool render();
+
+	private:
+		void createWindow();
+		void createDevice();
+		inline void setWindowHWND(HWND window);
+
+	private:
+		HWND mWindow;
 	};
 }
+
+#endif

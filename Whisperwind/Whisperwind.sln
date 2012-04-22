@@ -15,6 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_OctreeSceneMana
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_Application", "Whisperwind_Application\Whisperwind_Application.vcxproj", "{FDA9E47F-C5D9-4B1C-AF1E-23ED26DE9B7F}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E20E609E-4003-4D78-8792-21CF601B9EF3} = {E20E609E-4003-4D78-8792-21CF601B9EF3}
 		{C438CBE8-938E-469E-B7F2-4208F63E2E71} = {C438CBE8-938E-469E-B7F2-4208F63E2E71}
 	EndProjectSection
 EndProject

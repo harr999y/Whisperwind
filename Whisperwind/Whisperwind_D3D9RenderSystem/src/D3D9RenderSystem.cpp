@@ -23,32 +23,70 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "GamePlayFramework.h"
+#include "D3D9RenderSystem.h"
+#include "WindowsEventHandle.h"
 #include "EngineManager.h"
-#include "Plugin.h"
 
-namespace GamePlay
+namespace Engine
 {
 	//---------------------------------------------------------------------
-	GamePlayFramework::GamePlayFramework(const Util::wstring & name)
+	void D3D9RenderSystem::init()
 	{
-		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
-		engineMgr.setWindowName(name);
+		createWindow();
+		createDevice();
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::createWindow()
+	{
+		/// TODO:The parameter need to read from .cfg!
+		Util::wstring windowName = EngineManager::getSingleton().getWindowName();
+		HINSTANCE hInst = ::GetModuleHandle(NULL);
 
-		init();
+		WNDCLASSEXW wc;
+		wc.cbSize = sizeof(wc);
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = WindowsEventHandle::WndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = sizeof(this);
+		wc.hInstance = hInst;
+		wc.hIcon = NULL;
+		wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+		wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(BLACK_BRUSH));
+		wc.lpszMenuName = NULL;
+		wc.lpszClassName = windowName.c_str();
+		wc.hIconSm = NULL;
+
+		::RegisterClassEx(&wc);
+
+		Util::u_int style = WS_OVERLAPPEDWINDOW;
+		RECT rc = {0, 0, 1024, 768};
+		::AdjustWindowRect(&rc, style, false);
+
+		HWND window = ::CreateWindow(windowName.c_str(), windowName.c_str(), style, 
+			0, 0, 1024, 768, NULL, NULL, hInst, NULL);
+		IF_NULL_EXCEPTION(window, "Create Window Failed!");
+
+		::ShowWindow(window, SW_SHOWNORMAL);
+		::UpdateWindow(window);
+
+		setWindowHWND(window);
 	}
 	//---------------------------------------------------------------------
-	GamePlayFramework::~GamePlayFramework()
-	{}
-	//---------------------------------------------------------------------
-	void GamePlayFramework::run()
+	void D3D9RenderSystem::createDevice()
 	{
-		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
-		engineMgr.preRunning();
-		engineMgr.run();
-		engineMgr.postRunning();
+
 	}
 	//---------------------------------------------------------------------
-	void GamePlayFramework::init()
-	{}
+	void D3D9RenderSystem::setWindowHWND(HWND window)
+	{
+		mWindow = window;
+		WindowsEventHandle::setWindow(window);
+	}
+	//---------------------------------------------------------------------
+	bool D3D9RenderSystem::render()
+	{
+
+
+		return true;
+	}
 }

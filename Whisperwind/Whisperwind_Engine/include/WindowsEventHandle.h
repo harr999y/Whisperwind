@@ -22,14 +22,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
+#ifndef _WINDOWS_EVENT_HANDLE_H_
+#define _WINDOWS_EVENT_HANDLE_H_
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
 #include "Util.h"
 
-namespace
+namespace Engine
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	class WHISPERWIND_API WindowsEventHandle
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
+	public:
+		static void handleWindowsMsg();
+		static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+		static const HWND getWindow();
+		static void setWindow(HWND window);
+			
+	private:
+		static HWND mWindow;
 	};
 }
+
+#endif

@@ -22,14 +22,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
+#ifndef _SINGLETON_H_
+#define _SINGLETON_H_
 
-namespace
-{
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
-	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
-}
+/** Finally I comment it,because the problem when using multi-dll.
+      There are many solutions to solve it,but now,as I only use it in EngineManager,
+	  I donot think now I have the motion to fix it.Well,maybe someday I'll fix it.
+@todo:
+     Fix it,make it surpported multi-dll.
+*/ 
+// #include "Util.h"
+// 
+// namespace Util
+// {
+// 	template <class T> class Singleton
+// 	{
+// 	public:
+// 		~Singleton() {}
+// 	protected:
+// 		Singleton() {}
+// 	private:
+// 		DISALLOW_COPY_AND_ASSIGN(Singleton);
+// 
+// 	public:
+// 		static T * getSingletonPtr() 
+// 		{
+// 			static T instance;
+// 			return &instance;
+// 		}
+// 		static T & getSingleton() 
+// 		{
+// 			return *getSingletonPtr();
+// 		}
+// 	};
+// }
+
+#endif

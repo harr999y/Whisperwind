@@ -12,6 +12,12 @@
     <Filter Include="Render">
       <UniqueIdentifier>{01b42326-c790-4d4d-9711-10b789059a44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Manager">
+      <UniqueIdentifier>{11b37349-395d-4ebe-96d3-f59f8e1256a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WindowsEventHandle">
+      <UniqueIdentifier>{ec146ab2-8c2f-4b72-8946-36a7308ede2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine.h">
@@ -20,19 +26,31 @@
     <ClInclude Include="include\RenderDevice.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="include\EngineManager.h">
-      <Filter>Engine Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\EngineForwardDeclare.h">
       <Filter>Engine Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RenderSystem.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EngineManager.h">
+      <Filter>Engine Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WindowsEventHandle.h">
+      <Filter>WindowsEventHandle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RenderDevice.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+    <ClCompile Include="src\RenderSystem.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
     <ClCompile Include="src\EngineManager.cpp">
-      <Filter>Engine Src</Filter>
+      <Filter>Engine Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WindowsEventHandle.cpp">
+      <Filter>WindowsEventHandle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

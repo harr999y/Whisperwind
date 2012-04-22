@@ -22,14 +22,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
+#ifndef _EXCEPTION_DEFINES_H_
+#define _EXCEPTION_DEFINES_H_
 
-namespace
+#include <exception>
+
+/// TODO: Replace with boost.exception.
+namespace Util
 {
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
-	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+	/** The exception. 
+	@note
+	    Where I choose to throw an exception are the non-per-frame
+		situation and very serious problems.Other situation I just log 
+		and return false.
+	*/
+	typedef std::exception exception;
 }
+
+/**
+@note
+    The exception's what() don't need to be shown as unicode.If you want,
+	you can add a function which return unicode words in your exception class.
+	More is:http://www.boost.org/community/error_handling.html
+*/
+#define EXCEPTION(x) \
+	throw Util::exception((x));
+
+#endif

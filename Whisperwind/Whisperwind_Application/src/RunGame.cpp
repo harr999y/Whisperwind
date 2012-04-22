@@ -37,8 +37,15 @@ THE SOFTWARE
 */
 Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
 {
-	GamePlay::GamePlayFramework framework;
-	framework.run(TEXT("Whisperwind V0.1"));
+	try
+	{
+		GamePlay::GamePlayFramework framework(TO_UNICODE("Whisperwind V0.2"));
+		framework.run();
+	}
+	catch (Util::exception & e)
+	{
+		::MessageBoxA(NULL, e.what(), NULL, MB_OK);
+	}
 
 	return 0;
 }

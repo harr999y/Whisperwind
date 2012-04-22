@@ -26,7 +26,9 @@ THE SOFTWARE
 #define _UTIL_H_
 
 /** Include all util headers. */
+#include "UtilForwardDeclare.h"
 #include "UtilConfig.h"
 #include "UtilCommon.h"
+#include "ExceptionDefines.h"
 
 #endif
