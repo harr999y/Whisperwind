@@ -18,6 +18,9 @@
     <Filter Include="WindowsEventHandle">
       <UniqueIdentifier>{ec146ab2-8c2f-4b72-8946-36a7308ede2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{20725172-3076-445a-9222-ecb0b686b05d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine.h">

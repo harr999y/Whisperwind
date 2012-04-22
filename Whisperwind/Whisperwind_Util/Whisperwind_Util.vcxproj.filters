@@ -43,16 +43,19 @@
     <ClInclude Include="include\Singleton.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="include\XmlReader.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
     <ClInclude Include="include\UtilWarningDisable.h">
       <Filter>Util Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MemoryManagement.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="src\UtilCommon.cpp">
       <Filter>Util Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\XmlReader.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

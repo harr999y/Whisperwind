@@ -65,7 +65,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>./include;../Whisperwind_Dependencies\Visual Leak Detector\include;../Whisperwind_GamePlay/include;../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include;%(AdditionalIncludeDirectories);../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include;../Whisperwind_Dependencies;../Whisperwind_GamePlay/include;../Whisperwind_Util/include;%(AdditionalIncludeDirectories);../Whisperwind_Engine/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,7 +91,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>./include;../Whisperwind_Dependencies\Visual Leak Detector\include;../Whisperwind_GamePlay/include;../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include;../Whisperwind_Engine/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include;../Whisperwind_Dependencies;../Whisperwind_GamePlay/include;../Whisperwind_Util/include;../Whisperwind_Engine/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

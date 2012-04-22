@@ -36,7 +36,8 @@ namespace Engine
 	{
 	public:
 		EngineManager();
-		~EngineManager();
+		~EngineManager()
+		{}
 
 	public:
 		static EngineManager & getSingleton();
@@ -60,6 +61,8 @@ namespace Engine
 
 		void clearResources();
 		void clearPlugins();
+
+		DISALLOW_COPY_AND_ASSIGN(EngineManager);
 
 	private:
 		bool mQuitLooping;

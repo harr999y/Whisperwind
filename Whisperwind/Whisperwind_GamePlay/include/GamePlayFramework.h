@@ -41,6 +41,8 @@ namespace GamePlay
 
 	private:
 		void init();
+
+		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);
 	};
 }
 

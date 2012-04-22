@@ -26,8 +26,13 @@ THE SOFTWARE
 
 #if USE_VLD != 0
   /** Add for visual leak detector. */
-  #include "vld.h"
+  #include "Visual Leak Detector/include/vld.h"
 #endif
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
 
 #include "GamePlay.h"
 

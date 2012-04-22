@@ -15,7 +15,7 @@
 *.pl
 *.ipp
 *.ilk
-/Whisperwind/Whisperwind_Dependencies/boost_1_49_0
+/Whisperwind/Whisperwind_Dependencies/boost
 *.dll
 *.lib
 *.exp

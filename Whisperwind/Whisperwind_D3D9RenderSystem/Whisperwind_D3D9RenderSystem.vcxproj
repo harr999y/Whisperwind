@@ -74,7 +74,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -101,7 +101,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies/boost_1_49_0;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

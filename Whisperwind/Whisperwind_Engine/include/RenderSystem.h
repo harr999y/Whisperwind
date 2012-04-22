@@ -44,6 +44,9 @@ namespace Engine
 		SET_GET_VALUE(Util::wstring, WindowName);
 
 	private:
+		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
+
+	private:
 		Util::wstring mWindowName;
 	};
 }

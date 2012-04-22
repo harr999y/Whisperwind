@@ -44,11 +44,6 @@ namespace Engine
 		setWindowName(Util::BLANK_WSTRING);
 	}
 	//---------------------------------------------------------------------
-	EngineManager::~EngineManager()
-	{
-		mRenderSystem.reset();
-	}
-	//---------------------------------------------------------------------
 	void EngineManager::installPlugin(const Util::PluginPtr & plugin)
 	{
 		plugin->install();
@@ -83,7 +78,7 @@ namespace Engine
 #ifdef WHISPERWIND_DEBUG
 		Util::string dllName("Whisperwind_D3D9RenderSystem_d.dll");
 #else
-		Util::string dllName("D3D9RenderSystem.dll");
+		Util::string dllName("Whisperwind_D3D9RenderSystem.dll");
 #endif
 
 		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);

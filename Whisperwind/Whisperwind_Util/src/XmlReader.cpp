@@ -22,15 +22,51 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "TestCommon.h"
-#include "Util.h"
 
-namespace
+#include "XmlReader.h"
+#include "boost/make_shared.hpp"
+
+namespace Util
 {
+	static const wstring ROOT_NODE_NAME(TO_UNICODE("root"));
 	//---------------------------------------------------------------------
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	void XmlReader::init(const Util::string &fileName)
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
-	};
+		mFileStream = boost::make_shared<File>(fileName.c_str());
+
+		mDoc->parse<0>(mFileStream->data());
+
+		mRootNode = mDoc->first_node(ROOT_NODE_NAME.c_str());
+
+		BOOST_ASSERT(mRootNode && "This xml dont has root node!");
+	}
+	//---------------------------------------------------------------------
+	bool XmlReader::advanceFirstChildNode(const Util::wstring & nodeName)
+	{
+		mCurrentNode = mRootNode->first_node(nodeName.c_str());
+
+		BOOST_ASSERT(mCurrentNode && "Dont have this node!");
+		if (!mCurrentNode)
+			return false;
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	bool XmlReader::advanceNextSiblingNode(const Util::wstring & nodeName)
+	{
+		mCurrentNode = mCurrentNode->next_sibling(nodeName.c_str());
+
+		if (!mCurrentNode)
+			return false;
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	const Util::wstring XmlReader::getAttribute(const Util::wstring & attributeName)
+	{
+		Attribute * attribute = mCurrentNode->first_attribute(attributeName.c_str());
+		BOOST_ASSERT(attribute && "Dont have this attribute.");
+
+		return attribute->value();
+	}
 }

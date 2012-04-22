@@ -45,6 +45,9 @@ namespace Util
 		virtual void uninstall() = 0;
 
 	private:
+		DISALLOW_COPY_AND_ASSIGN(Plugin_Interface);
+
+	private:
 		wstring mName;
 	};
 

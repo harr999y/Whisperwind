@@ -10,9 +10,4 @@
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
 </Project>
