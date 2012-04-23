@@ -49,13 +49,16 @@
     <ClInclude Include="include\UtilWarningDisable.h">
       <Filter>Util Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\UtilTypedefs.h">
+      <Filter>Util Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\UtilCommon.cpp">
-      <Filter>Util Src</Filter>
-    </ClCompile>
     <ClCompile Include="Src\XmlReader.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Util.cpp">
+      <Filter>Util Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

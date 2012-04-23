@@ -25,9 +25,13 @@ THE SOFTWARE
 #ifndef _EXCEPTION_DEFINES_H_
 #define _EXCEPTION_DEFINES_H_
 
+#include "UtilTypedefs.h"
 #include <exception>
+#include "boost/exception/all.hpp"
+#include "boost/current_function.hpp"
+#define BOOST_ENABLE_ASSERT_HANDLER
+#include "boost/assert.hpp"
 
-/// TODO: Replace with boost.exception.
 namespace Util
 {
 	/** The exception. 
@@ -36,7 +40,15 @@ namespace Util
 		situation and very serious problems.Other situation I just log 
 		and return false.
 	*/
-	typedef std::exception exception;
+#define DEFINE_ERROR_INFO(type, name)\
+	typedef boost::error_info<struct tag_##name, type> name;
+
+	DEFINE_ERROR_INFO(String, ErrorInfo);
+
+	struct Exception : 
+		virtual std::exception,
+		virtual boost::exception
+	{};
 }
 
 /**
@@ -46,6 +58,10 @@ namespace Util
 	More is:http://www.boost.org/community/error_handling.html
 */
 #define EXCEPTION(x) \
-	throw Util::exception((x));
+	throw Util::Exception() \
+        << boost::throw_function(BOOST_CURRENT_FUNCTION) \
+		<< boost::throw_file(__FILE__) \
+		<< boost::throw_line(__LINE__) \
+		<< Util::ErrorInfo((x))
 
 #endif

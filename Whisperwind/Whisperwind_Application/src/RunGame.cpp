@@ -47,9 +47,9 @@ Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
 		GamePlay::GamePlayFramework framework(TO_UNICODE("Whisperwind V0.2"));
 		framework.run();
 	}
-	catch (Util::exception & e)
+	catch (Util::Exception & e)
 	{
-		::MessageBoxA(NULL, e.what(), NULL, MB_OK);
+		::MessageBoxA(NULL, boost::diagnostic_information_what(e), NULL, MB_OK);
 	}
 
 	return 0;

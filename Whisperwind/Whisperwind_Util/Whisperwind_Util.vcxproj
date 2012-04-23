@@ -19,11 +19,12 @@
     <ClInclude Include="include\UtilCommon.h" />
     <ClInclude Include="include\UtilConfig.h" />
     <ClInclude Include="include\UtilForwardDeclare.h" />
+    <ClInclude Include="include\UtilTypedefs.h" />
     <ClInclude Include="include\UtilWarningDisable.h" />
     <ClInclude Include="include\XmlReader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\UtilCommon.cpp" />
+    <ClCompile Include="src\Util.cpp" />
     <ClCompile Include="Src\XmlReader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

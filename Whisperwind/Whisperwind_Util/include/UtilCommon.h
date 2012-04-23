@@ -25,7 +25,10 @@ THE SOFTWARE
 #ifndef _UTIL_COMMON_H_
 #define _UTIL_COMMON_H_
 
+#pragma warning(push, 4)
+
 #include "UtilWarningDisable.h"
+#include "UtilTypedefs.h"
 
 /** for unicode */
 #ifndef UNICODE
@@ -35,27 +38,15 @@ THE SOFTWARE
     #define UNICODE
 #endif
 
-/* for common headers */
-#pragma warning(push, 4)
-
-#define TO_UNICODE(x) L##x
-
 #if defined(DEBUG) || defined(_DEBUG)
     #define WHISPERWIND_DEBUG
 #endif
-
-#include <string>
 
 #define BOOST_SYSTEM_NO_LIB /// Don't auto link boost lib.
 
 #include <memory> // for shared_ptr
 #include "boost/shared_ptr.hpp"
 #include "boost/make_shared.hpp"
-
-#ifdef WHISPERWIND_DEBUG
-    #define BOOST_ENABLE_ASSERT_HANDLER
-#endif
-#include "boost/assert.hpp"
 
 #include "MemoryDefines.h"
 
@@ -115,31 +106,5 @@ THE SOFTWARE
 #define SET_GET_CONST_VALUE(type, name) \
 	inline void set##name(const type & val) { m##name = val; } \
 	inline const type & get##name() const { return m##name; }
-
-#include <vector>
-
-namespace Util
-{
-	/** The data defines. */
-	typedef float real;
-	typedef double double_real;
-	typedef unsigned __int32 u_int;
-	typedef signed __int32 s_int;
-	typedef u_int size_t;
-	typedef unsigned __int64 u_int64;
-	typedef signed __int64 s_int64;
-	typedef unsigned __int16 u_short;
-	typedef signed __int16 s_short;
-	typedef unsigned __int8 u_char;
-	typedef signed __int8 s_char;
-
-	/** The common classes defines. */
-	typedef std::string String;
-	typedef std::wstring Wstring;
-	typedef std::vector<String> StringVector;
-	typedef std::vector<Wstring> WstringVector;
-	const static String BLANK_STRING("");
-	const static Wstring BLANK_WSTRING(TO_UNICODE(""));
-}
 
 #endif

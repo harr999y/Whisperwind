@@ -28,6 +28,7 @@ THE SOFTWARE
 /** Include all util headers. */
 #include "UtilForwardDeclare.h"
 #include "UtilConfig.h"
+#include "UtilTypedefs.h"
 #include "UtilCommon.h"
 #include "ExceptionDefines.h"
 

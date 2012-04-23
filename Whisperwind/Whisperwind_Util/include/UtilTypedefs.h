@@ -22,22 +22,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _UTIL_TYPEDEFS_H_
+#define _UTIL_TYPEDEFS_H_
 
-#include "UtilCommon.h"
-#include "boost/format.hpp"
+#include <vector>
+#include <string>
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
+#define TO_UNICODE(x) L##x
 
-namespace boost
+namespace Util
 {
-	void assertion_failed(char const * expr, char const * function, char const * file, long line)
-	{
-		boost::wformat wfmt(TO_UNICODE("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
-		wfmt % expr% function% file% line;
-		::MessageBox(0, wfmt.str().c_str(), NULL, MB_OK);
-		::DebugBreak();
-	}
+	/** The data defines. */
+	typedef float real;
+	typedef double double_real;
+	typedef unsigned __int32 u_int;
+	typedef signed __int32 s_int;
+	typedef u_int size_t;
+	typedef unsigned __int64 u_int64;
+	typedef signed __int64 s_int64;
+	typedef unsigned __int16 u_short;
+	typedef signed __int16 s_short;
+	typedef unsigned __int8 u_char;
+	typedef signed __int8 s_char;
+
+	/** The common classes defines. */
+	typedef std::string String;
+	typedef std::wstring Wstring;
+	typedef std::vector<String> StringVector;
+	typedef std::vector<Wstring> WstringVector;
+	const static String BLANK_STRING("");
+	const static Wstring BLANK_WSTRING(TO_UNICODE(""));
 }
+
+#endif
