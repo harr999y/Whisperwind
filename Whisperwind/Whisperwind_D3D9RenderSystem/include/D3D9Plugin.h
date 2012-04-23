@@ -32,7 +32,7 @@ namespace Engine
 	class WHISPERWIND_API D3D9Plugin : public Util::Plugin_Interface
 	{
 	public:
-		explicit D3D9Plugin(const Util::wstring & name) : Plugin_Interface(name)
+		explicit D3D9Plugin(const Util::Wstring & name) : Plugin_Interface(name)
 		{}
 		~D3D9Plugin()
 		{}

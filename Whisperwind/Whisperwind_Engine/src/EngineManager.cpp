@@ -28,9 +28,20 @@ THE SOFTWARE
 #include "RenderSystem.h"
 #include "WindowsEventHandle.h"
 #include "boost/foreach.hpp"
+#include "XmlReader.h"
 
 namespace Engine
 {
+	//---------------------------------------------------------------------
+#ifdef WHISPERWIND_DEBUG
+	static const Util::String PLUGIN_CONFIG_PATH("../config/Plugin_d.cfg");
+#else
+	static const Util::String PLUGIN_CONFIG_PATH("../config/Plugin.cfg");
+#endif
+	static const Util::String NODE_NAME("Plugin");
+	static const Util::String ATTRIBUTE_NAME("name");
+	static const Util::String DLL_PREFIX("Whisperwind_");
+	static const Util::String DLL_EXT(".dll");
 	//---------------------------------------------------------------------
 	EngineManager EngineManager::mSingleton;
 	EngineManager & EngineManager::getSingleton()
@@ -74,19 +85,33 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::loadPlugins()
 	{
-		/// TODO:Need read from .cfg
-#ifdef WHISPERWIND_DEBUG
-		Util::string dllName("Whisperwind_D3D9RenderSystem_d.dll");
-#else
-		Util::string dllName("Whisperwind_D3D9RenderSystem.dll");
-#endif
+		Util::XmlReaderPtr xmlReaderPtr = boost::make_shared<Util::XmlReader>(PLUGIN_CONFIG_PATH);
+		IF_NULL_EXCEPTION(xmlReaderPtr, "XmlReader create failed!");
 
+		IF_FALSE_EXCEPTION(xmlReaderPtr->advanceFirstChildNode(NODE_NAME),
+			                                  "Xml parse failed!")
+
+		Util::StringVector strVec;
+		do
+		{
+			strVec.push_back(xmlReaderPtr->getAttribute(ATTRIBUTE_NAME));
+		}while (xmlReaderPtr->advanceNextSiblingNode(NODE_NAME));
+
+		BOOST_FOREACH(Util::String & str, strVec)
+		{
+			loadPlugin(str);
+		}
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::loadPlugin(const Util::String & plugin)
+	{
+		Util::String dllName = DLL_PREFIX + plugin + DLL_EXT;
 		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
-		IF_NULL_EXCEPTION(dllHandle, (dllName + " Loading Failed!").c_str());
+		IF_NULL_EXCEPTION(dllHandle, "Dll Loading Failed!");
 
 		Util::DLL_LOAD_ENTRY dllLoadFunc = 
 			reinterpret_cast<Util::DLL_LOAD_ENTRY>(::GetProcAddress(dllHandle, "dllLoadEntry"));
-		IF_NULL_EXCEPTION(dllLoadFunc, (dllName + " doesn't have dllLoadEntry!").c_str());
+		IF_NULL_EXCEPTION(dllLoadFunc, "Dll doesn't have dllLoadEntry!");
 
 		dllLoadFunc();
 	}
@@ -99,7 +124,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::clearPlugins()
 	{
-		BOOST_FOREACH(Util::PluginPtr plugin, mPluginVector)
+		BOOST_FOREACH(Util::PluginPtr & plugin, mPluginVector)
 		{
 			plugin->uninstall();
 		}

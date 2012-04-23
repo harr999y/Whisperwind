@@ -4,16 +4,16 @@
     <Filter Include="Framework">
       <UniqueIdentifier>{0361d103-2ce2-4fb4-b10d-0205b0880189}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GamePlayHeder">
-      <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ScriptContent">
       <UniqueIdentifier>{d05e9480-7362-498e-b503-168efe1ef814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePlay Header">
+      <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GamePlay.h">
-      <Filter>GamePlayHeder</Filter>
+      <Filter>GamePlay Header</Filter>
     </ClInclude>
     <ClInclude Include="include\GamePlayFramework.h">
       <Filter>Framework</Filter>

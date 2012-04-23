@@ -86,6 +86,8 @@ THE SOFTWARE
 	if (!(x)) break;
 #define IF_NULL_EXCEPTION(x, y) \
 	if (!(x)) EXCEPTION((y));
+#define IF_FALSE_EXCEPTION(x, y) \
+	if (!(x)) EXCEPTION((y));
 
 #ifdef WHISPERWIND_DEBUG
     #define DEBUG_PRINT(x) \
@@ -114,6 +116,8 @@ THE SOFTWARE
 	inline void set##name(const type & val) { m##name = val; } \
 	inline const type & get##name() const { return m##name; }
 
+#include <vector>
+
 namespace Util
 {
 	/** The data defines. */
@@ -130,9 +134,12 @@ namespace Util
 	typedef signed __int8 s_char;
 
 	/** The common classes defines. */
-	typedef std::string string;
-	typedef std::wstring wstring;
-	const static wstring BLANK_WSTRING(TO_UNICODE(""));
+	typedef std::string String;
+	typedef std::wstring Wstring;
+	typedef std::vector<String> StringVector;
+	typedef std::vector<Wstring> WstringVector;
+	const static String BLANK_STRING("");
+	const static Wstring BLANK_WSTRING(TO_UNICODE(""));
 }
 
 #endif

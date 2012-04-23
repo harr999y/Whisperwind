@@ -26,7 +26,7 @@ THE SOFTWARE
 #include "D3D9Plugin.h"
 #include "EngineManager.h"
 
-static const Util::wstring DLL_NAME(TO_UNICODE("D3D9RenderSystem"));
+static const Util::Wstring DLL_NAME(TO_UNICODE("D3D9RenderSystem"));
 
 namespace Engine
 {

@@ -30,7 +30,7 @@ THE SOFTWARE
 namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	GamePlayFramework::GamePlayFramework(const Util::wstring & name)
+	GamePlayFramework::GamePlayFramework(const Util::Wstring & name)
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
 		engineMgr.setWindowName(name);

@@ -37,7 +37,7 @@ namespace Engine
 	class WHISPERWIND_API D3D9RenderSystem : public RenderSystem
 	{
 	public:
-		explicit D3D9RenderSystem(const Util::wstring & windowName) :
+		explicit D3D9RenderSystem(const Util::Wstring & windowName) :
 		    RenderSystem(windowName),
 			mWindow(NULL)
 		{}

@@ -36,10 +36,14 @@ THE SOFTWARE
 
 namespace Util
 {
-	class XmlReader
+	/** Class XmlReader.
+	@note:
+	    Use type char to parse.Then you can convert it into any format.
+	*/
+	class WHISPERWIND_API XmlReader
 	{
 	public:
-		XmlReader(const Util::string &fileName) :
+		XmlReader(const Util::String &fileName) :
 		    mCurrentNode(NULL),
 		    mRootNode(NULL)
 		{
@@ -47,18 +51,19 @@ namespace Util
 		}
 
 	public:
-		bool advanceFirstChildNode(const Util::wstring & nodeName);
-		bool advanceNextSiblingNode(const Util::wstring & nodeName);
-		const Util::wstring getAttribute(const Util::wstring & attributeName);
+		bool advanceFirstChildNode(const Util::String & nodeName);
+		bool advanceNextSiblingNode(const Util::String & nodeName);
+		const Util::String getAttribute(const Util::String & attributeName);
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(XmlReader);
 
-		void init(const Util::string & fileName);
+		void init(const Util::String & fileName);
 
 	private:
-		typedef Util::wstring::value_type CharType;
-		typedef boost::shared_ptr<rapidxml::xml_document<CharType>> DocPtr;
+		typedef Util::String::value_type CharType;
+		typedef rapidxml::xml_document<CharType> Doc;
+		typedef boost::shared_ptr<Doc> DocPtr;
 		DocPtr mDoc;
 
 		typedef rapidxml::xml_node<CharType> Node;

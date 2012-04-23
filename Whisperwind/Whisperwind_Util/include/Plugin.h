@@ -32,13 +32,13 @@ namespace Util
 	class WHISPERWIND_API Plugin_Interface
 	{
 	public:
-		explicit Plugin_Interface(const wstring & name) : mName(name)
+		explicit Plugin_Interface(const Wstring & name) : mName(name)
 		{}
 		virtual ~Plugin_Interface()
 		{}
 
 	public:
-		const wstring & getName() const
+		const Wstring & getName() const
 		{ return mName; }
 
 		virtual void install() = 0;
@@ -48,7 +48,7 @@ namespace Util
 		DISALLOW_COPY_AND_ASSIGN(Plugin_Interface);
 
 	private:
-		wstring mName;
+		Wstring mName;
 	};
 
 	typedef void (* DLL_LOAD_ENTRY)(void);

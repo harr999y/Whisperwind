@@ -49,13 +49,14 @@ namespace Engine
 		void installPlugin(const Util::PluginPtr & plugin);
 
 	public:
-		SET_GET_CONST_VALUE(Util::wstring, WindowName);
+		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
 		SET_GET_VALUE(RenderSystemPtr, RenderSystem);
 		SET_GET_CONST_VALUE(bool, QuitLooping);
 
 	private:
 		void loadPlugins();
 		void loadResources();
+		void loadPlugin(const Util::String & plugin);
 
 		void handleGamePlayLogical();
 
@@ -66,7 +67,7 @@ namespace Engine
 
 	private:
 		bool mQuitLooping;
-		Util::wstring mWindowName;
+		Util::Wstring mWindowName;
 
 		typedef std::vector<Util::PluginPtr> PluginVector;
 		PluginVector mPluginVector;

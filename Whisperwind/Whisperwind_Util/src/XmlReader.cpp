@@ -28,11 +28,12 @@ THE SOFTWARE
 
 namespace Util
 {
-	static const wstring ROOT_NODE_NAME(TO_UNICODE("root"));
+	static const String ROOT_NODE_NAME("root");
 	//---------------------------------------------------------------------
-	void XmlReader::init(const Util::string &fileName)
+	void XmlReader::init(const Util::String &fileName)
 	{
 		mFileStream = boost::make_shared<File>(fileName.c_str());
+		mDoc = boost::make_shared<Doc>();
 
 		mDoc->parse<0>(mFileStream->data());
 
@@ -41,7 +42,7 @@ namespace Util
 		BOOST_ASSERT(mRootNode && "This xml dont has root node!");
 	}
 	//---------------------------------------------------------------------
-	bool XmlReader::advanceFirstChildNode(const Util::wstring & nodeName)
+	bool XmlReader::advanceFirstChildNode(const Util::String & nodeName)
 	{
 		mCurrentNode = mRootNode->first_node(nodeName.c_str());
 
@@ -52,7 +53,7 @@ namespace Util
 		return true;
 	}
 	//---------------------------------------------------------------------
-	bool XmlReader::advanceNextSiblingNode(const Util::wstring & nodeName)
+	bool XmlReader::advanceNextSiblingNode(const Util::String & nodeName)
 	{
 		mCurrentNode = mCurrentNode->next_sibling(nodeName.c_str());
 
@@ -62,7 +63,7 @@ namespace Util
 		return true;
 	}
 	//---------------------------------------------------------------------
-	const Util::wstring XmlReader::getAttribute(const Util::wstring & attributeName)
+	const Util::String XmlReader::getAttribute(const Util::String & attributeName)
 	{
 		Attribute * attribute = mCurrentNode->first_attribute(attributeName.c_str());
 		BOOST_ASSERT(attribute && "Dont have this attribute.");

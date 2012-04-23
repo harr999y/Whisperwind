@@ -33,7 +33,7 @@ namespace GamePlay
 	class WHISPERWIND_API GamePlayFramework
 	{
 	public:
-		explicit GamePlayFramework(const Util::wstring & name);
+		explicit GamePlayFramework(const Util::Wstring & name);
 		~GamePlayFramework();
 
 	public:

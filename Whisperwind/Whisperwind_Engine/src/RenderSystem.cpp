@@ -28,7 +28,7 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	RenderSystem::RenderSystem(const Util::wstring & windowName)
+	RenderSystem::RenderSystem(const Util::Wstring & windowName)
 	{
 		setWindowName(windowName);
 	}

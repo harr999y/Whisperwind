@@ -39,7 +39,7 @@ namespace Engine
 	void D3D9RenderSystem::createWindow()
 	{
 		/// TODO:The parameter need to read from .cfg!
-		Util::wstring windowName = EngineManager::getSingleton().getWindowName();
+		Util::Wstring windowName = EngineManager::getSingleton().getWindowName();
 		HINSTANCE hInst = ::GetModuleHandle(NULL);
 
 		WNDCLASSEXW wc;

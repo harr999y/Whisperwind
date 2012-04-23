@@ -32,7 +32,7 @@ namespace Engine
 	class WHISPERWIND_API RenderSystem
 	{
 	public:
-		explicit RenderSystem(const Util::wstring & windowName);
+		explicit RenderSystem(const Util::Wstring & windowName);
 		virtual ~RenderSystem() 
 		{}
 
@@ -41,13 +41,13 @@ namespace Engine
 		virtual bool render() = 0;
 
 	public:
-		SET_GET_VALUE(Util::wstring, WindowName);
+		SET_GET_VALUE(Util::Wstring, WindowName);
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
 
 	private:
-		Util::wstring mWindowName;
+		Util::Wstring mWindowName;
 	};
 }
 

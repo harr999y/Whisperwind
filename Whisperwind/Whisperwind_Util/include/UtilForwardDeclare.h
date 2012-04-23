@@ -32,6 +32,8 @@ namespace Util
 	class Plugin_Interface;
 	typedef boost::shared_ptr<Plugin_Interface> PluginPtr;
 
+	class XmlReader;
+	typedef boost::shared_ptr<XmlReader> XmlReaderPtr;
 }
 
 #endif
