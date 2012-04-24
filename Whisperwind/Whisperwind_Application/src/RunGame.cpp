@@ -22,42 +22,50 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "ApplicationCofig.h"
-
-#if USE_VLD != 0
-  /** Add for visual leak detector. */
-  #include "Visual Leak Detector/include/vld.h"
-#endif
-
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
-#include "GamePlay.h"
 
 /** In this project,the main purpose is trying to run the game with any launchers,
       and of course, here you can do many things such as crash dump generation and 
 	  dump collection to the server and so on.
+@note:
+    Use it in console when debug mode,in win32 when release mode!
 */
-Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
-{
-	try
-	{
-		GamePlay::GamePlayFramework framework(APPLICATION_NAME);
-		framework.run();
-	}
-	catch (Util::Exception & e)
-	{
-#ifdef WHISPERWIND_DEBUG
-		::MessageBoxA(NULL, boost::diagnostic_information_what(e), "Error!", MB_OK);
-#else
-		/// For compiler happy.
-		/// TODO:Need replace with a log!
-		e.what();
-		::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
-#endif
-	}
 
-	return 0;
-}
+#include "ApplicationCofig.h"
+
+#if USE_VLD != 0
+  /** Add for visual leak detector. */
+    #include "Visual Leak Detector/include/vld.h"
+#endif
+
+#include "GamePlay.h"
+
+#ifdef WHISPERWIND_DEBUG
+    #include <iostream>
+    Util::s_int main()
+#else
+    /** for windows.h's warning level */
+    #pragma warning(push, 3)
+    #include <windows.h>
+    #pragma warning(pop)
+    Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
+#endif
+	{
+		try
+		{
+			GamePlay::GamePlayFramework framework(APPLICATION_NAME);
+			framework.run();
+		}
+		catch (Util::Exception & e)
+		{
+#ifdef WHISPERWIND_DEBUG
+		    std::cout << boost::diagnostic_information_what(e);
+#else
+			/// For compiler happy.
+			/// TODO:Need replace with a log!
+			e.what();
+			::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
+#endif
+	    }
+
+		return 0;
+	}

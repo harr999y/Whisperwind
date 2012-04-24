@@ -12,17 +12,17 @@
     <Filter Include="Render">
       <UniqueIdentifier>{01b42326-c790-4d4d-9711-10b789059a44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine Manager">
-      <UniqueIdentifier>{11b37349-395d-4ebe-96d3-f59f8e1256a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Config">
-      <UniqueIdentifier>{20725172-3076-445a-9222-ecb0b686b05d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Configuration">
       <UniqueIdentifier>{3b10144f-b091-473b-aaf2-3f14c9146dd7}</UniqueIdentifier>
     </Filter>
     <Filter Include="WindowsPlatform">
       <UniqueIdentifier>{ec146ab2-8c2f-4b72-8946-36a7308ede2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{91406942-3ae1-4af8-a8c7-c791aad901eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineManager">
+      <UniqueIdentifier>{11b37349-395d-4ebe-96d3-f59f8e1256a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +36,7 @@
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="include\EngineManager.h">
-      <Filter>Engine Manager</Filter>
+      <Filter>EngineManager</Filter>
     </ClInclude>
     <ClInclude Include="include\WindowsEventHandle.h">
       <Filter>WindowsPlatform</Filter>
@@ -56,13 +56,19 @@
     <ClInclude Include="include\WindowsHelpler.h">
       <Filter>WindowsPlatform</Filter>
     </ClInclude>
+    <ClInclude Include="include\LogSystem.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Log.h">
+      <Filter>Log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RenderSystem.cpp">
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="src\EngineManager.cpp">
-      <Filter>Engine Manager</Filter>
+      <Filter>EngineManager</Filter>
     </ClCompile>
     <ClCompile Include="src\WindowsEventHandle.cpp">
       <Filter>WindowsPlatform</Filter>
@@ -78,6 +84,12 @@
     </ClCompile>
     <ClCompile Include="src\PluginConfig.cpp">
       <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogSystem.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Log.cpp">
+      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

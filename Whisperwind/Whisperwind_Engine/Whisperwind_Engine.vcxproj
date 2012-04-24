@@ -17,12 +17,16 @@
     <ClInclude Include="include\EngineConfig.h" />
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
+    <ClInclude Include="include\Log.h" />
+    <ClInclude Include="include\LogSystem.h" />
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
     <ClInclude Include="include\WindowsHelpler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Log.cpp" />
+    <ClCompile Include="src\LogSystem.cpp" />
     <ClCompile Include="src\PluginConfig.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\EngineConfig.cpp" />
