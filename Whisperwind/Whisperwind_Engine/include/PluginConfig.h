@@ -22,35 +22,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_SYSTEM_H_
-#define _RENDER_SYSTEM_H_
+#ifndef _PLUGIN_CONFIG_H_
+#define _PLUGIN_CONFIG_H_
 
 #include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "Config.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API RenderSystem
+	class PluginConfig : public Config
 	{
 	public:
-		explicit RenderSystem(const Util::Wstring & windowName);
-		virtual ~RenderSystem() 
+		explicit PluginConfig(const Util::String & name) :
+		    Config(name)
+		{}
+		~PluginConfig()
 		{}
 
 	public:
-		virtual void init() = 0;
-		virtual bool render() = 0;
-
-	public:
-		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
-		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
-
-	protected:
-		Util::Wstring mWindowName;
-		EngineConfigPtr mEngineConfig;
+		SET_GET_CONST_VALUE(Util::StringVector, StringVector);
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
+		virtual bool parse_impl();
+
+	private:
+		Util::StringVector mStringVector;
 	};
 }
 

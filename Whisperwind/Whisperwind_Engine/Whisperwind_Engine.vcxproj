@@ -11,18 +11,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Config.h" />
+    <ClInclude Include="include\EngineConfigDefines.h" />
     <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\EngineConfig.h" />
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
-    <ClInclude Include="include\RenderDevice.h" />
+    <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
+    <ClInclude Include="include\WindowsHelpler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PluginConfig.cpp" />
+    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\EngineConfig.cpp" />
     <ClCompile Include="src\EngineManager.cpp" />
-    <ClCompile Include="src\RenderDevice.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\WindowsEventHandle.cpp" />
+    <ClCompile Include="src\WindowsHelpler.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}</ProjectGuid>

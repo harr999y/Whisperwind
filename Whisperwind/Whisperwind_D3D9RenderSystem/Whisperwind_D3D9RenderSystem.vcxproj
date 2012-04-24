@@ -11,8 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\D3D9ForwardDeclare.h" />
     <ClInclude Include="include\D3D9Plugin.h" />
     <ClInclude Include="include\D3D9RenderSystem.h" />
+    <ClInclude Include="include\D3D9Typedefs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Plugin.cpp" />
@@ -74,15 +76,15 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include;$(DXSDK_DIR)/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>Whisperwind_Engine_d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../lib/$(configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Whisperwind_Engine_d.lib;d3d9.lib;d3dx9.lib;DxErr.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib/$(configuration);$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -101,7 +103,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include;$(DXSDK_DIR)/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,8 +111,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>Whisperwind_Engine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../lib/$(configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Whisperwind_Engine.lib;d3d9.lib;d3dx9.lib;DxErr.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib/$(configuration);$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

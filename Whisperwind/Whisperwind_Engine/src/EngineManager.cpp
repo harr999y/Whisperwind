@@ -27,21 +27,22 @@ THE SOFTWARE
 #include "Plugin.h"
 #include "RenderSystem.h"
 #include "WindowsEventHandle.h"
+#include "WindowsHelpler.h"
 #include "boost/foreach.hpp"
 #include "XmlReader.h"
+#include "EngineConfig.h"
+#include "PluginConfig.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
 #ifdef WHISPERWIND_DEBUG
 	static const Util::String PLUGIN_CONFIG_PATH("../config/Plugin_d.cfg");
+	static const Util::String ENGINE_CONFIG_PATH("../config/EngineConfig_d.cfg");
 #else
 	static const Util::String PLUGIN_CONFIG_PATH("../config/Plugin.cfg");
+	static const Util::String ENGINE_CONFIG_PATH("../config/EngineConfig.cfg");
 #endif
-	static const Util::String NODE_NAME("Plugin");
-	static const Util::String ATTRIBUTE_NAME("name");
-	static const Util::String DLL_PREFIX("Whisperwind_");
-	static const Util::String DLL_EXT(".dll");
 	//---------------------------------------------------------------------
 	EngineManager EngineManager::mSingleton;
 	EngineManager & EngineManager::getSingleton()
@@ -51,15 +52,22 @@ namespace Engine
 	//---------------------------------------------------------------------
 	EngineManager::EngineManager()
 	{
-		setQuitLooping(false);
-		setWindowName(Util::BLANK_WSTRING);
+		init();
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::installPlugin(const Util::PluginPtr & plugin)
+	void EngineManager::init()
 	{
-		plugin->install();
+		setQuitLooping(false);
+		setEngineConfig(boost::make_shared<EngineConfig>(ENGINE_CONFIG_PATH));
+		setPluginConfig(boost::make_shared<PluginConfig>(PLUGIN_CONFIG_PATH));
 
-		mPluginVector.push_back(plugin);
+		parseConfigs();
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::parseConfigs()
+	{
+		mEngineConfig->parse();
+		mPluginConfig->parse();
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::preRunning()
@@ -83,37 +91,22 @@ namespace Engine
 		clearPlugins();
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::loadPlugins()
+	void EngineManager::installPlugin(const Util::PluginPtr & plugin)
 	{
-		Util::XmlReaderPtr xmlReaderPtr = boost::make_shared<Util::XmlReader>(PLUGIN_CONFIG_PATH);
-		IF_NULL_EXCEPTION(xmlReaderPtr, "XmlReader create failed!");
+		plugin->install();
 
-		IF_FALSE_EXCEPTION(xmlReaderPtr->advanceFirstChildNode(NODE_NAME),
-			                                  "Xml parse failed!")
-
-		Util::StringVector strVec;
-		do
-		{
-			strVec.push_back(xmlReaderPtr->getAttribute(ATTRIBUTE_NAME));
-		}while (xmlReaderPtr->advanceNextSiblingNode(NODE_NAME));
-
-		BOOST_FOREACH(Util::String & str, strVec)
-		{
-			loadPlugin(str);
-		}
+		mPluginVector.push_back(plugin);
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::loadPlugin(const Util::String & plugin)
+	void EngineManager::loadPlugins()
 	{
-		Util::String dllName = DLL_PREFIX + plugin + DLL_EXT;
-		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
-		IF_NULL_EXCEPTION(dllHandle, "Dll Loading Failed!");
+		Util::StringVector strVec = mPluginConfig->getStringVector();
+		BOOST_FOREACH(Util::String & str, strVec)
+		{
+			WindowsHelpler::loadPlugin(str);
+		}
 
-		Util::DLL_LOAD_ENTRY dllLoadFunc = 
-			reinterpret_cast<Util::DLL_LOAD_ENTRY>(::GetProcAddress(dllHandle, "dllLoadEntry"));
-		IF_NULL_EXCEPTION(dllLoadFunc, "Dll doesn't have dllLoadEntry!");
-
-		dllLoadFunc();
+		mPluginConfig.reset();
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::loadResources()

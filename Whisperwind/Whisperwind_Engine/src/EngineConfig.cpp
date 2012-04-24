@@ -22,36 +22,40 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_SYSTEM_H_
-#define _RENDER_SYSTEM_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "EngineConfig.h"
+#include "boost/lexical_cast.hpp"
+#include "boost/algorithm/string.hpp"
+#include "EngineConfigDefines.h"
+#include "XmlReader.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API RenderSystem
+	static const Util::String CONFIG_VALUE("value");
+	//---------------------------------------------------------------------
+	bool EngineConfig::parse_impl()
 	{
-	public:
-		explicit RenderSystem(const Util::Wstring & windowName);
-		virtual ~RenderSystem() 
-		{}
+		try
+		{
+			Util::String valueStr;
 
-	public:
-		virtual void init() = 0;
-		virtual bool render() = 0;
+			IF_FALSE_RETURN_FALSE(mXmlReader->advanceFirstChildNode(FULL_SCREEN));
+			valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+			mFullScreen = boost::lexical_cast<bool>(valueStr);
 
-	public:
-		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
-		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
+			IF_FALSE_RETURN_FALSE(mXmlReader->advanceFirstChildNode(RESOLUTION));
+			valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+			Util::StringVector strVec;
+			boost::split(strVec, valueStr, boost::is_any_of("*"));
 
-	protected:
-		Util::Wstring mWindowName;
-		EngineConfigPtr mEngineConfig;
+			mResolutionPair.first = boost::lexical_cast<Util::u_int>(strVec[0]);
+			mResolutionPair.second = boost::lexical_cast<Util::u_int>(strVec[1]);
+		}
+		catch(std::exception &)
+		{
+			return false;
+		}
 
-	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
-	};
+		return true;
+	}
 }
-
-#endif

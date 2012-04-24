@@ -18,6 +18,12 @@
     <ClInclude Include="include\D3D9RenderSystem.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\D3D9ForwardDeclare.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\D3D9Typedefs.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Plugin.cpp">

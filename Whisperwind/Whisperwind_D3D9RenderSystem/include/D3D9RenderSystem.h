@@ -31,6 +31,8 @@ THE SOFTWARE
 #pragma warning(pop)
 
 #include "RenderSystem.h"
+#include "D3D9ForwardDeclare.h"
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
@@ -47,8 +49,8 @@ namespace Engine
 		}
 
 	public:
-		void init();
-		bool render();
+		virtual void init();
+		virtual bool render();
 
 	private:
 		void createWindow();
@@ -57,6 +59,7 @@ namespace Engine
 
 	private:
 		HWND mWindow;
+		IDirect3DDevice9Ptr mD3DDevice;
 	};
 }
 

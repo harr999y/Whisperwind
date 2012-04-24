@@ -45,13 +45,13 @@ namespace Util
 	typedef unsigned __int8 u_char;
 	typedef signed __int8 s_char;
 
+	typedef std::pair<Util::u_int, Util::u_int> UintPair;
+
 	/** The common classes defines. */
 	typedef std::string String;
 	typedef std::wstring Wstring;
 	typedef std::vector<String> StringVector;
 	typedef std::vector<Wstring> WstringVector;
-	const static String BLANK_STRING("");
-	const static Wstring BLANK_WSTRING(TO_UNICODE(""));
 }
 
 #endif

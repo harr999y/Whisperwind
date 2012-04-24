@@ -52,6 +52,9 @@
     <ClInclude Include="include\UtilTypedefs.h">
       <Filter>Util Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\MakeCOMPtr.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\XmlReader.cpp">

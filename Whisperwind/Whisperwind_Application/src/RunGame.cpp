@@ -44,12 +44,19 @@ Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
 {
 	try
 	{
-		GamePlay::GamePlayFramework framework(TO_UNICODE("Whisperwind V0.2"));
+		GamePlay::GamePlayFramework framework(APPLICATION_NAME);
 		framework.run();
 	}
 	catch (Util::Exception & e)
 	{
-		::MessageBoxA(NULL, boost::diagnostic_information_what(e), NULL, MB_OK);
+#ifdef WHISPERWIND_DEBUG
+		::MessageBoxA(NULL, boost::diagnostic_information_what(e), "Error!", MB_OK);
+#else
+		/// For compiler happy.
+		/// TODO:Need replace with a log!
+		e.what();
+		::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
+#endif
 	}
 
 	return 0;

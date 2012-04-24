@@ -52,11 +52,14 @@ namespace Engine
 		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
 		SET_GET_VALUE(RenderSystemPtr, RenderSystem);
 		SET_GET_CONST_VALUE(bool, QuitLooping);
+		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
+		SET_GET_CONST_VALUE(PluginConfigPtr, PluginConfig);
 
 	private:
+		void init();
+		void parseConfigs();
 		void loadPlugins();
 		void loadResources();
-		void loadPlugin(const Util::String & plugin);
 
 		void handleGamePlayLogical();
 
@@ -73,6 +76,8 @@ namespace Engine
 		PluginVector mPluginVector;
 
 		RenderSystemPtr mRenderSystem;
+		EngineConfigPtr mEngineConfig;
+		PluginConfigPtr mPluginConfig;
 
 		static EngineManager mSingleton;
 	};

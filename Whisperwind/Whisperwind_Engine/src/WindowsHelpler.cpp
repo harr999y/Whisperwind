@@ -23,4 +23,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "RenderDevice.h"
+#include "WindowsHelpler.h"
+#include "Plugin.h"
+
+namespace Engine
+{
+	static const Util::String DLL_PREFIX("Whisperwind_");
+	static const Util::String DLL_EXT(".dll");
+	//---------------------------------------------------------------------
+	void WindowsHelpler::loadPlugin(const Util::String & plugin)
+	{
+		Util::String dllName = DLL_PREFIX + plugin + DLL_EXT;
+		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+		IF_NULL_EXCEPTION(dllHandle, "Dll Loading Failed!");
+
+		Util::DLL_LOAD_ENTRY dllLoadFunc = 
+			reinterpret_cast<Util::DLL_LOAD_ENTRY>(::GetProcAddress(dllHandle, "dllLoadEntry"));
+		IF_NULL_EXCEPTION(dllLoadFunc, "Dll doesn't have dllLoadEntry!");
+
+		dllLoadFunc();
+	}
+}

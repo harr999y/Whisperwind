@@ -22,36 +22,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_SYSTEM_H_
-#define _RENDER_SYSTEM_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "PluginConfig.h"
+#include "XmlReader.h"
+#include "boost/make_shared.hpp"
+#include "XmlReader.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API RenderSystem
+	static const Util::String NODE_NAME("Plugin");
+	static const Util::String ATTRIBUTE_NAME("name");
+	//---------------------------------------------------------------------
+	bool PluginConfig::parse_impl()
 	{
-	public:
-		explicit RenderSystem(const Util::Wstring & windowName);
-		virtual ~RenderSystem() 
-		{}
+		try 
+		{
+			IF_FALSE_RETURN_FALSE(mXmlReader->advanceFirstChildNode(NODE_NAME));
 
-	public:
-		virtual void init() = 0;
-		virtual bool render() = 0;
+			do
+			{
+				mStringVector.push_back(mXmlReader->getAttribute(ATTRIBUTE_NAME));
+			}while (mXmlReader->advanceNextSiblingNode(NODE_NAME));
+		}
+		catch(std::exception &)
+		{
+			return false;
+		}
 
-	public:
-		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
-		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
-
-	protected:
-		Util::Wstring mWindowName;
-		EngineConfigPtr mEngineConfig;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
-	};
+		return true;
+	}
 }
-
-#endif

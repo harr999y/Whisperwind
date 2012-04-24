@@ -27,7 +27,6 @@ THE SOFTWARE
 
 #pragma warning(push, 4)
 
-#include "UtilWarningDisable.h"
 #include "UtilTypedefs.h"
 
 /** for unicode */
@@ -69,14 +68,22 @@ THE SOFTWARE
 
 #define IF_NULL_RETURN(x) \
 	if (!(x)) return;
-#define IF_NULL_RETURN_VALUE(x, y) \
-	if (!(x)) return (y);
+#define IF_NULL_RETURN_FALSE(x) \
+	if (!(x)) return false;
 #define IF_NULL_CONTINUE(x) \
 	if (!(x)) continue;
 #define IF_NULL_BREAK(x) \
 	if (!(x)) break;
 #define IF_NULL_EXCEPTION(x, y) \
 	if (!(x)) EXCEPTION((y));
+#define IF_FALSE_RETURN(x) \
+	if (!(x)) return;
+#define IF_FALSE_RETURN_FALSE(x) \
+	if (!(x)) return false;
+#define IF_FALSE_CONTINUE(x) \
+	if (!(x)) continue;
+#define IF_FALSE_BREAK(x) \
+	if (!(x)) break;
 #define IF_FALSE_EXCEPTION(x, y) \
 	if (!(x)) EXCEPTION((y));
 
@@ -99,6 +106,8 @@ THE SOFTWARE
     #define WHISPERWIND_API _declspec(dllimport)
 #endif
 
+/// NOTE:The diffrence between CONST and none only works when the type is:
+/// raw pointer,shared_ptr,string or other classes.Not the common types.
 #define SET_GET_VALUE(type, name) \
 	inline void set##name(const type & val) { m##name = val; } \
 	inline type & get##name() { return m##name; }

@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _UTIL_H_
 
 /** Include all util headers. */
+#include "UtilWarningDisable.h"
 #include "UtilForwardDeclare.h"
 #include "UtilConfig.h"
 #include "UtilTypedefs.h"

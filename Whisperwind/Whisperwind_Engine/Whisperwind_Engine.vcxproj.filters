@@ -15,19 +15,19 @@
     <Filter Include="Engine Manager">
       <UniqueIdentifier>{11b37349-395d-4ebe-96d3-f59f8e1256a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="WindowsEventHandle">
-      <UniqueIdentifier>{ec146ab2-8c2f-4b72-8946-36a7308ede2e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Config">
       <UniqueIdentifier>{20725172-3076-445a-9222-ecb0b686b05d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{3b10144f-b091-473b-aaf2-3f14c9146dd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WindowsPlatform">
+      <UniqueIdentifier>{ec146ab2-8c2f-4b72-8946-36a7308ede2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine.h">
       <Filter>Engine Header</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RenderDevice.h">
-      <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="include\EngineForwardDeclare.h">
       <Filter>Engine Header</Filter>
@@ -39,13 +39,25 @@
       <Filter>Engine Manager</Filter>
     </ClInclude>
     <ClInclude Include="include\WindowsEventHandle.h">
-      <Filter>WindowsEventHandle</Filter>
+      <Filter>WindowsPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EngineConfig.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EngineConfigDefines.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PluginConfig.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Config.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WindowsHelpler.h">
+      <Filter>WindowsPlatform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\RenderDevice.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
     <ClCompile Include="src\RenderSystem.cpp">
       <Filter>Render</Filter>
     </ClCompile>
@@ -53,7 +65,19 @@
       <Filter>Engine Manager</Filter>
     </ClCompile>
     <ClCompile Include="src\WindowsEventHandle.cpp">
-      <Filter>WindowsEventHandle</Filter>
+      <Filter>WindowsPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineConfig.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WindowsHelpler.cpp">
+      <Filter>WindowsPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PluginConfig.cpp">
+      <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

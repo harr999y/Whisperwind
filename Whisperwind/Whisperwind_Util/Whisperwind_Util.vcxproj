@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ExceptionDefines.h" />
+    <ClInclude Include="include\MakeCOMPtr.h" />
     <ClInclude Include="include\MemoryDefines.h" />
     <ClInclude Include="include\Plugin.h" />
     <ClInclude Include="include\Singleton.h" />

@@ -25,7 +25,6 @@ THE SOFTWARE
 #ifndef _UTIL_WARNING_DISABLE_H_
 #define _UTIL_WARNING_DISABLE_H_
 
-/// TODO:This warning need to clear.
 /// NOTE:I just use it as private member,so I can disable this warning.But others CANNOT.
 /** Need attention!
 @note:
@@ -33,6 +32,25 @@ THE SOFTWARE
  	between template and dll_export is a little implicy.More infomation as followed:
  	http://stackoverflow.com/questions/767579/exporting-classes-containing-std-objects-vector-map-etc-from-a-dll
 */
+/// NOTE:Below is the explain from OGRE.
+// disable: "<type> needs to have dll-interface to be used by clients'
+// Happens on STL member variables which are not public therefore is ok
 #pragma warning(disable : 4251)
+
+/// NOTE:Below is the explain from OGRE.
+// disable: "non dll-interface class used as base for dll-interface class"
+// Happens when deriving from Singleton because bug in compiler ignores
+// template export
+#pragma warning(disable : 4275)
+
+/// Here is a explain from stackoverflow:
+/// http://stackoverflow.com/questions/1301277/c-boost-whats-the-cause-of-this-warning
+/// NOTE:Below is the explain from OGRE.
+// disable: deprecation warnings when using CRT calls in VC8
+// These show up on all C runtime lib code in VC8, disable since they clutter
+// the warnings with things we may not be able to do anything about (e.g.
+// generated code from nvparse etc). I doubt very much that these calls
+// will ever be actually removed from VC anyway, it would break too much code.
+#pragma warning(disable : 4996)
 
 #endif

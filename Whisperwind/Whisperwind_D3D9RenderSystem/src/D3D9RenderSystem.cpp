@@ -26,6 +26,7 @@ THE SOFTWARE
 #include "D3D9RenderSystem.h"
 #include "WindowsEventHandle.h"
 #include "EngineManager.h"
+#include "EngineConfig.h"
 
 namespace Engine
 {
@@ -58,12 +59,22 @@ namespace Engine
 
 		::RegisterClassEx(&wc);
 
+		bool isFullScreen = mEngineConfig->getFullScreen();
+		Util::u_int width = mEngineConfig->getResolutionPair().first;
+		Util::u_int height = mEngineConfig->getResolutionPair().second;
+
+		/// TODO!
 		Util::u_int style = WS_OVERLAPPEDWINDOW;
-		RECT rc = {0, 0, 1024, 768};
-		::AdjustWindowRect(&rc, style, false);
+		if (!isFullScreen)
+			 style = WS_OVERLAPPEDWINDOW;
+		else
+			style = WS_POPUPWINDOW;
+
+		RECT rc = {0, 0, width, height};
+		::AdjustWindowRect(&rc, style, false);	
 
 		HWND window = ::CreateWindow(windowName.c_str(), windowName.c_str(), style, 
-			0, 0, 1024, 768, NULL, NULL, hInst, NULL);
+			0, 0, width, height, NULL, NULL, hInst, NULL);
 		IF_NULL_EXCEPTION(window, "Create Window Failed!");
 
 		::ShowWindow(window, SW_SHOWNORMAL);

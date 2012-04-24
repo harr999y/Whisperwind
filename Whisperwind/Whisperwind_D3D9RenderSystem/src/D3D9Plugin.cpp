@@ -33,6 +33,8 @@ namespace Engine
 	{
 		EngineManager & engineMgr = EngineManager::getSingleton();
 		RenderSystemPtr d3d9RS = boost::make_shared<D3D9RenderSystem>(engineMgr.getWindowName());
+		d3d9RS->setEngineConfig(engineMgr.getEngineConfig());
+
 		d3d9RS->init();
 
 		engineMgr.setRenderSystem(d3d9RS);

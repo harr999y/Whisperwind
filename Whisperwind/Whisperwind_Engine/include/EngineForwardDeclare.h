@@ -31,7 +31,12 @@ namespace Engine
 {
 	class EngineManager;
 	class RenderSystem;
+	class EngineConfig;
+	class PluginConfig;
+
 	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
+	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;
+	typedef boost::shared_ptr<PluginConfig> PluginConfigPtr;
 }
 
 #endif

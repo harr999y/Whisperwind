@@ -31,6 +31,7 @@ THE SOFTWARE
 #include <windows.h>
 #pragma warning(pop)
 
+#ifdef WHISPERWIND_DEBUG
 namespace boost
 {
 	void assertion_failed(char const * expr, char const * function, char const * file, long line)
@@ -41,3 +42,4 @@ namespace boost
 		::DebugBreak();
 	}
 }
+#endif

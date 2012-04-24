@@ -22,35 +22,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_SYSTEM_H_
-#define _RENDER_SYSTEM_H_
+#ifndef _WINDOWS_HELPLER_H_
+#define _WINDOWS_HELPLER_H_
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
 
 #include "Util.h"
-#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API RenderSystem
+	class WHISPERWIND_API WindowsHelpler
 	{
 	public:
-		explicit RenderSystem(const Util::Wstring & windowName);
-		virtual ~RenderSystem() 
-		{}
-
-	public:
-		virtual void init() = 0;
-		virtual bool render() = 0;
-
-	public:
-		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
-		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
-
-	protected:
-		Util::Wstring mWindowName;
-		EngineConfigPtr mEngineConfig;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
+		static void loadPlugin(const Util::String & plugin);
 	};
 }
 

@@ -32,4 +32,7 @@ THE SOFTWARE
     #define USE_VLD 1
 #endif
 
+static const Util::Wstring APPLICATION_NAME(TO_UNICODE("Whisperwind V0.2"));
+static const Util::Wstring ERROR_NOTIFY(TO_UNICODE("Your crash is reported to Developer.\nPlease wait for bug fix.  :)  Thanks!"));
+
 #endif

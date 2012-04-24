@@ -22,36 +22,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_SYSTEM_H_
-#define _RENDER_SYSTEM_H_
+#ifndef _MAKE_COM_PTR_H_
+#define _MAKE_COM_PTR_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "boost/shared_ptr.hpp"
 
-namespace Engine
+#define BOOST_MEM_FN_ENABLE_STDCALL
+#include "boost/mem_fn.hpp"
+
+namespace Util
 {
-	class WHISPERWIND_API RenderSystem
+	/// Thanks KlayGE!
+	template <class T>
+	static boost::shared_ptr<T> MakeCOMPtr(T * p)
 	{
-	public:
-		explicit RenderSystem(const Util::Wstring & windowName);
-		virtual ~RenderSystem() 
-		{}
-
-	public:
-		virtual void init() = 0;
-		virtual bool render() = 0;
-
-	public:
-		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
-		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
-
-	protected:
-		Util::Wstring mWindowName;
-		EngineConfigPtr mEngineConfig;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderSystem);
-	};
+		return boost::shared_ptr<T>(p, boost::mem_fn(&T::Release));
+	}
 }
 
 #endif

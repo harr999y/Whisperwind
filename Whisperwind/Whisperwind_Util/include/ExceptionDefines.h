@@ -29,7 +29,11 @@ THE SOFTWARE
 #include <exception>
 #include "boost/exception/all.hpp"
 #include "boost/current_function.hpp"
-#define BOOST_ENABLE_ASSERT_HANDLER
+#include "UtilCommon.h"
+
+#ifdef WHISPERWIND_DEBUG
+    #define BOOST_ENABLE_ASSERT_HANDLER
+#endif
 #include "boost/assert.hpp"
 
 namespace Util

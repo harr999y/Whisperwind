@@ -47,8 +47,7 @@ namespace Util
 		mCurrentNode = mRootNode->first_node(nodeName.c_str());
 
 		BOOST_ASSERT(mCurrentNode && "Dont have this node!");
-		if (!mCurrentNode)
-			return false;
+		IF_NULL_RETURN_FALSE(mCurrentNode);
 
 		return true;
 	}
@@ -57,8 +56,7 @@ namespace Util
 	{
 		mCurrentNode = mCurrentNode->next_sibling(nodeName.c_str());
 
-		if (!mCurrentNode)
-			return false;
+		IF_NULL_RETURN_FALSE(mCurrentNode);
 
 		return true;
 	}
