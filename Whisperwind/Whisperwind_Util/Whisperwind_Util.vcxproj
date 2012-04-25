@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Profile.h" />
     <ClInclude Include="include\UtilCommon.h" />
     <ClInclude Include="include\ExceptionDefines.h" />
     <ClInclude Include="include\LogManager.h" />
@@ -31,6 +32,7 @@
     <ClCompile Include="src\LogManager.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
+    <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="Src\XmlReader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -22,15 +22,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+
 #include "TestCommon.h"
 #include "Util.h"
+#include "Profile.h"
 
 namespace
 {
 	//---------------------------------------------------------------------
-	TEST(UTIL_TEST, TEST_BOOST_ASSERT)
+	TEST(UTIL_TEST, TEST_PROFILE)
 	{
-		// NOTE:Open this will come to a messagebox and then break.
-		// BOOST_ASSERT((1 == 2) && "saf a");
+		PROFILE(WHISPERWIND_LOG(TO_UNICODE("´óÏÃµÄ")), TO_UNICODE("¸ö¶î·É"));
 	};
 }

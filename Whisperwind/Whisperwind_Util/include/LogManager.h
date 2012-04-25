@@ -30,6 +30,7 @@ THE SOFTWARE
 
 namespace Util
 {
+	/// TODO:Multi-Thread surpport!
 	class WHISPERWIND_API LogManager
 	{
 	public:

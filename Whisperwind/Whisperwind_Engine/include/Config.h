@@ -33,6 +33,8 @@ namespace Engine
 	{
 	public:
 		explicit Config(const Util::String & name);
+
+	protected:
 		~Config()
 		{}
 

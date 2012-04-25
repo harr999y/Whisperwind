@@ -23,52 +23,67 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "LogManager.h"
-#include "StringConverter.h"
-
-#define BOOST_ALL_NO_LIB /// Don't use boost lib.
-#include "boost/date_time/posix_time/posix_time.hpp"
+#include "Profile.h"
 
 namespace Util
 {
-	static const String LOG_PATH("../Whisperwind.log");
 	//---------------------------------------------------------------------
-	LogManager LogManager::mSingleton;
-	LogManager & LogManager::getSingleton()
+	//Profile
+	//---------------------------------------------------------------------
+	Profile::Profile() :
+	    mLastStamp(0),
+	    mCurrentStamp(0)
+	{}
+	//---------------------------------------------------------------------
+	void Profile::beginTest()
 	{
-		return mSingleton;
+		// set highest thread ptiority to get more precise time.
+		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
+
+		beginTest_impl();
 	}
 	//---------------------------------------------------------------------
-	LogManager::LogManager()
-	{
-		mStream.open(LOG_PATH, std::ios::out | std::ios::trunc);
-		IF_FALSE_RETURN(mStream.is_open());
+	void Profile::endTest()
+	{	
+		endTest_impl();
+
+		// set thread ptiority back to normal.
+		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 	}
 	//---------------------------------------------------------------------
-	LogManager::~LogManager()
+	s_int64 Profile::getResult() const
 	{
-		mStream.close();
+		return mCurrentStamp - mLastStamp;
+	}
+
+	//---------------------------------------------------------------------
+	//ProfileWithWin32API
+	//---------------------------------------------------------------------
+	void ProfileWithWin32API::beginTest_impl()
+	{
+		LARGE_INTEGER beginTime;
+		IF_NULL_EXCEPTION(QueryPerformanceCounter(&beginTime), "QueryPerformanceCounter failed!");
+
+		mLastStamp = queryPerfCount(beginTime);
 	}
 	//---------------------------------------------------------------------
-	void LogManager::log(const Wstring & event)
+	void ProfileWithWin32API::endTest_impl()
 	{
-		/// I don't know why this has nothing effect to me...
-		//std::locale::global(std::locale(""));
+		LARGE_INTEGER endTime;
+		IF_NULL_EXCEPTION(QueryPerformanceCounter(&endTime), "QueryPerformanceCounter failed!");
 
-		/// So finally I just choose the common way to handle this with ANSI format.
-		/// NOTE:I'll fix it.
-		/// TODO:Fix it.
+		mCurrentStamp = queryPerfCount(endTime);
+	}
+	//---------------------------------------------------------------------
+	/** The time factor. */
+#define TF_MICRO 1000000
+#define TF_MILLION 1000
 
-		String strTime = boost::posix_time::to_iso_extended_string(
-			boost::posix_time::second_clock::local_time());		
-		strTime[10] = ' ';
+	u_int64 ProfileWithWin32API::queryPerfCount(LARGE_INTEGER time) const
+	{
+		LARGE_INTEGER perfFreq;
+		IF_NULL_EXCEPTION(QueryPerformanceFrequency(&perfFreq), "QueryPerformanceFrequency failed!");
 
-		String outEvent;
-		WstringToString(event, outEvent);
-		
-		mStream  << (strTime + " : " + outEvent).c_str() << std::endl;
-		mStream.flush();
-
-		DEBUG_PRINT(event);
+		return ((time.QuadPart * TF_MILLION) / perfFreq.QuadPart);
 	}
 }

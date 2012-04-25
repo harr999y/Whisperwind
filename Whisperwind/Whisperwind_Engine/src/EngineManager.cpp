@@ -35,6 +35,7 @@ THE SOFTWARE
 #include "boost/shared_ptr.hpp"
 #include "boost/make_shared.hpp"
 #include "StringConverter.h"
+#include "Profile.h"
 
 namespace Engine
 {
@@ -112,6 +113,7 @@ namespace Engine
 		{
 			WindowsHelpler::loadPlugin(str);
 
+			wstr.clear();
 			Util::StringToWstring(str, wstr);
 			WHISPERWIND_LOG(wstr + TO_UNICODE(" plugin load done!"));
 		}

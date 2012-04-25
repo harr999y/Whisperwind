@@ -75,14 +75,6 @@ THE SOFTWARE
 #define IF_FALSE_EXCEPTION(x, y) \
 	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
 
-#include <iostream>
-
-#ifdef WHISPERWIND_DEBUG
-    #define DEBUG_PRINT(x) std::wcout << (x) << std::endl;
-#else
-    #define DEBUG_PRINT(x) (0)
-#endif
-
 	/** Define DISALLOW_COPY_AND_ASSIGN macro for copy-constructor
 	and operator =. */
 #define DISALLOW_COPY_AND_ASSIGN(Type)\
@@ -104,5 +96,19 @@ THE SOFTWARE
 #define SET_GET_CONST_VALUE(type, name) \
 	inline void set##name(const type & val) { m##name = val; } \
 	inline const type & get##name() const { return m##name; }
+
+#ifdef WHISPERWIND_DEBUG
+#include <iostream>
+#include "boost/io/ios_state.hpp"
+
+#define DEBUG_PRINT(x) \
+	{ \
+	    boost::io::wios_all_saver ios(std::wcout); \
+		std::wcout.imbue(std::locale(std::locale(), "", LC_CTYPE)); \
+	    std::wcout << (x) << std::endl; \
+	}
+#else
+#define DEBUG_PRINT(x) (0)
+#endif
 
 #endif

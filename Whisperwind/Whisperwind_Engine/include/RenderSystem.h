@@ -34,6 +34,8 @@ namespace Engine
 	{
 	public:
 		explicit RenderSystem(const Util::Wstring & windowName);
+
+	protected:
 		virtual ~RenderSystem() 
 		{}
 

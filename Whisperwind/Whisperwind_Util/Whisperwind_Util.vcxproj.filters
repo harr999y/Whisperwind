@@ -23,6 +23,9 @@
     <Filter Include="Log">
       <UniqueIdentifier>{8de3c0b6-670c-44fa-8bfa-beeb10dd1282}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Profile">
+      <UniqueIdentifier>{5f455ee7-7cfe-4011-9838-8a2584656664}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UtilConfig.h">
@@ -67,6 +70,9 @@
     <ClInclude Include="include\UtilCommon.h">
       <Filter>Util Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\Profile.h">
+      <Filter>Profile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\XmlReader.cpp">
@@ -77,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="src\LogManager.cpp">
       <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Profile.cpp">
+      <Filter>Profile</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
