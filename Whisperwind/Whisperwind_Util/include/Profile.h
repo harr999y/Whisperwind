@@ -120,7 +120,7 @@ namespace Util
 	    boost::lexical_cast<Util::Wstring>(result) + TO_UNICODE(" MS.")); \
 	BOOST_ASSERT(result >= 0 && "Profile getProfile Failed!");
 #else
-#define PROFILE(x) (0);
+#define PROFILE(x, y) (0);
 #endif
 
 #endif
