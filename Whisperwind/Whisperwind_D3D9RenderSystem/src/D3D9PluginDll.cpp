@@ -25,6 +25,7 @@ THE SOFTWARE
 
 #include "D3D9Plugin.h"
 #include "EngineManager.h"
+#include "boost/make_shared.hpp"
 
 static const Util::Wstring DLL_NAME(TO_UNICODE("D3D9RenderSystem"));
 

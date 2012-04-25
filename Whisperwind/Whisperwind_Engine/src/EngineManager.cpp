@@ -32,6 +32,9 @@ THE SOFTWARE
 #include "XmlReader.h"
 #include "EngineConfig.h"
 #include "PluginConfig.h"
+#include "boost/shared_ptr.hpp"
+#include "boost/make_shared.hpp"
+#include "StringConverter.h"
 
 namespace Engine
 {
@@ -67,7 +70,10 @@ namespace Engine
 	void EngineManager::parseConfigs()
 	{
 		mEngineConfig->parse();
+		WHISPERWIND_LOG(TO_UNICODE("Engine config parse done!"));
+
 		mPluginConfig->parse();
+		WHISPERWIND_LOG(TO_UNICODE("Plugin config parse done!"));
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::preRunning()
@@ -81,7 +87,7 @@ namespace Engine
 		while (!getQuitLooping())
 		{
 			WindowsEventHandle::handleWindowsMsg();
-			handleGamePlayLogical();
+			handleLogical();
 		}
 	}
 	//---------------------------------------------------------------------
@@ -101,9 +107,13 @@ namespace Engine
 	void EngineManager::loadPlugins()
 	{
 		Util::StringVector strVec = mPluginConfig->getStringVector();
+		Util::Wstring wstr;
 		BOOST_FOREACH(Util::String & str, strVec)
 		{
 			WindowsHelpler::loadPlugin(str);
+
+			Util::StringToWstring(str, wstr);
+			WHISPERWIND_LOG(wstr + TO_UNICODE(" plugin load done!"));
 		}
 
 		mPluginConfig.reset();
@@ -120,11 +130,13 @@ namespace Engine
 		BOOST_FOREACH(Util::PluginPtr & plugin, mPluginVector)
 		{
 			plugin->uninstall();
+
+			WHISPERWIND_LOG(plugin->getName() + TO_UNICODE(" plugin unload done!"));
 		}
 
 		mPluginVector.clear();
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::handleGamePlayLogical()
+	void EngineManager::handleLogical()
 	{}
 }

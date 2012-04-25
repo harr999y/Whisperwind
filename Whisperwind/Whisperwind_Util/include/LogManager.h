@@ -22,28 +22,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "D3D9Plugin.h"
-#include "EngineManager.h"
-#include "D3D9RenderSystem.h"
-#include "boost/make_shared.hpp"
+#ifndef _LOG_MANAGER_H_
+#define _LOG_MANAGER_H_
 
-namespace Engine
+#include <fstream>
+#include "Util.h"
+
+namespace Util
 {
-	//---------------------------------------------------------------------
-	void D3D9Plugin::install()
+	class WHISPERWIND_API LogManager
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		RenderSystemPtr d3d9RS = boost::make_shared<D3D9RenderSystem>(engineMgr.getWindowName());
+	public:
+		LogManager();
+		~LogManager();
 
-		d3d9RS->setEngineConfig(engineMgr.getEngineConfig());
-		d3d9RS->init();
+	public:
+		static LogManager & getSingleton();
 
-		engineMgr.setRenderSystem(d3d9RS);
-	}
-	//---------------------------------------------------------------------
-	void D3D9Plugin::uninstall()
-	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		engineMgr.setRenderSystem(RenderSystemPtr());
-	}
+		void log(const Wstring & event);
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(LogManager);
+
+	private:
+		std::wofstream mStream;
+
+		static LogManager mSingleton;
+	};
 }
+
+#define WHISPERWIND_LOG(x) \
+	Util::LogManager::getSingleton().log((x));
+
+#endif

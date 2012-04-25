@@ -61,7 +61,7 @@ namespace Engine
 		void loadPlugins();
 		void loadResources();
 
-		void handleGamePlayLogical();
+		void handleLogical();
 
 		void clearResources();
 		void clearPlugins();

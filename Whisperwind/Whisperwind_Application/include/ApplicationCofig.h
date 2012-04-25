@@ -25,7 +25,7 @@ THE SOFTWARE
 #ifndef _APPLICATION_CONFIG_H_
 #define _APPLICATION_CONFIG_H_
 
-#include "UtilCommon.h"
+#include "Util.h"
 
 /** This is the flag to open visual leak detector. */
 #ifdef WHISPERWIND_DEBUG

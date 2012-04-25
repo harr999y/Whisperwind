@@ -23,23 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "UtilCommon.h"
-#include "boost/format.hpp"
+#define BOOST_ALL_NO_LIB /// Don't use boost lib.
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
+#pragma warning(push)
+#pragma warning(disable : 4100)
+#include "boost lib source/date_time/src/gregorian/greg_names.hpp"
+#include "boost lib source/date_time/src/gregorian/date_generators.cpp"
+#include "boost lib source/date_time/src/gregorian/greg_month.cpp"
+#include "boost lib source/date_time/src/gregorian/greg_weekday.cpp"
+#include "boost lib source/date_time/src/gregorian/gregorian_types.cpp"
 #pragma warning(pop)
-
-#ifdef WHISPERWIND_DEBUG
-namespace boost
-{
-	void assertion_failed(char const * expr, char const * function, char const * file, long line)
-	{
-		boost::wformat wfmt(TO_UNICODE("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
-		wfmt % expr% function% file% line;
-		::MessageBox(0, wfmt.str().c_str(), NULL, MB_OK);
-		::DebugBreak();
-	}
-}
-#endif

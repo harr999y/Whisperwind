@@ -5,10 +5,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Engine Src">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{01b42326-c790-4d4d-9711-10b789059a44}</UniqueIdentifier>
     </Filter>
@@ -17,9 +13,6 @@
     </Filter>
     <Filter Include="WindowsPlatform">
       <UniqueIdentifier>{ec146ab2-8c2f-4b72-8946-36a7308ede2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Log">
-      <UniqueIdentifier>{91406942-3ae1-4af8-a8c7-c791aad901eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="EngineManager">
       <UniqueIdentifier>{11b37349-395d-4ebe-96d3-f59f8e1256a8}</UniqueIdentifier>
@@ -56,12 +49,6 @@
     <ClInclude Include="include\WindowsHelpler.h">
       <Filter>WindowsPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="include\LogSystem.h">
-      <Filter>Log</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Log.h">
-      <Filter>Log</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RenderSystem.cpp">
@@ -84,12 +71,6 @@
     </ClCompile>
     <ClCompile Include="src\PluginConfig.cpp">
       <Filter>Configuration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogSystem.cpp">
-      <Filter>Log</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Log.cpp">
-      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

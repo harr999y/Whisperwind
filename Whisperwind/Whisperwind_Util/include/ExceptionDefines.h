@@ -25,16 +25,29 @@ THE SOFTWARE
 #ifndef _EXCEPTION_DEFINES_H_
 #define _EXCEPTION_DEFINES_H_
 
-#include "UtilTypedefs.h"
+#include "Util.h"
 #include <exception>
 #include "boost/exception/all.hpp"
 #include "boost/current_function.hpp"
-#include "UtilCommon.h"
 
 #ifdef WHISPERWIND_DEBUG
     #define BOOST_ENABLE_ASSERT_HANDLER
 #endif
 #include "boost/assert.hpp"
+
+#ifdef WHISPERWIND_DEBUG
+#include "boost/format.hpp"
+#include <iostream>
+namespace boost
+{
+	inline void assertion_failed(char const * expr, char const * function, char const * file, long line)
+	{
+		boost::wformat wfmt(TO_UNICODE("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
+		wfmt % expr% function% file% line;
+		std::wcout << wfmt;
+	}
+}
+#endif
 
 namespace Util
 {
@@ -61,11 +74,13 @@ namespace Util
 	you can add a function which return unicode words in your exception class.
 	More is:http://www.boost.org/community/error_handling.html
 */
-#define EXCEPTION(x) \
+#define WHISPERWIND_EXCEPTION(x) \
+	Util::LogManager::getSingleton().log(Util::Wstring(TO_UNICODE("Exception error : ")) \
+          + TO_UNICODE(x) + TO_UNICODE("!")); \
 	throw Util::Exception() \
         << boost::throw_function(BOOST_CURRENT_FUNCTION) \
 		<< boost::throw_file(__FILE__) \
 		<< boost::throw_line(__LINE__) \
-		<< Util::ErrorInfo((x))
+		<< Util::ErrorInfo((x));
 
 #endif

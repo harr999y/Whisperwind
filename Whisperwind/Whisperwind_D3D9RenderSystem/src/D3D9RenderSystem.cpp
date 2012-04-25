@@ -63,24 +63,24 @@ namespace Engine
 		Util::u_int width = mEngineConfig->getResolutionPair().first;
 		Util::u_int height = mEngineConfig->getResolutionPair().second;
 
-		/// TODO!
-		Util::u_int style = WS_OVERLAPPEDWINDOW;
+		Util::u_int style;
 		if (!isFullScreen)
 			 style = WS_OVERLAPPEDWINDOW;
 		else
-			style = WS_POPUPWINDOW;
+			style = WS_POPUP;
 
 		RECT rc = {0, 0, width, height};
 		::AdjustWindowRect(&rc, style, false);	
 
 		HWND window = ::CreateWindow(windowName.c_str(), windowName.c_str(), style, 
 			0, 0, width, height, NULL, NULL, hInst, NULL);
-		IF_NULL_EXCEPTION(window, "Create Window Failed!");
 
 		::ShowWindow(window, SW_SHOWNORMAL);
 		::UpdateWindow(window);
 
 		setWindowHWND(window);
+
+		WHISPERWIND_LOG(TO_UNICODE("Create window done!"));
 	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createDevice()

@@ -17,23 +17,23 @@
     <ClInclude Include="include\EngineConfig.h" />
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
-    <ClInclude Include="include\Log.h" />
-    <ClInclude Include="include\LogSystem.h" />
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
     <ClInclude Include="include\WindowsHelpler.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Log.cpp" />
-    <ClCompile Include="src\LogSystem.cpp" />
     <ClCompile Include="src\PluginConfig.cpp" />
-    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\Config.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="src\EngineConfig.cpp" />
     <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\WindowsEventHandle.cpp" />
-    <ClCompile Include="src\WindowsHelpler.cpp" />
+    <ClCompile Include="src\WindowsHelpler.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}</ProjectGuid>

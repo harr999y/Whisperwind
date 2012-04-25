@@ -22,28 +22,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "D3D9Plugin.h"
-#include "EngineManager.h"
-#include "D3D9RenderSystem.h"
-#include "boost/make_shared.hpp"
 
-namespace Engine
+#include "LogManager.h"
+
+#define BOOST_ALL_NO_LIB /// Don't use boost lib.
+#include "boost/date_time/posix_time/posix_time.hpp"
+
+namespace Util
 {
+	static const String LOG_PATH("../Whisperwind.log");
 	//---------------------------------------------------------------------
-	void D3D9Plugin::install()
+	LogManager LogManager::mSingleton;
+	LogManager & LogManager::getSingleton()
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		RenderSystemPtr d3d9RS = boost::make_shared<D3D9RenderSystem>(engineMgr.getWindowName());
-
-		d3d9RS->setEngineConfig(engineMgr.getEngineConfig());
-		d3d9RS->init();
-
-		engineMgr.setRenderSystem(d3d9RS);
+		return mSingleton;
 	}
 	//---------------------------------------------------------------------
-	void D3D9Plugin::uninstall()
+	LogManager::LogManager()
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		engineMgr.setRenderSystem(RenderSystemPtr());
+		mStream.open(LOG_PATH, std::ios::out | std::ios::trunc);
+	}
+	//---------------------------------------------------------------------
+	LogManager::~LogManager()
+	{
+		mStream.close();
+	}
+	//---------------------------------------------------------------------
+	void LogManager::log(const Wstring & event)
+	{
+		/// TODO:Multi-Thread surpport!
+		Wstring wstrTime = boost::posix_time::to_iso_extended_wstring(
+			boost::posix_time::second_clock::local_time());
+		
+		wstrTime[10] = ' ';
+		mStream << wstrTime << TO_UNICODE(" : ") << event << std::endl;
+
+		mStream.flush();
+
+		DEBUG_PRINT(event);
 	}
 }

@@ -17,12 +17,15 @@
     <Filter Include="Util Src">
       <UniqueIdentifier>{5e33aa97-8a06-42e0-9196-e41179393c6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BoostLibs">
+      <UniqueIdentifier>{1a537831-1441-4483-87b2-350abf7671ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{8de3c0b6-670c-44fa-8bfa-beeb10dd1282}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UtilConfig.h">
-      <Filter>Util Header</Filter>
-    </ClInclude>
-    <ClInclude Include="include\UtilCommon.h">
       <Filter>Util Header</Filter>
     </ClInclude>
     <ClInclude Include="include\MemoryDefines.h">
@@ -55,13 +58,25 @@
     <ClInclude Include="include\MakeCOMPtr.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="include\StringConverter.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LogManager.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UtilCommon.h">
+      <Filter>Util Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\XmlReader.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="src\Util.cpp">
-      <Filter>Util Src</Filter>
+    <ClCompile Include="src\Boost.data_time.cpp">
+      <Filter>BoostLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogManager.cpp">
+      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -27,8 +27,6 @@ THE SOFTWARE
 
 #pragma warning(push, 4)
 
-#include "UtilTypedefs.h"
-
 /** for unicode */
 #ifndef UNICODE
     #ifndef _UNICODE
@@ -40,14 +38,6 @@ THE SOFTWARE
 #if defined(DEBUG) || defined(_DEBUG)
     #define WHISPERWIND_DEBUG
 #endif
-
-#define BOOST_SYSTEM_NO_LIB /// Don't auto link boost lib.
-
-#include <memory> // for shared_ptr
-#include "boost/shared_ptr.hpp"
-#include "boost/make_shared.hpp"
-
-#include "MemoryDefines.h"
 
 #define SAFE_DELETE(x) \
 	if (x) { \
@@ -64,8 +54,6 @@ THE SOFTWARE
 	(x)->Release(); \
 	(x) = NULL; }
 
-#include "ExceptionDefines.h"
-
 #define IF_NULL_RETURN(x) \
 	if (!(x)) return;
 #define IF_NULL_RETURN_FALSE(x) \
@@ -75,7 +63,7 @@ THE SOFTWARE
 #define IF_NULL_BREAK(x) \
 	if (!(x)) break;
 #define IF_NULL_EXCEPTION(x, y) \
-	if (!(x)) EXCEPTION((y));
+	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
 #define IF_FALSE_RETURN(x) \
 	if (!(x)) return;
 #define IF_FALSE_RETURN_FALSE(x) \
@@ -85,13 +73,14 @@ THE SOFTWARE
 #define IF_FALSE_BREAK(x) \
 	if (!(x)) break;
 #define IF_FALSE_EXCEPTION(x, y) \
-	if (!(x)) EXCEPTION((y));
+	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
+
+#include <iostream>
 
 #ifdef WHISPERWIND_DEBUG
-    #define DEBUG_PRINT(x) \
-	::OutputDebugString(TO_UNICODE(x))
+    #define DEBUG_PRINT(x) std::wcout << (x) << std::endl;
 #else
-    #define DEBUGPRINT(x) (0)
+    #define DEBUG_PRINT(x) (0)
 #endif
 
 	/** Define DISALLOW_COPY_AND_ASSIGN macro for copy-constructor

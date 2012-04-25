@@ -22,28 +22,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#include "D3D9Plugin.h"
-#include "EngineManager.h"
-#include "D3D9RenderSystem.h"
-#include "boost/make_shared.hpp"
+#ifndef _STRING_CONVERTER_H_
+#define _STRING_CONVERTER_H_
 
-namespace Engine
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
+#include "Util.h"
+#include <vector>
+
+namespace Util
 {
-	//---------------------------------------------------------------------
-	void D3D9Plugin::install()
+	inline void StringToWstring(const String & src, Wstring & dest)
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		RenderSystemPtr d3d9RS = boost::make_shared<D3D9RenderSystem>(engineMgr.getWindowName());
+		int const wcsLen = MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), NULL, 0);
+		std::vector<wchar_t> tmpVec(wcsLen + 1);
+		MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), &tmpVec[0], wcsLen);
 
-		d3d9RS->setEngineConfig(engineMgr.getEngineConfig());
-		d3d9RS->init();
-
-		engineMgr.setRenderSystem(d3d9RS);
+		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
 	}
-	//---------------------------------------------------------------------
-	void D3D9Plugin::uninstall()
+
+	inline void WstringToString(const Wstring & src, String & dest)
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		engineMgr.setRenderSystem(RenderSystemPtr());
+		int const mbsLen = WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), NULL, 0, NULL, NULL);
+		std::vector<char> tmpVec(mbsLen + 1);
+		WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), &tmpVec[0], mbsLen, NULL, NULL);
+
+		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
 	}
 }
+
+#endif
