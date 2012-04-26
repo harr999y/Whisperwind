@@ -30,6 +30,22 @@ namespace Util
 {
 	static const String ROOT_NODE_NAME("root");
 	//---------------------------------------------------------------------
+	XmlReader::XmlReader(const Util::String &fileName) :
+	    mCurrentNode(NULL),
+		mRootNode(NULL)
+	{
+		try
+		{
+			init(fileName);
+		}
+		catch (std::exception &)
+		{
+			/// NOTE:I can throw exception in constructor here because it's exception-safe!
+			/// DONNOT throw if it's NOT EXCEPTION-SAFE!
+			WHISPERWIND_EXCEPTION(fileName + " parse failed!");
+		}
+	}
+	//---------------------------------------------------------------------
 	void XmlReader::init(const Util::String &fileName)
 	{
 		mFileStream = boost::make_shared<File>(fileName.c_str());

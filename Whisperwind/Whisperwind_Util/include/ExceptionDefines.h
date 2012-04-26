@@ -68,6 +68,8 @@ namespace Util
 	{};
 }
 
+#include "StringConverter.h"
+
 /**
 @note
     The exception's what() don't need to be shown as unicode.If you want,
@@ -75,8 +77,10 @@ namespace Util
 	More is:http://www.boost.org/community/error_handling.html
 */
 #define WHISPERWIND_EXCEPTION(x) \
+	Util::Wstring exceptionInfo; \
+	Util::StringToWstring((x), exceptionInfo); \
 	Util::LogManager::getSingleton().log(Util::Wstring(TO_UNICODE("Exception error : ")) \
-          + TO_UNICODE(x) + TO_UNICODE("!")); \
+          + exceptionInfo + TO_UNICODE("!")); \
 	throw Util::Exception() \
         << boost::throw_function(BOOST_CURRENT_FUNCTION) \
 		<< boost::throw_file(__FILE__) \

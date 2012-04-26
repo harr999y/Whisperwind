@@ -42,7 +42,7 @@ namespace Engine
 		void parse();
 
 	private:
-		virtual bool parse_impl() = 0;
+		virtual void parse_impl() = 0;
 
 	protected:
 		Util::XmlReaderPtr mXmlReader;

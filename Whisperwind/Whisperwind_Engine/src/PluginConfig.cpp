@@ -33,22 +33,20 @@ namespace Engine
 	static const Util::String NODE_NAME("Plugin");
 	static const Util::String ATTRIBUTE_NAME("name");
 	//---------------------------------------------------------------------
-	bool PluginConfig::parse_impl()
+	void PluginConfig::parse_impl()
 	{
-		try 
-		{
-			IF_FALSE_RETURN_FALSE(mXmlReader->advanceFirstChildNode(NODE_NAME));
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(NODE_NAME), "Engine config " + NODE_NAME + "parse failed!");
 
+		try
+		{
 			do
 			{
 				mStringVector.push_back(mXmlReader->getAttribute(ATTRIBUTE_NAME));
 			}while (mXmlReader->advanceNextSiblingNode(NODE_NAME));
 		}
-		catch(std::exception &)
+		catch (std::exception & e)
 		{
-			return false;
+			WHISPERWIND_EXCEPTION(Util::String("Plugin config parse failed : ") + e.what());
 		}
-
-		return true;
 	}
 }

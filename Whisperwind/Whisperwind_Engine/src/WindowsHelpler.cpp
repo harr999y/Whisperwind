@@ -29,17 +29,21 @@ THE SOFTWARE
 namespace Engine
 {
 	static const Util::String DLL_PREFIX("Whisperwind_");
+#ifdef WHISPERWIND_DEBUG
+	static const Util::String DLL_EXT("_d.dll");
+#else
 	static const Util::String DLL_EXT(".dll");
+#endif
 	//---------------------------------------------------------------------
 	void WindowsHelpler::loadPlugin(const Util::String & plugin)
 	{
 		Util::String dllName = DLL_PREFIX + plugin + DLL_EXT;
 		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
-		IF_NULL_EXCEPTION(dllHandle, "Dll Loading Failed!");
+		IF_NULL_EXCEPTION(dllHandle, plugin + " dll Loading Failed!");
 
 		Util::DLL_LOAD_ENTRY dllLoadFunc = 
 			reinterpret_cast<Util::DLL_LOAD_ENTRY>(::GetProcAddress(dllHandle, "dllLoadEntry"));
-		IF_NULL_EXCEPTION(dllLoadFunc, "Dll doesn't have dllLoadEntry!");
+		IF_NULL_EXCEPTION(dllLoadFunc, plugin + " dll doesn't have dllLoadEntry!");
 
 		dllLoadFunc();
 	}

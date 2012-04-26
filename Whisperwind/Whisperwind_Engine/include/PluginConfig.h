@@ -43,7 +43,7 @@ namespace Engine
 		SET_GET_CONST_VALUE(Util::StringVector, StringVector);
 
 	private:
-		virtual bool parse_impl();
+		virtual void parse_impl();
 
 	private:
 		Util::StringVector mStringVector;

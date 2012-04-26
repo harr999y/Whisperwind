@@ -29,6 +29,9 @@ namespace Engine
 {
 	static const Util::String FULL_SCREEN("FullScreen");
 	static const Util::String RESOLUTION("Resolution");
+	static const Util::String MULTI_SAMPLE_QUALITY("MultiSampleQuality");
+	static const Util::String MULTI_SAMPLE_TYPE("MultiSampleType");
+
 }
 
 #endif

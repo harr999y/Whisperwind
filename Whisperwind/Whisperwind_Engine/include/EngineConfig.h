@@ -42,13 +42,17 @@ namespace Engine
 	public:
 		SET_GET_CONST_VALUE(bool, FullScreen);
 		SET_GET_CONST_VALUE(Util::UintPair, ResolutionPair);
+		SET_GET_CONST_VALUE(Util::u_int, MultiSampleQuality);
+		SET_GET_CONST_VALUE(Util::u_int, MultiSampleType);
 
 	private:
-		virtual bool parse_impl();
+		virtual void parse_impl();
 
 	private:
 		bool mFullScreen;
 		Util::UintPair mResolutionPair;
+		Util::u_int mMultiSampleQuality;
+		Util::u_int mMultiSampleType;
 	};
 }
 

@@ -89,6 +89,8 @@ namespace Engine
 		{
 			WindowsEventHandle::handleWindowsMsg();
 			handleLogical();
+
+			IF_FALSE_EXCEPTION(mRenderSystem->render(), "Render failed!");
 		}
 	}
 	//---------------------------------------------------------------------

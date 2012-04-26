@@ -44,12 +44,7 @@ namespace Util
 	class WHISPERWIND_API XmlReader
 	{
 	public:
-		XmlReader(const Util::String &fileName) :
-		    mCurrentNode(NULL),
-		    mRootNode(NULL)
-		{
-			init(fileName);
-		}
+		XmlReader(const Util::String &fileName);
 
 	public:
 		bool advanceFirstChildNode(const Util::String & nodeName);

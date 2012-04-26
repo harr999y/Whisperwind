@@ -25,8 +25,10 @@ THE SOFTWARE
 
 #include "D3D9RenderSystem.h"
 #include "WindowsEventHandle.h"
+#include "WindowsHelpler.h"
 #include "EngineManager.h"
 #include "EngineConfig.h"
+#include "MakeCOMPtr.h"
 
 namespace Engine
 {
@@ -39,7 +41,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createWindow()
 	{
-		/// TODO:The parameter need to read from .cfg!
 		Util::Wstring windowName = EngineManager::getSingleton().getWindowName();
 		HINSTANCE hInst = ::GetModuleHandle(NULL);
 
@@ -64,15 +65,21 @@ namespace Engine
 		Util::u_int height = mEngineConfig->getResolutionPair().second;
 
 		Util::u_int style;
+		Util::u_int styleEx = 0;
 		if (!isFullScreen)
-			 style = WS_OVERLAPPEDWINDOW;
+		{
+			 style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE;
+		}
 		else
-			style = WS_POPUP;
+		{
+			style = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
+			styleEx = WS_EX_TOPMOST;
+		}
 
 		RECT rc = {0, 0, width, height};
-		::AdjustWindowRect(&rc, style, false);	
+		::AdjustWindowRect(&rc, style, false);
 
-		HWND window = ::CreateWindow(windowName.c_str(), windowName.c_str(), style, 
+		HWND window = ::CreateWindowEx(styleEx, windowName.c_str(), windowName.c_str(), style, 
 			0, 0, width, height, NULL, NULL, hInst, NULL);
 
 		::ShowWindow(window, SW_SHOWNORMAL);
@@ -85,7 +92,41 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createDevice()
 	{
+		IDirect3D9Ptr d3d = Util::MakeCOMPtr(Direct3DCreate9(D3D_SDK_VERSION));
+		IF_NULL_EXCEPTION(d3d, "Create d3d failed!");
 
+		D3DCAPS9 d3dCaps;
+		d3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps);
+
+		Util::s_int vpType = 0;
+		if (d3dCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
+			vpType = D3DCREATE_HARDWARE_VERTEXPROCESSING;
+		else
+			vpType = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+
+		D3DPRESENT_PARAMETERS presentPara;
+		presentPara.AutoDepthStencilFormat = D3DFMT_D24S8;
+		presentPara.BackBufferCount = 1;
+		presentPara.BackBufferFormat = D3DFMT_X8R8G8B8;
+		presentPara.BackBufferHeight = mEngineConfig->getResolutionPair().second;
+		presentPara.BackBufferWidth = mEngineConfig->getResolutionPair().first;
+		presentPara.EnableAutoDepthStencil = true;
+		presentPara.Flags = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
+		presentPara.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+		presentPara.hDeviceWindow = mWindow;
+		presentPara.MultiSampleQuality = mEngineConfig->getMultiSampleQuality();
+		presentPara.MultiSampleType = static_cast<D3DMULTISAMPLE_TYPE>(mEngineConfig->getMultiSampleType());
+		presentPara.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+		presentPara.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		presentPara.Windowed = !mEngineConfig->getFullScreen();
+
+		IDirect3DDevice9 * d3dDevice;
+		IF_FAILED_EXCEPTION(d3d->CreateDevice(D3DADAPTER_DEFAULT, 
+			D3DDEVTYPE_HAL, mWindow, vpType, &presentPara, &d3dDevice),
+			"Create device failed!");
+		mD3DDevice = Util::MakeCOMPtr(d3dDevice);
+
+		WHISPERWIND_LOG(TO_UNICODE("Create device done!"));
 	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::setWindowHWND(HWND window)

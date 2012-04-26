@@ -33,11 +33,12 @@ THE SOFTWARE
 #include "ApplicationCofig.h"
 
 #if USE_VLD != 0
-  /** Add for visual leak detector. */
+    /** Add for visual leak detector. */
     #include "Visual Leak Detector/include/vld.h"
 #endif
 
 #include "GamePlay.h"
+#include "StringConverter.h"
 
 #ifdef WHISPERWIND_DEBUG
     #include <iostream>
@@ -60,9 +61,9 @@ THE SOFTWARE
 #ifdef WHISPERWIND_DEBUG
 		    std::cout << boost::diagnostic_information_what(e);
 #else
-			/// For compiler happy.
-			/// TODO:Need replace with a log!
-			e.what();
+			Util::Wstring errorInfo;
+			Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
+			WHISPERWIND_LOG(errorInfo);
 			::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
 #endif
 	    }

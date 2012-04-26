@@ -41,4 +41,10 @@ namespace Engine
 	};
 }
 
+#define IF_FAILED_RETURN_FALSE(x) \
+	if (FAILED((x))) return false;
+
+#define IF_FAILED_EXCEPTION(x, y) \
+	if (FAILED((x))) { WHISPERWIND_EXCEPTION(y); }
+
 #endif

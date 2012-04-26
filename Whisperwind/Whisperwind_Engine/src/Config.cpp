@@ -33,11 +33,13 @@ namespace Engine
 	Config::Config(const Util::String & name)
 	{
 		mXmlReader = boost::make_shared<Util::XmlReader>(name);
+		/// NOTE:I can throw exception in constructor here because it's exception-safe!
+		/// DONNOT throw if it's NOT EXCEPTION-SAFE!
+		IF_NULL_EXCEPTION(mXmlReader, name + " config create error!");
 	}
 	//---------------------------------------------------------------------
 	void Config::parse()
 	{
-		IF_NULL_EXCEPTION(mXmlReader, "Engine config has some error!");
-		IF_FALSE_EXCEPTION(parse_impl(), "Engine config has some error!");
+		parse_impl();
 	}
 }

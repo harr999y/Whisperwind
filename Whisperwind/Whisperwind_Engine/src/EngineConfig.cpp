@@ -33,29 +33,29 @@ namespace Engine
 {
 	static const Util::String CONFIG_VALUE("value");
 	//---------------------------------------------------------------------
-	bool EngineConfig::parse_impl()
+	void  EngineConfig::parse_impl()
 	{
-		try
-		{
-			Util::String valueStr;
+		Util::String valueStr;
 
-			IF_FALSE_RETURN_FALSE(mXmlReader->advanceFirstChildNode(FULL_SCREEN));
-			valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
-			mFullScreen = boost::lexical_cast<bool>(valueStr);
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(FULL_SCREEN), "Engine config " + FULL_SCREEN + "parse failed!");
+		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		setFullScreen(boost::lexical_cast<bool>(valueStr));
 
-			IF_FALSE_RETURN_FALSE(mXmlReader->advanceFirstChildNode(RESOLUTION));
-			valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
-			Util::StringVector strVec;
-			boost::split(strVec, valueStr, boost::is_any_of("*"));
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(RESOLUTION), "Engine config " + RESOLUTION + "parse failed!");
+		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		Util::StringVector strVec;
+		boost::split(strVec, valueStr, boost::is_any_of("*"));
+		Util::UintPair resPair;
+		resPair.first = boost::lexical_cast<Util::u_int>(strVec[0]);
+		resPair.second = boost::lexical_cast<Util::u_int>(strVec[1]);
+		setResolutionPair(resPair);
 
-			mResolutionPair.first = boost::lexical_cast<Util::u_int>(strVec[0]);
-			mResolutionPair.second = boost::lexical_cast<Util::u_int>(strVec[1]);
-		}
-		catch(std::exception &)
-		{
-			return false;
-		}
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(MULTI_SAMPLE_QUALITY), "Engine config " + MULTI_SAMPLE_QUALITY + "parse failed!");
+		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		setMultiSampleQuality(boost::lexical_cast<Util::u_int>(valueStr));
 
-		return true;
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(MULTI_SAMPLE_TYPE), "Engine config " + MULTI_SAMPLE_TYPE + "parse failed!");
+		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		setMultiSampleType(boost::lexical_cast<Util::s_int>(valueStr));
 	}
 }
