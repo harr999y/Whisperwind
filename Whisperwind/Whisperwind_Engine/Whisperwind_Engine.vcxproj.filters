@@ -46,7 +46,7 @@
     <ClInclude Include="include\Config.h">
       <Filter>Configuration</Filter>
     </ClInclude>
-    <ClInclude Include="include\WindowsHelpler.h">
+    <ClInclude Include="include\WindowsHelper.h">
       <Filter>WindowsPlatform</Filter>
     </ClInclude>
   </ItemGroup>
@@ -66,10 +66,13 @@
     <ClCompile Include="src\Config.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
-    <ClCompile Include="src\WindowsHelpler.cpp">
+    <ClCompile Include="src\PluginConfig.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WindowsHelper.cpp">
       <Filter>WindowsPlatform</Filter>
     </ClCompile>
-    <ClCompile Include="src\PluginConfig.cpp">
+    <ClCompile Include="src\EngineConfigDefines.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>

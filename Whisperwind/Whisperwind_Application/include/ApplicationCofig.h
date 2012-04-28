@@ -29,7 +29,7 @@ THE SOFTWARE
 
 /** This is the flag to open visual leak detector. */
 #ifdef WHISPERWIND_DEBUG
-    #define USE_VLD 1
+    #define USE_VLD 0
 #endif
 
 static const Util::Wstring APPLICATION_NAME(TO_UNICODE("Whisperwind V0.2"));

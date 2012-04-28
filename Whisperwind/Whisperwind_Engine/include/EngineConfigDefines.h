@@ -25,12 +25,17 @@ THE SOFTWARE
 #ifndef _ENGINE_CONFIG_DEFINES_H_
 #define _ENGINE_CONFIG_DEFINES_H_
 
+#include "Util.h"
+
 namespace Engine
 {
-	static const Util::String FULL_SCREEN("FullScreen");
-	static const Util::String RESOLUTION("Resolution");
-	static const Util::String MULTI_SAMPLE_QUALITY("MultiSampleQuality");
-	static const Util::String MULTI_SAMPLE_TYPE("MultiSampleType");
+	struct EngineConfigDefine
+	{
+		static const Util::String FULL_SCREEN;
+		static const Util::String RESOLUTION;
+		static const Util::String MULTI_SAMPLE_QUALITY;
+		static const Util::String MULTI_SAMPLE_TYPE;
+	};
 
 }
 

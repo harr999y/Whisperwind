@@ -27,7 +27,7 @@ THE SOFTWARE
 #include "Plugin.h"
 #include "RenderSystem.h"
 #include "WindowsEventHandle.h"
-#include "WindowsHelpler.h"
+#include "WindowsHelper.h"
 #include "boost/foreach.hpp"
 #include "XmlReader.h"
 #include "EngineConfig.h"
@@ -98,6 +98,8 @@ namespace Engine
 	{
 		clearResources();
 		clearPlugins();
+
+		WHISPERWIND_LOG(TO_UNICODE("Quit engine done!"));
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::installPlugin(const Util::PluginPtr & plugin)
@@ -113,7 +115,7 @@ namespace Engine
 		Util::Wstring wstr;
 		BOOST_FOREACH(Util::String & str, strVec)
 		{
-			WindowsHelpler::loadPlugin(str);
+			WindowsHelper::loadPlugin(str);
 
 			wstr.clear();
 			Util::StringToWstring(str, wstr);

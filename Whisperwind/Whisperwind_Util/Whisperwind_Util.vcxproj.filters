@@ -87,5 +87,8 @@
     <ClCompile Include="src\Profile.cpp">
       <Filter>Profile</Filter>
     </ClCompile>
+    <ClCompile Include="src\StringConverter.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

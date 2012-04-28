@@ -22,29 +22,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _WINDOWS_HELPLER_H_
-#define _WINDOWS_HELPLER_H_
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
-#include "Util.h"
+#include "EngineConfigDefines.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API WindowsHelpler
-	{
-	public:
-		static void loadPlugin(const Util::String & plugin);
-	};
+	const Util::String EngineConfigDefine::FULL_SCREEN = "FullScreen";
+    const Util::String EngineConfigDefine::RESOLUTION = "Resolution";
+	const Util::String EngineConfigDefine::MULTI_SAMPLE_QUALITY = "MultiSampleQuality";
+	const Util::String EngineConfigDefine::MULTI_SAMPLE_TYPE = "MultiSampleType";
 }
-
-#define IF_FAILED_RETURN_FALSE(x) \
-	if (FAILED((x))) return false;
-
-#define IF_FAILED_EXCEPTION(x, y) \
-	if (FAILED((x))) { WHISPERWIND_EXCEPTION(y); }
-
-#endif

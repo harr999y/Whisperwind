@@ -40,7 +40,7 @@ namespace Engine
 		{}
 
 	public:
-		SET_GET_CONST_VALUE(Util::StringVector, StringVector);
+		GET_CONST_VALUE(Util::StringVector, StringVector);
 
 	private:
 		virtual void parse_impl();

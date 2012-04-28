@@ -24,6 +24,9 @@
     <ClInclude Include="include\D3D9Typedefs.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\D3D9Helper.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Plugin.cpp">
@@ -33,6 +36,9 @@
       <Filter>Dll Plugin</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9RenderSystem.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\D3D9Helper.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

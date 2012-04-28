@@ -20,9 +20,10 @@
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
-    <ClInclude Include="include\WindowsHelpler.h" />
+    <ClInclude Include="include\WindowsHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\EngineConfigDefines.cpp" />
     <ClCompile Include="src\PluginConfig.cpp" />
     <ClCompile Include="src\Config.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
@@ -31,7 +32,7 @@
     <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\WindowsEventHandle.cpp" />
-    <ClCompile Include="src\WindowsHelpler.cpp">
+    <ClCompile Include="src\WindowsHelper.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
   </ItemGroup>

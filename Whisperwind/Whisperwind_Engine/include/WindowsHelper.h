@@ -22,23 +22,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _D3D9_TYPEDEFS_H_
-#define _D3D9_TYPEDEFS_H_
+#ifndef _WINDOWS_HELPER_H_
+#define _WINDOWS_HELPER_H_
 
-#include "boost/shared_ptr.hpp"
-#include <d3d9.h>
-#include <d3dx9.h>
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
+#include "Util.h"
 
 namespace Engine
 {
-	typedef boost::shared_ptr<IDirect3D9> IDirect3D9Ptr;
-	typedef boost::shared_ptr<IDirect3DDevice9> IDirect3DDevice9Ptr;
-	typedef boost::shared_ptr<IDirect3DSwapChain9Ex> IDirect3DSwapChain9ExPtr;
-	typedef boost::shared_ptr<IDirect3DResource9> IDirect3DResource9Ptr;
-	typedef boost::shared_ptr<IDirect3DCubeTexture9> IDirect3DCubeTexture9Ptr;
-	typedef boost::shared_ptr<IDirect3DTexture9> IDirect3DTexture9Ptr;
-	typedef boost::shared_ptr<ID3DXEffect> ID3DXEffectPtr;
-	typedef boost::shared_ptr<IDirect3DSurface9> IDirect3DSurface9Ptr;
+	class WHISPERWIND_API WindowsHelper
+	{
+	public:
+		static void loadPlugin(const Util::String & plugin);
+	};
 }
+
+#define IF_FAILED_RETURN_FALSE(x) \
+	if (FAILED((x))) return false;
+
+#define IF_FAILED_EXCEPTION(x, y) \
+	if (FAILED((x))) { WHISPERWIND_EXCEPTION(y); }
 
 #endif

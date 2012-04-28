@@ -22,23 +22,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _D3D9_TYPEDEFS_H_
-#define _D3D9_TYPEDEFS_H_
 
-#include "boost/shared_ptr.hpp"
-#include <d3d9.h>
-#include <d3dx9.h>
+#include "StringConverter.h"
 
-namespace Engine
+namespace Util
 {
-	typedef boost::shared_ptr<IDirect3D9> IDirect3D9Ptr;
-	typedef boost::shared_ptr<IDirect3DDevice9> IDirect3DDevice9Ptr;
-	typedef boost::shared_ptr<IDirect3DSwapChain9Ex> IDirect3DSwapChain9ExPtr;
-	typedef boost::shared_ptr<IDirect3DResource9> IDirect3DResource9Ptr;
-	typedef boost::shared_ptr<IDirect3DCubeTexture9> IDirect3DCubeTexture9Ptr;
-	typedef boost::shared_ptr<IDirect3DTexture9> IDirect3DTexture9Ptr;
-	typedef boost::shared_ptr<ID3DXEffect> ID3DXEffectPtr;
-	typedef boost::shared_ptr<IDirect3DSurface9> IDirect3DSurface9Ptr;
-}
+	void StringToWstring(const String & src, Wstring & dest)
+	{
+		u_int const wcsLen = MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), NULL, 0);
+		std::vector<wchar_t> tmpVec(wcsLen + 1);
+		MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), &tmpVec[0], wcsLen);
 
-#endif
+		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
+	}
+
+	void WstringToString(const Wstring & src, String & dest)
+	{
+		u_int const mbsLen = WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), NULL, 0, NULL, NULL);
+		std::vector<char> tmpVec(mbsLen + 1);
+		WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), &tmpVec[0], mbsLen, NULL, NULL);
+
+		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
+	}
+}

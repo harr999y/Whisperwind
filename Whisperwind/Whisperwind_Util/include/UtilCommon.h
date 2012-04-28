@@ -97,6 +97,15 @@ THE SOFTWARE
 	inline void set##name(const type & val) { m##name = val; } \
 	inline const type & get##name() const { return m##name; }
 
+#define SET_VALUE(type, name) \
+	inline void set##name(const type & val) { m##name = val; } \
+
+#define GET_VALUE(type, name) \
+	inline type & get##name() { return m##name; }
+
+#define GET_CONST_VALUE(type, name) \
+	inline const type & get##name() const { return m##name; }
+
 #ifdef WHISPERWIND_DEBUG
 #include <iostream>
 #include "boost/io/ios_state.hpp"

@@ -30,28 +30,15 @@ THE SOFTWARE
 #include <windows.h>
 #pragma warning(pop)
 
+#include "UtilCommon.h"
 #include "Util.h"
 #include <vector>
 
 namespace Util
 {
-	inline void StringToWstring(const String & src, Wstring & dest)
-	{
-		int const wcsLen = MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), NULL, 0);
-		std::vector<wchar_t> tmpVec(wcsLen + 1);
-		MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), &tmpVec[0], wcsLen);
+	WHISPERWIND_API void StringToWstring(const String & src, Wstring & dest);
 
-		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
-	}
-
-	inline void WstringToString(const Wstring & src, String & dest)
-	{
-		int const mbsLen = WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), NULL, 0, NULL, NULL);
-		std::vector<char> tmpVec(mbsLen + 1);
-		WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<int>(src.size()), &tmpVec[0], mbsLen, NULL, NULL);
-
-		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
-	}
+	WHISPERWIND_API void WstringToString(const Wstring & src, String & dest);
 }
 
 #endif

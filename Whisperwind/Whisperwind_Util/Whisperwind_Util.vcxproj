@@ -33,6 +33,7 @@
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
     <ClCompile Include="src\Profile.cpp" />
+    <ClCompile Include="src\StringConverter.cpp" />
     <ClCompile Include="Src\XmlReader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

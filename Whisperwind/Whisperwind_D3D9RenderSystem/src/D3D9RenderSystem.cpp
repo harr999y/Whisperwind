@@ -25,10 +25,11 @@ THE SOFTWARE
 
 #include "D3D9RenderSystem.h"
 #include "WindowsEventHandle.h"
-#include "WindowsHelpler.h"
+#include "WindowsHelper.h"
 #include "EngineManager.h"
 #include "EngineConfig.h"
 #include "MakeCOMPtr.h"
+#include "D3D9Helper.h"
 
 namespace Engine
 {
@@ -137,7 +138,13 @@ namespace Engine
 	//---------------------------------------------------------------------
 	bool D3D9RenderSystem::render()
 	{
+		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Clear(
+			0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, ColorPredefines::WHITE, 1.0f, 0));
 
+		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->BeginScene());
+
+		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->EndScene());
+		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Present(NULL, NULL, NULL, NULL));
 
 		return true;
 	}

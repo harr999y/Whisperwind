@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "WindowsHelpler.h"
+#include "WindowsHelper.h"
 #include "Plugin.h"
 
 namespace Engine
@@ -35,7 +35,7 @@ namespace Engine
 	static const Util::String DLL_EXT(".dll");
 #endif
 	//---------------------------------------------------------------------
-	void WindowsHelpler::loadPlugin(const Util::String & plugin)
+	void WindowsHelper::loadPlugin(const Util::String & plugin)
 	{
 		Util::String dllName = DLL_PREFIX + plugin + DLL_EXT;
 		HMODULE dllHandle = ::LoadLibraryExA(dllName.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
