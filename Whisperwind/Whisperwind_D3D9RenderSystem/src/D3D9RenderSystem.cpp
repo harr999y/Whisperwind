@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------------------
-This source file is a part of Whisperwind(GameEngine + GamePlay + GameTools)
+This source file is a part of Whisperwind.(GameEngine + GamePlay + GameTools)
 For the latest info, see http://lisuyong.com
 
 Copyright (c) 2012 Suyong Li (79481268@qq.com)
@@ -46,6 +46,7 @@ namespace Engine
 		HINSTANCE hInst = ::GetModuleHandle(NULL);
 
 		WNDCLASSEXW wc;
+		MEMORY_ZERO(&wc, sizeof(WNDCLASSEXW));
 		wc.cbSize = sizeof(wc);
 		wc.style = CS_HREDRAW | CS_VREDRAW;
 		wc.lpfnWndProc = WindowsEventHandle::WndProc;
@@ -106,6 +107,7 @@ namespace Engine
 			vpType = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
 		D3DPRESENT_PARAMETERS presentPara;
+		MEMORY_ZERO(&presentPara, sizeof(D3DPRESENT_PARAMETERS));
 		presentPara.AutoDepthStencilFormat = D3DFMT_D24S8;
 		presentPara.BackBufferCount = 1;
 		presentPara.BackBufferFormat = D3DFMT_X8R8G8B8;

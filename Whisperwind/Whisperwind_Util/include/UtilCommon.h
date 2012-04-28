@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------------------
-This source file is a part of Whisperwind(GameEngine + GamePlay + GameTools)
+This source file is a part of Whisperwind.(GameEngine + GamePlay + GameTools)
 For the latest info, see http://lisuyong.com
 
 Copyright (c) 2012 Suyong Li (79481268@qq.com)
@@ -119,5 +119,7 @@ THE SOFTWARE
 #else
 #define DEBUG_PRINT(x) (0)
 #endif
+
+#define MEMORY_ZERO(x, y) memset(x, 0, y)
 
 #endif
