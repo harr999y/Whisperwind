@@ -22,12 +22,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _D3D9_CAPABILITY_H_
+#define _D3D9_CAPABILITY_H_
 
-#include "D3D9Helper.h"
+#include "Util.h"
 
 namespace Engine
 {
-	//---------------------------------------------------------------------
- 	const D3DCOLOR ColorPredefines::WHITE = D3DCOLOR(0xFFFFFFFF);
- 	const D3DCOLOR ColorPredefines::BLACK = D3DCOLOR(0xFF000000);
+	/** Add capabilites when need. */
+	class D3D9Capability
+	{
+	public:
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(D3D9Capability);
+	};
 }
+
+#endif

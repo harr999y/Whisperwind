@@ -32,6 +32,12 @@ namespace Engine
 {
 	class D3D9RenderSystem;
 	typedef boost::shared_ptr<D3D9RenderSystem> D3D9RenderSystemPtr;
+
+	class D3D9Capability;
+	typedef boost::shared_ptr<D3D9Capability> D3D9CapabilityPtr;
+
+	class D3D9Device;
+	typedef boost::shared_ptr<D3D9Device> D3D9DevicePtr;
 }
 
 #endif

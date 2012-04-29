@@ -23,11 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "D3D9Helper.h"
+#include "D3D9Capability.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
- 	const D3DCOLOR ColorPredefines::WHITE = D3DCOLOR(0xFFFFFFFF);
- 	const D3DCOLOR ColorPredefines::BLACK = D3DCOLOR(0xFF000000);
+
 }

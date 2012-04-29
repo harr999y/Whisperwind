@@ -33,14 +33,14 @@ namespace Engine
 	class WHISPERWIND_API EngineConfig : public Config
 	{
 	public:
-		explicit EngineConfig(const Util::String & name) : 
-		    Config(name)
-		{}
+		explicit EngineConfig(const Util::String & name);
 		~EngineConfig()
 		{}
 
 	public:
 		SET_GET_CONST_VALUE(bool, FullScreen);
+		SET_GET_CONST_VALUE(bool, VSync);
+		SET_GET_CONST_VALUE(bool, PerfHUD);
 		SET_GET_CONST_VALUE(Util::UintPair, ResolutionPair);
 		SET_GET_CONST_VALUE(Util::u_int, MultiSampleQuality);
 		SET_GET_CONST_VALUE(Util::u_int, MultiSampleType);
@@ -50,6 +50,8 @@ namespace Engine
 
 	private:
 		bool mFullScreen;
+		bool mVSync;
+		bool mPerfHUD;
 		Util::UintPair mResolutionPair;
 		Util::u_int mMultiSampleQuality;
 		Util::u_int mMultiSampleType;

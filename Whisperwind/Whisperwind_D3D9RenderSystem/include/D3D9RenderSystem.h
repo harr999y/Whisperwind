@@ -54,12 +54,12 @@ namespace Engine
 
 	private:
 		void createWindow();
-		void createDevice();
 		inline void setWindowHWND(HWND window);
+		bool updateRenderable();
 
 	private:
 		HWND mWindow;
-		IDirect3DDevice9Ptr mD3DDevice;
+		D3D9DevicePtr mDevice;
 	};
 }
 

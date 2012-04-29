@@ -31,4 +31,6 @@ namespace Engine
     const Util::String EngineConfigDefine::RESOLUTION = "Resolution";
 	const Util::String EngineConfigDefine::MULTI_SAMPLE_QUALITY = "MultiSampleQuality";
 	const Util::String EngineConfigDefine::MULTI_SAMPLE_TYPE = "MultiSampleType";
+	const Util::String EngineConfigDefine::VSYNC = "VSync";
+	const Util::String EngineConfigDefine::PERF_HUD = "PerfHUD";
 }

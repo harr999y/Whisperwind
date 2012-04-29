@@ -77,13 +77,13 @@ namespace Util
 	//---------------------------------------------------------------------
 	/** The time factor. */
 #define TF_MICRO 1000000
-#define TF_MILLION 1000
+#define TF_MILLI 1000
 
 	u_int64 ProfileWithWin32API::queryPerfCount(LARGE_INTEGER time) const
 	{
 		LARGE_INTEGER perfFreq;
 		IF_NULL_EXCEPTION(QueryPerformanceFrequency(&perfFreq), "QueryPerformanceFrequency failed!");
 
-		return ((time.QuadPart * TF_MILLION) / perfFreq.QuadPart);
+		return ((time.QuadPart * TF_MILLI) / perfFreq.QuadPart);
 	}
 }

@@ -22,12 +22,50 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _D3D9_DEVICE_H_
+#define _D3D9_DEVICE_H_
 
-#include "D3D9Helper.h"
+#include "Util.h"
+#include "EngineForwardDeclare.h"
+#include "D3D9ForwardDeclare.h"
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
 
 namespace Engine
 {
-	//---------------------------------------------------------------------
- 	const D3DCOLOR ColorPredefines::WHITE = D3DCOLOR(0xFFFFFFFF);
- 	const D3DCOLOR ColorPredefines::BLACK = D3DCOLOR(0xFF000000);
+	class D3D9Device
+	{
+	public:
+		explicit D3D9Device(const EngineConfigPtr & engineCfg);
+
+	public:
+		bool render();
+		void createDevice(HWND window);
+		bool isPaused();
+		void createUnmanagedResource()
+		{ /** TODO! */ }
+
+	private:
+		void init();
+		bool reset();
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(D3D9Device);
+
+	private:
+		SET_GET_CONST_VALUE(bool, IsDeviceLost);
+
+	private:
+		EngineConfigPtr mEngineConfig;
+		IDirect3DDevice9Ptr mD3DDevice;
+		D3D9CapabilityPtr mCapability;
+		bool mIsDeviceLost;
+		bool mIsPaused;		
+		D3DPRESENT_PARAMETERS mPresentParameters;  /// Keep for reset.
+	};
 }
+
+#endif

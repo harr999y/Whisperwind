@@ -25,6 +25,11 @@ THE SOFTWARE
 #ifndef _D3D9_HELPER_H_
 #define _D3D9_HELPER_H_
 
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
 #include <d3d9.h>
 #include <DxErr.h>
 #include "Util.h"
@@ -51,7 +56,7 @@ namespace Engine
 #ifdef WHISPERWIND_DEBUG
 #define DX_IF_FAILED_DEBUG_PRINT(x) \
 	{ \
-	    HRESULT hr; hr = (x); \
+	    HRESULT hr = S_OK; hr = (x); \
 	    if (FAILED(hr)) \
 		{ \
 		    DEBUG_PRINT(DXGetErrorString(hr)); \

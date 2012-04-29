@@ -12,6 +12,9 @@
     <Filter Include="App Header">
       <UniqueIdentifier>{3a8e9298-7fbf-41b1-bfd8-69fd292e8a44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Configs">
+      <UniqueIdentifier>{e2b3d563-8ce1-40c3-b991-4b76fb44034c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RunGame.cpp">
@@ -22,5 +25,25 @@
     <ClInclude Include="include\ApplicationCofig.h">
       <Filter>App Header</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\bin\config\EngineConfig.cfg">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\bin\config\EngineConfig_d.cfg">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\bin\config\Plugin.cfg">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\bin\config\Plugin_d.cfg">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\bin\config\Resource.cfg">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\bin\config\Resource_d.cfg">
+      <Filter>Configs</Filter>
+    </None>
   </ItemGroup>
 </Project>

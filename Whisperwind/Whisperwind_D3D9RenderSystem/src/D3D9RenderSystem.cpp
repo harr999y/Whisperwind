@@ -25,11 +25,10 @@ THE SOFTWARE
 
 #include "D3D9RenderSystem.h"
 #include "WindowsEventHandle.h"
-#include "WindowsHelper.h"
 #include "EngineManager.h"
 #include "EngineConfig.h"
-#include "MakeCOMPtr.h"
-#include "D3D9Helper.h"
+#include "boost/make_shared.hpp"
+#include "D3D9Device.h"
 
 namespace Engine
 {
@@ -37,7 +36,9 @@ namespace Engine
 	void D3D9RenderSystem::init()
 	{
 		createWindow();
-		createDevice();
+
+		mDevice = boost::make_shared<D3D9Device>(mEngineConfig);
+		mDevice->createDevice(mWindow);
 	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createWindow()
@@ -92,46 +93,6 @@ namespace Engine
 		WHISPERWIND_LOG(TO_UNICODE("Create window done!"));
 	}
 	//---------------------------------------------------------------------
-	void D3D9RenderSystem::createDevice()
-	{
-		IDirect3D9Ptr d3d = Util::MakeCOMPtr(Direct3DCreate9(D3D_SDK_VERSION));
-		IF_NULL_EXCEPTION(d3d, "Create d3d failed!");
-
-		D3DCAPS9 d3dCaps;
-		d3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps);
-
-		Util::s_int vpType = 0;
-		if (d3dCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
-			vpType = D3DCREATE_HARDWARE_VERTEXPROCESSING;
-		else
-			vpType = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
-
-		D3DPRESENT_PARAMETERS presentPara;
-		MEMORY_ZERO(&presentPara, sizeof(D3DPRESENT_PARAMETERS));
-		presentPara.AutoDepthStencilFormat = D3DFMT_D24S8;
-		presentPara.BackBufferCount = 1;
-		presentPara.BackBufferFormat = D3DFMT_X8R8G8B8;
-		presentPara.BackBufferHeight = mEngineConfig->getResolutionPair().second;
-		presentPara.BackBufferWidth = mEngineConfig->getResolutionPair().first;
-		presentPara.EnableAutoDepthStencil = true;
-		presentPara.Flags = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
-		presentPara.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-		presentPara.hDeviceWindow = mWindow;
-		presentPara.MultiSampleQuality = mEngineConfig->getMultiSampleQuality();
-		presentPara.MultiSampleType = static_cast<D3DMULTISAMPLE_TYPE>(mEngineConfig->getMultiSampleType());
-		presentPara.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
-		presentPara.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		presentPara.Windowed = !mEngineConfig->getFullScreen();
-
-		IDirect3DDevice9 * d3dDevice;
-		IF_FAILED_EXCEPTION(d3d->CreateDevice(D3DADAPTER_DEFAULT, 
-			D3DDEVTYPE_HAL, mWindow, vpType, &presentPara, &d3dDevice),
-			"Create device failed!");
-		mD3DDevice = Util::MakeCOMPtr(d3dDevice);
-
-		WHISPERWIND_LOG(TO_UNICODE("Create device done!"));
-	}
-	//---------------------------------------------------------------------
 	void D3D9RenderSystem::setWindowHWND(HWND window)
 	{
 		mWindow = window;
@@ -140,13 +101,19 @@ namespace Engine
 	//---------------------------------------------------------------------
 	bool D3D9RenderSystem::render()
 	{
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Clear(
-			0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, ColorPredefines::WHITE, 1.0f, 0));
+		/// Important way to save CPU when minimized or something else.
+ 		if (mDevice->isPaused())
+ 			::Sleep(1);
 
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->BeginScene());
+		IF_FALSE_RETURN_FALSE(updateRenderable());
 
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->EndScene());
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Present(NULL, NULL, NULL, NULL));
+		IF_FALSE_RETURN_FALSE(mDevice->render());
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	bool D3D9RenderSystem::updateRenderable()
+	{
 
 		return true;
 	}

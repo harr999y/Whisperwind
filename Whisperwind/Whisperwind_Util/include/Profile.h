@@ -98,12 +98,6 @@ namespace Util
 
 		/// private method to call QueryPerformanceFrequency
 		u_int64 queryPerfCount(LARGE_INTEGER time) const;
-
-	private:
-		/// save begin micro time
-		LARGE_INTEGER mBeginMicroTime;
-		/// save end micro time
-		LARGE_INTEGER mEndMicroTime;
 	};
 }
 

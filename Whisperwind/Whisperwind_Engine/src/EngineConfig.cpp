@@ -33,6 +33,13 @@ namespace Engine
 {
 	static const Util::String CONFIG_VALUE("value");
 	//---------------------------------------------------------------------
+	EngineConfig::EngineConfig(const Util::String & name) : 
+	    Config(name),
+		mFullScreen(false),
+		mVSync(false),
+		mPerfHUD(false)
+	{}
+	//---------------------------------------------------------------------
 	void  EngineConfig::parse_impl()
 	{
 		Util::String valueStr;
@@ -61,5 +68,15 @@ namespace Engine
 			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_TYPE + "parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		setMultiSampleType(boost::lexical_cast<Util::s_int>(valueStr));
+
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::VSYNC), 
+			"Engine config " + EngineConfigDefine::VSYNC + "parse failed!");
+		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		setVSync(boost::lexical_cast<bool>(valueStr));
+
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::PERF_HUD), 
+			"Engine config " + EngineConfigDefine::PERF_HUD + "parse failed!");
+		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		setPerfHUD(boost::lexical_cast<bool>(valueStr));
 	}
 }
