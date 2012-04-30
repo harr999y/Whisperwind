@@ -29,10 +29,25 @@ THE SOFTWARE
 
 namespace Engine
 {
+	enum Capabilities
+	{
+		UNKNOW_FORMAT = 0,
+		DEPTH_STENCIL = 1
+	};
+
+	struct CapabilityInfo
+	{
+		Util::u_int SupportedFormat;
+	};
+
 	/** Add capabilites when need. */
 	class D3D9Capability
 	{
 	public:
+
+
+	private:
+
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(D3D9Capability);

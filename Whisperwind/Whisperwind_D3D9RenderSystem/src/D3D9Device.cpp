@@ -40,6 +40,13 @@ namespace Engine
 		init();
 	}
 	//---------------------------------------------------------------------
+	D3D9Device::~D3D9Device()
+	{
+		mD3DDevice.reset();
+		mEngineConfig.reset();
+		mCapability.reset();
+	}
+	//---------------------------------------------------------------------
 	void D3D9Device::init()
 	{
 		MEMORY_ZERO(&mPresentParameters, sizeof(D3DPRESENT_PARAMETERS));

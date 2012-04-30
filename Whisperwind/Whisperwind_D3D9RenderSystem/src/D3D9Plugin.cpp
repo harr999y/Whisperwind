@@ -43,7 +43,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void D3D9Plugin::uninstall()
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		engineMgr.setRenderSystem(RenderSystemPtr());
+ 		EngineManager & engineMgr = EngineManager::getSingleton();
+ 		engineMgr.setRenderSystem(RenderSystemPtr());
 	}
 }

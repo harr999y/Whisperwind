@@ -59,16 +59,22 @@ namespace Engine
 		init();
 	}
 	//---------------------------------------------------------------------
+	EngineManager::~EngineManager()
+	{
+		/// NOTE:Here we'd better DONOT write anything,because this class is global--Only been destructed when all 
+		/// allocated momery destroyed!
+	}
+	//---------------------------------------------------------------------
 	void EngineManager::init()
 	{
 		setQuitLooping(false);
 		setEngineConfig(boost::make_shared<EngineConfig>(ENGINE_CONFIG_PATH));
 		setPluginConfig(boost::make_shared<PluginConfig>(PLUGIN_CONFIG_PATH));
 
-		parseConfigs();
+		loadConfigs();
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::parseConfigs()
+	void EngineManager::loadConfigs()
 	{
 		mEngineConfig->parse();
 		WHISPERWIND_LOG(TO_UNICODE("Engine config parse done!"));
@@ -98,6 +104,7 @@ namespace Engine
 	{
 		clearResources();
 		clearPlugins();
+		clearConfigs();
 
 		WHISPERWIND_LOG(TO_UNICODE("Quit engine done!"));
 	}
@@ -141,6 +148,13 @@ namespace Engine
 		}
 
 		mPluginVector.clear();
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::clearConfigs()
+	{
+		mRenderSystem.reset();
+		mEngineConfig.reset();
+		mPluginConfig.reset();
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::handleLogical()

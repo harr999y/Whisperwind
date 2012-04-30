@@ -32,6 +32,11 @@ THE SOFTWARE
 
 namespace Engine
 {
+	D3D9RenderSystem::~D3D9RenderSystem()
+	{
+		mDevice.reset();
+		::DestroyWindow(mWindow);
+	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::init()
 	{

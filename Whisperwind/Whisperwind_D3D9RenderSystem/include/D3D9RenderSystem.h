@@ -43,10 +43,7 @@ namespace Engine
 		    RenderSystem(windowName),
 			mWindow(NULL)
 		{}
-		~D3D9RenderSystem()
-		{
-			::DestroyWindow(mWindow);
-		}
+		~D3D9RenderSystem();
 
 	public:
 		virtual void init();

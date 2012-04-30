@@ -40,6 +40,7 @@ namespace Engine
 	{
 	public:
 		explicit D3D9Device(const EngineConfigPtr & engineCfg);
+		~D3D9Device();
 
 	public:
 		bool render();

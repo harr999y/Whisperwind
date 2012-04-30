@@ -36,8 +36,7 @@ namespace Engine
 	{
 	public:
 		EngineManager();
-		~EngineManager()
-		{}
+		~EngineManager();
 
 	public:
 		static EngineManager & getSingleton();
@@ -57,7 +56,7 @@ namespace Engine
 
 	private:
 		void init();
-		void parseConfigs();
+		void loadConfigs();
 		void loadPlugins();
 		void loadResources();
 
@@ -65,6 +64,7 @@ namespace Engine
 
 		void clearResources();
 		void clearPlugins();
+		void clearConfigs();
 
 		DISALLOW_COPY_AND_ASSIGN(EngineManager);
 

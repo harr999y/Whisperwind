@@ -38,7 +38,6 @@ namespace Engine
 		static const Util::String VSYNC;
 		static const Util::String PERF_HUD;
 	};
-
 }
 
 #endif

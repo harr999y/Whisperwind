@@ -105,14 +105,16 @@ namespace Util
 
 #ifdef WHISPERWIND_DEBUG
 #define PROFILE(x, y) \
-	Util::ProfileWithWin32API profile; \
-    profile.beginTest(); \
-	x; \
-	profile.endTest(); \
-	Util::s_int64 result = profile.getResult(); \
-	WHISPERWIND_LOG(Util::Wstring(y) + TO_UNICODE(" profile's result is : ") + \
-	    boost::lexical_cast<Util::Wstring>(result) + TO_UNICODE(" MS.")); \
-	BOOST_ASSERT(result >= 0 && "Profile getProfile Failed!");
+	{ \
+		Util::ProfileWithWin32API profile; \
+		profile.beginTest(); \
+		x; \
+		profile.endTest(); \
+		Util::s_int64 result = profile.getResult(); \
+		WHISPERWIND_LOG(Util::Wstring(y) + TO_UNICODE(" profile's result is : ") + \
+			boost::lexical_cast<Util::Wstring>(result) + TO_UNICODE(" MS.")); \
+		BOOST_ASSERT(result >= 0 && "Profile getProfile Failed!"); \
+    }
 #else
 #define PROFILE(x, y) (0);
 #endif
