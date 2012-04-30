@@ -61,8 +61,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	EngineManager::~EngineManager()
 	{
-		/// NOTE:Here we'd better DONOT write anything,because this class is global--Only been destructed when all 
-		/// allocated momery destroyed!
+		/// NOTE:Here we'd better DONOT destroy or release anything,because this class is global--Only been destructed when some
+		/// threads destroyed and some dlls detached!
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::init()
@@ -152,7 +152,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::clearConfigs()
 	{
-		mRenderSystem.reset();
+		//mRenderSystem.reset();
 		mEngineConfig.reset();
 		mPluginConfig.reset();
 	}

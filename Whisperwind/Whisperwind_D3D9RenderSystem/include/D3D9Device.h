@@ -61,6 +61,7 @@ namespace Engine
 
 	private:
 		EngineConfigPtr mEngineConfig;
+		IDirect3D9Ptr mD3D;
 		IDirect3DDevice9Ptr mD3DDevice;
 		D3D9CapabilityPtr mCapability;
 		bool mIsDeviceLost;

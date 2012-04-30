@@ -28,6 +28,12 @@ THE SOFTWARE
 #include "boost/shared_ptr.hpp"
 #include "D3D9Typedefs.h"
 
+#ifdef WHISPERWIND_DEBUG
+    #pragma comment(lib, "d3dx9d.lib")
+#else
+    #pragma comment(lib, "d3dx9.lib")
+#endif
+
 namespace Engine
 {
 	class D3D9RenderSystem;

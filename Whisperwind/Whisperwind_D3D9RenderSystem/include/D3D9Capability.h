@@ -25,29 +25,51 @@ THE SOFTWARE
 #ifndef _D3D9_CAPABILITY_H_
 #define _D3D9_CAPABILITY_H_
 
+#include "d3d9.h"
+#include <vector>
 #include "Util.h"
+#include "D3D9Typedefs.h"
 
 namespace Engine
 {
 	enum Capabilities
 	{
-		UNKNOW_FORMAT = 0,
-		DEPTH_STENCIL = 1
+		UNKNOW_FORMAT,
+		DEPTH_STENCIL,
+		BACK_BUFFER,
+		CAPABILITIES_MAX
 	};
 
 	struct CapabilityInfo
 	{
-		Util::u_int SupportedFormat;
+		/** 
+		@note
+		    When SupportedFormat == D3DFMT_UNKNOWN,it means NOT supported!
+		*/
+		D3DFORMAT SupportedFormat;
 	};
 
 	/** Add capabilites when need. */
 	class D3D9Capability
 	{
 	public:
+		explicit D3D9Capability(const IDirect3D9Ptr & d3d);
 
+	public:
+		D3DFORMAT getSupportedFomat(Capabilities cap) const;
+		const D3DCAPS9 & getD3DCaps() const
+		{ return mD3DCaps; }
 
 	private:
+		void init();
+		void doChecks();
 
+	private:
+		typedef std::vector<CapabilityInfo> CapVector;
+		CapVector mCapVec;
+
+		IDirect3D9Ptr mD3D;
+		D3DCAPS9 mD3DCaps;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(D3D9Capability);

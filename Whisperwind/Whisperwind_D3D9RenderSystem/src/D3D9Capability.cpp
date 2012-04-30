@@ -28,5 +28,40 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
+	D3D9Capability::D3D9Capability(const IDirect3D9Ptr & d3d) :
+        mD3D(d3d)
+	{
+		init();
+	}
+	//---------------------------------------------------------------------
+	void D3D9Capability::init()
+	{
+		mD3D->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &mD3DCaps);
+
+		mCapVec.resize(CAPABILITIES_MAX);
+		/// Fill default value.
+		mCapVec[UNKNOW_FORMAT].SupportedFormat = D3DFMT_UNKNOWN;
+		mCapVec[DEPTH_STENCIL].SupportedFormat = D3DFMT_D24S8;
+		mCapVec[BACK_BUFFER].SupportedFormat = D3DFMT_X8R8G8B8; /// TODO!
+
+		doChecks();
+	}
+	//---------------------------------------------------------------------
+	void D3D9Capability::doChecks()
+	{
+		/// Here we do all the checks.
+		if (FAILED(mD3D->CheckDeviceFormat(mD3DCaps.AdapterOrdinal, mD3DCaps.DeviceType, mCapVec[BACK_BUFFER].SupportedFormat,
+		    D3DUSAGE_DEPTHSTENCIL, D3DRTYPE_SURFACE, D3DFMT_D24S8)))
+		{
+			mCapVec[DEPTH_STENCIL].SupportedFormat = D3DFMT_D24X8;
+		}
+	}
+	//---------------------------------------------------------------------
+	D3DFORMAT D3D9Capability::getSupportedFomat(Capabilities cap) const
+	{
+		BOOST_ASSERT((cap < CAPABILITIES_MAX) && (cap >= UNKNOW_FORMAT));
+
+		return mCapVec[cap].SupportedFormat;
+	}
 
 }

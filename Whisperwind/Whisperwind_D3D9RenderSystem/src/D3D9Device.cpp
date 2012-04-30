@@ -28,6 +28,8 @@ THE SOFTWARE
 #include "D3D9Helper.h"
 #include "WindowsHelper.h"
 #include "EngineConfig.h"
+#include "boost/make_shared.hpp"
+#include "D3D9Capability.h"
 
 namespace Engine
 {
@@ -42,34 +44,34 @@ namespace Engine
 	//---------------------------------------------------------------------
 	D3D9Device::~D3D9Device()
 	{
-		mD3DDevice.reset();
 		mEngineConfig.reset();
 		mCapability.reset();
+		mD3DDevice.reset();
+		mD3D.reset();
 	}
 	//---------------------------------------------------------------------
 	void D3D9Device::init()
 	{
 		MEMORY_ZERO(&mPresentParameters, sizeof(D3DPRESENT_PARAMETERS));
+
+		mD3D = Util::MakeCOMPtr(Direct3DCreate9(D3D_SDK_VERSION));
+		IF_NULL_EXCEPTION(mD3D, "Create mD3D failed!");
+
+		/// Here we do needed checks.
+		mCapability = boost::make_shared<D3D9Capability>(mD3D);
 	}
 	//---------------------------------------------------------------------
 	void D3D9Device::createDevice(HWND window)
 	{
-		IDirect3D9Ptr d3d = Util::MakeCOMPtr(Direct3DCreate9(D3D_SDK_VERSION));
-		IF_NULL_EXCEPTION(d3d, "Create d3d failed!");
-
-		D3DCAPS9 d3dCaps;
-		d3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps);
-
 		Util::s_int vpType = 0;
-		if (d3dCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
+		if (mCapability->getD3DCaps().DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
 			vpType = D3DCREATE_HARDWARE_VERTEXPROCESSING;
 		else
 			vpType = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
-		MEMORY_ZERO(&mPresentParameters, sizeof(D3DPRESENT_PARAMETERS));
-		mPresentParameters.AutoDepthStencilFormat = D3DFMT_D24S8;
+		mPresentParameters.AutoDepthStencilFormat = mCapability->getSupportedFomat(DEPTH_STENCIL);
 		mPresentParameters.BackBufferCount = 1;
-		mPresentParameters.BackBufferFormat = D3DFMT_A8R8G8B8;
+		mPresentParameters.BackBufferFormat = mCapability->getSupportedFomat(BACK_BUFFER);
 		mPresentParameters.BackBufferHeight = mEngineConfig->getResolutionPair().second;
 		mPresentParameters.BackBufferWidth = mEngineConfig->getResolutionPair().first;
 		mPresentParameters.EnableAutoDepthStencil = true;
@@ -78,19 +80,25 @@ namespace Engine
 		mPresentParameters.hDeviceWindow = window;
 		mPresentParameters.MultiSampleQuality = mEngineConfig->getMultiSampleQuality();
 		mPresentParameters.MultiSampleType = static_cast<D3DMULTISAMPLE_TYPE>(mEngineConfig->getMultiSampleType());
-		mPresentParameters.PresentationInterval = mEngineConfig->getVSync() ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
 		mPresentParameters.SwapEffect = mEngineConfig->getFullScreen() ? D3DSWAPEFFECT_DISCARD : D3DSWAPEFFECT_COPY;
 		mPresentParameters.Windowed = !mEngineConfig->getFullScreen();
+		/// NOTE:As OGRE comment followed:
+		// NB not using vsync in windowed mode in D3D9 can cause jerking at low 
+		// frame rates no matter what buffering modes are used (odd - perhaps a
+		// timer issue in D3D9 since GL doesn't suffer from this) 
+		// low is < 200fps in this context
+		mPresentParameters.PresentationInterval = (mEngineConfig->getFullScreen() && mEngineConfig->getVSync()) 
+			? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE; 
 
 		D3DDEVTYPE devType =  D3DDEVTYPE_HAL;
 		UINT adapterNum = D3DADAPTER_DEFAULT;
 		/// use perfHUD
 		if (mEngineConfig->getPerfHUD())
 		{
-			for (UINT adapter = 0; adapter < d3d->GetAdapterCount(); ++adapter)
+			for (UINT adapter = 0; adapter < mD3D->GetAdapterCount(); ++adapter)
 			{
 				D3DADAPTER_IDENTIFIER9 identifier;
-				d3d->GetAdapterIdentifier(adapter, 0, &identifier);
+				mD3D->GetAdapterIdentifier(adapter, 0, &identifier);
 				if (Util::String(identifier.Description).find("PerfHUD") != Util::String::npos)
 				{
 					adapterNum = adapter;
@@ -109,7 +117,7 @@ namespace Engine
 		*/
 		while (keepCircle)
 		{
-			hr = d3d->CreateDevice(adapterNum, devType, window, vpType, &mPresentParameters, &d3dDevice);
+			hr = mD3D->CreateDevice(adapterNum, devType, window, vpType, &mPresentParameters, &d3dDevice);
 			DX_IF_FAILED_DEBUG_PRINT(hr);
 			if (hr != D3DERR_DEVICELOST)
 				break;
