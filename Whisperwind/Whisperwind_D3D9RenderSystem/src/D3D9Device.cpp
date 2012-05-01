@@ -193,5 +193,9 @@ namespace Engine
 
 		return true;
 	}
-
+	//---------------------------------------------------------------------
+	bool D3D9Device::checkDeviceLostBeforeDraw()
+	{
+		return (mD3DDevice->TestCooperativeLevel() != S_OK);
+	}
 }

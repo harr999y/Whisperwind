@@ -52,6 +52,7 @@ namespace Engine
 	private:
 		void init();
 		bool reset();
+		bool checkDeviceLostBeforeDraw();
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(D3D9Device);
