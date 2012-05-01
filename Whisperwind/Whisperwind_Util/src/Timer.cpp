@@ -28,13 +28,19 @@ THE SOFTWARE
 namespace Util
 {
 	//---------------------------------------------------------------------
+	//Timer
+	//---------------------------------------------------------------------
 	Timer::Timer() :
 		mLastTimeStamp(0),
 		mZoom(1.0)
 	{}
+
+	//---------------------------------------------------------------------
+	//WindowsTimer
 	//---------------------------------------------------------------------
 	time WindowsTimer::getElapsedTime_impl()
 	{
+		/// Use static for performance.
 		static u_int64 freq = 0;
 		if (0 == freq)
 		{
@@ -44,12 +50,15 @@ namespace Util
 			freq = static_cast<u_int64>(freqInt.QuadPart);
 		}
 
-		LARGE_INTEGER curTime;
+		static LARGE_INTEGER curTime;
 		BOOST_VERIFY(TRUE == QueryPerformanceCounter(&curTime));
 		
-		u_int64 curTimeStamp = curTime.QuadPart * 1000 / freq;
+		static u_int64 curTimeStamp;
+		curTimeStamp = curTime.QuadPart * 1000 / freq;
+
 		if (0 == mLastTimeStamp)
 			mLastTimeStamp = curTimeStamp;
+
 		time result = static_cast<time>(curTimeStamp - mLastTimeStamp) / 1000;
 
 		mLastTimeStamp = curTimeStamp;

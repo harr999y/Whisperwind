@@ -106,22 +106,20 @@ namespace Engine
 	//---------------------------------------------------------------------
 	bool D3D9RenderSystem::render(Util::time elapsedTime)
 	{
-		elapsedTime;
-
 		/// Important way to save CPU when minimized or something else.
  		if (mDevice->isPaused())
  			::Sleep(1);
 
-		IF_FALSE_RETURN_FALSE(updateRenderable());
+		IF_FALSE_RETURN_FALSE(updateRenderable(elapsedTime));
 
 		IF_FALSE_RETURN_FALSE(mDevice->render());
 
 		return true;
 	}
 	//---------------------------------------------------------------------
-	bool D3D9RenderSystem::updateRenderable()
+	bool D3D9RenderSystem::updateRenderable(Util::time elapsedTime)
 	{
-
+		elapsedTime;
 		return true;
 	}
 }

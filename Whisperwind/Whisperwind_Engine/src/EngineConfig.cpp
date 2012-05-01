@@ -55,8 +55,7 @@ namespace Engine
 		Util::StringVector strVec;
 		boost::split(strVec, valueStr, boost::is_any_of("*"));
 		Util::UintPair resPair;
-		resPair.first = boost::lexical_cast<Util::u_int>(strVec[0]);
-		resPair.second = boost::lexical_cast<Util::u_int>(strVec[1]);
+		resPair = std::make_pair(boost::lexical_cast<Util::u_int>(strVec[0]), boost::lexical_cast<Util::u_int>(strVec[1]));
 		setResolutionPair(resPair);
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::MULTI_SAMPLE_QUALITY), 

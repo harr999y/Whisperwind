@@ -33,7 +33,7 @@ namespace Engine
 {
 	typedef boost::shared_ptr<IDirect3D9> IDirect3D9Ptr;
 	typedef boost::shared_ptr<IDirect3DDevice9> IDirect3DDevice9Ptr;
-	typedef boost::shared_ptr<IDirect3DSwapChain9Ex> IDirect3DSwapChain9ExPtr;
+	typedef boost::shared_ptr<IDirect3DSwapChain9> IDirect3DSwapChain9Ptr;
 	typedef boost::shared_ptr<IDirect3DResource9> IDirect3DResource9Ptr;
 	typedef boost::shared_ptr<IDirect3DCubeTexture9> IDirect3DCubeTexture9Ptr;
 	typedef boost::shared_ptr<IDirect3DTexture9> IDirect3DTexture9Ptr;

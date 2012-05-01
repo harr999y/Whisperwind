@@ -41,5 +41,8 @@ namespace Engine
 	void Config::parse()
 	{
 		parse_impl();
+
+		/// Free when parse done.
+		mXmlReader.reset();
 	}
 }

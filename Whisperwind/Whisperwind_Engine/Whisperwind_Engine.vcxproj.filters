@@ -17,6 +17,9 @@
     <Filter Include="EngineManager">
       <UniqueIdentifier>{11b37349-395d-4ebe-96d3-f59f8e1256a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{fbff4125-c0d4-40af-a22a-032dda86425f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine.h">
@@ -49,6 +52,15 @@
     <ClInclude Include="include\WindowsHelper.h">
       <Filter>WindowsPlatform</Filter>
     </ClInclude>
+    <ClInclude Include="include\Renderable.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RenderMappingDefines.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RenderSystem.cpp">
@@ -74,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="src\EngineConfigDefines.cpp">
       <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderable.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resource.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

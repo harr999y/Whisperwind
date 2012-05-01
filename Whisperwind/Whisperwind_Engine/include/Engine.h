@@ -26,7 +26,6 @@ THE SOFTWARE
 #define _ENGINE_H_
 
 /** Include all engine headers. */
-#include "EngineForwardDeclare.h"
 #include "EngineManager.h"
 
 #endif

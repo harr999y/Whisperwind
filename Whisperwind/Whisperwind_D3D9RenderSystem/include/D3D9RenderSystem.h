@@ -52,7 +52,7 @@ namespace Engine
 	private:
 		void createWindow();
 		inline void setWindowHWND(HWND window);
-		bool updateRenderable();
+		bool updateRenderable(Util::time elapsedTime);
 
 	private:
 		HWND mWindow;
