@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Profile.h" />
+    <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\UtilCommon.h" />
     <ClInclude Include="include\ExceptionDefines.h" />
     <ClInclude Include="include\LogManager.h" />
@@ -34,6 +35,7 @@
     </ClCompile>
     <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="src\StringConverter.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="Src\XmlReader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

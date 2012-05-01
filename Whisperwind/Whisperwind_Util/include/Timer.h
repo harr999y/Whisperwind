@@ -22,57 +22,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _D3D9_CAPABILITY_H_
-#define _D3D9_CAPABILITY_H_
+#ifndef _TIMER_H_
+#define _TIMER_H_
 
-#include "d3d9.h"
-#include <vector>
 #include "Util.h"
-#include "D3D9Typedefs.h"
 
-namespace Engine
+namespace Util
 {
-	enum Capabilities
-	{
-		UNKNOWN_FORMAT,
-		DEPTH_STENCIL,
-		BACK_BUFFER,
-		CAPABILITIES_MAX
-	};
-
-	struct CapabilityInfo
-	{
-		/** 
-		@note
-		    When SupportedFormat == D3DFMT_UNKNOWN,it means NOT supported!
-		*/
-		D3DFORMAT SupportedFormat;
-	};
-
-	/** Add capabilites when need. */
-	class D3D9Capability
+	class WHISPERWIND_API Timer
 	{
 	public:
-		explicit D3D9Capability(const IDirect3D9Ptr & d3d);
+		Timer();
 
 	public:
-		D3DFORMAT getSupportedFomat(Capabilities cap) const;
-		const D3DCAPS9 & getD3DCaps() const
-		{ return mD3DCaps; }
+		time getElapsedTime()
+		{ return getElapsedTime_impl(); }
+
+		SET_GET_CONST_VALUE(real, Zoom);
+
+	protected:
+		virtual ~Timer()
+		{}
 
 	private:
-		void init();
-		void doChecks();
+		virtual time getElapsedTime_impl() = 0;
+
+	protected:
+		s_int64 mLastTimeStamp;
+		real mZoom;
 
 	private:
-		typedef std::vector<CapabilityInfo> CapVector;
-		CapVector mCapVec;
+		DISALLOW_COPY_AND_ASSIGN(Timer);
+	};
 
-		IDirect3D9Ptr mD3D;
-		D3DCAPS9 mD3DCaps;
-
+	class WHISPERWIND_API WindowsTimer : public Timer
+	{
 	private:
-		DISALLOW_COPY_AND_ASSIGN(D3D9Capability);
+		virtual time getElapsedTime_impl();
 	};
 }
 

@@ -41,7 +41,7 @@ namespace Engine
 
 	public:
 		virtual void init() = 0;
-		virtual bool render() = 0;
+		virtual bool render(Util::time) = 0;
 
 	public:
 		SET_GET_CONST_VALUE(Util::Wstring, WindowName);

@@ -104,8 +104,10 @@ namespace Engine
 		WindowsEventHandle::setWindow(window);
 	}
 	//---------------------------------------------------------------------
-	bool D3D9RenderSystem::render()
+	bool D3D9RenderSystem::render(Util::time elapsedTime)
 	{
+		elapsedTime;
+
 		/// Important way to save CPU when minimized or something else.
  		if (mDevice->isPaused())
  			::Sleep(1);

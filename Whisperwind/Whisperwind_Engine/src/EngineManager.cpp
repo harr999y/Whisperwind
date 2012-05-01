@@ -36,6 +36,7 @@ THE SOFTWARE
 #include "boost/make_shared.hpp"
 #include "StringConverter.h"
 #include "Profile.h"
+#include "Timer.h"
 
 namespace Engine
 {
@@ -70,6 +71,7 @@ namespace Engine
 		setQuitLooping(false);
 		setEngineConfig(boost::make_shared<EngineConfig>(ENGINE_CONFIG_PATH));
 		setPluginConfig(boost::make_shared<PluginConfig>(PLUGIN_CONFIG_PATH));
+		mTimer = boost::make_shared<Util::WindowsTimer>();
 
 		loadConfigs();
 	}
@@ -96,7 +98,7 @@ namespace Engine
 			WindowsEventHandle::handleWindowsMsg();
 			handleLogical();
 
-			IF_FALSE_EXCEPTION(mRenderSystem->render(), "Render failed!");
+			IF_FALSE_EXCEPTION(mRenderSystem->render(mTimer->getElapsedTime()), "Render failed!");
 		}
 	}
 	//---------------------------------------------------------------------
@@ -152,7 +154,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::clearConfigs()
 	{
-		//mRenderSystem.reset();
 		mEngineConfig.reset();
 		mPluginConfig.reset();
 	}

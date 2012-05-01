@@ -73,6 +73,9 @@
     <ClInclude Include="include\Profile.h">
       <Filter>Profile</Filter>
     </ClInclude>
+    <ClInclude Include="include\Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\XmlReader.cpp">
@@ -88,6 +91,9 @@
       <Filter>Profile</Filter>
     </ClCompile>
     <ClCompile Include="src\StringConverter.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>

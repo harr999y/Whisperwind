@@ -37,18 +37,12 @@ namespace Util
 	//---------------------------------------------------------------------
 	void Profile::beginTest()
 	{
-		// set highest thread ptiority to get more precise time.
-		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
-
 		beginTest_impl();
 	}
 	//---------------------------------------------------------------------
 	void Profile::endTest()
 	{	
 		endTest_impl();
-
-		// set thread ptiority back to normal.
-		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 	}
 	//---------------------------------------------------------------------
 	s_int64 Profile::getResult() const
@@ -61,6 +55,9 @@ namespace Util
 	//---------------------------------------------------------------------
 	void ProfileWithWin32API::beginTest_impl()
 	{
+		// set highest thread ptiority to get more precise time.
+		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
+
 		LARGE_INTEGER beginTime;
 		IF_NULL_EXCEPTION(QueryPerformanceCounter(&beginTime), "QueryPerformanceCounter failed!");
 
@@ -73,6 +70,9 @@ namespace Util
 		IF_NULL_EXCEPTION(QueryPerformanceCounter(&endTime), "QueryPerformanceCounter failed!");
 
 		mCurrentStamp = queryPerfCount(endTime);
+
+		// set thread ptiority back to normal.
+		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 	}
 	//---------------------------------------------------------------------
 	/** The time factor. */

@@ -47,7 +47,7 @@ namespace Engine
 
 	public:
 		virtual void init();
-		virtual bool render();
+		virtual bool render(Util::time elapsedTime);
 
 	private:
 		void createWindow();

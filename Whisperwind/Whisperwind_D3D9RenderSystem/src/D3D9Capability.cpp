@@ -40,7 +40,7 @@ namespace Engine
 
 		mCapVec.resize(CAPABILITIES_MAX);
 		/// Fill default value.
-		mCapVec[UNKNOW_FORMAT].SupportedFormat = D3DFMT_UNKNOWN;
+		mCapVec[UNKNOWN_FORMAT].SupportedFormat = D3DFMT_UNKNOWN;
 		mCapVec[DEPTH_STENCIL].SupportedFormat = D3DFMT_D24S8;
 		mCapVec[BACK_BUFFER].SupportedFormat = D3DFMT_X8R8G8B8; /// TODO!
 
@@ -59,7 +59,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	D3DFORMAT D3D9Capability::getSupportedFomat(Capabilities cap) const
 	{
-		BOOST_ASSERT((cap < CAPABILITIES_MAX) && (cap >= UNKNOW_FORMAT));
+		BOOST_ASSERT((cap < CAPABILITIES_MAX) && (cap >= UNKNOWN_FORMAT));
 
 		return mCapVec[cap].SupportedFormat;
 	}

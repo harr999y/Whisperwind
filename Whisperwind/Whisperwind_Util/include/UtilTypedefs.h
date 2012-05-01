@@ -52,6 +52,9 @@ namespace Util
 	typedef std::wstring Wstring;
 	typedef std::vector<String> StringVector;
 	typedef std::vector<Wstring> WstringVector;
+
+	/** Time. */
+	typedef real time;
 }
 
 #endif

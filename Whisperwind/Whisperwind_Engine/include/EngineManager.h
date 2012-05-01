@@ -71,6 +71,7 @@ namespace Engine
 	private:
 		bool mQuitLooping;
 		Util::Wstring mWindowName;
+		Util::TimerPtr mTimer;
 
 		typedef std::vector<Util::PluginPtr> PluginVector;
 		PluginVector mPluginVector;

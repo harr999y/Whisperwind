@@ -147,6 +147,8 @@ namespace Engine
 
 		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->BeginScene());
 
+
+
 		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->EndScene());
 		
 		HRESULT hr;
