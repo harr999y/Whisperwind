@@ -22,4 +22,4 @@
 *.exe
 *.html
 /Whisperwind/Whisperwind_Dependencies/Visual Leak Detector
-/Whisperwind/Whisperwind_OctreeSceneManager/1.cpp
+*.ib_pdb_index

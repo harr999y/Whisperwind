@@ -25,9 +25,10 @@ THE SOFTWARE
 #ifndef _D3D9_TYPEDEFS_H_
 #define _D3D9_TYPEDEFS_H_
 
-#include "boost/shared_ptr.hpp"
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "boost/shared_ptr.hpp"
+#include <vector>
 
 namespace Engine
 {
@@ -39,6 +40,8 @@ namespace Engine
 	typedef boost::shared_ptr<IDirect3DTexture9> IDirect3DTexture9Ptr;
 	typedef boost::shared_ptr<ID3DXEffect> ID3DXEffectPtr;
 	typedef boost::shared_ptr<IDirect3DSurface9> IDirect3DSurface9Ptr;
+
+	typedef std::vector<D3DVERTEXELEMENT9> D3DVERTEXELEMENT9Vector;
 }
 
 #endif

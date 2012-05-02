@@ -62,8 +62,6 @@ THE SOFTWARE
 	if (!(x)) continue;
 #define IF_NULL_BREAK(x) \
 	if (!(x)) break;
-#define IF_NULL_EXCEPTION(x, y) \
-	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
 #define IF_FALSE_RETURN(x) \
 	if (!(x)) return;
 #define IF_FALSE_RETURN_FALSE(x) \
@@ -72,8 +70,6 @@ THE SOFTWARE
 	if (!(x)) continue;
 #define IF_FALSE_BREAK(x) \
 	if (!(x)) break;
-#define IF_FALSE_EXCEPTION(x, y) \
-	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
 
 	/** Define DISALLOW_COPY_AND_ASSIGN macro for copy-constructor
 	and operator =. */

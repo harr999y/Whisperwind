@@ -26,7 +26,6 @@ THE SOFTWARE
 #define _GAMEPLAY_FRAMEWORK_H_
 
 #include "Util.h"
-#include "EngineForwardDeclare.h"
 
 namespace GamePlay
 {

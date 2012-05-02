@@ -19,6 +19,7 @@
     <ClInclude Include="include\EngineManager.h" />
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\Renderable.h" />
+    <ClInclude Include="include\RenderBuffer.h" />
     <ClInclude Include="include\RenderMappingDefines.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\Resource.h" />

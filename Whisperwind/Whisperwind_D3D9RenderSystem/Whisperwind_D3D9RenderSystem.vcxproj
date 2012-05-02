@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\D3D9Capability.h" />
+    <ClInclude Include="include\D3D9FormatMapping.h" />
     <ClInclude Include="include\D3D9Helper.h" />
     <ClInclude Include="include\D3D9ForwardDeclare.h" />
     <ClInclude Include="include\D3D9Plugin.h" />
@@ -21,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Capability.cpp" />
+    <ClCompile Include="src\D3D9FormatMapping.cpp" />
     <ClCompile Include="src\D3D9Helper.cpp" />
     <ClCompile Include="src\D3D9Plugin.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>

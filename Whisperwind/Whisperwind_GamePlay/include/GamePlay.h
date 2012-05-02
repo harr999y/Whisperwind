@@ -25,8 +25,7 @@ THE SOFTWARE
 #ifndef _GAMEPLAY_H_
 #define _GAMEPLAY_H_
 
-/** Include all GamePlay headers. */
+/** Include the gameplay's class headers which need to be exported. */
 #include "GamePlayFramework.h"
-#include "Engine.h"
 
 #endif

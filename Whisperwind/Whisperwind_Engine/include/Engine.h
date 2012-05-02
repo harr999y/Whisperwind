@@ -25,7 +25,8 @@ THE SOFTWARE
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
-/** Include all engine headers. */
+/** Include the engine's class headers which need to be exported. */
 #include "EngineManager.h"
+#include "Renderable.h"
 
 #endif

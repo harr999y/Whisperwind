@@ -38,6 +38,7 @@ namespace Engine
 	{
 	public:
 		static void loadPlugin(const Util::String & plugin);
+		static HWND createWindow();
 	};
 }
 

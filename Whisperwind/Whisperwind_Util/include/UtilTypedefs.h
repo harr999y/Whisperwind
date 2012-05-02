@@ -40,10 +40,10 @@ namespace Util
 	typedef u_int size_t;
 	typedef unsigned __int64 u_int64;
 	typedef signed __int64 s_int64;
-	typedef unsigned __int16 u_short;
-	typedef signed __int16 s_short;
-	typedef unsigned __int8 u_char;
-	typedef signed __int8 s_char;
+	typedef unsigned __int16 u_int16;
+	typedef signed __int16 s_int16;
+	typedef unsigned __int8 u_int8;
+	typedef signed __int8 s_int8;
 
 	typedef std::pair<Util::u_int, Util::u_int> UintPair;
 

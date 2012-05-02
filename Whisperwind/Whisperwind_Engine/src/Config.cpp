@@ -26,6 +26,7 @@ THE SOFTWARE
 #include "Config.h"
 #include "XmlReader.h"
 #include "boost/make_shared.hpp"
+#include "ExceptionDefines.h"
 
 namespace Engine
 {

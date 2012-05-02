@@ -33,7 +33,7 @@ namespace Engine
 	class RenderSystem;
 	class EngineConfig;
 	class PluginConfig;
-	class Renderable;
+	struct Renderable;
 
 	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
 	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;

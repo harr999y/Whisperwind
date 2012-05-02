@@ -28,6 +28,7 @@ THE SOFTWARE
 #include "boost/algorithm/string.hpp"
 #include "EngineConfigDefines.h"
 #include "XmlReader.h"
+#include "ExceptionDefines.h"
 
 namespace Engine
 {

@@ -26,6 +26,8 @@ THE SOFTWARE
 #include "GamePlayFramework.h"
 #include "EngineManager.h"
 #include "Plugin.h"
+#include "boost/make_shared.hpp"
+#include "Renderable.h"
 
 namespace GamePlay
 {
@@ -50,5 +52,12 @@ namespace GamePlay
 	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::init()
-	{}
+	{
+		/// Test for creating some content.
+		//Engine::RenderablePtr renderable =  boost::make_shared<Engine::Renderable>();
+		//Engine::VertexElement vertElem;
+		//vertElem.
+		//renderable->VertexElemVec.push_back()
+
+	}
 }

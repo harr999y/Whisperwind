@@ -33,6 +33,9 @@
     <ClInclude Include="include\D3D9Device.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\D3D9FormatMapping.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Plugin.cpp">
@@ -51,6 +54,9 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9Device.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\D3D9FormatMapping.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

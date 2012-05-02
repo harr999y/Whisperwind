@@ -25,15 +25,12 @@ THE SOFTWARE
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-/** Include all util headers. */
+/** Include the util's class headers which need to be exported. */
 #include "UtilConfig.h"
 #include "UtilWarningDisable.h"
 #include "UtilTypedefs.h"
 #include "UtilForwardDeclare.h"
-#include "ExceptionDefines.h"
 #include "MemoryDefines.h"
 #include "UtilCommon.h"
-#include "LogManager.h"
-#include <memory> /// for shared_ptr
 
 #endif

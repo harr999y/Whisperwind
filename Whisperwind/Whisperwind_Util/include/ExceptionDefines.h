@@ -68,6 +68,7 @@ namespace Util
 	{};
 }
 
+#include "LogManager.h"
 #include "StringConverter.h"
 
 /**
@@ -86,5 +87,11 @@ namespace Util
 		<< boost::throw_file(__FILE__) \
 		<< boost::throw_line(__LINE__) \
 		<< Util::ErrorInfo((x));
+
+#define IF_NULL_EXCEPTION(x, y) \
+	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
+
+#define IF_FALSE_EXCEPTION(x, y) \
+	if (!(x)) { WHISPERWIND_EXCEPTION(y); }
 
 #endif

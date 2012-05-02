@@ -24,11 +24,10 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "D3D9RenderSystem.h"
-#include "WindowsEventHandle.h"
-#include "EngineManager.h"
 #include "EngineConfig.h"
 #include "boost/make_shared.hpp"
 #include "D3D9Device.h"
+#include "WindowsHelper.h"
 
 namespace Engine
 {
@@ -40,68 +39,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::init()
 	{
-		createWindow();
+		mWindow = WindowsHelper::createWindow();
 
 		mDevice = boost::make_shared<D3D9Device>(mEngineConfig);
 		mDevice->createDevice(mWindow);
-	}
-	//---------------------------------------------------------------------
-	void D3D9RenderSystem::createWindow()
-	{
-		Util::Wstring windowName = EngineManager::getSingleton().getWindowName();
-		HINSTANCE hInst = ::GetModuleHandle(NULL);
-
-		WNDCLASSEXW wc;
-		MEMORY_ZERO(&wc, sizeof(WNDCLASSEXW));
-		wc.cbSize = sizeof(wc);
-		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = WindowsEventHandle::WndProc;
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = sizeof(this);
-		wc.hInstance = hInst;
-		wc.hIcon = NULL;
-		wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(BLACK_BRUSH));
-		wc.lpszMenuName = NULL;
-		wc.lpszClassName = windowName.c_str();
-		wc.hIconSm = NULL;
-
-		::RegisterClassEx(&wc);
-
-		bool isFullScreen = mEngineConfig->getFullScreen();
-		Util::u_int width = mEngineConfig->getResolutionPair().first;
-		Util::u_int height = mEngineConfig->getResolutionPair().second;
-
-		Util::u_int style;
-		Util::u_int styleEx = 0;
-		if (!isFullScreen)
-		{
-			 style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE;
-		}
-		else
-		{
-			style = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
-			styleEx = WS_EX_TOPMOST;
-		}
-
-		RECT rc = {0, 0, width, height};
-		::AdjustWindowRect(&rc, style, false);
-
-		HWND window = ::CreateWindowEx(styleEx, windowName.c_str(), windowName.c_str(), style, 
-			0, 0, width, height, NULL, NULL, hInst, NULL);
-
-		::ShowWindow(window, SW_SHOWNORMAL);
-		::UpdateWindow(window);
-
-		setWindowHWND(window);
-
-		WHISPERWIND_LOG(TO_UNICODE("Create window done!"));
-	}
-	//---------------------------------------------------------------------
-	void D3D9RenderSystem::setWindowHWND(HWND window)
-	{
-		mWindow = window;
-		WindowsEventHandle::setWindow(window);
 	}
 	//---------------------------------------------------------------------
 	bool D3D9RenderSystem::render(Util::time elapsedTime)

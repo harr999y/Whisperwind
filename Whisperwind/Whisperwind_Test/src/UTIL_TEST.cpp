@@ -26,6 +26,7 @@ THE SOFTWARE
 #include "TestCommon.h"
 #include "Util.h"
 #include "Profile.h"
+#include "LogManager.h"
 
 namespace
 {

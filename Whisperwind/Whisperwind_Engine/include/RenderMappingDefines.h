@@ -22,54 +22,104 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _D3D9_HELPER_H_
-#define _D3D9_HELPER_H_
+#ifndef _RENDER_MAPPING_DEFINES_H_
+#define _RENDER_MAPPING_DEFINES_H_
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
-#include <d3d9.h>
-#include <DxErr.h>
 #include "Util.h"
-#include "D3D9Typedefs.h"
+#include <vector>
 
 namespace Engine
 {
-	struct ColorPredefines
+	enum SamplerFilter
 	{
-		static const D3DCOLOR WHITE;
-		static const D3DCOLOR BLACK;
+		SF_POINT,
+		SF_BILINEAR,
+		SF_TRILINEAR,
+		SF_ANISOTROPIC_POINT,
+		SF_ANISOTROPIC_LINER,
+		SF_MAX
 	};
 
-	class D3D9Helper
+	enum SamplerAddressMode
 	{
+		SAM_WRAP,
+		SAM_CLAMP,
+		SAM_MIRROR,
+		SAM_MAX
 	};
+
+	enum FillMode
+	{
+		FM_POINT,
+		FM_WIREFRAME,
+		FM_SOLID,
+		FM_MAX
+	};
+
+/// NOTE:For what defined in WinGDI.h.I will never use it,so just undef.
+#undef CM_NONE
+	enum CullMode
+	{
+		CM_NONE,
+		CM_CW,
+		CM_CCW,
+		CM_MAX
+	};
+
+	enum VertexElementType
+	{
+		VET_FLOAT1,
+		VET_FLOAT2,
+		VET_FLOAT3,
+		VET_FLOAT4,
+		VET_COLOR,
+		VET_MAX
+	};
+
+	enum VertexElementUsage
+	{
+		VEU_POSITION,
+		VEU_TEXTURE_COORD,
+		VEU_NORMAL,
+		VEU_TANGENT,
+		VEU_COLOR,
+		VEU_MAX
+	};
+
+	enum CompareFunction
+	{
+		CF_LESS,
+		CF_LESS_EQUAL,
+		CF_GREATER,
+		CF_GREATER_EQUAL,
+		CF_EQUAL,
+		CF_NOT_EQUAL,
+		CF_NEVER,
+		CF_ALWAYS
+	};
+
+	enum PrimitiveType
+	{
+		PT_TRIANGLE_LIST,
+		PT_TRIANGLE_STRIP,
+		PT_LINE_LIST,
+		PT_MAX
+	};
+
+	struct VertexElement
+	{
+		Util::s_int16 StreamIndex;
+		Util::s_int16 Offset;
+		VertexElementType Type;
+		VertexElementUsage Usage;
+		Util::s_int8 UsageIndex;
+	};
+
+	typedef Util::u_int16 IndexFormat;
+	typedef std::vector<VertexElement> VertexElementVector;
+
+
+	typedef std::vector<IndexFormat> IndexVector;
 }
-
-#define DX_IF_FAILED_RETURN_FALSE(x) \
-	{ \
-        HRESULT hr; hr = (x); \
-	    if (FAILED(hr)) \
-        { \
-		     DEBUG_PRINT(DXGetErrorString(hr)); \
-			 return false; \
-        } \
-    }
-
-#ifdef WHISPERWIND_DEBUG
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
-	{ \
-	    HRESULT hr = S_OK; hr = (x); \
-	    if (FAILED(hr)) \
-		{ \
-		    DEBUG_PRINT(DXGetErrorString(hr)); \
-		} \
-	}
-#else
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
-	(x);
-#endif
 
 #endif

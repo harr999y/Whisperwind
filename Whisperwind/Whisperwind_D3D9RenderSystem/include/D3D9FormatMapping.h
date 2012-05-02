@@ -22,54 +22,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _D3D9_HELPER_H_
-#define _D3D9_HELPER_H_
+#ifndef _D3D9_FORMAT_MAPPING_H_
+#define _D3D9_FORMAT_MAPPING_H_
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
-#include <d3d9.h>
-#include <DxErr.h>
-#include "Util.h"
 #include "D3D9Typedefs.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
-	struct ColorPredefines
+	class D3D9FormatMappingFactory
 	{
-		static const D3DCOLOR WHITE;
-		static const D3DCOLOR BLACK;
-	};
+	public:
+		static D3DVERTEXELEMENT9Vector createD3D9VertexElementVec(const VertexElementVector & veVec);
 
-	class D3D9Helper
-	{
 	};
 }
-
-#define DX_IF_FAILED_RETURN_FALSE(x) \
-	{ \
-        HRESULT hr; hr = (x); \
-	    if (FAILED(hr)) \
-        { \
-		     DEBUG_PRINT(DXGetErrorString(hr)); \
-			 return false; \
-        } \
-    }
-
-#ifdef WHISPERWIND_DEBUG
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
-	{ \
-	    HRESULT hr = S_OK; hr = (x); \
-	    if (FAILED(hr)) \
-		{ \
-		    DEBUG_PRINT(DXGetErrorString(hr)); \
-		} \
-	}
-#else
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
-	(x);
-#endif
 
 #endif

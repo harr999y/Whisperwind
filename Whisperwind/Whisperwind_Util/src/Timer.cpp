@@ -24,11 +24,17 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "Timer.h"
+#include "ExceptionDefines.h"
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
 
 namespace Util
 {
 	//---------------------------------------------------------------------
-	//Timer
+	// Timer
 	//---------------------------------------------------------------------
 	Timer::Timer() :
 		mLastTimeStamp(0),
@@ -36,7 +42,7 @@ namespace Util
 	{}
 
 	//---------------------------------------------------------------------
-	//WindowsTimer
+	// WindowsTimer
 	//---------------------------------------------------------------------
 	time WindowsTimer::getElapsedTime_impl()
 	{

@@ -22,54 +22,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _D3D9_HELPER_H_
-#define _D3D9_HELPER_H_
+#ifndef _RENDER_BUFFER_H_
+#define _RENDER_BUFFER_H_
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
-#include <d3d9.h>
-#include <DxErr.h>
 #include "Util.h"
-#include "D3D9Typedefs.h"
 
 namespace Engine
 {
-	struct ColorPredefines
+	struct RenderBuffer
 	{
-		static const D3DCOLOR WHITE;
-		static const D3DCOLOR BLACK;
-	};
+		RenderBuffer() :
+	        Data(NULL),
+			ElemSize(0),
+			BlockSize(0)
+		{}
 
-	class D3D9Helper
-	{
+		const void * Data;
+		Util::u_int ElemSize;
+		Util::u_int BlockSize;
 	};
 }
-
-#define DX_IF_FAILED_RETURN_FALSE(x) \
-	{ \
-        HRESULT hr; hr = (x); \
-	    if (FAILED(hr)) \
-        { \
-		     DEBUG_PRINT(DXGetErrorString(hr)); \
-			 return false; \
-        } \
-    }
-
-#ifdef WHISPERWIND_DEBUG
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
-	{ \
-	    HRESULT hr = S_OK; hr = (x); \
-	    if (FAILED(hr)) \
-		{ \
-		    DEBUG_PRINT(DXGetErrorString(hr)); \
-		} \
-	}
-#else
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
-	(x);
-#endif
 
 #endif

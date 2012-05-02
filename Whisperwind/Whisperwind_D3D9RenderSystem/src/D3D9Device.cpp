@@ -30,6 +30,7 @@ THE SOFTWARE
 #include "EngineConfig.h"
 #include "boost/make_shared.hpp"
 #include "D3D9Capability.h"
+#include "ExceptionDefines.h"
 
 namespace Engine
 {

@@ -25,6 +25,10 @@ THE SOFTWARE
 
 #include "WindowsHelper.h"
 #include "Plugin.h"
+#include "ExceptionDefines.h"
+#include "EngineManager.h"
+#include "EngineConfig.h"
+#include "WindowsEventHandle.h"
 
 namespace Engine
 {
@@ -46,5 +50,60 @@ namespace Engine
 		IF_NULL_EXCEPTION(dllLoadFunc, plugin + " dll doesn't have dllLoadEntry!");
 
 		dllLoadFunc();
+	}
+	//---------------------------------------------------------------------
+	HWND WindowsHelper::createWindow()
+	{
+		Util::Wstring windowName = EngineManager::getSingleton().getWindowName();
+		HINSTANCE hInst = ::GetModuleHandle(NULL);
+
+		WNDCLASSEXW wc;
+		MEMORY_ZERO(&wc, sizeof(WNDCLASSEXW));
+		wc.cbSize = sizeof(wc);
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = WindowsEventHandle::WndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = hInst;
+		wc.hIcon = NULL;
+		wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+		wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(BLACK_BRUSH));
+		wc.lpszMenuName = NULL;
+		wc.lpszClassName = windowName.c_str();
+		wc.hIconSm = NULL;
+
+		::RegisterClassEx(&wc);
+
+		EngineConfigPtr engineCfg = EngineManager::getSingleton().getEngineConfig();
+		bool isFullScreen = engineCfg->getFullScreen();
+		Util::u_int width = engineCfg->getResolutionPair().first;
+		Util::u_int height = engineCfg->getResolutionPair().second;
+
+		Util::u_int style;
+		Util::u_int styleEx = 0;
+		if (!isFullScreen)
+		{
+			style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE;
+		}
+		else
+		{
+			style = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
+			styleEx = WS_EX_TOPMOST;
+		}
+
+		RECT rc = {0, 0, width, height};
+		::AdjustWindowRect(&rc, style, false);
+
+		HWND window = ::CreateWindowEx(styleEx, windowName.c_str(), windowName.c_str(), style, 
+			0, 0, width, height, NULL, NULL, hInst, NULL);
+
+		::ShowWindow(window, SW_SHOWNORMAL);
+		::UpdateWindow(window);
+
+		WindowsEventHandle::setWindow(window);
+
+		WHISPERWIND_LOG(TO_UNICODE("Create window done!"));
+
+		return window;
 	}
 }

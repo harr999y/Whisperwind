@@ -37,6 +37,7 @@ THE SOFTWARE
 #include "StringConverter.h"
 #include "Profile.h"
 #include "Timer.h"
+#include "ExceptionDefines.h"
 
 namespace Engine
 {

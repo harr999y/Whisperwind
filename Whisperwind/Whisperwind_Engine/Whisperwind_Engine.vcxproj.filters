@@ -61,6 +61,9 @@
     <ClInclude Include="include\RenderMappingDefines.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="include\RenderBuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RenderSystem.cpp">

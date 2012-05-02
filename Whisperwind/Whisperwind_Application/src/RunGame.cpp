@@ -38,7 +38,7 @@ THE SOFTWARE
 #endif
 
 #include "GamePlay.h"
-#include "StringConverter.h"
+#include "ExceptionDefines.h"
 
 #ifdef WHISPERWIND_DEBUG
     #include <iostream>

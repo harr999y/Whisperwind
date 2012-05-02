@@ -14,9 +14,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{e88522c9-32ce-4ee5-9466-4ee3d684b151}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Util Src">
-      <UniqueIdentifier>{5e33aa97-8a06-42e0-9196-e41179393c6a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BoostLibs">
       <UniqueIdentifier>{1a537831-1441-4483-87b2-350abf7671ac}</UniqueIdentifier>
     </Filter>
