@@ -5,9 +5,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Exception">
-      <UniqueIdentifier>{4261a927-e316-44f6-b01d-e4f202315a30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{dd7c065f-112b-434b-b4c2-862866d13505}</UniqueIdentifier>
     </Filter>
@@ -23,6 +20,9 @@
     <Filter Include="Profile">
       <UniqueIdentifier>{5f455ee7-7cfe-4011-9838-8a2584656664}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ErrorCheck">
+      <UniqueIdentifier>{4261a927-e316-44f6-b01d-e4f202315a30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UtilConfig.h">
@@ -30,12 +30,6 @@
     </ClInclude>
     <ClInclude Include="include\MemoryDefines.h">
       <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ExceptionDefines.h">
-      <Filter>Exception</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Util.h">
-      <Filter>Util Header</Filter>
     </ClInclude>
     <ClInclude Include="include\UtilForwardDeclare.h">
       <Filter>Util Header</Filter>
@@ -73,11 +67,20 @@
     <ClInclude Include="include\Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="include\Util.h">
+      <Filter>Util Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CheckedCast.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ExceptionDefine.h">
+      <Filter>ErrorCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DebugDefine.h">
+      <Filter>ErrorCheck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\XmlReader.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="src\Boost.data_time.cpp">
       <Filter>BoostLibs</Filter>
     </ClCompile>
@@ -91,6 +94,9 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="src\Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XmlReader.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>

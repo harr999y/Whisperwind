@@ -27,22 +27,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\bin\config\EngineConfig.cfg">
+    <None Include="..\bin\Config\EngineConfig.cfg">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\bin\config\EngineConfig_d.cfg">
+    <None Include="..\bin\Config\EngineConfig_d.cfg">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\bin\config\Plugin.cfg">
+    <None Include="..\bin\Config\Plugin.cfg">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\bin\config\Plugin_d.cfg">
+    <None Include="..\bin\Config\Plugin_d.cfg">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\bin\config\Resource.cfg">
+    <None Include="..\bin\Config\Resource.cfg">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\bin\config\Resource_d.cfg">
+    <None Include="..\bin\Config\Resource_d.cfg">
       <Filter>Configs</Filter>
     </None>
   </ItemGroup>

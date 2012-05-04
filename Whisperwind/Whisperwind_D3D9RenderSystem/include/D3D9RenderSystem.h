@@ -33,30 +33,39 @@ THE SOFTWARE
 #include "RenderSystem.h"
 #include "D3D9ForwardDeclare.h"
 #include "EngineForwardDeclare.h"
+#include "D3D9Typedefs.h"
 
 namespace Engine
 {
 	class WHISPERWIND_API D3D9RenderSystem : public RenderSystem
 	{
 	public:
-		explicit D3D9RenderSystem(const Util::Wstring & windowName) :
-		    RenderSystem(windowName),
-			mWindow(NULL)
-		{}
+		D3D9RenderSystem();
 		~D3D9RenderSystem();
 
 	public:
 		virtual void init();
-		virtual bool render(Util::time elapsedTime);
+		virtual bool render(const RenderablePtr & renderable);
+
+		virtual RenderablePtr createRenderable(const RenderableMappingPtr & rm);
 
 	private:
-		void createWindow();
-		inline void setWindowHWND(HWND window);
-		bool updateRenderable(Util::time elapsedTime);
+		bool isPaused();
+		void createDevice(HWND window);
+		bool reset();
+		bool checkDeviceLostBeforeDraw();
+
+	private:
+		SET_GET_CONST_VALUE(bool, IsDeviceLost);
 
 	private:
 		HWND mWindow;
-		D3D9DevicePtr mDevice;
+		IDirect3D9Ptr mD3D;
+		IDirect3DDevice9Ptr mD3DDevice;
+		D3D9CapabilityPtr mCapability;
+		bool mIsDeviceLost;
+		D3DPRESENT_PARAMETERS mPresentParameters;  /// Keep for reset.
+		ID3DXEffectMap mEffectMap;
 	};
 }
 

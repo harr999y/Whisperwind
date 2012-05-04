@@ -33,8 +33,7 @@ namespace Engine
 	class D3D9FormatMappingFactory
 	{
 	public:
-		static D3DVERTEXELEMENT9Vector createD3D9VertexElementVec(const VertexElementVector & veVec);
-
+		static IDirect3DVertexDeclaration9Ptr createD3D9VertexDeclaration(const IDirect3DDevice9Ptr & device, const VertexElementVector & veVec);
 	};
 }
 

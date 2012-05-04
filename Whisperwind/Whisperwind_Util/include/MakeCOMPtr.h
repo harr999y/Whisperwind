@@ -34,7 +34,7 @@ namespace Util
 {
 	/// Thanks KlayGE!
 	template <class T>
-	static boost::shared_ptr<T> MakeCOMPtr(T * p)
+	static boost::shared_ptr<T> makeCOMPtr(T * p)
 	{
 		return boost::shared_ptr<T>(p, boost::mem_fn(&T::Release));
 	}

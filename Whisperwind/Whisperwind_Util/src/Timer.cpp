@@ -24,7 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "Timer.h"
-#include "ExceptionDefines.h"
+#include "ExceptionDefine.h"
 
 /** for windows.h's warning level */
 #pragma warning(push, 3)

@@ -25,7 +25,7 @@ THE SOFTWARE
 
 #include "WindowsHelper.h"
 #include "Plugin.h"
-#include "ExceptionDefines.h"
+#include "ExceptionDefine.h"
 #include "EngineManager.h"
 #include "EngineConfig.h"
 #include "WindowsEventHandle.h"

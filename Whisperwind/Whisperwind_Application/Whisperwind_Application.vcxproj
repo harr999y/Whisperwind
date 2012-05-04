@@ -109,12 +109,12 @@
     <ClInclude Include="include\ApplicationCofig.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\bin\config\EngineConfig.cfg" />
-    <None Include="..\bin\config\EngineConfig_d.cfg" />
-    <None Include="..\bin\config\Plugin.cfg" />
-    <None Include="..\bin\config\Plugin_d.cfg" />
-    <None Include="..\bin\config\Resource.cfg" />
-    <None Include="..\bin\config\Resource_d.cfg" />
+    <None Include="..\bin\Config\EngineConfig.cfg" />
+    <None Include="..\bin\Config\EngineConfig_d.cfg" />
+    <None Include="..\bin\Config\Plugin.cfg" />
+    <None Include="..\bin\Config\Plugin_d.cfg" />
+    <None Include="..\bin\Config\Resource.cfg" />
+    <None Include="..\bin\Config\Resource_d.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

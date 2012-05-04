@@ -25,6 +25,9 @@ THE SOFTWARE
 
 #include "D3D9FormatMapping.h"
 #include "boost/foreach.hpp"
+#include "DebugDefine.h"
+#include "D3D9Helper.h"
+#include "MakeCOMPtr.h"
 
 namespace Engine
 {
@@ -32,11 +35,11 @@ namespace Engine
 	// Helper functions.
 	//---------------------------------------------------------------------
 #define CASE_MATCH_RETURN(x, y) case x : return y;
-#define CASE_UNMATCH_ASSERT default : BOOST_ASSERT(false);
+#define CASE_UNMATCH_ASSERT default : WHISPERWIND_ASSERT(false);
 	//---------------------------------------------------------------------
 	D3DDECLTYPE translateVertexElementType(VertexElementType vet)
 	{
-		BOOST_ASSERT(vet >= VET_MAX);
+		WHISPERWIND_ASSERT(vet < VET_MAX);
 
 		switch (vet)
 		{
@@ -48,13 +51,13 @@ namespace Engine
 			CASE_UNMATCH_ASSERT;
 		}
 
-		BOOST_ASSERT(false);
+		WHISPERWIND_ASSERT(false);
 		return D3DDECLTYPE_UNUSED;
 	}
 	//---------------------------------------------------------------------
 	D3DDECLUSAGE translateVertexElementUsage(VertexElementUsage veu)
 	{
-		BOOST_ASSERT(veu >= VEU_MAX);
+		WHISPERWIND_ASSERT(veu < VEU_MAX);
 
 		switch (veu)
 		{
@@ -66,7 +69,7 @@ namespace Engine
 			CASE_UNMATCH_ASSERT;
 		}
 
-		BOOST_ASSERT(false);
+		WHISPERWIND_ASSERT(false);
 		return D3DDECLUSAGE_TEXCOORD;
 	}
 	//---------------------------------------------------------------------
@@ -76,7 +79,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	// D3D9FormatMappingFactory
 	//---------------------------------------------------------------------
-	D3DVERTEXELEMENT9Vector D3D9FormatMappingFactory::createD3D9VertexElementVec(const VertexElementVector & veVec)
+	IDirect3DVertexDeclaration9Ptr D3D9FormatMappingFactory::createD3D9VertexDeclaration(const IDirect3DDevice9Ptr & device, const VertexElementVector & veVec)
 	{
 		D3DVERTEXELEMENT9Vector d3dVertexElemVec;
 		D3DVERTEXELEMENT9 d3dVertexElem;
@@ -103,6 +106,9 @@ namespace Engine
 			d3dVertexElemVec.push_back(d3dVertexElem);
 		}
 
-		return d3dVertexElemVec;
+		IDirect3DVertexDeclaration9 * vertexDeclaration = NULL;
+		DX_IF_FAILED_DEBUG_PRINT(device->CreateVertexDeclaration(&d3dVertexElemVec[0], &vertexDeclaration));
+
+		return Util::makeCOMPtr(vertexDeclaration);
 	}
 }

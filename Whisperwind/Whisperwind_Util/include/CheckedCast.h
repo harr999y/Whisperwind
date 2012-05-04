@@ -22,3 +22,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _CHECKED_CAST_H_
+#define _CHECKED_CAST_H_
+
+#include "DebugDefine.h"
+#include "boost/shared_ptr.hpp"
+
+namespace Util
+{
+	/// Thanks KlayGE!
+	template <typename to, typename from>
+	inline to checkedCast(from f)
+	{
+		WHISPERWIND_ASSERT(dynamic_cast<to>(f) == static_cast<to>(f));
+		return static_cast<to>(f);
+	}
+
+	template <typename to, typename from>
+	inline boost::shared_ptr<to> checkedPtrCast(const boost::shared_ptr<from> & f)
+	{
+		WHISPERWIND_ASSERT(boost::dynamic_pointer_cast<to>(f) == boost::static_pointer_cast<to>(f));
+		return boost::static_pointer_cast<to>(f);
+	}
+}
+
+#endif

@@ -17,6 +17,9 @@
   <ItemGroup>
     <ClCompile Include="src\GamePlayFramework.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\bin\media\Effects\Test.fx" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C438CBE8-938E-469E-B7F2-4208F63E2E71}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

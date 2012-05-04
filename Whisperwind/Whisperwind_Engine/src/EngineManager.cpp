@@ -37,7 +37,7 @@ THE SOFTWARE
 #include "StringConverter.h"
 #include "Profile.h"
 #include "Timer.h"
-#include "ExceptionDefines.h"
+#include "ExceptionDefine.h"
 
 namespace Engine
 {
@@ -99,7 +99,7 @@ namespace Engine
 			WindowsEventHandle::handleWindowsMsg();
 			handleLogical();
 
-			IF_FALSE_EXCEPTION(mRenderSystem->render(mTimer->getElapsedTime()), "Render failed!");
+			IF_FALSE_EXCEPTION(mRenderSystem->render(mRenderableVec[0]), "Render failed!");
 		}
 	}
 	//---------------------------------------------------------------------
@@ -108,6 +108,8 @@ namespace Engine
 		clearResources();
 		clearPlugins();
 		clearConfigs();
+
+		mRenderableVec.clear();
 
 		WHISPERWIND_LOG(TO_UNICODE("Quit engine done!"));
 	}
@@ -160,5 +162,11 @@ namespace Engine
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::handleLogical()
-	{}
+	{
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::addRenderable(const RenderablePtr & renderable)
+	{
+		mRenderableVec.push_back(renderable);
+	}
 }

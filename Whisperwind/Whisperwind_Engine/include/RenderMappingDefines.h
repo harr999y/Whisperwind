@@ -106,20 +106,45 @@ namespace Engine
 		PT_MAX
 	};
 
-	struct VertexElement
+	struct WHISPERWIND_API VertexElement
 	{
+		VertexElement(Util::s_int16 streamIndex, Util::s_int16 offset, VertexElementType type, 
+			VertexElementUsage usage, Util::s_int8 usageIndex) : 
+		    StreamIndex(streamIndex), Offset(offset), Type(type), Usage(usage), UsageIndex(usageIndex)
+		{}
+
 		Util::s_int16 StreamIndex;
 		Util::s_int16 Offset;
 		VertexElementType Type;
 		VertexElementUsage Usage;
 		Util::s_int8 UsageIndex;
 	};
-
-	typedef Util::u_int16 IndexFormat;
 	typedef std::vector<VertexElement> VertexElementVector;
 
+	typedef Util::u_int16 IndexFormat;
 
-	typedef std::vector<IndexFormat> IndexVector;
+	struct WHISPERWIND_API BufferData
+	{
+		BufferData() :
+	        Data(NULL),
+		    DataSize(0),
+			Stride(0)
+	    {}
+
+	    const void * Data;
+		Util::u_int DataSize;
+	    Util::u_int Stride;
+	};
+
+	struct WHISPERWIND_API RenderableMapping
+	{
+		VertexElementVector VertexElemVec;
+		BufferData VertexData;
+		bool HasIndex;
+		BufferData IndexData;
+		Util::Wstring EffectName;
+		Util::String TechniqueName;
+	};
 }
 
 #endif

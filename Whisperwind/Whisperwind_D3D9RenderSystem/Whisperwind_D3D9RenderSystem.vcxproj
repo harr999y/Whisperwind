@@ -16,19 +16,20 @@
     <ClInclude Include="include\D3D9Helper.h" />
     <ClInclude Include="include\D3D9ForwardDeclare.h" />
     <ClInclude Include="include\D3D9Plugin.h" />
-    <ClInclude Include="include\D3D9Device.h" />
+    <ClInclude Include="include\D3D9Renderable.h" />
     <ClInclude Include="include\D3D9RenderSystem.h" />
     <ClInclude Include="include\D3D9Typedefs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Capability.cpp" />
-    <ClCompile Include="src\D3D9FormatMapping.cpp" />
+    <ClCompile Include="src\D3D9FormatMapping.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="src\D3D9Helper.cpp" />
     <ClCompile Include="src\D3D9Plugin.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
     <ClCompile Include="src\D3D9PluginDll.cpp" />
-    <ClCompile Include="src\D3D9Device.cpp" />
     <ClCompile Include="src\D3D9RenderSystem.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>

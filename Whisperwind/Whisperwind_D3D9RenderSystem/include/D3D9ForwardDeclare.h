@@ -28,12 +28,6 @@ THE SOFTWARE
 #include "boost/shared_ptr.hpp"
 #include "D3D9Typedefs.h"
 
-#ifdef WHISPERWIND_DEBUG
-    #pragma comment(lib, "d3dx9d.lib")
-#else
-    #pragma comment(lib, "d3dx9.lib")
-#endif
-
 namespace Engine
 {
 	class D3D9RenderSystem;
@@ -42,8 +36,10 @@ namespace Engine
 	class D3D9Capability;
 	typedef boost::shared_ptr<D3D9Capability> D3D9CapabilityPtr;
 
-	class D3D9Device;
-	typedef boost::shared_ptr<D3D9Device> D3D9DevicePtr;
+	class D3D9Renderable;
+	typedef boost::shared_ptr<D3D9Renderable> D3D9RenderablePtr;
+
+	struct VertexBound;
 }
 
 #endif

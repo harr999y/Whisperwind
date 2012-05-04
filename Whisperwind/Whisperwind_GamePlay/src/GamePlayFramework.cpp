@@ -28,6 +28,8 @@ THE SOFTWARE
 #include "Plugin.h"
 #include "boost/make_shared.hpp"
 #include "Renderable.h"
+#include "RenderMappingDefines.h"
+#include "RenderSystem.h"
 
 namespace GamePlay
 {
@@ -37,7 +39,6 @@ namespace GamePlay
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
 		engineMgr.setWindowName(name);
 
-		init();
 	}
 	//---------------------------------------------------------------------
 	GamePlayFramework::~GamePlayFramework()
@@ -47,6 +48,7 @@ namespace GamePlay
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
 		engineMgr.preRunning();
+		init();
 		engineMgr.run();
 		engineMgr.postRunning();
 	}
@@ -54,10 +56,46 @@ namespace GamePlay
 	void GamePlayFramework::init()
 	{
 		/// Test for creating some content.
-		//Engine::RenderablePtr renderable =  boost::make_shared<Engine::Renderable>();
-		//Engine::VertexElement vertElem;
-		//vertElem.
-		//renderable->VertexElemVec.push_back()
+		struct Elem
+		{
+			float Pos[3];
+		};
+		
+		Elem * elem = WHISPERWIND_NEW(Elem[6]);
+		elem[0].Pos[0] = 0;
+		elem[0].Pos[1] = 0;
+		elem[0].Pos[2] = 1;
+		elem[1].Pos[0] = 1;
+		elem[1].Pos[1] = 0;
+		elem[1].Pos[2] = 1;
+		elem[2].Pos[0] = 0;
+		elem[2].Pos[1] = 1;
+		elem[2].Pos[2] = 1;
+		elem[3].Pos[0] = 1;
+		elem[3].Pos[1] = 1;
+		elem[3].Pos[2] = 1;
+		elem[4].Pos[0] = 1;
+		elem[4].Pos[1] = 0;
+		elem[4].Pos[2] = 1;
+		elem[5].Pos[0] = 0;
+		elem[5].Pos[1] = 1;
+		elem[5].Pos[2] = 0;
 
+		Engine::RenderableMappingPtr rm =  boost::make_shared<Engine::RenderableMapping>();
+		Engine::VertexElement vertexElem(0, 0, Engine::VET_FLOAT3, Engine::VEU_POSITION, 0);
+		rm->VertexElemVec.push_back(vertexElem);
+		rm->HasIndex = false;
+		Engine::BufferData bufData;
+		bufData.DataSize = sizeof(Elem) * 6;
+		bufData.Data = static_cast<void *>(elem);
+		bufData.Stride = sizeof(Elem);
+		rm->VertexData = bufData;
+		rm->EffectName = TO_UNICODE("Test.fx");
+		rm->TechniqueName = "Test";
+
+		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
+		Engine::EngineManager::getSingleton().addRenderable(renderable);
+
+		//WHISPERWIND_DELETE(elem);
 	}
 }

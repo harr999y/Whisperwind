@@ -38,7 +38,8 @@ THE SOFTWARE
 #endif
 
 #include "GamePlay.h"
-#include "ExceptionDefines.h"
+#include "ExceptionDefine.h"
+#include "DebugDefine.h"
 
 #ifdef WHISPERWIND_DEBUG
     #include <iostream>
@@ -59,7 +60,7 @@ THE SOFTWARE
 		catch (Util::Exception & e)
 		{
 #ifdef WHISPERWIND_DEBUG
-		    std::cout << boost::diagnostic_information_what(e);
+		    DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
 #else
 			Util::Wstring errorInfo;
 			Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);

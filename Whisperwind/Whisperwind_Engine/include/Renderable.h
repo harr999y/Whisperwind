@@ -26,16 +26,30 @@ THE SOFTWARE
 #define _RENDERABLE_H_
 
 #include "Util.h"
-#include "RenderBuffer.h"
+#include "EngineForwardDeclare.h"
 #include "RenderMappingDefines.h"
 
 namespace Engine
 {
-	struct Renderable
+	class WHISPERWIND_API Renderable
 	{
-		VertexElementVector VertexElemVec;
-		RenderBuffer RenderBuf;
-		IndexVector IndexVec;
+	public:
+		Renderable() : 
+		  mNeedReset(false)
+		{}
+
+	protected:
+		virtual ~Renderable()
+		{}
+
+	public:
+		SET_GET_CONST_VALUE(bool, NeedReset);
+		
+	private:
+		bool mNeedReset;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Renderable);
 	};
 
 }

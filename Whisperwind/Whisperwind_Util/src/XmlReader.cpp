@@ -25,7 +25,8 @@ THE SOFTWARE
 
 #include "XmlReader.h"
 #include "boost/make_shared.hpp"
-#include "ExceptionDefines.h"
+#include "ExceptionDefine.h"
+#include "DebugDefine.h"
 
 namespace Util
 {
@@ -56,14 +57,14 @@ namespace Util
 
 		mRootNode = mDoc->first_node(ROOT_NODE_NAME.c_str());
 
-		BOOST_ASSERT(mRootNode && "This xml dont has root node!");
+		WHISPERWIND_ASSERT(mRootNode && "This xml dont has root node!");
 	}
 	//---------------------------------------------------------------------
 	bool XmlReader::advanceFirstChildNode(const Util::String & nodeName)
 	{
 		mCurrentNode = mRootNode->first_node(nodeName.c_str());
 
-		BOOST_ASSERT(mCurrentNode && "Dont have this node!");
+		WHISPERWIND_ASSERT(mCurrentNode && "Dont have this node!");
 		IF_NULL_RETURN_FALSE(mCurrentNode);
 
 		return true;
@@ -81,7 +82,7 @@ namespace Util
 	const Util::String XmlReader::getAttribute(const Util::String & attributeName)
 	{
 		Attribute * attribute = mCurrentNode->first_attribute(attributeName.c_str());
-		BOOST_ASSERT(attribute && "Dont have this attribute.");
+		WHISPERWIND_ASSERT(attribute && "Dont have this attribute.");
 
 		return attribute->value();
 	}

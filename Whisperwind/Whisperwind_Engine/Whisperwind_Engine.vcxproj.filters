@@ -61,14 +61,8 @@
     <ClInclude Include="include\RenderMappingDefines.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="include\RenderBuffer.h">
-      <Filter>Render</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\RenderSystem.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
     <ClCompile Include="src\EngineManager.cpp">
       <Filter>EngineManager</Filter>
     </ClCompile>
@@ -89,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="src\EngineConfigDefines.cpp">
       <Filter>Configuration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Renderable.cpp">
-      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="src\Resource.cpp">
       <Filter>Resource</Filter>

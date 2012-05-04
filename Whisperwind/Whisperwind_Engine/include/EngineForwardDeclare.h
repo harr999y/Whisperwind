@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _ENGINE_FORWARD_DECLARE_H_
 
 #include "boost/shared_ptr.hpp"
+#include <vector>
 
 namespace Engine
 {
@@ -33,12 +34,17 @@ namespace Engine
 	class RenderSystem;
 	class EngineConfig;
 	class PluginConfig;
-	struct Renderable;
+	class Renderable;
+	struct BufferData;
+	struct VertexElement;
+	struct RenderableMapping;
 
 	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
 	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;
 	typedef boost::shared_ptr<PluginConfig> PluginConfigPtr;
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
+	typedef std::vector<RenderablePtr> RenderableVector;
+	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
 }
 
 #endif

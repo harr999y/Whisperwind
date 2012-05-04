@@ -10,6 +10,9 @@
     <Filter Include="GamePlay Header">
       <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{94193523-e291-46c8-b334-0d90acdb03cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GamePlay.h">
@@ -23,5 +26,10 @@
     <ClCompile Include="src\GamePlayFramework.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\bin\media\Effects\Test.fx">
+      <Filter>Effects</Filter>
+    </None>
   </ItemGroup>
 </Project>

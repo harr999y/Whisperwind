@@ -24,7 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "Profile.h"
-#include "ExceptionDefines.h"
+#include "ExceptionDefine.h"
 
 namespace Util
 {

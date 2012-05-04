@@ -24,6 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "D3D9Capability.h"
+#include "DebugDefine.h"
 
 namespace Engine
 {
@@ -59,7 +60,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	D3DFORMAT D3D9Capability::getSupportedFomat(Capabilities cap) const
 	{
-		BOOST_ASSERT((cap < CAPABILITIES_MAX) && (cap >= UNKNOWN_FORMAT));
+		WHISPERWIND_ASSERT((cap < CAPABILITIES_MAX) && (cap >= UNKNOWN_FORMAT));
 
 		return mCapVec[cap].SupportedFormat;
 	}

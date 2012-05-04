@@ -102,6 +102,7 @@ namespace Util
 }
 
 #include "boost/lexical_cast.hpp"
+#include "DebugDefine.h"
 
 #ifdef WHISPERWIND_DEBUG
 #define PROFILE(x, y) \
@@ -113,7 +114,7 @@ namespace Util
 		Util::s_int64 result = profile.getResult(); \
 		WHISPERWIND_LOG(Util::Wstring(y) + TO_UNICODE(" profile's result is : ") + \
 			boost::lexical_cast<Util::Wstring>(result) + TO_UNICODE(" MS.")); \
-		BOOST_ASSERT(result >= 0 && "Profile getProfile Failed!"); \
+		WHISPERWIND_ASSERT(result >= 0 && "Profile getProfile Failed!"); \
     }
 #else
 #define PROFILE(x, y) (0);

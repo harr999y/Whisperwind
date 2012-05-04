@@ -34,6 +34,8 @@ THE SOFTWARE
 #include <DxErr.h>
 #include "Util.h"
 #include "D3D9Typedefs.h"
+#include "EngineForwardDeclare.h"
+#include "StringConverter.h"
 
 namespace Engine
 {
@@ -44,8 +46,7 @@ namespace Engine
 	};
 
 	class D3D9Helper
-	{
-	};
+	{};
 }
 
 #define DX_IF_FAILED_RETURN_FALSE(x) \
@@ -53,8 +54,11 @@ namespace Engine
         HRESULT hr; hr = (x); \
 	    if (FAILED(hr)) \
         { \
-		     DEBUG_PRINT(DXGetErrorString(hr)); \
-			 return false; \
+			Util::String str(&(#x)[0]); \
+			Util::Wstring wstr; \
+			Util::StringToWstring(str, wstr); \
+			DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
+			return false; \
         } \
     }
 
@@ -64,7 +68,10 @@ namespace Engine
 	    HRESULT hr = S_OK; hr = (x); \
 	    if (FAILED(hr)) \
 		{ \
-		    DEBUG_PRINT(DXGetErrorString(hr)); \
+		    Util::String str(&(#x)[0]); \
+			Util::Wstring wstr; \
+            Util::StringToWstring(str, wstr); \
+		    DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
 		} \
 	}
 #else

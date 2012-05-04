@@ -22,32 +22,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _EXCEPTION_DEFINES_H_
-#define _EXCEPTION_DEFINES_H_
+#ifndef _EXCEPTION_DEFINE_H_
+#define _EXCEPTION_DEFINE_H_
 
-#include "Util.h"
+#include "UtilCommon.h"
 #include <exception>
 #include "boost/exception/all.hpp"
 #include "boost/current_function.hpp"
-
-#ifdef WHISPERWIND_DEBUG
-    #define BOOST_ENABLE_ASSERT_HANDLER
-#endif
-#include "boost/assert.hpp"
-
-#ifdef WHISPERWIND_DEBUG
-#include "boost/format.hpp"
-#include <iostream>
-namespace boost
-{
-	inline void assertion_failed(char const * expr, char const * function, char const * file, long line)
-	{
-		boost::wformat wfmt(TO_UNICODE("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
-		wfmt % expr% function% file% line;
-		std::wcout << wfmt;
-	}
-}
-#endif
 
 namespace Util
 {

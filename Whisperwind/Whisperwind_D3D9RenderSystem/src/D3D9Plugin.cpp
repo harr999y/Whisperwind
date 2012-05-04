@@ -32,9 +32,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void D3D9Plugin::install()
 	{
-		EngineManager & engineMgr = EngineManager::getSingleton();
-		RenderSystemPtr d3d9RS = boost::make_shared<D3D9RenderSystem>(engineMgr.getWindowName());
+		RenderSystemPtr d3d9RS = boost::make_shared<D3D9RenderSystem>();
 
+		EngineManager & engineMgr = EngineManager::getSingleton();
 		d3d9RS->setEngineConfig(engineMgr.getEngineConfig());
 		d3d9RS->init();
 

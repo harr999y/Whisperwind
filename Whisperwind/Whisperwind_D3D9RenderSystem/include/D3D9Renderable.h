@@ -22,24 +22,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_BUFFER_H_
-#define _RENDER_BUFFER_H_
+#ifndef _D3D9_RENDERABLE_H_
+#define _D3D9_RENDERABLE_H_
 
-#include "Util.h"
+#include "Renderable.h"
+#include "D3D9Typedefs.h"
 
 namespace Engine
 {
-	struct RenderBuffer
+	struct VertexBound
 	{
-		RenderBuffer() :
-	        Data(NULL),
-			ElemSize(0),
-			BlockSize(0)
+		VertexBound() :
+	        VertexBufSize(0),
+			VertexStride(0)
 		{}
 
-		const void * Data;
-		Util::u_int ElemSize;
-		Util::u_int BlockSize;
+		IDirect3DVertexDeclaration9Ptr VertexDeclaration;
+		IDirect3DVertexBuffer9Ptr VertexBuffer;
+		Util::u_int VertexBufSize;
+		Util::u_int VertexStride;
+	};
+
+	class D3D9Renderable : public Renderable
+	{
+	public:
+		D3D9Renderable() : 
+		    mHasIndex(false),
+			mTechnique(0)
+		{}
+
+	public:
+		SET_GET_VALUE(VertexBound, VertexBound);
+		SET_GET_CONST_VALUE(IDirect3DIndexBuffer9Ptr, IndexBuffer);
+		SET_GET_CONST_VALUE(ID3DXEffectPtr, Effect);
+		SET_GET_CONST_VALUE(D3DXHANDLE, Technique);
+		SET_GET_CONST_VALUE(bool, HasIndex);
+
+	private:
+		VertexBound mVertexBound;
+		IDirect3DIndexBuffer9Ptr mIndexBuffer;
+		ID3DXEffectPtr mEffect;
+		D3DXHANDLE mTechnique;
+		bool mHasIndex;
 	};
 }
 

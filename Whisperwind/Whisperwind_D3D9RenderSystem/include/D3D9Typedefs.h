@@ -29,6 +29,14 @@ THE SOFTWARE
 #include <d3dx9.h>
 #include "boost/shared_ptr.hpp"
 #include <vector>
+#include "boost/unordered_map.hpp"
+#include "Util.h"
+
+#ifdef WHISPERWIND_DEBUG
+#pragma comment(lib, "d3dx9d.lib")
+#else
+#pragma comment(lib, "d3dx9.lib")
+#endif
 
 namespace Engine
 {
@@ -40,8 +48,13 @@ namespace Engine
 	typedef boost::shared_ptr<IDirect3DTexture9> IDirect3DTexture9Ptr;
 	typedef boost::shared_ptr<ID3DXEffect> ID3DXEffectPtr;
 	typedef boost::shared_ptr<IDirect3DSurface9> IDirect3DSurface9Ptr;
-
+	typedef boost::shared_ptr<IDirect3DVertexDeclaration9> IDirect3DVertexDeclaration9Ptr;
+	typedef boost::shared_ptr<IDirect3DVertexBuffer9> IDirect3DVertexBuffer9Ptr;
+	typedef boost::shared_ptr<IDirect3DIndexBuffer9> IDirect3DIndexBuffer9Ptr;
+	
 	typedef std::vector<D3DVERTEXELEMENT9> D3DVERTEXELEMENT9Vector;
+
+	typedef boost::unordered_map<Util::Wstring, ID3DXEffectPtr> ID3DXEffectMap;
 }
 
 #endif

@@ -33,7 +33,8 @@ namespace Engine
 	class WHISPERWIND_API RenderSystem
 	{
 	public:
-		explicit RenderSystem(const Util::Wstring & windowName);
+		RenderSystem()
+		{}
 
 	protected:
 		virtual ~RenderSystem() 
@@ -41,14 +42,13 @@ namespace Engine
 
 	public:
 		virtual void init() = 0;
-		virtual bool render(Util::time) = 0;
+		virtual bool render(const RenderablePtr & renderable) = 0;
+		virtual RenderablePtr createRenderable(const RenderableMappingPtr & rm) = 0;
 
 	public:
-		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
 
 	protected:
-		Util::Wstring mWindowName;
 		EngineConfigPtr mEngineConfig;
 
 	private:

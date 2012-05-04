@@ -102,20 +102,4 @@ THE SOFTWARE
 #define GET_CONST_VALUE(type, name) \
 	inline const type & get##name() const { return m##name; }
 
-#ifdef WHISPERWIND_DEBUG
-#include <iostream>
-#include "boost/io/ios_state.hpp"
-
-#define DEBUG_PRINT(x) \
-	{ \
-	    boost::io::wios_all_saver ios(std::wcout); \
-		std::wcout.imbue(std::locale(std::locale(), "", LC_CTYPE)); \
-	    std::wcout << (x) << std::endl; \
-	}
-#else
-#define DEBUG_PRINT(x) (0)
-#endif
-
-#define MEMORY_ZERO(x, y) memset(x, 0, y)
-
 #endif
