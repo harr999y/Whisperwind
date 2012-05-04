@@ -28,7 +28,7 @@ THE SOFTWARE
 #include "boost/checked_delete.hpp"
 
 /// Long name to notice caring about new and delete.
-#define WHISPERWIND_NEW new
+#define WHISPERWIND_NEW(x) new x;
 #define WHISPERWIND_DELETE(x) boost::checked_delete((x));
 #define WHISPERWIND_DELETE_ARRAY(x) boost::checked_array_delete((x));
 

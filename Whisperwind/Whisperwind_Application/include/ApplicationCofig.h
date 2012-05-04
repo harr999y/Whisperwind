@@ -32,11 +32,6 @@ THE SOFTWARE
 
 #include "Util.h"
 
-/** This is the flag to open visual leak detector. */
-#ifdef WHISPERWIND_DEBUG
-    #define USE_VLD 1
-#endif
-
 static const Util::Wstring APPLICATION_NAME(TO_UNICODE("Whisperwind V0.3"));
 static const Util::Wstring ERROR_NOTIFY(TO_UNICODE("Your crash is reported to Developer.\nPlease wait for bug fix.  :)  Thanks!"));
 

@@ -32,11 +32,6 @@ THE SOFTWARE
 
 #include "ApplicationCofig.h"
 
-#if USE_VLD != 0
-    /** Add for visual leak detector. */
-    #include "Visual Leak Detector/include/vld.h"
-#endif
-
 #include "GamePlay.h"
 #include "ExceptionDefine.h"
 #include "DebugDefine.h"

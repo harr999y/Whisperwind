@@ -96,6 +96,6 @@ namespace GamePlay
 		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 		Engine::EngineManager::getSingleton().addRenderable(renderable);
 
-		//WHISPERWIND_DELETE(elem);
+		WHISPERWIND_DELETE_ARRAY(elem);
 	}
 }

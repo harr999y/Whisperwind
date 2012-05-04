@@ -25,6 +25,9 @@ THE SOFTWARE
 #ifndef _UTIL_CONFIG_H_
 #define _UTIL_CONFIG_H_
 
-
+#if defined(DEBUG) || defined(_DEBUG)
+	/** Add for visual leak detector. */
+	#include "Visual Leak Detector/include/vld.h"
+#endif
 
 #endif

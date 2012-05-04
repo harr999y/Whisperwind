@@ -100,6 +100,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>../Whisperwind_Dependencies\Visual Leak Detector\lib\Win32</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>

@@ -83,7 +83,7 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
       <AdditionalDependencies>Whisperwind_Engine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../lib/$(configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../lib/$(configuration);../Whisperwind_Dependencies\Visual Leak Detector\lib\Win32</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
