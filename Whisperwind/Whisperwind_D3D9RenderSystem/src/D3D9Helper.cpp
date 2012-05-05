@@ -75,12 +75,13 @@ namespace Engine
 				const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
 
 				void * buf = NULL;
-				const void * data = rm->VertexBound.VertexData.Data;
+				const Util::u_int8 * data = boost::static_pointer_cast<Util::u_int8>(rm->VertexBound.VertexData.Data).get();
 				DX_IF_FAILED_DEBUG_PRINT(vb->Lock(0, 0, &buf, lockFlag));
-				std::copy(static_cast<const Util::u_int8 *>(data), static_cast<const Util::u_int8 *>(data) + rm->VertexBound.VertexData.DataSize, 
-					static_cast<Util::u_int8 *>(buf));
+ 				std::copy(data, data + rm->VertexBound.VertexData.DataSize, static_cast<Util::u_int8 *>(buf));
 				vb->Unlock();
 			}
+			WHISPERWIND_ASSERT(vb != NULL);
+
 			IDirect3DVertexBuffer9Ptr vbPtr = Util::makeCOMPtr(vb);
 			VertexBound vertexBound;
 			vertexBound.VertexBuffer = vbPtr;
@@ -107,12 +108,13 @@ namespace Engine
 				const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
 
 				void * buf = NULL;
-				const void * data = rm->IndexBound.IndexData.Data;
+				const Util::u_int8 * data = boost::static_pointer_cast<Util::u_int8>(rm->IndexBound.IndexData.Data).get();
 				DX_IF_FAILED_DEBUG_PRINT(ib->Lock(0, 0, &buf, lockFlag));
-				std::copy(static_cast<const Util::u_int8 *>(data), static_cast<const Util::u_int8 *>(data) + rm->IndexBound.IndexData.DataSize,
-					static_cast<Util::u_int8 *>(buf));
+				std::copy(data, data + rm->IndexBound.IndexData.DataSize, static_cast<Util::u_int8 *>(buf));
 				ib->Unlock();
 			}
+			WHISPERWIND_ASSERT(ib != NULL);
+
 			IDirect3DIndexBuffer9Ptr ibPtr = Util::makeCOMPtr(ib);
 
 			d3d9Renderable->setIndexBuffer(ibPtr);

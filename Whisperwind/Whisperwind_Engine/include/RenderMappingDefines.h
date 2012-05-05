@@ -28,6 +28,7 @@ THE SOFTWARE
 #include "Util.h"
 #include <vector>
 #include "EngineForwardDeclare.h"
+#include "boost/shared_ptr.hpp"
 
 namespace Engine
 {
@@ -92,15 +93,18 @@ namespace Engine
 		Util::s_int8 UsageIndex;
 	};
 
+	typedef std::vector<VertexElement> VertexElementVector;
+
+	typedef boost::shared_ptr<void> VoidDataPtr;
+
 	struct WHISPERWIND_API BufferData
 	{
 		BufferData() :
-	        Data(NULL),
 		    DataSize(0),
 			Stride(0)
 	    {}
 
-	    const void * Data;
+	    VoidDataPtr Data;
 		Util::u_int DataSize;
 	    Util::u_int Stride;
 	};
@@ -146,6 +150,7 @@ namespace Engine
 		Util::String TechniqueName;
 		PrimitiveType PrimType;
 	};
+
 }
 
 #endif

@@ -39,6 +39,8 @@ THE SOFTWARE
 #include "Timer.h"
 #include "ExceptionDefine.h"
 #include "RenderMappingDefines.h"
+/// test!
+#include "Renderable.h"
 
 namespace Engine
 {
@@ -104,9 +106,13 @@ namespace Engine
 			if (mRenderSystem->isPaused())
 				mTimer->sleep(1);
 
-			/// TODO!
+			/// TODO!Test!
 			mRenderSystem->clearFrame(FCF_TARGET | FCF_ZBUFFER);
 			mRenderSystem->beginRendering();
+			static Util::real num = 0.0f;
+			num += 0.00001f;
+			Util::real test[4] = {num, num, num, 1.0f};
+			mRenderableVec[0]->setEffectParamValue("preColor", static_cast<void *>(test));
 			IF_FALSE_EXCEPTION(mRenderSystem->render(mRenderableVec[0]), "Render failed!");
 			mRenderSystem->endRendering();
 		}

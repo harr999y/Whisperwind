@@ -22,41 +22,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDERABLE_H_
-#define _RENDERABLE_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "Renderable.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API Renderable
+	//---------------------------------------------------------------------
+	void Renderable::setEffectParamValue(const Util::String & paramName, const void * data)
 	{
-	public:
-		Renderable() : 
-		  mNeedReset(false)
-		{}
-
-	public:
-		inline void setEffectParamValue(const Util::String & paramName, const void * data);
-
-	public:
-		SET_GET_CONST_VALUE(bool, NeedReset);
-		
-	protected:
-		virtual ~Renderable()
-		{}
-
-	private:
-		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data = NULL) = 0;
-
-	private:
-		bool mNeedReset;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(Renderable);
-	};
-
+		setEffectParamValue_impl(paramName, data);
+	}
 }
-
-#endif

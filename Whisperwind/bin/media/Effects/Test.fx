@@ -7,6 +7,8 @@ sampler_state
 	MagFilter = LINEAR;
 };
 
+float4 preColor;
+
 void VS(float4 pos : POSITION,
               out float4 oPos : POSITION)
 {
@@ -15,7 +17,7 @@ void VS(float4 pos : POSITION,
 
 void PS(out float4 oColor : COLOR0)
 {
-	oColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
+	oColor = preColor;
 }
 
 technique Test

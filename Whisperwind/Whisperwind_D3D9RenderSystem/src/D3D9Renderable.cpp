@@ -22,41 +22,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDERABLE_H_
-#define _RENDERABLE_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "D3D9Renderable.h"
+#include "DebugDefine.h"
+#include "D3D9Helper.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API Renderable
+	//---------------------------------------------------------------------
+	void D3D9Renderable::setEffectParamValue_impl(const Util::String & paramName, const void * data)
 	{
-	public:
-		Renderable() : 
-		  mNeedReset(false)
-		{}
+		WHISPERWIND_ASSERT(data != NULL);
 
-	public:
-		inline void setEffectParamValue(const Util::String & paramName, const void * data);
+		EffectParamSize eps;
+		if (mEffectParamMap.find(paramName) == mEffectParamMap.end())
+		{
+			eps.Handle = mEffect->GetParameterByName(NULL, paramName.c_str());
+			WHISPERWIND_ASSERT(eps.Handle != NULL);
 
-	public:
-		SET_GET_CONST_VALUE(bool, NeedReset);
-		
-	protected:
-		virtual ~Renderable()
-		{}
+			D3DXPARAMETER_DESC paramDesc;
+			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(eps.Handle, &paramDesc));
+			eps.Size = paramDesc.Bytes;
 
-	private:
-		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data = NULL) = 0;
+			mEffectParamMap[paramName] = eps;
+		}
+		else
+		{
+			eps = mEffectParamMap[paramName];
+		}
+		WHISPERWIND_ASSERT((eps.Handle != 0) && (eps.Size != 0));
 
-	private:
-		bool mNeedReset;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(Renderable);
-	};
-
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
+	}
 }
-
-#endif

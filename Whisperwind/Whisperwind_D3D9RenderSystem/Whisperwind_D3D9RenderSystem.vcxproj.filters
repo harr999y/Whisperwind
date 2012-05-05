@@ -36,9 +36,6 @@
     <ClInclude Include="include\D3D9Renderable.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\D3D9Viewport.h">
-      <Filter>Header</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Plugin.cpp">
@@ -59,7 +56,7 @@
     <ClCompile Include="src\D3D9FormatMapping.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="src\D3D9Viewport.cpp">
+    <ClCompile Include="src\D3D9Renderable.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

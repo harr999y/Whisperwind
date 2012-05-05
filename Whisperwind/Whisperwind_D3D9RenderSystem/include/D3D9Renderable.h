@@ -27,6 +27,7 @@ THE SOFTWARE
 
 #include "Renderable.h"
 #include "D3D9Typedefs.h"
+#include "boost/unordered_map.hpp"
 
 namespace Engine
 {
@@ -65,6 +66,21 @@ namespace Engine
 		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
 
 	private:
+		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
+
+	private:
+		struct EffectParamSize
+		{
+			EffectParamSize() :
+		        Handle(NULL),
+				Size(0)
+			{}
+
+			D3DXHANDLE Handle;
+			Util::u_int Size;
+		};
+		typedef boost::unordered_map<Util::String, EffectParamSize> EffectParamMap;
+
 		VertexBound mVertexBound;
 		IDirect3DIndexBuffer9Ptr mIndexBuffer;
 		ID3DXEffectPtr mEffect;
@@ -72,6 +88,7 @@ namespace Engine
 		bool mHasIndex;
 		Util::u_int mPrimCount;
 		D3DPRIMITIVETYPE mPrimType;
+		EffectParamMap mEffectParamMap;
 	};
 }
 

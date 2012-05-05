@@ -90,5 +90,8 @@
     <ClCompile Include="src\RenderSystem.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderable.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

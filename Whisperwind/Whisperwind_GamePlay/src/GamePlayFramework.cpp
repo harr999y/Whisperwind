@@ -53,42 +53,39 @@ namespace GamePlay
 		engineMgr.postRunning();
 	}
 	//---------------------------------------------------------------------
+#include "boost/make_shared.hpp"
 	void GamePlayFramework::init()
 	{
 		/// Test for creating some content.
-		struct Elem
-		{
-			float Pos[3];
-		};
-		
-		Elem * elem = WHISPERWIND_NEW(Elem[6]);
-		elem[0].Pos[0] = 0;
-		elem[0].Pos[1] = 0;
-		elem[0].Pos[2] = 1;
-		elem[1].Pos[0] = 0;
-		elem[1].Pos[1] = 1;
-		elem[1].Pos[2] = 0;
-		elem[2].Pos[0] = 1;
-		elem[2].Pos[1] = 1;
-		elem[2].Pos[2] = 1;
-		elem[3].Pos[0] = 1;
-		elem[3].Pos[1] = 1;
-		elem[3].Pos[2] = 1;
-		elem[4].Pos[0] = 1;
-		elem[4].Pos[1] = 0;
-		elem[4].Pos[2] = 1;
-		elem[5].Pos[0] = 0;
-		elem[5].Pos[1] = 1;
-		elem[5].Pos[2] = 0;
+		Engine::VoidDataPtr data(new (Util::real[18]));
+		Util::real * elem = boost::static_pointer_cast<Util::real>(data).get();
+		elem[0] = 0;
+		elem[1] = 0;
+		elem[2] = 1;
+		elem[3] = 0;
+		elem[4] = 1;
+		elem[5] = 0;
+		elem[6] = 1;
+		elem[7] = 1;
+		elem[8] = 1;
+		elem[9] = 1;
+		elem[10] = 1;
+		elem[11] = 1;
+		elem[12] = 1;
+		elem[13] = 0;
+		elem[14] = 1;
+		elem[15] = 0;
+		elem[16] = 1;
+		elem[17] = 0;
 
 		Engine::RenderableMappingPtr rm = boost::make_shared<Engine::RenderableMapping>();
 		Engine::VertexElement vertexElem(0, 0, Engine::VET_FLOAT3, Engine::VEU_POSITION, 0);
 		rm->VertexBound.VertexElemVec.push_back(vertexElem);
 		rm->IndexBound.HasIndex = false;
 		Engine::BufferData bufData;
-		bufData.DataSize = sizeof(Elem) * 6;
-		bufData.Data = static_cast<void *>(elem);
-		bufData.Stride = sizeof(Elem);
+		bufData.DataSize = sizeof(Util::real) * 18;
+		bufData.Data = data;
+		bufData.Stride = sizeof(Util::real) * 3;
 		rm->VertexBound.VertexData = bufData;
 		rm->VertexBound.VertexCount = 6;
 		rm->VertexBound.VertexUsage = Engine::BUF_STATIC;
@@ -99,8 +96,5 @@ namespace GamePlay
 
 		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 		Engine::EngineManager::getSingleton().addRenderable(renderable);
-
-		/// NOTE:Not exception-safe!
-		WHISPERWIND_DELETE_ARRAY(elem); 
 	}
 }
