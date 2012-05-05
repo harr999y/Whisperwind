@@ -38,6 +38,7 @@ THE SOFTWARE
 #include "Profile.h"
 #include "Timer.h"
 #include "ExceptionDefine.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
@@ -99,7 +100,15 @@ namespace Engine
 			WindowsEventHandle::handleWindowsMsg();
 			handleLogical();
 
+			/// Important way to save CPU when minimized or something else.
+			if (mRenderSystem->isPaused())
+				mTimer->sleep(1);
+
+			/// TODO!
+			mRenderSystem->clearFrame(FCF_TARGET | FCF_ZBUFFER);
+			mRenderSystem->beginRendering();
 			IF_FALSE_EXCEPTION(mRenderSystem->render(mRenderableVec[0]), "Render failed!");
+			mRenderSystem->endRendering();
 		}
 	}
 	//---------------------------------------------------------------------

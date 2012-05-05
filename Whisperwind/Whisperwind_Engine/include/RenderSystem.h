@@ -41,12 +41,25 @@ namespace Engine
 		{}
 
 	public:
-		virtual void init() = 0;
-		virtual bool render(const RenderablePtr & renderable) = 0;
-		virtual RenderablePtr createRenderable(const RenderableMappingPtr & rm) = 0;
+		inline void init();
+		inline void beginRendering();
+		inline bool render(const RenderablePtr & renderable);
+		inline void endRendering();
+		inline void clearFrame(Util::u_int flag, Util::real zValue = 1.0, Util::u_int stencilValue = 0);
+		inline bool isPaused();
+		inline RenderablePtr createRenderable(const RenderableMappingPtr & rm);
 
 	public:
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
+
+	private:
+		virtual void init_impl() = 0;
+		virtual void beginRendering_impl() = 0;
+		virtual bool render_impl(const RenderablePtr & renderable) = 0;
+		virtual void endRendering_impl() = 0;
+		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue) = 0;
+		virtual bool isPaused_impl() = 0;
+		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm) = 0;
 
 	protected:
 		EngineConfigPtr mEngineConfig;

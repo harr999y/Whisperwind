@@ -70,6 +70,7 @@ THE SOFTWARE
 			boost::wformat wfmt(TO_UNICODE("Assertion Failed!\nExpression: %s\nFunction: %s\nFile: %s\nLine: %ld\n\n"));
 			wfmt % expr% function% file% line;
 			DEBUG_PRINT(wfmt);
+			::DebugBreak();
 		}
 	}
 

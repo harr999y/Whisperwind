@@ -43,14 +43,15 @@ namespace Engine
 		D3D9RenderSystem();
 		~D3D9RenderSystem();
 
-	public:
-		virtual void init();
-		virtual bool render(const RenderablePtr & renderable);
-
-		virtual RenderablePtr createRenderable(const RenderableMappingPtr & rm);
-
 	private:
-		bool isPaused();
+		virtual void init_impl();
+		virtual void beginRendering_impl();
+		virtual bool render_impl(const RenderablePtr & renderable);
+		virtual void endRendering_impl();
+		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue);
+		virtual bool isPaused_impl();
+		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm);
+
 		void createDevice(HWND window);
 		bool reset();
 		bool checkDeviceLostBeforeDraw();

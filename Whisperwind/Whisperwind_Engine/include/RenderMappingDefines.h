@@ -27,45 +27,10 @@ THE SOFTWARE
 
 #include "Util.h"
 #include <vector>
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
-	enum SamplerFilter
-	{
-		SF_POINT,
-		SF_BILINEAR,
-		SF_TRILINEAR,
-		SF_ANISOTROPIC_POINT,
-		SF_ANISOTROPIC_LINER,
-		SF_MAX
-	};
-
-	enum SamplerAddressMode
-	{
-		SAM_WRAP,
-		SAM_CLAMP,
-		SAM_MIRROR,
-		SAM_MAX
-	};
-
-	enum FillMode
-	{
-		FM_POINT,
-		FM_WIREFRAME,
-		FM_SOLID,
-		FM_MAX
-	};
-
-/// NOTE:For what defined in WinGDI.h.I will never use it,so just undef.
-#undef CM_NONE
-	enum CullMode
-	{
-		CM_NONE,
-		CM_CW,
-		CM_CCW,
-		CM_MAX
-	};
-
 	enum VertexElementType
 	{
 		VET_FLOAT1,
@@ -86,24 +51,31 @@ namespace Engine
 		VEU_MAX
 	};
 
-	enum CompareFunction
-	{
-		CF_LESS,
-		CF_LESS_EQUAL,
-		CF_GREATER,
-		CF_GREATER_EQUAL,
-		CF_EQUAL,
-		CF_NOT_EQUAL,
-		CF_NEVER,
-		CF_ALWAYS
-	};
-
 	enum PrimitiveType
 	{
 		PT_TRIANGLE_LIST,
 		PT_TRIANGLE_STRIP,
 		PT_LINE_LIST,
 		PT_MAX
+	};
+
+	enum IndexFormat
+	{
+		INDEX_16,
+		INDEX_32
+	};
+
+	enum BufferUsageFlag
+	{
+		BUF_STATIC,
+		BUF_DYNAMIC
+	};
+
+	enum FrameClearFlag
+	{
+		FCF_TARGET = 1 << 0,
+		FCF_ZBUFFER = 1 << 1,
+		FCF_STENCIL = 1 << 2
 	};
 
 	struct WHISPERWIND_API VertexElement
@@ -119,9 +91,6 @@ namespace Engine
 		VertexElementUsage Usage;
 		Util::s_int8 UsageIndex;
 	};
-	typedef std::vector<VertexElement> VertexElementVector;
-
-	typedef Util::u_int16 IndexFormat;
 
 	struct WHISPERWIND_API BufferData
 	{
@@ -136,14 +105,46 @@ namespace Engine
 	    Util::u_int Stride;
 	};
 
-	struct WHISPERWIND_API RenderableMapping
+	struct WHISPERWIND_API VertexMapping
 	{
+		VertexMapping() :
+	        VertexUsage(BUF_STATIC),
+			VertexCount(0)
+		{}
+
 		VertexElementVector VertexElemVec;
 		BufferData VertexData;
+		BufferUsageFlag VertexUsage;
+		Util::u_int VertexCount;
+	};
+
+	struct WHISPERWIND_API IndexMapping
+	{
+		IndexMapping() :
+	        HasIndex(false),
+			IndexFmt(INDEX_16),
+			IndexUsage(BUF_STATIC)
+		{}
+
 		bool HasIndex;
 		BufferData IndexData;
+		IndexFormat IndexFmt;
+		BufferUsageFlag IndexUsage;
+	};
+
+	struct WHISPERWIND_API RenderableMapping
+	{
+		RenderableMapping() :
+	        PrimCount(0),
+			PrimType(PT_TRIANGLE_STRIP)
+		{}
+
+		VertexMapping VertexBound;
+		IndexMapping IndexBound;
+		Util::u_int PrimCount;
 		Util::Wstring EffectName;
 		Util::String TechniqueName;
+		PrimitiveType PrimType;
 	};
 }
 

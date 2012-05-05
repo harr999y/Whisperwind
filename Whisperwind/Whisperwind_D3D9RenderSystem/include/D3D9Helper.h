@@ -25,17 +25,18 @@ THE SOFTWARE
 #ifndef _D3D9_HELPER_H_
 #define _D3D9_HELPER_H_
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
 #include <d3d9.h>
 #include <DxErr.h>
 #include "Util.h"
 #include "D3D9Typedefs.h"
 #include "EngineForwardDeclare.h"
 #include "StringConverter.h"
+#include "DebugDefine.h"
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
 
 namespace Engine
 {
@@ -46,9 +47,30 @@ namespace Engine
 	};
 
 	class D3D9Helper
-	{};
+	{
+	public:
+		static RenderablePtr createD3D9Renderable(const IDirect3DDevice9Ptr & device, ID3DXEffectMap & effectMap, const RenderableMappingPtr & rm);
+	};
 }
 
+#ifdef WHISPERWIND_DEBUG
+#define DX_IF_FAILED_DEBUG_PRINT(x) \
+{ \
+	HRESULT hr = S_OK; hr = (x); \
+	if (FAILED(hr)) \
+	{ \
+		Util::String str(&(#x)[0]); \
+		Util::Wstring wstr; \
+		Util::StringToWstring(str, wstr); \
+		DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
+	} \
+}
+#else
+#define DX_IF_FAILED_DEBUG_PRINT(x) \
+	(x);
+#endif
+
+#ifdef WHISPERWIND_DEBUG
 #define DX_IF_FAILED_RETURN_FALSE(x) \
 	{ \
         HRESULT hr; hr = (x); \
@@ -61,21 +83,26 @@ namespace Engine
 			return false; \
         } \
     }
+#else
+#define DX_IF_FAILED_RETURN_FALSE(x) \
+	HRESULT hr; hr = (x); \
+	if (FAILED(hr)) \
+		return false;
+#endif
 
 #ifdef WHISPERWIND_DEBUG
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
+#define DX_IF_NULL_DEBUG_PRINT(x) \
+{ \
+	if (!(x)) \
 	{ \
-	    HRESULT hr = S_OK; hr = (x); \
-	    if (FAILED(hr)) \
-		{ \
-		    Util::String str(&(#x)[0]); \
-			Util::Wstring wstr; \
-            Util::StringToWstring(str, wstr); \
-		    DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
-		} \
-	}
+		Util::String str(&(#x)[0]); \
+		Util::Wstring wstr; \
+		Util::StringToWstring(str, wstr); \
+		DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed!")); \
+	} \
+}
 #else
-#define DX_IF_FAILED_DEBUG_PRINT(x) \
+#define DX_IF_NULL_DEBUG_PRINT(x) \
 	(x);
 #endif
 

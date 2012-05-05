@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _D3D9_FORMAT_MAPPING_H_
 
 #include "D3D9Typedefs.h"
+#include "EngineForwardDeclare.h"
 #include "RenderMappingDefines.h"
 
 namespace Engine
@@ -34,6 +35,8 @@ namespace Engine
 	{
 	public:
 		static IDirect3DVertexDeclaration9Ptr createD3D9VertexDeclaration(const IDirect3DDevice9Ptr & device, const VertexElementVector & veVec);
+		static Util::u_int getD3D9ClearFrameFlag(Util::u_int flag);
+		static D3DPRIMITIVETYPE getD3D9PrimType(PrimitiveType primType);
 	};
 }
 

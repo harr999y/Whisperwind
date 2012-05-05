@@ -19,6 +19,7 @@
     <ClInclude Include="include\D3D9Renderable.h" />
     <ClInclude Include="include\D3D9RenderSystem.h" />
     <ClInclude Include="include\D3D9Typedefs.h" />
+    <ClInclude Include="include\D3D9Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Capability.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="src\D3D9RenderSystem.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
+    <ClCompile Include="src\D3D9Viewport.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E20E609E-4003-4D78-8792-21CF601B9EF3}</ProjectGuid>

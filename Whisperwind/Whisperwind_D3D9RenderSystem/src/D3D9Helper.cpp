@@ -24,6 +24,13 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "D3D9Helper.h"
+#include "D3D9ForwardDeclare.h"
+#include "D3D9Renderable.h"
+#include "D3D9FormatMapping.h"
+#include "boost/make_shared.hpp"
+#include <algorithm>
+#include "MakeCOMPtr.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
@@ -36,4 +43,120 @@ namespace Engine
 	//---------------------------------------------------------------------
 	// D3D9Helper
 	//---------------------------------------------------------------------
+	RenderablePtr D3D9Helper::createD3D9Renderable(const IDirect3DDevice9Ptr & device, ID3DXEffectMap & effectMap, const RenderableMappingPtr & rm)
+	{
+		/// check
+#ifdef WHISPERWIND_DEBUG
+		{
+			WHISPERWIND_ASSERT(rm->VertexBound.VertexData.Data != NULL);
+			WHISPERWIND_ASSERT(rm->VertexBound.VertexData.DataSize > 0);
+			WHISPERWIND_ASSERT(rm->VertexBound.VertexData.Stride > 0);
+			WHISPERWIND_ASSERT(rm->VertexBound.VertexCount > 0);
+			WHISPERWIND_ASSERT(rm->PrimCount > 0);
+			if (rm->IndexBound.HasIndex)
+			{
+				WHISPERWIND_ASSERT(rm->IndexBound.IndexData.Data != NULL);
+				WHISPERWIND_ASSERT(rm->IndexBound.IndexData.DataSize > 0);
+				WHISPERWIND_ASSERT(rm->IndexBound.IndexData.Stride > 0);
+			}
+		}
+#endif
+
+		D3D9RenderablePtr d3d9Renderable = boost::make_shared<D3D9Renderable>();
+
+		/// Vertex bound
+		{
+			const DWORD usage = (rm->VertexBound.VertexUsage != BUF_STATIC) ? (D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY) : 0;
+			const D3DPOOL pool = (rm->VertexBound.VertexUsage != BUF_STATIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+
+			IDirect3DVertexBuffer9 * vb = NULL;
+			DX_IF_FAILED_DEBUG_PRINT(device->CreateVertexBuffer(rm->VertexBound.VertexData.DataSize, usage, 0, pool, &vb, NULL));
+			{
+				const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
+
+				void * buf = NULL;
+				const void * data = rm->VertexBound.VertexData.Data;
+				DX_IF_FAILED_DEBUG_PRINT(vb->Lock(0, 0, &buf, lockFlag));
+				std::copy(static_cast<const Util::u_int8 *>(data), static_cast<const Util::u_int8 *>(data) + rm->VertexBound.VertexData.DataSize, 
+					static_cast<Util::u_int8 *>(buf));
+				vb->Unlock();
+			}
+			IDirect3DVertexBuffer9Ptr vbPtr = Util::makeCOMPtr(vb);
+			VertexBound vertexBound;
+			vertexBound.VertexBuffer = vbPtr;
+			vertexBound.VertexBufSize = rm->VertexBound.VertexData.DataSize;
+			vertexBound.VertexStride = rm->VertexBound.VertexData.Stride;
+			vertexBound.VertexCount = rm->VertexBound.VertexCount;
+			vertexBound.VertexDeclaration = D3D9FormatMappingFactory::createD3D9VertexDeclaration(device, rm->VertexBound.VertexElemVec);
+
+			d3d9Renderable->setVertexBound(vertexBound);
+		}
+
+		/// IB
+		if (rm->IndexBound.HasIndex)
+		{
+			d3d9Renderable->setHasIndex(true);
+
+			const DWORD usage = (rm->IndexBound.IndexUsage != BUF_STATIC) ? (D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY) : 0;
+			const D3DPOOL pool = (rm->IndexBound.IndexUsage != BUF_STATIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+
+			IDirect3DIndexBuffer9 * ib = NULL;
+			D3DFORMAT idxFmt = (INDEX_16 == rm->IndexBound.IndexFmt) ? D3DFMT_INDEX16 : D3DFMT_INDEX32;
+			DX_IF_FAILED_DEBUG_PRINT(device->CreateIndexBuffer(rm->IndexBound.IndexData.DataSize, usage, idxFmt, pool, &ib, NULL));
+			{
+				const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
+
+				void * buf = NULL;
+				const void * data = rm->IndexBound.IndexData.Data;
+				DX_IF_FAILED_DEBUG_PRINT(ib->Lock(0, 0, &buf, lockFlag));
+				std::copy(static_cast<const Util::u_int8 *>(data), static_cast<const Util::u_int8 *>(data) + rm->IndexBound.IndexData.DataSize,
+					static_cast<Util::u_int8 *>(buf));
+				ib->Unlock();
+			}
+			IDirect3DIndexBuffer9Ptr ibPtr = Util::makeCOMPtr(ib);
+
+			d3d9Renderable->setIndexBuffer(ibPtr);
+		}
+
+		/// Primitive
+		{
+			d3d9Renderable->setPrimCount(rm->VertexBound.VertexCount);
+
+			d3d9Renderable->setPrimType(D3D9FormatMappingFactory::getD3D9PrimType(rm->PrimType));
+		}
+
+		/// Effect
+		{
+			if (effectMap.find(rm->EffectName) == effectMap.end())
+			{
+#ifdef WHISPERWIND_DEBUG
+				DWORD shaderFlags = D3DXSHADER_DEBUG | D3DXSHADER_SKIPOPTIMIZATION;
+#else
+				DWORD shaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
+#endif
+				ID3DXEffect * effect = NULL;
+				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), (Util::Wstring(TO_UNICODE("../media/Effects/")) + rm->EffectName).c_str(), 
+					NULL, NULL, shaderFlags, NULL, &effect, NULL));
+				ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
+				effectMap[rm->EffectName] = effectPtr;
+
+				d3d9Renderable->setEffect(effectPtr);
+			}
+			else
+			{
+				d3d9Renderable->setEffect(effectMap[rm->EffectName]);
+			}
+		}
+
+		/// Technique
+		{
+			D3DXHANDLE tech = d3d9Renderable->getEffect()->GetTechniqueByName(rm->TechniqueName.c_str());
+			DX_IF_NULL_DEBUG_PRINT(tech);
+
+			d3d9Renderable->setTechnique(tech);
+		}
+
+		return d3d9Renderable;
+	}
+
 }

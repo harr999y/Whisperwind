@@ -44,6 +44,7 @@ namespace Engine
 	typedef boost::shared_ptr<PluginConfig> PluginConfigPtr;
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
 	typedef std::vector<RenderablePtr> RenderableVector;
+	typedef std::vector<VertexElement> VertexElementVector;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
 }
 

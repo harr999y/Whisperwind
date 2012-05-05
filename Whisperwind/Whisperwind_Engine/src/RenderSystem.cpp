@@ -22,46 +22,45 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _TIMER_H_
-#define _TIMER_H_
 
-#include "Util.h"
+#include "RenderSystem.h"
 
-namespace Util
+namespace Engine
 {
-	class WHISPERWIND_API Timer
+	//---------------------------------------------------------------------
+	void RenderSystem::init()
 	{
-	public:
-		Timer();
-
-	public:
-		inline time getElapsedTime();
-		inline void sleep(Util::u_int milliTime);
-
-		SET_GET_CONST_VALUE(real, Zoom);
-
-	protected:
-		virtual ~Timer()
-		{}
-
-	private:
-		virtual time getElapsedTime_impl() = 0;
-		virtual void sleep_impl(Util::u_int milliTime) = 0;
-
-	protected:
-		s_int64 mLastTimeStamp;
-		real mZoom;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(Timer);
-	};
-
-	class WHISPERWIND_API WindowsTimer : public Timer
+		init_impl();
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::beginRendering()
 	{
-	private:
-		virtual time getElapsedTime_impl();
-		virtual void sleep_impl(Util::u_int milliTime);
-	};
+		beginRendering_impl();
+	}
+	//---------------------------------------------------------------------
+	bool RenderSystem::render(const RenderablePtr & renderable)
+	{
+		return render_impl(renderable);
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::endRendering()
+	{
+		endRendering_impl();
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::clearFrame(Util::u_int flag, Util::real zValue, Util::u_int stencilValue)
+	{
+		clearFrame_impl(flag, zValue, stencilValue);
+	}
+	//---------------------------------------------------------------------
+	bool RenderSystem::isPaused()
+	{
+		return isPaused_impl();
+	}
+	//---------------------------------------------------------------------
+	RenderablePtr RenderSystem::createRenderable(const RenderableMappingPtr & rm)
+	{
+		return createRenderable_impl(rm);
+	}
+
 }
-
-#endif

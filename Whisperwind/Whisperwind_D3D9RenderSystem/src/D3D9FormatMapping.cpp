@@ -28,6 +28,7 @@ THE SOFTWARE
 #include "DebugDefine.h"
 #include "D3D9Helper.h"
 #include "MakeCOMPtr.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
@@ -73,6 +74,36 @@ namespace Engine
 		return D3DDECLUSAGE_TEXCOORD;
 	}
 	//---------------------------------------------------------------------
+	Util::u_int translateClearFrameFlag(Util::u_int flag)
+	{
+		Util::u_int d3d9Flag = 0;
+
+		if ((flag & FCF_TARGET) != 0)
+			d3d9Flag |= D3DCLEAR_TARGET;
+		if ((flag & FCF_ZBUFFER) != 0)
+			d3d9Flag |= D3DCLEAR_ZBUFFER;
+		if ((flag & FCF_STENCIL) != 0)
+			d3d9Flag |= D3DCLEAR_STENCIL;
+
+		return d3d9Flag;
+	}
+	//---------------------------------------------------------------------
+	D3DPRIMITIVETYPE translatePrimitiveType(PrimitiveType primType)
+	{
+		WHISPERWIND_ASSERT(primType < PT_MAX);
+
+		switch (primType)
+		{
+			CASE_MATCH_RETURN(PT_TRIANGLE_LIST, D3DPT_TRIANGLELIST);
+			CASE_MATCH_RETURN(PT_TRIANGLE_STRIP, D3DPT_TRIANGLESTRIP);
+			CASE_MATCH_RETURN(PT_LINE_LIST, D3DPT_LINELIST);
+			CASE_UNMATCH_ASSERT;
+		}
+
+		WHISPERWIND_ASSERT(false);
+		return D3DPT_FORCE_DWORD;
+	}
+	//---------------------------------------------------------------------
 #undef CASE_MATCH_RETURN
 #undef CASE_UNMATCH_ASSERT
 
@@ -111,4 +142,15 @@ namespace Engine
 
 		return Util::makeCOMPtr(vertexDeclaration);
 	}
+	//---------------------------------------------------------------------
+	Util::u_int D3D9FormatMappingFactory::getD3D9ClearFrameFlag(Util::u_int flag)
+	{
+		return translateClearFrameFlag(flag);
+	}
+	//---------------------------------------------------------------------
+	D3DPRIMITIVETYPE D3D9FormatMappingFactory::getD3D9PrimType(PrimitiveType primType)
+	{
+		return translatePrimitiveType(primType);
+	}
+
 }

@@ -34,13 +34,15 @@ namespace Engine
 	{
 		VertexBound() :
 	        VertexBufSize(0),
-			VertexStride(0)
+			VertexStride(0),
+			VertexCount(0)
 		{}
 
 		IDirect3DVertexDeclaration9Ptr VertexDeclaration;
 		IDirect3DVertexBuffer9Ptr VertexBuffer;
 		Util::u_int VertexBufSize;
 		Util::u_int VertexStride;
+		Util::u_int VertexCount;
 	};
 
 	class D3D9Renderable : public Renderable
@@ -48,15 +50,19 @@ namespace Engine
 	public:
 		D3D9Renderable() : 
 		    mHasIndex(false),
-			mTechnique(0)
+			mTechnique(0),
+			mPrimCount(0),
+			mPrimType(D3DPT_TRIANGLESTRIP)
 		{}
 
 	public:
-		SET_GET_VALUE(VertexBound, VertexBound);
+		SET_GET_CONST_VALUE(VertexBound, VertexBound);
 		SET_GET_CONST_VALUE(IDirect3DIndexBuffer9Ptr, IndexBuffer);
 		SET_GET_CONST_VALUE(ID3DXEffectPtr, Effect);
 		SET_GET_CONST_VALUE(D3DXHANDLE, Technique);
 		SET_GET_CONST_VALUE(bool, HasIndex);
+		SET_GET_CONST_VALUE(Util::u_int, PrimCount);
+		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
 
 	private:
 		VertexBound mVertexBound;
@@ -64,6 +70,8 @@ namespace Engine
 		ID3DXEffectPtr mEffect;
 		D3DXHANDLE mTechnique;
 		bool mHasIndex;
+		Util::u_int mPrimCount;
+		D3DPRIMITIVETYPE mPrimType;
 	};
 }
 

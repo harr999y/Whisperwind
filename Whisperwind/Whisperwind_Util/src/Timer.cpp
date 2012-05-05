@@ -40,6 +40,16 @@ namespace Util
 		mLastTimeStamp(0),
 		mZoom(1.0)
 	{}
+	//---------------------------------------------------------------------
+	time Timer::getElapsedTime()
+	{
+		return getElapsedTime_impl();
+	}
+	//---------------------------------------------------------------------
+	void Timer::sleep(Util::u_int milliTime)
+	{
+		return sleep_impl(milliTime);
+	}
 
 	//---------------------------------------------------------------------
 	// WindowsTimer
@@ -70,5 +80,10 @@ namespace Util
 		mLastTimeStamp = curTimeStamp;
 
 		return result;
+	}
+	//---------------------------------------------------------------------
+	void WindowsTimer::sleep_impl(Util::u_int milliTime)
+	{
+		::Sleep(milliTime);
 	}
 }

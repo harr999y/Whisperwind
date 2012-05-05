@@ -37,7 +37,6 @@ THE SOFTWARE
 #include "CheckedCast.h"
 #include "D3D9Renderable.h"
 #include "RenderMappingDefines.h"
-#include <algorithm>
 
 namespace Engine
 {
@@ -56,7 +55,7 @@ namespace Engine
 		::DestroyWindow(mWindow);
 	}
 	//---------------------------------------------------------------------
-	void D3D9RenderSystem::init()
+	void D3D9RenderSystem::init_impl()
 	{
 		mEngineConfig = EngineManager::getSingleton().getEngineConfig();
 
@@ -73,22 +72,13 @@ namespace Engine
 		createDevice(mWindow);
 	}
 	//---------------------------------------------------------------------
-	bool D3D9RenderSystem::render(const RenderablePtr & renderable)
+	bool D3D9RenderSystem::render_impl(const RenderablePtr & renderable)
 	{
-		/// Important way to save CPU when minimized or something else.
- 		if (isPaused())
- 			::Sleep(1);
-
 		if (getIsDeviceLost())
 		{
 			if (!reset())
-				return true; /// Here I don't return false,because it DOESNOT have the same meaning.
+				return false;
 		}
-
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Clear(
-			0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, ColorPredefines::WHITE, 1.0f, 0));
-
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->BeginScene());
 
 		if (!checkDeviceLostBeforeDraw())
 		{
@@ -107,21 +97,37 @@ namespace Engine
 			effect->SetTechnique(d3d9Renderable->getTechnique());
 
 			Util::u_int passNum = 0;
-			effect->Begin(&passNum, 0);
+			DX_IF_FAILED_DEBUG_PRINT(effect->Begin(&passNum, 0));
 			for (Util::u_int passIt = 0; passIt < passNum; ++passIt)
 			{
-				effect->BeginPass(passIt);
+				DX_IF_FAILED_DEBUG_PRINT(effect->BeginPass(passIt));
 				{
 					if (d3d9Renderable->getHasIndex())
-						mD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, d3d9Renderable->getVertexBound().VertexBufSize / d3d9Renderable->getVertexBound().VertexStride, 0, 2);
+					{
+						DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->DrawIndexedPrimitive(d3d9Renderable->getPrimType(), 0, 0, 
+						    d3d9Renderable->getVertexBound().VertexCount, 0, d3d9Renderable->getPrimCount()));
+					}
 					else
-						mD3DDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
+					{
+						DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->DrawPrimitive(
+							d3d9Renderable->getPrimType(), 0, d3d9Renderable->getPrimCount()));
+					}
 				}
-				effect->EndPass();
+				DX_IF_FAILED_DEBUG_PRINT(effect->EndPass());
 			}
-			effect->End();
+			DX_IF_FAILED_DEBUG_PRINT(effect->End());
 		}
 
+		return true;
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::beginRendering_impl()
+	{
+		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->BeginScene());
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::endRendering_impl()
+	{
 		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->EndScene());
 
 		HRESULT hr;
@@ -135,83 +141,26 @@ namespace Engine
 			/// Do as DXUT does.See the comment here:http://www.koders.com/cpp/fid0B76F09FD0760D71DF1C69C93BADA2141D522C85.aspx#L3799
 			setIsDeviceLost(true);
 		}
-
-		return true;
 	}
 	//---------------------------------------------------------------------
-	RenderablePtr D3D9RenderSystem::createRenderable(const RenderableMappingPtr & rm)
+	void D3D9RenderSystem::clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue)
 	{
-		D3D9RenderablePtr renderable = boost::make_shared<D3D9Renderable>();
+		Util::u_int d3d9Flag = D3D9FormatMappingFactory::getD3D9ClearFrameFlag(flag);
 
-		/// Vertex Declaration
-		{
-			renderable->getVertexBound().VertexDeclaration = D3D9FormatMappingFactory::createD3D9VertexDeclaration(mD3DDevice, rm->VertexElemVec);
-		}
-
-		/// VB
-		{
-			IDirect3DVertexBuffer9 * vb = NULL;
-			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->CreateVertexBuffer(rm->VertexData.DataSize, 0, 0, D3DPOOL_MANAGED, &vb, NULL));
-			{
-				void * buf;
-				DX_IF_FAILED_DEBUG_PRINT(vb->Lock(0, 0, &buf, 0));
-				std::copy(static_cast<const Util::u_int8 *>(rm->VertexData.Data), 
-					static_cast<const Util::u_int8 *>(rm->VertexData.Data) + rm->VertexData.DataSize, static_cast<Util::u_int8 *>(buf));
-				vb->Unlock();
-			}
-			IDirect3DVertexBuffer9Ptr vbPtr = Util::makeCOMPtr(vb);
-			renderable->getVertexBound().VertexBuffer = vbPtr;
-			renderable->getVertexBound().VertexBufSize = rm->VertexData.DataSize;
-			renderable->getVertexBound().VertexStride = rm->VertexData.Stride;
-		}
-
-		/// IB
-		if (rm->HasIndex)
-		{
-			IDirect3DIndexBuffer9 * ib = NULL;
-			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->CreateIndexBuffer(rm->IndexData.DataSize, 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &ib, NULL));
-			{
-				void * buf;
-				DX_IF_FAILED_DEBUG_PRINT(ib->Lock(0, 0, &buf, 0));
-				std::copy(static_cast<const Util::u_int8 *>(rm->IndexData.Data), 
-					static_cast<const Util::u_int8 *>(rm->IndexData.Data) + rm->IndexData.DataSize, static_cast<Util::u_int8 *>(buf));
-				ib->Unlock();
-			}
-		}
-
-		/// Effect
-		{
-			if (mEffectMap.find(rm->EffectName) == mEffectMap.end())
-			{
-#ifdef WHISPERWIND_DEBUG
-				DWORD shaderFlags = D3DXSHADER_DEBUG | D3DXSHADER_SKIPOPTIMIZATION;
-#else
-				DWORD shaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL2;
-#endif
-				ID3DXEffect * effect = NULL;
-				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(mD3DDevice.get(), (Util::Wstring(TO_UNICODE("../media/Effects/")) + rm->EffectName).c_str(), 
-					NULL, NULL, shaderFlags, NULL, &effect, NULL));
-				ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
-				mEffectMap[rm->EffectName] = effectPtr;
-				renderable->setEffect(effectPtr);
-			}
-			else
-			{
-				renderable->setEffect(mEffectMap[rm->EffectName]);
-			}
-		}
-
-		/// Technique
-		{
-			renderable->setTechnique(renderable->getEffect()->GetTechniqueByName(rm->TechniqueName.c_str()));
-		}
-
-		return renderable;
+		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Clear(
+			0, NULL, d3d9Flag, ColorPredefines::WHITE, zValue, stencilValue));
 	}
 	//---------------------------------------------------------------------
-	bool D3D9RenderSystem::isPaused()
+	bool D3D9RenderSystem::isPaused_impl()
 	{
 		return getIsDeviceLost(); // ||
+	}
+	//---------------------------------------------------------------------
+	RenderablePtr D3D9RenderSystem::createRenderable_impl(const RenderableMappingPtr & rm)
+	{
+		RenderablePtr d3d9Renderable = D3D9Helper::createD3D9Renderable(mD3DDevice, mEffectMap, rm);
+
+		return d3d9Renderable;
 	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createDevice(HWND window)

@@ -27,7 +27,6 @@ THE SOFTWARE
 
 #include "Util.h"
 #include "EngineForwardDeclare.h"
-#include "RenderMappingDefines.h"
 
 namespace Engine
 {

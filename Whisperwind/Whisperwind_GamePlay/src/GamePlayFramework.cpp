@@ -65,10 +65,10 @@ namespace GamePlay
 		elem[0].Pos[0] = 0;
 		elem[0].Pos[1] = 0;
 		elem[0].Pos[2] = 1;
-		elem[1].Pos[0] = 1;
-		elem[1].Pos[1] = 0;
-		elem[1].Pos[2] = 1;
-		elem[2].Pos[0] = 0;
+		elem[1].Pos[0] = 0;
+		elem[1].Pos[1] = 1;
+		elem[1].Pos[2] = 0;
+		elem[2].Pos[0] = 1;
 		elem[2].Pos[1] = 1;
 		elem[2].Pos[2] = 1;
 		elem[3].Pos[0] = 1;
@@ -81,21 +81,26 @@ namespace GamePlay
 		elem[5].Pos[1] = 1;
 		elem[5].Pos[2] = 0;
 
-		Engine::RenderableMappingPtr rm =  boost::make_shared<Engine::RenderableMapping>();
+		Engine::RenderableMappingPtr rm = boost::make_shared<Engine::RenderableMapping>();
 		Engine::VertexElement vertexElem(0, 0, Engine::VET_FLOAT3, Engine::VEU_POSITION, 0);
-		rm->VertexElemVec.push_back(vertexElem);
-		rm->HasIndex = false;
+		rm->VertexBound.VertexElemVec.push_back(vertexElem);
+		rm->IndexBound.HasIndex = false;
 		Engine::BufferData bufData;
 		bufData.DataSize = sizeof(Elem) * 6;
 		bufData.Data = static_cast<void *>(elem);
 		bufData.Stride = sizeof(Elem);
-		rm->VertexData = bufData;
+		rm->VertexBound.VertexData = bufData;
+		rm->VertexBound.VertexCount = 6;
+		rm->VertexBound.VertexUsage = Engine::BUF_STATIC;
+		rm->PrimCount = 2;
+		rm->PrimType = Engine::PT_TRIANGLE_LIST;
 		rm->EffectName = TO_UNICODE("Test.fx");
 		rm->TechniqueName = "Test";
 
 		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 		Engine::EngineManager::getSingleton().addRenderable(renderable);
 
-		WHISPERWIND_DELETE_ARRAY(elem);
+		/// NOTE:Not exception-safe!
+		WHISPERWIND_DELETE_ARRAY(elem); 
 	}
 }
