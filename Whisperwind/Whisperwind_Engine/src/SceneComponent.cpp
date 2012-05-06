@@ -22,11 +22,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _ENGINE_H_
-#define _ENGINE_H_
 
-/** Include the engine's class headers which need to be exported. */
-#include "EngineManager.h"
-#include "Renderable.h"
+#include "SceneComponent.h"
 
-#endif
+namespace Engine
+{
+	//---------------------------------------------------------------------
+	void SceneComponent::update(Util::time elapsedTime)
+	{
+		update_impl(elapsedTime);
+	}
+}

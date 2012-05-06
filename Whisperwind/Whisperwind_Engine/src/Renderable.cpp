@@ -27,9 +27,15 @@ THE SOFTWARE
 
 namespace Engine
 {
+	static const Util::Wstring COMPONENT_NAME(TO_UNICODE("Renderable"));
 	//---------------------------------------------------------------------
 	void Renderable::setEffectParamValue(const Util::String & paramName, const void * data)
 	{
 		setEffectParamValue_impl(paramName, data);
+	}
+	//---------------------------------------------------------------------
+	const Util::Wstring & Renderable::getName() const
+	{
+		return COMPONENT_NAME;
 	}
 }

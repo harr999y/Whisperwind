@@ -22,10 +22,47 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _GAMEPLAY_H_
-#define _GAMEPLAY_H_
+#ifndef _SCENE_NODE_H_
+#define _SCENE_NODE_H_
 
-/** Include the gameplay's class headers which need to be exported. */
-#include "GamePlayFramework.h"
+#include "Util.h"
+#include "EngineForwardDeclare.h"
+#include "boost/enable_shared_from_this.hpp"
+
+namespace Engine
+{
+	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>
+	{
+	public:
+		explicit SceneNode(const Util::Wstring & name) :
+		    mName(name)
+		{}
+
+	protected:
+		virtual ~SceneNode()
+		{}
+
+	public:
+		void addChildNode(const SceneNodePtr & sceneNode);
+		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outSceneNode);
+		void attachSceneObject(SceneObjectPtr & sceneObj);
+	    void dettachSceneObject(SceneObjectPtr & sceneObj);
+		void update(Util::time elapsedTime);
+
+	public:
+		GET_CONST_VALUE(Util::Wstring, Name);
+
+	private:
+		virtual void update_impl(Util::time elapsedTime) = 0;
+
+	protected:
+		SceneObjectMap mSceneObjectMap;
+		SceneNodeMap mChildSceneNodeMap;
+		Util::Wstring mName;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(SceneNode);
+	};
+}
 
 #endif

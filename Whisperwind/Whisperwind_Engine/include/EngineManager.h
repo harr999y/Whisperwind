@@ -47,23 +47,19 @@ namespace Engine
 
 		void installPlugin(const Util::PluginPtr & plugin);
 
-		void addRenderable(const RenderablePtr & renderable);
-
 	public:
 		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
 		SET_GET_VALUE(RenderSystemPtr, RenderSystem);
+		SET_GET_VALUE(SceneManagerPtr, SceneManager);
 		SET_GET_CONST_VALUE(bool, QuitLooping);
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
 		SET_GET_CONST_VALUE(PluginConfigPtr, PluginConfig);
-		GET_CONST_VALUE(RenderableVector, RenderableVec);
 
 	private:
 		void init();
 		void loadConfigs();
 		void loadPlugins();
 		void loadResources();
-
-		void handleLogical();
 
 		void clearResources();
 		void clearPlugins();
@@ -78,10 +74,10 @@ namespace Engine
 		PluginVector mPluginVector;
 
 		RenderSystemPtr mRenderSystem;
+		SceneManagerPtr mSceneManager;
+
 		EngineConfigPtr mEngineConfig;
 		PluginConfigPtr mPluginConfig;
-
-		RenderableVector mRenderableVec;
 
 		static EngineManager mSingleton;
 

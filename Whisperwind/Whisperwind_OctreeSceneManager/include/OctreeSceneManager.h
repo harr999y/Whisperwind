@@ -22,47 +22,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _OCTREE_SCENE_MANAGER_H_
+#define _OCTREE_SCENE_MANAGER_H_
 
-/** In this project,the main purpose is trying to run the game with any launchers,
-      and of course, here you can do many things such as crash dump generation and 
-	  dump collection to the server and so on.
-@note:
-    Use it in console when debug mode,in win32 when release mode!
-*/
+#include "SceneManager.h"
 
-#include "ApplicationCofig.h"
-
-#include "GamePlayFramework.h"
-#include "ExceptionDefine.h"
-#include "DebugDefine.h"
-
-#ifdef WHISPERWIND_DEBUG
-    #include <iostream>
-    Util::s_int main()
-#else
-    /** for windows.h's warning level */
-    #pragma warning(push, 3)
-    #include <windows.h>
-    #pragma warning(pop)
-    Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
-#endif
+namespace Engine
+{
+	class OctreeSceneManager : public SceneManager
 	{
-		try
-		{
-			GamePlay::GamePlayFramework framework(APPLICATION_NAME);
-			framework.run();
-		}
-		catch (Util::Exception & e)
-		{
-#ifdef WHISPERWIND_DEBUG
-		    DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
-#else
-			Util::Wstring errorInfo;
-			Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
-			WHISPERWIND_LOG(errorInfo);
-			::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
-#endif
-	    }
+	private:
+		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name);
+		virtual void initRootNode();
+		virtual void init_impl();
+		virtual void update_impl(Util::time elapsedTime);
+	};
+}
 
-		return 0;
-	}
+#endif

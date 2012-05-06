@@ -37,7 +37,7 @@ THE SOFTWARE
 
 namespace Engine
 {
-	class WHISPERWIND_API D3D9RenderSystem : public RenderSystem
+	class D3D9RenderSystem : public RenderSystem
 	{
 	public:
 		D3D9RenderSystem();

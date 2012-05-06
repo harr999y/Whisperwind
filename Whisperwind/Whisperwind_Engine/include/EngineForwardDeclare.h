@@ -27,6 +27,7 @@ THE SOFTWARE
 
 #include "boost/shared_ptr.hpp"
 #include <vector>
+#include "boost/unordered_map.hpp"
 
 namespace Engine
 {
@@ -38,6 +39,10 @@ namespace Engine
 	struct BufferData;
 	struct VertexElement;
 	struct RenderableMapping;
+	class SceneManager;
+	class SceneNode;
+	class SceneObject;
+	class SceneComponent;
 
 	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
 	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;
@@ -45,6 +50,13 @@ namespace Engine
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
 	typedef std::vector<RenderablePtr> RenderableVector;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
+	typedef boost::shared_ptr<SceneManager> SceneManagerPtr;
+	typedef boost::shared_ptr<SceneNode> SceneNodePtr;
+	typedef boost::unordered_map<Util::Wstring, SceneNodePtr> SceneNodeMap;
+	typedef boost::shared_ptr<SceneObject> SceneObjectPtr;
+	typedef boost::unordered_map<Util::Wstring, SceneObjectPtr> SceneObjectMap;
+	typedef boost::shared_ptr<SceneComponent> SceneComponentPtr;
+	typedef std::vector<SceneComponentPtr> SceneComponentVector;
 }
 
 #endif

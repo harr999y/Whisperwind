@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GamePlayFramework.h" />
-    <ClInclude Include="include\GamePlay.h" />
+    <ClInclude Include="include\GamePlayForwardDeclare.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GamePlayFramework.cpp" />

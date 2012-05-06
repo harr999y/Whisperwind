@@ -25,7 +25,6 @@ THE SOFTWARE
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-/** Include the util's class headers which need to be exported. */
 #include "UtilWarningDisable.h"
 #include "UtilConfig.h"
 #include "UtilTypedefs.h"

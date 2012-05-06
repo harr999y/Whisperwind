@@ -13,13 +13,16 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{94193523-e291-46c8-b334-0d90acdb03cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Actor">
+      <UniqueIdentifier>{e5451ff5-482a-42ef-acfd-1fbc6169dbca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\GamePlay.h">
-      <Filter>GamePlay Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\GamePlayFramework.h">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GamePlayForwardDeclare.h">
+      <Filter>GamePlay Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

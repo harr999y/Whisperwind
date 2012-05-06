@@ -22,47 +22,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _SCENE_MANAGER_H_
+#define _SCENE_MANAGER_H_
 
-/** In this project,the main purpose is trying to run the game with any launchers,
-      and of course, here you can do many things such as crash dump generation and 
-	  dump collection to the server and so on.
-@note:
-    Use it in console when debug mode,in win32 when release mode!
-*/
+#include "Util.h"
+#include "EngineForwardDeclare.h"
 
-#include "ApplicationCofig.h"
-
-#include "GamePlayFramework.h"
-#include "ExceptionDefine.h"
-#include "DebugDefine.h"
-
-#ifdef WHISPERWIND_DEBUG
-    #include <iostream>
-    Util::s_int main()
-#else
-    /** for windows.h's warning level */
-    #pragma warning(push, 3)
-    #include <windows.h>
-    #pragma warning(pop)
-    Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
-#endif
+namespace Engine
+{
+	class WHISPERWIND_API SceneManager
 	{
-		try
-		{
-			GamePlay::GamePlayFramework framework(APPLICATION_NAME);
-			framework.run();
-		}
-		catch (Util::Exception & e)
-		{
-#ifdef WHISPERWIND_DEBUG
-		    DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
-#else
-			Util::Wstring errorInfo;
-			Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
-			WHISPERWIND_LOG(errorInfo);
-			::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
-#endif
-	    }
+	public:
+		SceneManager()
+		{}
 
-		return 0;
-	}
+	protected:
+		virtual ~SceneManager()
+		{}
+
+	public:
+		void init();
+		void update(Util::time elapsedTime);
+
+		SceneNodePtr createSceneNode(const Util::Wstring & name);
+		SceneNodePtr & getSceneNode(const Util::Wstring & name);
+
+	public:
+		GET_VALUE(SceneNodePtr, RootNode);
+
+	private:
+		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name) = 0;
+		virtual void init_impl() = 0;
+		virtual void initRootNode() = 0;
+		virtual void update_impl(Util::time elapsedTime) = 0;
+
+	protected:
+		SceneNodePtr mRootNode;
+		/// save all nodes.
+		SceneNodeMap mSceneNodeMap;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(SceneManager);
+	};
+}
+
+#endif

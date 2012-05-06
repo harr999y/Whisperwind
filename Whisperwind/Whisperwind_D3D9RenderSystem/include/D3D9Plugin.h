@@ -29,7 +29,7 @@ THE SOFTWARE
 
 namespace Engine
 {
-	class WHISPERWIND_API D3D9Plugin : public Util::Plugin_Interface
+	class D3D9Plugin : public Util::Plugin_Interface
 	{
 	public:
 		explicit D3D9Plugin(const Util::Wstring & name) : Plugin_Interface(name)

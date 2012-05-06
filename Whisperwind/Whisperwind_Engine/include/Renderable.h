@@ -27,10 +27,11 @@ THE SOFTWARE
 
 #include "Util.h"
 #include "EngineForwardDeclare.h"
+#include "SceneComponent.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API Renderable
+	class WHISPERWIND_API Renderable : public SceneComponent
 	{
 	public:
 		Renderable() : 
@@ -38,6 +39,8 @@ namespace Engine
 		{}
 
 	public:
+		virtual const Util::Wstring & getName() const;
+
 		inline void setEffectParamValue(const Util::String & paramName, const void * data);
 
 	public:

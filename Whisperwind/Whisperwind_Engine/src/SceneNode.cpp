@@ -23,41 +23,55 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "D3D9Renderable.h"
+#include "SceneNode.h"
+#include "SceneObject.h"
 #include "DebugDefine.h"
-#include "D3D9Helper.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void D3D9Renderable::setEffectParamValue_impl(const Util::String & paramName, const void * data)
+	void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj)
 	{
-		WHISPERWIND_ASSERT(data != NULL);
+		WHISPERWIND_ASSERT(mSceneObjectMap.find(sceneObj->getName()) == mSceneObjectMap.end());
 
-		EffectParamSize eps;
-		if (mEffectParamMap.find(paramName) == mEffectParamMap.end())
-		{
-			eps.Handle = mEffect->GetParameterByName(NULL, paramName.c_str());
-			WHISPERWIND_ASSERT(eps.Handle != NULL);
+		if (sceneObj->getAttachedSceneNode())
+			sceneObj->getAttachedSceneNode()->dettachSceneObject(sceneObj);
 
-			D3DXPARAMETER_DESC paramDesc;
-			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(eps.Handle, &paramDesc));
-			eps.Size = paramDesc.Bytes;
+		mSceneObjectMap[sceneObj->getName()] = sceneObj;
 
-			mEffectParamMap[paramName] = eps;
-		}
-		else
-		{
-			eps = mEffectParamMap[paramName];
-		}
-		WHISPERWIND_ASSERT((eps.Handle != 0) && (eps.Size != 0));
-
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
+		sceneObj->setAttachedSceneNode(this->shared_from_this());
 	}
 	//---------------------------------------------------------------------
-	void D3D9Renderable::update_impl(Util::time elapsedTime)
+	void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj)
 	{
-		/// TODO!
-		elapsedTime;
+		WHISPERWIND_ASSERT(mSceneObjectMap.find(sceneObj->getName()) != mSceneObjectMap.end());
+
+		mSceneObjectMap.erase(sceneObj->getName());
+
+		sceneObj->setAttachedSceneNode(SceneNodePtr());
 	}
+	//---------------------------------------------------------------------
+	void SceneNode::addChildNode(const SceneNodePtr & sceneNode)
+	{
+		WHISPERWIND_ASSERT(mChildSceneNodeMap.find(sceneNode->getName()) == mChildSceneNodeMap.end());
+
+		mChildSceneNodeMap[sceneNode->getName()] = sceneNode;
+	}
+	//---------------------------------------------------------------------
+	bool SceneNode::getChildNode(const Util::Wstring & name, SceneNodePtr & outSceneNode)
+	{
+		if (mChildSceneNodeMap.find(name) != mChildSceneNodeMap.end())
+		{
+			outSceneNode = mChildSceneNodeMap[name];
+			return true;
+		}
+
+		return false;
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::update(Util::time elapsedTime)
+	{
+		update_impl(elapsedTime);
+	}
+
 }

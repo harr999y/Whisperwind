@@ -23,46 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-/** In this project,the main purpose is trying to run the game with any launchers,
-      and of course, here you can do many things such as crash dump generation and 
-	  dump collection to the server and so on.
-@note:
-    Use it in console when debug mode,in win32 when release mode!
-*/
+#include "OctreeForwardDeclare.h"
+#include "OctreeSceneManager.h"
+#include "OctreeSceneNode.h"
+#include "boost/make_shared.hpp"
+#include "boost/typeof/typeof.hpp"
 
-#include "ApplicationCofig.h"
-
-#include "GamePlayFramework.h"
-#include "ExceptionDefine.h"
-#include "DebugDefine.h"
-
-#ifdef WHISPERWIND_DEBUG
-    #include <iostream>
-    Util::s_int main()
-#else
-    /** for windows.h's warning level */
-    #pragma warning(push, 3)
-    #include <windows.h>
-    #pragma warning(pop)
-    Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
-#endif
+namespace Engine
+{
+	static const Util::Wstring ROOT_SCENE_NODE_NAME(TO_UNICODE("OctreeRootNode"));
+	//---------------------------------------------------------------------
+	SceneNodePtr OctreeSceneManager::createSceneNode_impl(const Util::Wstring & name)
 	{
-		try
-		{
-			GamePlay::GamePlayFramework framework(APPLICATION_NAME);
-			framework.run();
-		}
-		catch (Util::Exception & e)
-		{
-#ifdef WHISPERWIND_DEBUG
-		    DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
-#else
-			Util::Wstring errorInfo;
-			Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
-			WHISPERWIND_LOG(errorInfo);
-			::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
-#endif
-	    }
+		SceneNodePtr sceneNode = boost::make_shared<OctreeSceneNode>(name);
 
-		return 0;
+		return sceneNode;
 	}
+	//---------------------------------------------------------------------
+	void OctreeSceneManager::init_impl()
+	{}
+	//---------------------------------------------------------------------
+	void OctreeSceneManager::initRootNode()
+	{
+		mRootNode = boost::make_shared<OctreeSceneNode>(ROOT_SCENE_NODE_NAME);
+	}
+	//---------------------------------------------------------------------
+	void OctreeSceneManager::update_impl(Util::time elapsedTime)
+	{
+		BOOST_AUTO(node, mSceneNodeMap.begin());
+		for (node; node != mSceneNodeMap.end(); ++node)
+		{
+			node->second->update(elapsedTime);
+		}
+	}
+}

@@ -34,13 +34,10 @@ THE SOFTWARE
 #include "PluginConfig.h"
 #include "boost/shared_ptr.hpp"
 #include "boost/make_shared.hpp"
-#include "StringConverter.h"
-#include "Profile.h"
 #include "Timer.h"
 #include "ExceptionDefine.h"
+#include "SceneManager.h"
 #include "RenderMappingDefines.h"
-/// test!
-#include "Renderable.h"
 
 namespace Engine
 {
@@ -100,20 +97,16 @@ namespace Engine
 		while (!getQuitLooping())
 		{
 			WindowsEventHandle::handleWindowsMsg();
-			handleLogical();
 
 			/// Important way to save CPU when minimized or something else.
 			if (mRenderSystem->isPaused())
 				mTimer->sleep(1);
 
-			/// TODO!Test!
 			mRenderSystem->clearFrame(FCF_TARGET | FCF_ZBUFFER);
 			mRenderSystem->beginRendering();
-			static Util::real num = 0.0f;
-			num += 0.00001f;
-			Util::real test[4] = {num, num, num, 1.0f};
-			mRenderableVec[0]->setEffectParamValue("preColor", static_cast<void *>(test));
-			IF_FALSE_EXCEPTION(mRenderSystem->render(mRenderableVec[0]), "Render failed!");
+
+			mSceneManager->update(mTimer->getElapsedTime());
+
 			mRenderSystem->endRendering();
 		}
 	}
@@ -123,8 +116,6 @@ namespace Engine
 		clearResources();
 		clearPlugins();
 		clearConfigs();
-
-		mRenderableVec.clear();
 
 		WHISPERWIND_LOG(TO_UNICODE("Quit engine done!"));
 	}
@@ -140,7 +131,7 @@ namespace Engine
 	{
 		Util::StringVector strVec = mPluginConfig->getStringVector();
 		Util::Wstring wstr;
-		BOOST_FOREACH(Util::String & str, strVec)
+		BOOST_FOREACH(const Util::String & str, strVec)
 		{
 			WindowsHelper::loadPlugin(str);
 
@@ -175,13 +166,5 @@ namespace Engine
 		mEngineConfig.reset();
 		mPluginConfig.reset();
 	}
-	//---------------------------------------------------------------------
-	void EngineManager::handleLogical()
-	{
-	}
-	//---------------------------------------------------------------------
-	void EngineManager::addRenderable(const RenderablePtr & renderable)
-	{
-		mRenderableVec.push_back(renderable);
-	}
+
 }

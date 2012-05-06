@@ -13,15 +13,19 @@
   <ItemGroup>
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\EngineConfigDefines.h" />
-    <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\EngineConfig.h" />
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
+    <ClInclude Include="include\SceneComponent.h" />
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\Renderable.h" />
     <ClInclude Include="include\RenderMappingDefines.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\Resource.h" />
+    <ClInclude Include="include\ResourceManager.h" />
+    <ClInclude Include="include\SceneManager.h" />
+    <ClInclude Include="include\SceneNode.h" />
+    <ClInclude Include="include\SceneObject.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
     <ClInclude Include="include\WindowsHelper.h" />
   </ItemGroup>
@@ -36,6 +40,11 @@
     <ClCompile Include="src\Renderable.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\Resource.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\SceneComponent.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
+    <ClCompile Include="src\SceneNode.cpp" />
+    <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\WindowsEventHandle.cpp" />
     <ClCompile Include="src\WindowsHelper.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>

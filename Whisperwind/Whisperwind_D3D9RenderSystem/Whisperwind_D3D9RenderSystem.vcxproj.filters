@@ -7,7 +7,7 @@
     <Filter Include="Header">
       <UniqueIdentifier>{a434860d-7756-402c-abbd-ef4fc56bf91f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src">
+    <Filter Include="Source">
       <UniqueIdentifier>{c67d7012-9700-4474-9b67-7630c7e6c294}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -45,19 +45,19 @@
       <Filter>Dll Plugin</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9RenderSystem.cpp">
-      <Filter>Src</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9Helper.cpp">
-      <Filter>Src</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9Capability.cpp">
-      <Filter>Src</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9FormatMapping.cpp">
-      <Filter>Src</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\D3D9Renderable.cpp">
-      <Filter>Src</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

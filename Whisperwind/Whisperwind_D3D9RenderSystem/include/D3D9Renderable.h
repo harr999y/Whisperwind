@@ -67,6 +67,7 @@ namespace Engine
 
 	private:
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
+		virtual void update_impl(Util::time elapsedTime);
 
 	private:
 		struct EffectParamSize
