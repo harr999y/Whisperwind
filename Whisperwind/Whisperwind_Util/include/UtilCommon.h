@@ -73,9 +73,14 @@ THE SOFTWARE
 
 	/** Define DISALLOW_COPY_AND_ASSIGN macro for copy-constructor
 	and operator =. */
-#define DISALLOW_COPY_AND_ASSIGN(Type)\
-	Type(Type const &);\
+#define DISALLOW_COPY_AND_ASSIGN(Type) \
+	Type(Type const &); \
 	void operator=(Type const &);
+
+#define MAKE_STATIC_CLASS(Type) \
+	Type(); \
+	~Type(); \
+	DISALLOW_COPY_AND_ASSIGN(Type);
 
 #ifdef DLL_AS_EXPORT
     #define WHISPERWIND_API _declspec(dllexport)

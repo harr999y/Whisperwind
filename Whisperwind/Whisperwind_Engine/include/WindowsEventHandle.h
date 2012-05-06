@@ -44,6 +44,9 @@ namespace Engine
 			
 	private:
 		static HWND mWindow;
+
+	private:
+		MAKE_STATIC_CLASS(WindowsEventHandle);
 	};
 }
 

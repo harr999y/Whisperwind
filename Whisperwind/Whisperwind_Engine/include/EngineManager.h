@@ -69,8 +69,6 @@ namespace Engine
 		void clearPlugins();
 		void clearConfigs();
 
-		DISALLOW_COPY_AND_ASSIGN(EngineManager);
-
 	private:
 		bool mQuitLooping;
 		Util::Wstring mWindowName;
@@ -86,6 +84,9 @@ namespace Engine
 		RenderableVector mRenderableVec;
 
 		static EngineManager mSingleton;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(EngineManager);
 	};
 }
 

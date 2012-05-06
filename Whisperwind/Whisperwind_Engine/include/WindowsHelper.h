@@ -39,6 +39,9 @@ namespace Engine
 	public:
 		static void loadPlugin(const Util::String & plugin);
 		static HWND createWindow();
+
+	private:
+		MAKE_STATIC_CLASS(WindowsHelper);
 	};
 }
 

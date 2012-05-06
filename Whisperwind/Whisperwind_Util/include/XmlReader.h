@@ -52,8 +52,6 @@ namespace Util
 		const Util::String getAttribute(const Util::String & attributeName);
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(XmlReader);
-
 		void init(const Util::String & fileName);
 
 	private:
@@ -71,6 +69,9 @@ namespace Util
 		FilePtr mFileStream;
 
 		typedef rapidxml::xml_attribute<CharType> Attribute;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(XmlReader);
 	};
 }
 

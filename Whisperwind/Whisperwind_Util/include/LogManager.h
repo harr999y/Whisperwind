@@ -43,12 +43,12 @@ namespace Util
 		void log(const Wstring & event);
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(LogManager);
-
-	private:
 		std::wofstream mStream;
 
 		static LogManager mSingleton;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(LogManager);
 	};
 }
 

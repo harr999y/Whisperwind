@@ -45,10 +45,10 @@ namespace Util
 		virtual void uninstall() = 0;
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(Plugin_Interface);
+		Wstring mName;
 
 	private:
-		Wstring mName;
+		DISALLOW_COPY_AND_ASSIGN(Plugin_Interface);
 	};
 
 	typedef void (* DLL_LOAD_ENTRY)(void);
