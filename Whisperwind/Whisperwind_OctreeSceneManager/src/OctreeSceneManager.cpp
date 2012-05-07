@@ -23,10 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/make_shared.hpp>
+
 #include "OctreeForwardDeclare.h"
 #include "OctreeSceneManager.h"
 #include "OctreeSceneNode.h"
-#include "boost/make_shared.hpp"
 
 namespace Engine
 {

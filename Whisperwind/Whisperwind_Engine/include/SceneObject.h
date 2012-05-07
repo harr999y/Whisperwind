@@ -28,17 +28,10 @@ THE SOFTWARE
 #include "Util.h"
 #include "EngineForwardDeclare.h"
 #include "SceneNode.h"
+#include "SceneComponent.h"
 
 namespace Engine
 {
-	enum ComponentType
-	{
-		CT_RENDERABLE,
-		CT_PHYSICABLE,
-		CT_SOUNDABLE,
-		CT_MAX
-	};
-
 	class WHISPERWIND_API SceneObject
 	{
 	public:
@@ -63,7 +56,7 @@ namespace Engine
 
 	private:
 		/// TODO:Sorry for finally I used friend.And if I find a way not to use it,I'll modify it!
- 		friend void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj);
+ 		friend void SceneNode::attachSceneObject(SceneObjectPtr sceneObj);
  		friend void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj);
 		friend void SceneNode::dettachAllSceneObject();
  		SET_GET_CONST_VALUE(SceneNodePtr, AttachedSceneNode);

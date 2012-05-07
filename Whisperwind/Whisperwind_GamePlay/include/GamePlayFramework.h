@@ -26,6 +26,9 @@ THE SOFTWARE
 #define _GAMEPLAY_FRAMEWORK_H_
 
 #include "Util.h"
+/// TODO!
+#include "SceneComponent.h"
+#include "GamePlayForwardDeclare.h"
 
 namespace GamePlay
 {
@@ -38,9 +41,15 @@ namespace GamePlay
 	public:
 		void run();
 
+		/// TODO!
+		void updateCallback(Engine::ComponentType type, Util::time elapsedTime);
+
 	private:
 		void createScene();
 		void destroyScene();
+
+	private:
+		ActorPtr mActor;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);

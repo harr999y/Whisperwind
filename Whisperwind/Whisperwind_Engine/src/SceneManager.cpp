@@ -23,11 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "SceneManager.h"
-#include "SceneNode.h"
+#include <boost/make_shared.hpp>
+#include <boost/typeof/typeof.hpp>
+
 #include "DebugDefine.h"
-#include "boost/make_shared.hpp"
-#include "boost/typeof/typeof.hpp"
+#include "SceneNode.h"
+#include "SceneManager.h"
 
 namespace Engine
 {

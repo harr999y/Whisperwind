@@ -23,14 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include "UtilWarningDisable.h"
+
+#include <algorithm>
+#include <boost/make_shared.hpp>
+
+#include "MakeCOMPtr.h"
+#include "RenderMappingDefines.h"
 #include "D3D9Helper.h"
 #include "D3D9ForwardDeclare.h"
 #include "D3D9Renderable.h"
 #include "D3D9FormatMapping.h"
-#include "boost/make_shared.hpp"
-#include <algorithm>
-#include "MakeCOMPtr.h"
-#include "RenderMappingDefines.h"
 
 namespace Engine
 {

@@ -25,18 +25,19 @@ THE SOFTWARE
 #ifndef _D3D9_HELPER_H_
 #define _D3D9_HELPER_H_
 
-#include <d3d9.h>
-#include <DxErr.h>
-#include "Util.h"
-#include "D3D9Typedefs.h"
-#include "EngineForwardDeclare.h"
-#include "StringConverter.h"
-#include "DebugDefine.h"
-
 /** for windows.h's warning level */
 #pragma warning(push, 3)
 #include <windows.h>
 #pragma warning(pop)
+
+#include <d3d9.h>
+#include <DxErr.h>
+
+#include "Util.h"
+#include "StringConverter.h"
+#include "DebugDefine.h"
+#include "EngineForwardDeclare.h"
+#include "D3D9Typedefs.h"
 
 namespace Engine
 {

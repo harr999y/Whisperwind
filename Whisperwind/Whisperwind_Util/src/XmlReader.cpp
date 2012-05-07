@@ -23,10 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "XmlReader.h"
-#include "boost/make_shared.hpp"
+#include <boost/make_shared.hpp>
+
 #include "ExceptionDefine.h"
 #include "DebugDefine.h"
+#include "XmlReader.h"
 
 namespace Util
 {

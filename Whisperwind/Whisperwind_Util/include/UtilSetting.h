@@ -22,8 +22,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _UTIL_CONFIG_H_
-#define _UTIL_CONFIG_H_
+#ifndef _UTIL_SETTING_H_
+#define _UTIL_SETTING_H_
 
 #if defined(DEBUG) || defined(_DEBUG)
 	/** Add for visual leak detector. */

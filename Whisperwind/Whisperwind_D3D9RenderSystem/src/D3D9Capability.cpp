@@ -23,8 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "D3D9Capability.h"
 #include "DebugDefine.h"
+#include "D3D9Capability.h"
 
 namespace Engine
 {

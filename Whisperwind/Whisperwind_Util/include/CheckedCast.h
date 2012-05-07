@@ -25,8 +25,9 @@ THE SOFTWARE
 #ifndef _CHECKED_CAST_H_
 #define _CHECKED_CAST_H_
 
+#include <boost/shared_ptr.hpp>
+
 #include "DebugDefine.h"
-#include "boost/shared_ptr.hpp"
 
 namespace Util
 {

@@ -25,8 +25,9 @@ THE SOFTWARE
 #ifndef _D3D9_CAPABILITY_H_
 #define _D3D9_CAPABILITY_H_
 
-#include "d3d9.h"
+#include <d3d9.h>
 #include <vector>
+
 #include "Util.h"
 #include "D3D9Typedefs.h"
 

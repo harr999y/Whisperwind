@@ -25,9 +25,11 @@ THE SOFTWARE
 #ifndef _SCENE_NODE_H_
 #define _SCENE_NODE_H_
 
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/function.hpp>
+
 #include "Util.h"
 #include "EngineForwardDeclare.h"
-#include "boost/enable_shared_from_this.hpp"
 
 namespace Engine
 {
@@ -45,10 +47,15 @@ namespace Engine
 	public:
 		void addChildNode(const SceneNodePtr & sceneNode);
 		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outSceneNode);
-		void attachSceneObject(SceneObjectPtr & sceneObj);
+		/// Don't use ref,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.
+		void attachSceneObject(SceneObjectPtr sceneObj);
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
 		void dettachAllSceneObject();
 		void update(Util::time elapsedTime);
+
+		template <typename CallBack>
+		void regUpdateCallback(CallBack cb)
+		{ mCallback = cb; }
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
@@ -60,6 +67,10 @@ namespace Engine
 		SceneObjectMap mSceneObjectMap;
 		SceneNodeMap mChildSceneNodeMap;
 		Util::Wstring mName;
+
+	private:
+		typedef boost::function<void (SceneNodePtr, Util::time)> Callback;
+		Callback mCallback;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneNode);

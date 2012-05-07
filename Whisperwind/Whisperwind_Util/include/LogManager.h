@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _LOG_MANAGER_H_
 
 #include <fstream>
+
 #include "Util.h"
 
 namespace Util

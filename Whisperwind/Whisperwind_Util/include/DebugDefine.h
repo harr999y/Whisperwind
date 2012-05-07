@@ -31,8 +31,7 @@ THE SOFTWARE
 
 //---------------------------------------------------------------------
 	#include <iostream>
-	#include "boost/io/ios_state.hpp"
-
+	#include <boost/io/ios_state.hpp>
 
 	#define DEBUG_PRINT(x) \
 		{ \
@@ -59,9 +58,9 @@ THE SOFTWARE
 
 //---------------------------------------------------------------------
 	#define BOOST_ENABLE_ASSERT_HANDLER
-	#include "boost/assert.hpp"
+	#include <boost/assert.hpp>
 
-	#include "boost/format.hpp"
+	#include <boost/format.hpp>
 	#include <iostream>
 	namespace boost
 	{

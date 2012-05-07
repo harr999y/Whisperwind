@@ -24,7 +24,7 @@
     <ClInclude Include="include\Plugin.h" />
     <ClInclude Include="include\Singleton.h" />
     <ClInclude Include="include\StringConverter.h" />
-    <ClInclude Include="include\UtilConfig.h" />
+    <ClInclude Include="include\UtilSetting.h" />
     <ClInclude Include="include\UtilForwardDeclare.h" />
     <ClInclude Include="include\UtilTypedefs.h" />
     <ClInclude Include="include\UtilWarningDisable.h" />
@@ -94,6 +94,8 @@
       <AdditionalIncludeDirectories>../Whisperwind_Dependencies;./include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

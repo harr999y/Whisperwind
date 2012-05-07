@@ -25,7 +25,7 @@ THE SOFTWARE
 
 #include "OctreePlugin.h"
 #include "EngineManager.h"
-#include "boost/make_shared.hpp"
+#include <boost/make_shared.hpp>
 
 static const Util::Wstring DLL_NAME(TO_UNICODE("OctreeSceneManager"));
 

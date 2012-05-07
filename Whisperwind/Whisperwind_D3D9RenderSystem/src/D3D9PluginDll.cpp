@@ -23,9 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "D3D9Plugin.h"
+#include <boost/make_shared.hpp>
+
 #include "EngineManager.h"
-#include "boost/make_shared.hpp"
+#include "D3D9Plugin.h"
 
 static const Util::Wstring DLL_NAME(TO_UNICODE("D3D9RenderSystem"));
 

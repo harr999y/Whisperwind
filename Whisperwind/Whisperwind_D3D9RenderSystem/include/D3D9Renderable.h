@@ -25,10 +25,11 @@ THE SOFTWARE
 #ifndef _D3D9_RENDERABLE_H_
 #define _D3D9_RENDERABLE_H_
 
+#include <boost/unordered_map.hpp>
+#include <boost/enable_shared_from_this.hpp>
+
 #include "Renderable.h"
 #include "D3D9Typedefs.h"
-#include "boost/unordered_map.hpp"
-#include "boost/enable_shared_from_this.hpp"
 
 namespace Engine
 {

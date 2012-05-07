@@ -31,10 +31,9 @@ THE SOFTWARE
 */
 
 #include "ApplicationCofig.h"
-
-#include "GamePlayFramework.h"
 #include "ExceptionDefine.h"
 #include "DebugDefine.h"
+#include "GamePlayFramework.h"
 
 #ifdef WHISPERWIND_DEBUG
     #include <iostream>

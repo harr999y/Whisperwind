@@ -35,6 +35,7 @@ namespace Engine
 	{
 	public:
 		Renderable() : 
+		  SceneComponent(CT_RENDERABLE),
 		  mNeedReset(false)
 		{}
 

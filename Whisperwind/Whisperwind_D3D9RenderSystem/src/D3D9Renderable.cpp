@@ -24,10 +24,10 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "DebugDefine.h"
-#include "D3D9Renderable.h"
-#include "D3D9Helper.h"
 #include "EngineManager.h"
 #include "RenderSystem.h"
+#include "D3D9Renderable.h"
+#include "D3D9Helper.h"
 
 namespace Engine
 {

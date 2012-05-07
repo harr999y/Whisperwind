@@ -23,13 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "Timer.h"
-#include "ExceptionDefine.h"
-
 /** for windows.h's warning level */
 #pragma warning(push, 3)
 #include <windows.h>
 #pragma warning(pop)
+
+#include "ExceptionDefine.h"
+#include "Timer.h"
 
 namespace Util
 {

@@ -25,7 +25,8 @@ THE SOFTWARE
 #ifndef _D3D9_FORWARD_DECLARE_H_
 #define _D3D9_FORWARD_DECLARE_H_
 
-#include "boost/shared_ptr.hpp"
+#include <boost/shared_ptr.hpp>
+
 #include "D3D9Typedefs.h"
 
 namespace Engine

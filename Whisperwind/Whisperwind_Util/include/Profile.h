@@ -101,7 +101,7 @@ namespace Util
 	};
 }
 
-#include "boost/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
 #include "DebugDefine.h"
 
 #ifdef WHISPERWIND_DEBUG

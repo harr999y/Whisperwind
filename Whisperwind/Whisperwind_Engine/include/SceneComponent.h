@@ -25,14 +25,25 @@ THE SOFTWARE
 #ifndef _SCENE_COMPONENT_H_
 #define _SCENE_COMPONENT_H_
 
+#include <boost/function.hpp>
+
 #include "Util.h"
 
 namespace Engine
 {
+	enum ComponentType
+	{
+		CT_RENDERABLE,
+		CT_PHYSICABLE,
+		CT_SOUNDABLE,
+		CT_MAX
+	};
+
 	class SceneComponent
 	{
 	public:
-		SceneComponent()
+		explicit SceneComponent(ComponentType type) :
+		    mCompType(type)
 		{}
 
 	protected:
@@ -43,8 +54,21 @@ namespace Engine
 		void update(Util::time elapsedTime);
 		virtual const Util::Wstring & getName() const = 0;
 
+		template <typename CallBack>
+		void regUpdateCallback(CallBack cb)
+		{ mCallback = cb; }
+
+	public:
+		SET_GET_CONST_VALUE(ComponentType, CompType);
+
 	private:
 		virtual void update_impl(Util::time elapsedTime) = 0;
+
+	private:
+		typedef boost::function<void (ComponentType, Util::time)> Callback;
+		Callback mCallback;
+
+		ComponentType mCompType;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneComponent);

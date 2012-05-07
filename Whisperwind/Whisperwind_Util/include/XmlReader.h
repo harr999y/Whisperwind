@@ -25,15 +25,16 @@ THE SOFTWARE
 #ifndef _XML_READER_H_
 #define _XML_READER_H_
 
-#include "rapidxml/rapidxml.hpp"
-#include "boost/shared_ptr.hpp"
-#include "Util.h"
+#include <boost/shared_ptr.hpp>
+#include <rapidxml/rapidxml.hpp>
 
 /// disable the bad_cast warning.
 #pragma warning(push)
 #pragma warning(disable : 4244)
-#include "rapidxml/rapidxml_utils.hpp"
+#include <rapidxml/rapidxml_utils.hpp>
 #pragma warning(pop)
+
+#include "Util.h"
 
 namespace Util
 {

@@ -25,10 +25,11 @@ THE SOFTWARE
 #ifndef _RENDER_MAPPING_DEFINES_H_
 #define _RENDER_MAPPING_DEFINES_H_
 
-#include "Util.h"
 #include <vector>
+#include <boost/shared_ptr.hpp>
+
+#include "Util.h"
 #include "EngineForwardDeclare.h"
-#include "boost/shared_ptr.hpp"
 
 namespace Engine
 {

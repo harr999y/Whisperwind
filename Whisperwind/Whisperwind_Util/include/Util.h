@@ -26,7 +26,7 @@ THE SOFTWARE
 #define _UTIL_H_
 
 #include "UtilWarningDisable.h"
-#include "UtilConfig.h"
+#include "UtilSetting.h"
 #include "UtilTypedefs.h"
 #include "UtilForwardDeclare.h"
 #include "MemoryDefines.h"

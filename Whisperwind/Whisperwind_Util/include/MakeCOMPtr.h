@@ -25,10 +25,16 @@ THE SOFTWARE
 #ifndef _MAKE_COM_PTR_H_
 #define _MAKE_COM_PTR_H_
 
-#include "boost/shared_ptr.hpp"
+/**
+@note:
+    This may need to put at the first header place,because the boost/function.hpp
+	has some conflicts with boost/mem_fn.hpp bellow.
+*/
+
+#include <boost/shared_ptr.hpp>
 
 #define BOOST_MEM_FN_ENABLE_STDCALL
-#include "boost/mem_fn.hpp"
+#include <boost/mem_fn.hpp>
 
 namespace Util
 {

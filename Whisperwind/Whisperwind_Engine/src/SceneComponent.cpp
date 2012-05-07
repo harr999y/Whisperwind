@@ -30,6 +30,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneComponent::update(Util::time elapsedTime)
 	{
+		if (mCallback)
+			mCallback(mCompType, elapsedTime);
+
 		update_impl(elapsedTime);
 	}
 }

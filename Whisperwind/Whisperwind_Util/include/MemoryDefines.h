@@ -25,7 +25,7 @@ THE SOFTWARE
 #ifndef _MEMORY_DEFINES_H_
 #define _MEMORY_DEFINES_H_
 
-#include "boost/checked_delete.hpp"
+#include <boost/checked_delete.hpp>
 
 /// Long name to notice caring about new and delete.
 #define WHISPERWIND_NEW(x) new x;

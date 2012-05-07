@@ -30,9 +30,9 @@ THE SOFTWARE
 #include <windows.h>
 #pragma warning(pop)
 
+#include "EngineForwardDeclare.h"
 #include "RenderSystem.h"
 #include "D3D9ForwardDeclare.h"
-#include "EngineForwardDeclare.h"
 #include "D3D9Typedefs.h"
 
 namespace Engine

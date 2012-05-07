@@ -25,11 +25,12 @@ THE SOFTWARE
 #ifndef _D3D9_TYPEDEFS_H_
 #define _D3D9_TYPEDEFS_H_
 
+#include <vector>
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "boost/shared_ptr.hpp"
-#include <vector>
-#include "boost/unordered_map.hpp"
+#include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
+
 #include "Util.h"
 
 #ifdef WHISPERWIND_DEBUG

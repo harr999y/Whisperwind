@@ -25,9 +25,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\UtilConfig.h">
-      <Filter>Util Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\MemoryDefines.h">
       <Filter>Memory</Filter>
     </ClInclude>
@@ -78,6 +75,9 @@
     </ClInclude>
     <ClInclude Include="include\DebugDefine.h">
       <Filter>ErrorCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UtilSetting.h">
+      <Filter>Util Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

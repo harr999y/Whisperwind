@@ -23,21 +23,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "EngineManager.h"
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
+
+#include "ExceptionDefine.h"
 #include "Plugin.h"
-#include "RenderSystem.h"
+#include "Timer.h"
 #include "WindowsEventHandle.h"
 #include "WindowsHelper.h"
-#include "boost/foreach.hpp"
 #include "XmlReader.h"
 #include "EngineConfig.h"
 #include "PluginConfig.h"
-#include "boost/shared_ptr.hpp"
-#include "boost/make_shared.hpp"
-#include "Timer.h"
-#include "ExceptionDefine.h"
-#include "SceneManager.h"
+#include "RenderSystem.h"
 #include "RenderMappingDefines.h"
+#include "SceneManager.h"
+#include "EngineManager.h"
 
 namespace Engine
 {

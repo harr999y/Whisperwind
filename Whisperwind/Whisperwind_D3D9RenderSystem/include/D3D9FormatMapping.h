@@ -25,9 +25,9 @@ THE SOFTWARE
 #ifndef _D3D9_FORMAT_MAPPING_H_
 #define _D3D9_FORMAT_MAPPING_H_
 
-#include "D3D9Typedefs.h"
 #include "EngineForwardDeclare.h"
 #include "RenderMappingDefines.h"
+#include "D3D9Typedefs.h"
 
 namespace Engine
 {

@@ -25,10 +25,13 @@ THE SOFTWARE
 #ifndef _EXCEPTION_DEFINE_H_
 #define _EXCEPTION_DEFINE_H_
 
-#include "UtilCommon.h"
 #include <exception>
-#include "boost/exception/all.hpp"
-#include "boost/current_function.hpp"
+#include <boost/exception/all.hpp>
+#include <boost/current_function.hpp>
+
+#include "Util.h"
+#include "LogManager.h"
+#include "StringConverter.h"
 
 namespace Util
 {
@@ -48,9 +51,6 @@ namespace Util
 		virtual boost::exception
 	{};
 }
-
-#include "LogManager.h"
-#include "StringConverter.h"
 
 /**
 @note

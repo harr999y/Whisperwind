@@ -23,10 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "Config.h"
+#include <boost/make_shared.hpp>
+
 #include "XmlReader.h"
-#include "boost/make_shared.hpp"
 #include "ExceptionDefine.h"
+#include "Config.h"
 
 namespace Engine
 {

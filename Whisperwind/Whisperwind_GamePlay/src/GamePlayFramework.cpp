@@ -25,7 +25,7 @@ THE SOFTWARE
 
 #include "GamePlayFramework.h"
 #include "EngineManager.h"
-#include "boost/make_shared.hpp"
+#include <boost/make_shared.hpp>
 #include "Renderable.h"
 #include "RenderMappingDefines.h"
 #include "RenderSystem.h"
@@ -33,8 +33,9 @@ THE SOFTWARE
 #include "GamePlayForwardDeclare.h"
 #include "SceneManager.h"
 #include "SceneNode.h"
-#include "SceneObject.h"
 #include "CheckedCast.h"
+#include <boost/bind.hpp>
+#include <boost/ref.hpp>
 
 namespace GamePlay
 {
@@ -105,18 +106,29 @@ namespace GamePlay
 		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 
 		Util::Wstring actorName(TO_UNICODE("test"));
-		ActorPtr actor = boost::make_shared<Actor>(actorName);
-		actor->regComponent(Engine::CT_RENDERABLE, renderable);
+		mActor = boost::make_shared<Actor>(actorName);
+		mActor->regComponent(Engine::CT_RENDERABLE, renderable);
+		renderable->regUpdateCallback(boost::bind(&GamePlayFramework::updateCallback, boost::ref(*this), _1, _2));
 
 		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName);
-		Engine::SceneObjectPtr obj = Util::checkedPtrCast<Engine::SceneObject>(actor);
-		node->attachSceneObject(obj);
+		node->attachSceneObject(mActor);
 		Engine::EngineManager::getSingleton().getSceneManager()->getRootNode()->addChildNode(node);
 	}
 	//---------------------------------------------------------------------
-	void GamePlayFramework::destroyScene()
+	void GamePlayFramework::updateCallback(Engine::ComponentType type, Util::time elapsedTime)
 	{
+		Engine::SceneComponentPtr comp;
+		IF_FALSE_RETURN(mActor->getComponent(type, comp));
 
+		/// TODO!Test!
+		static Util::real num = 0.0f;
+		num += 1.f * elapsedTime;
+		Util::real test[4] = {num, num, num, 1.0f};
+		Engine::RenderablePtr renderable = Util::checkedPtrCast<Engine::Renderable>(comp);
+		renderable->setEffectParamValue("preColor", static_cast<void *>(test));
 	}
+	//---------------------------------------------------------------------
+	void GamePlayFramework::destroyScene()
+	{}
 
  }

@@ -23,24 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "Actor.h"
 #include "CheckedCast.h"
 #include "Renderable.h"
+#include "Actor.h"
 
 namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	void Actor::update_impl(Util::time elapsedTime)
-	{
-		Engine::SceneComponentPtr & comp = mSceneComponents[Engine::CT_RENDERABLE];
-		if (NULL == comp)
-			return;
-
-		/// TODO!Test!
-		static Util::real num = 0.0f;
-		num += 1.f * elapsedTime;
-		Util::real test[4] = {num, num, num, 1.0f};
-		Engine::RenderablePtr renderable = Util::checkedPtrCast<Engine::Renderable>(comp);
-		renderable->setEffectParamValue("preColor", static_cast<void *>(test));
-	}
+	void Actor::update_impl(Util::time /*elapsedTime*/)
+	{}
 }

@@ -30,9 +30,10 @@ THE SOFTWARE
 #include <windows.h>
 #pragma warning(pop)
 
+#include <vector>
+
 #include "UtilCommon.h"
 #include "Util.h"
-#include <vector>
 
 namespace Util
 {

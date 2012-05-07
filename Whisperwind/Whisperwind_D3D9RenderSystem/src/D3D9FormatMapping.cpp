@@ -23,12 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "D3D9FormatMapping.h"
-#include "boost/foreach.hpp"
-#include "DebugDefine.h"
-#include "D3D9Helper.h"
+#include <boost/foreach.hpp>
+
 #include "MakeCOMPtr.h"
+#include "DebugDefine.h"
 #include "RenderMappingDefines.h"
+#include "D3D9FormatMapping.h"
+#include "D3D9Helper.h"
 
 namespace Engine
 {

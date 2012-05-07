@@ -23,8 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "Profile.h"
 #include "ExceptionDefine.h"
+#include "Profile.h"
 
 namespace Util
 {

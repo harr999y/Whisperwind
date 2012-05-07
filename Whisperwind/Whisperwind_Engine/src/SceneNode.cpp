@@ -23,16 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "SceneNode.h"
-#include "SceneObject.h"
+#include <boost/typeof/typeof.hpp>
+
 #include "DebugDefine.h"
-#include "boost/typeof/typeof.hpp"
+#include "SceneObject.h"
+#include "SceneNode.h"
 
 namespace Engine
 {
 	static const SceneNodePtr NULL_SCENE_NODE;
 	//---------------------------------------------------------------------
-	void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj)
+	void SceneNode::attachSceneObject(SceneObjectPtr sceneObj)
 	{
 		WHISPERWIND_ASSERT(mSceneObjectMap.find(sceneObj->getName()) == mSceneObjectMap.end());
 
@@ -84,6 +85,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::update(Util::time elapsedTime)
 	{
+		if (mCallback)
+			mCallback(this->shared_from_this(), elapsedTime);
+
 		BOOST_AUTO(childNode, mChildSceneNodeMap.begin());
 		for (childNode; childNode != mChildSceneNodeMap.end(); ++childNode)
 		{

@@ -25,9 +25,9 @@ THE SOFTWARE
 #ifndef _ENGINE_FORWARD_DECLARE_H_
 #define _ENGINE_FORWARD_DECLARE_H_
 
-#include "boost/shared_ptr.hpp"
 #include <vector>
-#include "boost/unordered_map.hpp"
+#include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
 
 namespace Engine
 {

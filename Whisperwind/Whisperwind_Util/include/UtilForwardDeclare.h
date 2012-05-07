@@ -25,7 +25,7 @@ THE SOFTWARE
 #ifndef _UTIL_FORWARD_DECLARE_H_
 #define _UTIL_FORWARD_DECLARE_H_
 
-#include "boost/shared_ptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 namespace Util
 {

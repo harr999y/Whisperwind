@@ -23,10 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "SceneObject.h"
-#include "SceneComponent.h"
-#include "boost/foreach.hpp"
+#include <boost/foreach.hpp>
+
 #include "DebugDefine.h"
+#include "SceneComponent.h"
+#include "SceneObject.h"
 
 namespace Engine
 {

@@ -23,20 +23,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "D3D9RenderSystem.h"
+#include <boost/make_shared.hpp>
+
+#include "MakeCOMPtr.h"
+#include "CheckedCast.h"
+#include "ExceptionDefine.h"
 #include "EngineConfig.h"
-#include "boost/make_shared.hpp"
 #include "WindowsHelper.h"
 #include "EngineManager.h"
 #include "Renderable.h"
-#include "MakeCOMPtr.h"
+#include "RenderMappingDefines.h"
 #include "D3D9FormatMapping.h"
-#include "ExceptionDefine.h"
 #include "D3D9Capability.h"
 #include "D3D9Helper.h"
-#include "CheckedCast.h"
 #include "D3D9Renderable.h"
-#include "RenderMappingDefines.h"
+#include "D3D9RenderSystem.h"
 
 namespace Engine
 {

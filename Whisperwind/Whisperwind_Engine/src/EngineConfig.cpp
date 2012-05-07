@@ -23,12 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "EngineConfig.h"
-#include "boost/lexical_cast.hpp"
-#include "boost/algorithm/string.hpp"
-#include "EngineConfigDefines.h"
-#include "XmlReader.h"
+#include "UtilWarningDisable.h"
+
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+
 #include "ExceptionDefine.h"
+#include "XmlReader.h"
+#include "EngineConfigDefines.h"
+#include "EngineConfig.h"
 
 namespace Engine
 {

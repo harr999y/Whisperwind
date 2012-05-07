@@ -25,9 +25,9 @@ THE SOFTWARE
 #ifndef _ENGINE_NAMAGER_H_
 #define _ENGINE_NAMAGER_H_
 
-#include "Util.h"
 #include <vector>
 
+#include "Util.h"
 #include "EngineForwardDeclare.h"
 
 namespace Engine
