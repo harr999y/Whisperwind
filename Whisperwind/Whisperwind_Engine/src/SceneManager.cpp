@@ -27,9 +27,24 @@ THE SOFTWARE
 #include "SceneNode.h"
 #include "DebugDefine.h"
 #include "boost/make_shared.hpp"
+#include "boost/typeof/typeof.hpp"
 
 namespace Engine
 {
+	//---------------------------------------------------------------------
+	SceneManager::~SceneManager()
+	{
+		BOOST_AUTO(node, mSceneNodeMap.begin());
+		for (node; node != mSceneNodeMap.end(); ++node)
+		{
+			node->second->dettachAllSceneObject();
+		}
+
+		mRootNode->dettachAllSceneObject();
+
+		mRootNode.reset();
+		mSceneNodeMap.clear();
+	}
 	//---------------------------------------------------------------------
 	void SceneManager::init()
 	{

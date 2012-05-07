@@ -36,6 +36,9 @@ namespace Engine
 		    SceneNode(name)
 		{}
 
+		~OctreeSceneNode()
+		{}
+
 	private:
 		virtual void update_impl(Util::time elapsedTime);
 	};

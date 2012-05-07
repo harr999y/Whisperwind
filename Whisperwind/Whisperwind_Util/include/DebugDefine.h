@@ -25,7 +25,7 @@ THE SOFTWARE
 #ifndef _DEBUG_DEFINE_H_
 #define _DEBUG_DEFINE_H_
 
-#include "UtilCommon.h"
+#include "Util.h"
 
 #ifdef WHISPERWIND_DEBUG
 

@@ -39,7 +39,8 @@ namespace GamePlay
 		void run();
 
 	private:
-		void init();
+		void createScene();
+		void destroyScene();
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);

@@ -37,8 +37,7 @@ namespace Engine
 		{}
 
 	protected:
-		virtual ~SceneManager()
-		{}
+		virtual ~SceneManager();
 
 	public:
 		void init();

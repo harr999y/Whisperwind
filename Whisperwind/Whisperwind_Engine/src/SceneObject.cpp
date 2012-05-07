@@ -33,32 +33,28 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneObject::update(Util::time elapsedTime)
 	{
-		BOOST_FOREACH(SceneComponentPtr & obj, mSceneComponentVec)
+		BOOST_FOREACH(SceneComponentPtr & comp, mSceneComponents)
 		{
-			obj->update(elapsedTime);
+			if (comp != NULL)
+				comp->update(elapsedTime);
 		}
 
 		update_impl(elapsedTime);
 	}
 	//---------------------------------------------------------------------
-	void SceneObject::regComponent(const SceneComponentPtr & sceneComp)
+	void SceneObject::regComponent(ComponentType type, const SceneComponentPtr & sceneComp)
 	{
-		WHISPERWIND_ASSERT(sceneComp != NULL);
+		WHISPERWIND_ASSERT((NULL == mSceneComponents[type]) && (sceneComp != NULL));
 
-		mSceneComponentVec.push_back(sceneComp);
+		mSceneComponents[type] = sceneComp;
 	}
 	//---------------------------------------------------------------------
-	bool SceneObject::getComponent(const Util::Wstring & name, SceneComponentPtr & outSceneComp)
+	bool SceneObject::getComponent(ComponentType type, SceneComponentPtr & outSceneComp)
 	{
-		BOOST_FOREACH(const SceneComponentPtr & sceneComp, mSceneComponentVec)
-		{
-			if (name == sceneComp->getName())
-			{
-				outSceneComp = sceneComp;
-				return true;
-			}
-		}
+		if (NULL == mSceneComponents[type])
+			return false;
 
-		return false;
+		outSceneComp = mSceneComponents[type];
+		return true;
 	}
 }

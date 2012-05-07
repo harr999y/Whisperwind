@@ -25,9 +25,13 @@ THE SOFTWARE
 #ifndef _GAMEPLAY_FORWARD_DECLARE_H_
 #define _GAMEPLAY_FORWARD_DECLARE_H_
 
+#include "boost/shared_ptr.hpp"
+
 namespace GamePlay
 {
 	class GamePlayFramework;
+	class Actor;
+	typedef boost::shared_ptr<Actor> ActorPtr;
 }
 
 #endif

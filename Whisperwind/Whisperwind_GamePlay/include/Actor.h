@@ -22,43 +22,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _ACTOR_H_
+#define _ACTOR_H_
 
-#include "DebugDefine.h"
-#include "D3D9Renderable.h"
-#include "D3D9Helper.h"
-#include "EngineManager.h"
-#include "RenderSystem.h"
+#include "Util.h"
+#include "EngineForwardDeclare.h"
+#include "SceneObject.h"
 
-namespace Engine
+namespace GamePlay
 {
-	//---------------------------------------------------------------------
-	void D3D9Renderable::setEffectParamValue_impl(const Util::String & paramName, const void * data)
+	class Actor : public Engine::SceneObject
 	{
-		WHISPERWIND_ASSERT(data != NULL);
+	public:
+		Actor (Util::Wstring & name) :
+		    SceneObject(name)
+		{}
 
-		EffectParamSize eps;
-		if (mEffectParamMap.find(paramName) == mEffectParamMap.end())
-		{
-			eps.Handle = mEffect->GetParameterByName(NULL, paramName.c_str());
-			WHISPERWIND_ASSERT(eps.Handle != NULL);
+		~Actor()
+		{}
+			
+	private:
+		virtual void update_impl(Util::time elapsedTime);
+	};
 
-			D3DXPARAMETER_DESC paramDesc;
-			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(eps.Handle, &paramDesc));
-			eps.Size = paramDesc.Bytes;
-
-			mEffectParamMap[paramName] = eps;
-		}
-		else
-		{
-			eps = mEffectParamMap[paramName];
-		}
-		WHISPERWIND_ASSERT((eps.Handle != 0) && (eps.Size != 0));
-
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
-	}
-	//---------------------------------------------------------------------
-	void D3D9Renderable::update_impl(Util::time /*elapsedTime*/)
-	{
-		EngineManager::getSingleton().getRenderSystem()->render(this->shared_from_this());
-	}
 }
+
+#endif

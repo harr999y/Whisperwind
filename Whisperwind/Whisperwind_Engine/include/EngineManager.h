@@ -41,9 +41,9 @@ namespace Engine
 	public:
 		static EngineManager & getSingleton();
 
-		void preRunning();
+		void setup();
 		void run();
-		void postRunning();
+		void shutDown();
 
 		void installPlugin(const Util::PluginPtr & plugin);
 

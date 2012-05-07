@@ -31,6 +31,14 @@ THE SOFTWARE
 
 namespace Engine
 {
+	enum ComponentType
+	{
+		CT_RENDERABLE,
+		CT_PHYSICABLE,
+		CT_SOUNDABLE,
+		CT_MAX
+	};
+
 	class WHISPERWIND_API SceneObject
 	{
 	public:
@@ -39,13 +47,13 @@ namespace Engine
 		{}
 
 	protected:
-		~SceneObject()
+		virtual ~SceneObject()
 		{}
 
 	public:
 		void update(Util::time elapsedTime);
-		void regComponent(const SceneComponentPtr & sceneComp);
-		bool getComponent(const Util::Wstring & name, SceneComponentPtr & scene);
+		void regComponent(ComponentType type, const SceneComponentPtr & sceneComp);
+		bool getComponent(ComponentType type, SceneComponentPtr & scene);
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
@@ -55,12 +63,13 @@ namespace Engine
 
 	private:
 		/// TODO:Sorry for finally I used friend.And if I find a way not to use it,I'll modify it!
-		friend void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj);
-		friend void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj);
-		SET_GET_CONST_VALUE(SceneNodePtr, AttachedSceneNode);
+ 		friend void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj);
+ 		friend void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj);
+		friend void SceneNode::dettachAllSceneObject();
+ 		SET_GET_CONST_VALUE(SceneNodePtr, AttachedSceneNode);
 
 	protected:
-		SceneComponentVector mSceneComponentVec;
+		SceneComponentPtr mSceneComponents[CT_MAX];
 		SceneNodePtr mAttachedSceneNode;
 		Util::Wstring mName;
 

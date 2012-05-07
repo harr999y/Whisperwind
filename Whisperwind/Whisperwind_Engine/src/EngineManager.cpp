@@ -86,7 +86,7 @@ namespace Engine
 		WHISPERWIND_LOG(TO_UNICODE("Plugin config parse done!"));
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::preRunning()
+	void EngineManager::setup()
 	{
 		loadPlugins();
 		loadResources();
@@ -111,7 +111,7 @@ namespace Engine
 		}
 	}
 	//---------------------------------------------------------------------
-	void EngineManager::postRunning()
+	void EngineManager::shutDown()
 	{
 		clearResources();
 		clearPlugins();

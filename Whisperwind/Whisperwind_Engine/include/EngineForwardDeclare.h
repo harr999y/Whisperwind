@@ -56,7 +56,6 @@ namespace Engine
 	typedef boost::shared_ptr<SceneObject> SceneObjectPtr;
 	typedef boost::unordered_map<Util::Wstring, SceneObjectPtr> SceneObjectMap;
 	typedef boost::shared_ptr<SceneComponent> SceneComponentPtr;
-	typedef std::vector<SceneComponentPtr> SceneComponentVector;
 }
 
 #endif

@@ -23,42 +23,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "DebugDefine.h"
-#include "D3D9Renderable.h"
-#include "D3D9Helper.h"
-#include "EngineManager.h"
-#include "RenderSystem.h"
+#include "Actor.h"
+#include "CheckedCast.h"
+#include "Renderable.h"
 
-namespace Engine
+namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	void D3D9Renderable::setEffectParamValue_impl(const Util::String & paramName, const void * data)
+	void Actor::update_impl(Util::time elapsedTime)
 	{
-		WHISPERWIND_ASSERT(data != NULL);
+		Engine::SceneComponentPtr & comp = mSceneComponents[Engine::CT_RENDERABLE];
+		if (NULL == comp)
+			return;
 
-		EffectParamSize eps;
-		if (mEffectParamMap.find(paramName) == mEffectParamMap.end())
-		{
-			eps.Handle = mEffect->GetParameterByName(NULL, paramName.c_str());
-			WHISPERWIND_ASSERT(eps.Handle != NULL);
-
-			D3DXPARAMETER_DESC paramDesc;
-			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(eps.Handle, &paramDesc));
-			eps.Size = paramDesc.Bytes;
-
-			mEffectParamMap[paramName] = eps;
-		}
-		else
-		{
-			eps = mEffectParamMap[paramName];
-		}
-		WHISPERWIND_ASSERT((eps.Handle != 0) && (eps.Size != 0));
-
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
-	}
-	//---------------------------------------------------------------------
-	void D3D9Renderable::update_impl(Util::time /*elapsedTime*/)
-	{
-		EngineManager::getSingleton().getRenderSystem()->render(this->shared_from_this());
+		/// TODO!Test!
+		static Util::real num = 0.0f;
+		num += 1.f * elapsedTime;
+		Util::real test[4] = {num, num, num, 1.0f};
+		Engine::RenderablePtr renderable = Util::checkedPtrCast<Engine::Renderable>(comp);
+		renderable->setEffectParamValue("preColor", static_cast<void *>(test));
 	}
 }

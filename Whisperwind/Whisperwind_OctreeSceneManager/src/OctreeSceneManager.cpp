@@ -27,7 +27,6 @@ THE SOFTWARE
 #include "OctreeSceneManager.h"
 #include "OctreeSceneNode.h"
 #include "boost/make_shared.hpp"
-#include "boost/typeof/typeof.hpp"
 
 namespace Engine
 {
@@ -50,10 +49,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void OctreeSceneManager::update_impl(Util::time elapsedTime)
 	{
-		BOOST_AUTO(node, mSceneNodeMap.begin());
-		for (node; node != mSceneNodeMap.end(); ++node)
-		{
-			node->second->update(elapsedTime);
-		}
+		mRootNode->update(elapsedTime);
 	}
 }

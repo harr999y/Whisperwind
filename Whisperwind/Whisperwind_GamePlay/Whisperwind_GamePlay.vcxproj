@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Actor.h" />
     <ClInclude Include="include\GamePlayFramework.h" />
     <ClInclude Include="include\GamePlayForwardDeclare.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\Actor.cpp" />
     <ClCompile Include="src\GamePlayFramework.cpp" />
   </ItemGroup>
   <ItemGroup>

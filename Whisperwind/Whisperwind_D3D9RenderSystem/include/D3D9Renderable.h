@@ -28,6 +28,7 @@ THE SOFTWARE
 #include "Renderable.h"
 #include "D3D9Typedefs.h"
 #include "boost/unordered_map.hpp"
+#include "boost/enable_shared_from_this.hpp"
 
 namespace Engine
 {
@@ -46,7 +47,7 @@ namespace Engine
 		Util::u_int VertexCount;
 	};
 
-	class D3D9Renderable : public Renderable
+	class D3D9Renderable : public Renderable, public boost::enable_shared_from_this<D3D9Renderable>
 	{
 	public:
 		D3D9Renderable() : 
@@ -54,6 +55,9 @@ namespace Engine
 			mTechnique(0),
 			mPrimCount(0),
 			mPrimType(D3DPT_TRIANGLESTRIP)
+		{}
+
+		~D3D9Renderable()
 		{}
 
 	public:

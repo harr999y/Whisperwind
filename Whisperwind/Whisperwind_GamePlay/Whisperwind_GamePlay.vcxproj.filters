@@ -24,10 +24,16 @@
     <ClInclude Include="include\GamePlayForwardDeclare.h">
       <Filter>GamePlay Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\Actor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GamePlayFramework.cpp">
       <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Actor.cpp">
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

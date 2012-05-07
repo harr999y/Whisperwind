@@ -31,6 +31,10 @@ namespace Engine
 {
 	class OctreeSceneManager : public SceneManager
 	{
+	public:
+		~OctreeSceneManager()
+		{}
+
 	private:
 		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name);
 		virtual void initRootNode();

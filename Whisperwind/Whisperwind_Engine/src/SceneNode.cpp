@@ -26,9 +26,11 @@ THE SOFTWARE
 #include "SceneNode.h"
 #include "SceneObject.h"
 #include "DebugDefine.h"
+#include "boost/typeof/typeof.hpp"
 
 namespace Engine
 {
+	static const SceneNodePtr NULL_SCENE_NODE;
 	//---------------------------------------------------------------------
 	void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj)
 	{
@@ -46,9 +48,20 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(mSceneObjectMap.find(sceneObj->getName()) != mSceneObjectMap.end());
 
-		mSceneObjectMap.erase(sceneObj->getName());
+		sceneObj->setAttachedSceneNode(NULL_SCENE_NODE);
 
-		sceneObj->setAttachedSceneNode(SceneNodePtr());
+		mSceneObjectMap.erase(sceneObj->getName());
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::dettachAllSceneObject()
+	{
+		BOOST_AUTO(obj, mSceneObjectMap.begin());
+		for (obj; obj != mSceneObjectMap.end(); ++obj)
+		{
+			obj->second->setAttachedSceneNode(NULL_SCENE_NODE);
+		}
+
+		mSceneObjectMap.clear();
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::addChildNode(const SceneNodePtr & sceneNode)
@@ -71,6 +84,18 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::update(Util::time elapsedTime)
 	{
+		BOOST_AUTO(childNode, mChildSceneNodeMap.begin());
+		for (childNode; childNode != mChildSceneNodeMap.end(); ++childNode)
+		{
+			childNode->second->update(elapsedTime);
+		}
+
+		BOOST_AUTO(obj, mSceneObjectMap.begin());
+		for (obj; obj != mSceneObjectMap.end(); ++obj)
+		{
+			obj->second->update(elapsedTime);
+		}
+
 		update_impl(elapsedTime);
 	}
 

@@ -47,6 +47,7 @@ namespace Engine
 		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outSceneNode);
 		void attachSceneObject(SceneObjectPtr & sceneObj);
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
+		void dettachAllSceneObject();
 		void update(Util::time elapsedTime);
 
 	public:
