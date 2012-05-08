@@ -41,6 +41,10 @@ namespace Engine
 	typedef boost::shared_ptr<D3D9Renderable> D3D9RenderablePtr;
 
 	struct VertexBound;
+
+	class D3D9RenderTexture;
+	typedef boost::shared_ptr<D3D9RenderTexture> D3D9RenderTexturePtr;
+
 }
 
 #endif

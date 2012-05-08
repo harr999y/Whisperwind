@@ -105,6 +105,42 @@ namespace Engine
 		return D3DPT_FORCE_DWORD;
 	}
 	//---------------------------------------------------------------------
+	Util::u_int translateTextureCreateFlag(Util::u_int flag)
+	{
+		Util::u_int d3d9Flag = 0;
+
+		if ((flag & TCF_RENDERTARGET) != 0)
+			d3d9Flag |= D3DUSAGE_RENDERTARGET;
+		else if ((flag & TCF_DEPTHSTENCIL) != 0)
+			d3d9Flag |= D3DUSAGE_DEPTHSTENCIL;
+
+		if ((flag & TCF_AUTO_MIPMAP) != 0)
+			d3d9Flag |= D3DUSAGE_AUTOGENMIPMAP;
+
+		return d3d9Flag;
+	}
+	//---------------------------------------------------------------------
+	D3DFORMAT translatePixelFormat(RenderPixelFormat fmt)
+	{
+		WHISPERWIND_ASSERT(fmt < RPF_MAX);
+
+		switch (fmt)
+		{
+			CASE_MATCH_RETURN(RPF_A8R8G8B8, D3DFMT_A8R8G8B8);
+			CASE_MATCH_RETURN(RPF_A16B16G16R16F, D3DFMT_A16B16G16R16F);
+			CASE_MATCH_RETURN(RPF_R16F, D3DFMT_R16F);
+			CASE_MATCH_RETURN(RPF_R32F, D3DFMT_R32F);
+			CASE_MATCH_RETURN(RPF_D16, D3DFMT_D16);
+			CASE_MATCH_RETURN(RPF_D32, D3DFMT_D32);
+			CASE_MATCH_RETURN(RPF_D24X8, D3DFMT_D24X8);
+			CASE_MATCH_RETURN(RPF_D24S8, D3DFMT_D24S8);
+			CASE_UNMATCH_ASSERT;
+		}
+
+		WHISPERWIND_ASSERT(false);
+		return D3DFMT_UNKNOWN;
+	}
+	//---------------------------------------------------------------------
 #undef CASE_MATCH_RETURN
 #undef CASE_UNMATCH_ASSERT
 
@@ -153,5 +189,14 @@ namespace Engine
 	{
 		return translatePrimitiveType(primType);
 	}
-
+	//---------------------------------------------------------------------
+	Util::u_int D3D9FormatMappingFactory::getD3D9TextureCreateFlag(Util::u_int flag)
+	{
+		return translateTextureCreateFlag(flag);
+	}
+	//---------------------------------------------------------------------
+	D3DFORMAT D3D9FormatMappingFactory::getD3D9PixelFormat(RenderPixelFormat fmt)
+	{
+		return translatePixelFormat(fmt);
+	}
 }

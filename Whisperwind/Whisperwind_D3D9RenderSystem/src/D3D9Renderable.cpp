@@ -24,10 +24,13 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "DebugDefine.h"
+#include "CheckedCast.h"
 #include "EngineManager.h"
 #include "RenderSystem.h"
+#include "D3D9ForwardDeclare.h"
 #include "D3D9Renderable.h"
 #include "D3D9Helper.h"
+#include "D3D9RenderTexture.h"
 
 namespace Engine
 {
@@ -36,6 +39,22 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(data != NULL);
 
+		EffectParamSize eps = getEffectParam(paramName);
+
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
+	}
+	//---------------------------------------------------------------------
+	void D3D9Renderable::setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture)
+	{
+		//EffectParamSize eps = getEffectParam(paramName);
+
+		D3D9RenderTexturePtr d3d9TexPtr = Util::checkedPtrCast<D3D9RenderTexture>(texture);
+
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(paramName.c_str(), d3d9TexPtr->getTexture().get()));		
+	}
+	//---------------------------------------------------------------------
+	EffectParamSize D3D9Renderable::getEffectParam(const Util::String & paramName)
+	{
 		EffectParamSize eps;
 		if (mEffectParamMap.find(paramName) == mEffectParamMap.end())
 		{
@@ -54,7 +73,7 @@ namespace Engine
 		}
 		WHISPERWIND_ASSERT((eps.Handle != 0) && (eps.Size != 0));
 
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
+		return eps;
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::update_impl(Util::time /*elapsedTime*/)

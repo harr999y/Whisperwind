@@ -25,6 +25,7 @@ THE SOFTWARE
 #ifndef _D3D9_RENDERABLE_H_
 #define _D3D9_RENDERABLE_H_
 
+#include <vector>
 #include <boost/unordered_map.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
@@ -36,16 +37,24 @@ namespace Engine
 	struct VertexBound
 	{
 		VertexBound() :
-	        VertexBufSize(0),
-			VertexStride(0),
 			VertexCount(0)
 		{}
 
+		IDirect3DVertexBuffer9PtrVector VertexBufferVec;
+		VertexStrideVector VertexStrideVec;
 		IDirect3DVertexDeclaration9Ptr VertexDeclaration;
-		IDirect3DVertexBuffer9Ptr VertexBuffer;
-		Util::u_int VertexBufSize;
-		Util::u_int VertexStride;
 		Util::u_int VertexCount;
+	};
+
+	struct EffectParamSize
+	{
+		EffectParamSize() :
+			Handle(NULL),
+			Size(0)
+		{}
+
+		D3DXHANDLE Handle;
+		Util::u_int Size;
 	};
 
 	class D3D9Renderable : public Renderable, public boost::enable_shared_from_this<D3D9Renderable>
@@ -54,7 +63,6 @@ namespace Engine
 		D3D9Renderable() : 
 		    mHasIndex(false),
 			mTechnique(0),
-			mPrimCount(0),
 			mPrimType(D3DPT_TRIANGLESTRIP)
 		{}
 
@@ -62,29 +70,21 @@ namespace Engine
 		{}
 
 	public:
-		SET_GET_CONST_VALUE(VertexBound, VertexBound);
+		SET_GET_VALUE(VertexBound, VertexBound);
 		SET_GET_CONST_VALUE(IDirect3DIndexBuffer9Ptr, IndexBuffer);
 		SET_GET_CONST_VALUE(ID3DXEffectPtr, Effect);
 		SET_GET_CONST_VALUE(D3DXHANDLE, Technique);
 		SET_GET_CONST_VALUE(bool, HasIndex);
-		SET_GET_CONST_VALUE(Util::u_int, PrimCount);
 		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
 
 	private:
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
 		virtual void update_impl(Util::time elapsedTime);
+		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture);
+
+		EffectParamSize getEffectParam(const Util::String & paramName);
 
 	private:
-		struct EffectParamSize
-		{
-			EffectParamSize() :
-		        Handle(NULL),
-				Size(0)
-			{}
-
-			D3DXHANDLE Handle;
-			Util::u_int Size;
-		};
 		typedef boost::unordered_map<Util::String, EffectParamSize> EffectParamMap;
 
 		VertexBound mVertexBound;
@@ -92,7 +92,6 @@ namespace Engine
 		ID3DXEffectPtr mEffect;
 		D3DXHANDLE mTechnique;
 		bool mHasIndex;
-		Util::u_int mPrimCount;
 		D3DPRIMITIVETYPE mPrimType;
 		EffectParamMap mEffectParamMap;
 	};

@@ -34,6 +34,11 @@ namespace Engine
 		setEffectParamValue_impl(paramName, data);
 	}
 	//---------------------------------------------------------------------
+	void Renderable::setTexture(const Util::String & paramName, const RenderTexturePtr & texture)
+	{
+		setTexture_impl(paramName, texture);
+	}
+	//---------------------------------------------------------------------
 	const Util::Wstring & Renderable::getName() const
 	{
 		return COMPONENT_NAME;

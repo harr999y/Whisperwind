@@ -62,5 +62,14 @@ namespace Engine
 	{
 		return createRenderable_impl(rm);
 	}
-
+	//---------------------------------------------------------------------
+	RenderTexturePtr RenderSystem::createTexture_impl(const TextureMappingPtr & tm)
+	{
+		return createTexture_impl(tm);
+	}
+	//---------------------------------------------------------------------
+	RenderTexturePtr RenderSystem::createTextureFromFile(const Util::Wstring & path)
+	{
+		return createTextureFromFile_impl(path);
+	}
 }

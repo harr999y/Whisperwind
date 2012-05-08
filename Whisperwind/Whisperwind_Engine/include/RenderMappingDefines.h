@@ -80,7 +80,34 @@ namespace Engine
 		FCF_STENCIL = 1 << 2
 	};
 
-	struct WHISPERWIND_API VertexElement
+	enum TextureType
+	{
+		TT_1D,
+		TT_2D,
+		TT_CUBE
+	};
+
+	enum RenderPixelFormat
+	{
+		RPF_A8R8G8B8,
+		RPF_A16B16G16R16F,
+		RPF_R16F,
+		RPF_R32F,
+		RPF_D16,
+		RPF_D32,
+		RPF_D24X8,
+		RPF_D24S8,
+		RPF_MAX
+	};
+
+	enum TextureCreateFlag
+	{
+		TCF_RENDERTARGET = 1 << 0,
+		TCF_DEPTHSTENCIL = 2 << 0,
+		TCF_AUTO_MIPMAP = 3 << 0,
+	};
+
+	struct VertexElement
 	{
 		VertexElement(Util::s_int16 streamIndex, Util::s_int16 offset, VertexElementType type, 
 			VertexElementUsage usage, Util::s_int8 usageIndex) : 
@@ -98,7 +125,7 @@ namespace Engine
 
 	typedef boost::shared_ptr<void> VoidDataPtr;
 
-	struct WHISPERWIND_API BufferData
+	struct BufferData
 	{
 		BufferData() :
 		    DataSize(0),
@@ -110,7 +137,9 @@ namespace Engine
 	    Util::u_int Stride;
 	};
 
-	struct WHISPERWIND_API VertexMapping
+	typedef std::vector<BufferData> BufferDataVector;
+
+	struct VertexMapping
 	{
 		VertexMapping() :
 	        VertexUsage(BUF_STATIC),
@@ -118,12 +147,12 @@ namespace Engine
 		{}
 
 		VertexElementVector VertexElemVec;
-		BufferData VertexData;
+		BufferDataVector VertexDataVec;
 		BufferUsageFlag VertexUsage;
 		Util::u_int VertexCount;
 	};
 
-	struct WHISPERWIND_API IndexMapping
+	struct IndexMapping
 	{
 		IndexMapping() :
 	        HasIndex(false),
@@ -137,16 +166,24 @@ namespace Engine
 		BufferUsageFlag IndexUsage;
 	};
 
-	struct WHISPERWIND_API RenderableMapping
+	struct TextureMapping
+	{
+		Util::u_int Width;
+		Util::u_int Height;
+		Util::u_int Levels;
+		TextureType Type;
+		TextureCreateFlag Usage;
+		RenderPixelFormat Format;
+	};
+
+	struct RenderableMapping
 	{
 		RenderableMapping() :
-	        PrimCount(0),
 			PrimType(PT_TRIANGLE_STRIP)
 		{}
 
 		VertexMapping VertexBound;
 		IndexMapping IndexBound;
-		Util::u_int PrimCount;
 		Util::Wstring EffectName;
 		Util::String TechniqueName;
 		PrimitiveType PrimType;

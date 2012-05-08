@@ -22,39 +22,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _GAMEPLAY_FRAMEWORK_H_
-#define _GAMEPLAY_FRAMEWORK_H_
+#ifndef _D3D9_RENDER_TEXTURE_H_
+#define _D3D9_RENDER_TEXTURE_H_
 
-#include "Util.h"
-/// TODO!
-#include "EngineForwardDeclare.h"
-#include "SceneComponent.h"
-#include "GamePlayForwardDeclare.h"
+#include "RenderTexture.h"
+#include "D3D9Typedefs.h"
 
-namespace GamePlay
+namespace Engine
 {
-	class WHISPERWIND_API GamePlayFramework
+	class D3D9RenderTexture : public RenderTexture
 	{
 	public:
-		explicit GamePlayFramework(const Util::Wstring & name);
-		~GamePlayFramework();
+		D3D9RenderTexture()
+		{}
+
+		~D3D9RenderTexture()
+		{}
 
 	public:
-		void run();
-
-		/// TODO!
-		void updateCallback(Engine::ComponentType type, Util::time elapsedTime);
+		SET_GET_CONST_VALUE(IDirect3DTexture9Ptr, Texture);
 
 	private:
-		void createScene();
-		void destroyScene();
-
-	private:
-		ActorPtr mActor;
-		Engine::RenderTexturePtr mRenderTexture;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);
+		IDirect3DTexture9Ptr mTexture;
 	};
 }
 

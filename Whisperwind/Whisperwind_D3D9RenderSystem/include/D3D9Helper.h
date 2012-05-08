@@ -51,6 +51,7 @@ namespace Engine
 	{
 	public:
 		static RenderablePtr createD3D9Renderable(const IDirect3DDevice9Ptr & device, ID3DXEffectMap & effectMap, const RenderableMappingPtr & rm);
+		static Util::u_int getPrimCount(D3DPRIMITIVETYPE type, Util::u_int vertexCount);
 
 	private:
 		MAKE_STATIC_CLASS(D3D9Helper);

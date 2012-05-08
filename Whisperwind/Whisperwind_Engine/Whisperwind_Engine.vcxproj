@@ -16,6 +16,8 @@
     <ClInclude Include="include\EngineConfig.h" />
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
+    <ClInclude Include="include\RenderTarget.h" />
+    <ClInclude Include="include\RenderTexture.h" />
     <ClInclude Include="include\SceneComponent.h" />
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\Renderable.h" />

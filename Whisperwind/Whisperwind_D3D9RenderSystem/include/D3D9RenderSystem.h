@@ -51,6 +51,8 @@ namespace Engine
 		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue);
 		virtual bool isPaused_impl();
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm);
+		virtual RenderTexturePtr createTexture_impl(const TextureMappingPtr & tm);
+		virtual RenderTexturePtr createTextureFromFile_impl(const Util::Wstring & path);
 
 		void createDevice(HWND window);
 		bool reset();

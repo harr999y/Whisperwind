@@ -1,23 +1,34 @@
 
+texture tex : TEXTURE;
+
 sampler TestSampler = 
 sampler_state
 {
+	Texture = <tex>;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
 };
 
-float4 preColor;
+//float4 preColor;
 
-void VS(float4 pos : POSITION,
-              out float4 oPos : POSITION)
+void VS( float4 pos : POSITION,
+				//float4 color : TEXCOORD1,
+				float2 coord : TEXCOORD0,
+				out float4 oPos : POSITION,
+               //out float4 oColor : TEXCOORD1,
+			   out float2 oCoord : TEXCOORD0)
 {
+	//oColor = color;
 	oPos = pos;
+	oCoord = coord;
 }
 
-void PS(out float4 oColor : COLOR0)
+void PS(  //float4 color : TEXCOORD1,
+				float2 coord : TEXCOORD0,
+				out float4 oColor : COLOR0)
 {
-	oColor = preColor;
+	oColor = tex2D(TestSampler, coord);//color + preColor * 0.1;
 }
 
 technique Test

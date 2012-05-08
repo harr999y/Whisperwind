@@ -33,11 +33,13 @@ THE SOFTWARE
 #include "EngineManager.h"
 #include "Renderable.h"
 #include "RenderMappingDefines.h"
+#include "RenderTexture.h"
 #include "D3D9FormatMapping.h"
 #include "D3D9Capability.h"
 #include "D3D9Helper.h"
 #include "D3D9Renderable.h"
 #include "D3D9RenderSystem.h"
+#include "D3D9RenderTexture.h"
 
 namespace Engine
 {
@@ -87,7 +89,13 @@ namespace Engine
 			D3D9RenderablePtr d3d9Renderable= Util::checkedPtrCast<D3D9Renderable>(renderable);
  
  			mD3DDevice->SetVertexDeclaration(d3d9Renderable->getVertexBound().VertexDeclaration.get());
-			mD3DDevice->SetStreamSource(0, d3d9Renderable->getVertexBound().VertexBuffer.get(), 0, d3d9Renderable->getVertexBound().VertexStride);
+
+			std::size_t size = d3d9Renderable->getVertexBound().VertexBufferVec.size();
+			for (std::size_t it = 0; it < size; ++it)
+			{
+				mD3DDevice->SetStreamSource(
+					it, d3d9Renderable->getVertexBound().VertexBufferVec[it].get(), 0, d3d9Renderable->getVertexBound().VertexStrideVec[it]);
+			}
 
 			if (d3d9Renderable->getHasIndex())
 			{
@@ -103,15 +111,17 @@ namespace Engine
 			{
 				DX_IF_FAILED_DEBUG_PRINT(effect->BeginPass(passIt));
 				{
+					Util::u_int primCount = D3D9Helper::getPrimCount(d3d9Renderable->getPrimType(), d3d9Renderable->getVertexBound().VertexCount);
+
 					if (d3d9Renderable->getHasIndex())
 					{
 						DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->DrawIndexedPrimitive(d3d9Renderable->getPrimType(), 0, 0, 
-						    d3d9Renderable->getVertexBound().VertexCount, 0, d3d9Renderable->getPrimCount()));
+						    d3d9Renderable->getVertexBound().VertexCount, 0, primCount));
 					}
 					else
 					{
 						DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->DrawPrimitive(
-							d3d9Renderable->getPrimType(), 0, d3d9Renderable->getPrimCount()));
+							d3d9Renderable->getPrimType(), 0, primCount));
 					}
 				}
 				DX_IF_FAILED_DEBUG_PRINT(effect->EndPass());
@@ -162,6 +172,39 @@ namespace Engine
 		RenderablePtr d3d9Renderable = D3D9Helper::createD3D9Renderable(mD3DDevice, mEffectMap, rm);
 
 		return d3d9Renderable;
+	}
+	//---------------------------------------------------------------------
+	RenderTexturePtr D3D9RenderSystem::createTexture_impl(const TextureMappingPtr & tm)
+	{
+		Util::u_int usage = D3D9FormatMappingFactory::getD3D9TextureCreateFlag(tm->Usage);
+		D3DFORMAT fmt = D3D9FormatMappingFactory::getD3D9PixelFormat(tm->Format);
+		IDirect3DTexture9 * texture = NULL;
+
+		IF_FAILED_EXCEPTION(mD3DDevice->CreateTexture(tm->Width, tm->Height, tm->Levels, usage, fmt, D3DPOOL_DEFAULT, &texture, NULL), 
+			"Create texture failed!");
+
+		IDirect3DTexture9Ptr texPtr = Util::makeCOMPtr(texture);
+
+		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
+		d3d9RtPtr->setTexture(texPtr);
+
+		return d3d9RtPtr;
+	}
+	//---------------------------------------------------------------------
+	RenderTexturePtr D3D9RenderSystem::createTextureFromFile_impl(const Util::Wstring & path)
+	{
+		IDirect3DTexture9 * texture = NULL;
+
+		Util::String str;
+		Util::WstringToString(path, str);
+		IF_FAILED_EXCEPTION(D3DXCreateTextureFromFile(mD3DDevice.get(), path.c_str(), &texture), str + " create failed!");
+
+		IDirect3DTexture9Ptr texturePtr = Util::makeCOMPtr(texture);
+
+		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
+		d3d9RtPtr->setTexture(texturePtr);
+
+		return d3d9RtPtr;
 	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createDevice(HWND window)

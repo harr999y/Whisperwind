@@ -43,6 +43,7 @@ namespace Engine
 		virtual const Util::Wstring & getName() const;
 
 		inline void setEffectParamValue(const Util::String & paramName, const void * data);
+		inline void setTexture(const Util::String & paramName, const RenderTexturePtr & texture);
 
 	public:
 		SET_GET_CONST_VALUE(bool, NeedReset);
@@ -53,6 +54,7 @@ namespace Engine
 
 	private:
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data = NULL) = 0;
+		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture) = 0;
 
 	private:
 		bool mNeedReset;

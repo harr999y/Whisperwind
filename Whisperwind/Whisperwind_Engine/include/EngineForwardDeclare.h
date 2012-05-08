@@ -38,7 +38,11 @@ namespace Engine
 	class Renderable;
 	struct BufferData;
 	struct VertexElement;
+	struct TextureMapping;
+	struct RenderTargetMapping;
 	struct RenderableMapping;
+	class RenderTexture;
+	class RenderTarget;
 	class SceneManager;
 	class SceneNode;
 	class SceneObject;
@@ -50,6 +54,10 @@ namespace Engine
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
 	typedef std::vector<RenderablePtr> RenderableVector;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
+	typedef boost::shared_ptr<TextureMapping> TextureMappingPtr;
+	typedef boost::shared_ptr<RenderTargetMapping> RenderTargetMappingPtr;
+	typedef boost::shared_ptr<RenderTexture>RenderTexturePtr;
+	typedef boost::shared_ptr<RenderTarget> RenderTargetPtr;
 	typedef boost::shared_ptr<SceneManager> SceneManagerPtr;
 	typedef boost::shared_ptr<SceneNode> SceneNodePtr;
 	typedef boost::unordered_map<Util::Wstring, SceneNodePtr> SceneNodeMap;

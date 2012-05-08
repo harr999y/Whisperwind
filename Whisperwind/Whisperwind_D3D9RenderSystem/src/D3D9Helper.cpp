@@ -27,8 +27,10 @@ THE SOFTWARE
 
 #include <algorithm>
 #include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
 
 #include "MakeCOMPtr.h"
+#include "DebugDefine.h"
 #include "RenderMappingDefines.h"
 #include "D3D9Helper.h"
 #include "D3D9ForwardDeclare.h"
@@ -51,11 +53,13 @@ namespace Engine
 		/// check
 #ifdef WHISPERWIND_DEBUG
 		{
-			WHISPERWIND_ASSERT(rm->VertexBound.VertexData.Data != NULL);
-			WHISPERWIND_ASSERT(rm->VertexBound.VertexData.DataSize > 0);
-			WHISPERWIND_ASSERT(rm->VertexBound.VertexData.Stride > 0);
+			BOOST_FOREACH(const BufferData & data, rm->VertexBound.VertexDataVec)
+			{
+				WHISPERWIND_ASSERT(data.Data != NULL);
+				WHISPERWIND_ASSERT(data.DataSize > 0);
+				//WHISPERWIND_ASSERT(data.Stride > 0); /// Comment because sometimes we need zero stride.See the document "setStreamSource".
+			}
 			WHISPERWIND_ASSERT(rm->VertexBound.VertexCount > 0);
-			WHISPERWIND_ASSERT(rm->PrimCount > 0);
 			if (rm->IndexBound.HasIndex)
 			{
 				WHISPERWIND_ASSERT(rm->IndexBound.IndexData.Data != NULL);
@@ -71,29 +75,29 @@ namespace Engine
 		{
 			const DWORD usage = (rm->VertexBound.VertexUsage != BUF_STATIC) ? (D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY) : 0;
 			const D3DPOOL pool = (rm->VertexBound.VertexUsage != BUF_STATIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+			const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
 
 			IDirect3DVertexBuffer9 * vb = NULL;
-			DX_IF_FAILED_DEBUG_PRINT(device->CreateVertexBuffer(rm->VertexBound.VertexData.DataSize, usage, 0, pool, &vb, NULL));
+
+			BOOST_FOREACH(const BufferData & bufData, rm->VertexBound.VertexDataVec)
 			{
-				const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
+				DX_IF_FAILED_DEBUG_PRINT(device->CreateVertexBuffer(bufData.DataSize, usage, 0, pool, &vb, NULL));
+				{
+					void * buf = NULL;
+					const Util::u_int8 * data = boost::static_pointer_cast<Util::u_int8>(bufData.Data).get();
+					DX_IF_FAILED_DEBUG_PRINT(vb->Lock(0, 0, &buf, lockFlag));
+					std::copy(data, data + bufData.DataSize, static_cast<Util::u_int8 *>(buf));
+					vb->Unlock();
+				}
+				WHISPERWIND_ASSERT(vb != NULL);
 
-				void * buf = NULL;
-				const Util::u_int8 * data = boost::static_pointer_cast<Util::u_int8>(rm->VertexBound.VertexData.Data).get();
-				DX_IF_FAILED_DEBUG_PRINT(vb->Lock(0, 0, &buf, lockFlag));
- 				std::copy(data, data + rm->VertexBound.VertexData.DataSize, static_cast<Util::u_int8 *>(buf));
-				vb->Unlock();
+				d3d9Renderable->getVertexBound().VertexBufferVec.push_back(Util::makeCOMPtr(vb));
+				d3d9Renderable->getVertexBound().VertexStrideVec.push_back(bufData.Stride);
 			}
-			WHISPERWIND_ASSERT(vb != NULL);
-
-			IDirect3DVertexBuffer9Ptr vbPtr = Util::makeCOMPtr(vb);
-			VertexBound vertexBound;
-			vertexBound.VertexBuffer = vbPtr;
-			vertexBound.VertexBufSize = rm->VertexBound.VertexData.DataSize;
-			vertexBound.VertexStride = rm->VertexBound.VertexData.Stride;
-			vertexBound.VertexCount = rm->VertexBound.VertexCount;
-			vertexBound.VertexDeclaration = D3D9FormatMappingFactory::createD3D9VertexDeclaration(device, rm->VertexBound.VertexElemVec);
-
-			d3d9Renderable->setVertexBound(vertexBound);
+			
+			d3d9Renderable->getVertexBound().VertexCount = rm->VertexBound.VertexCount;
+			d3d9Renderable->getVertexBound().VertexDeclaration = 
+				D3D9FormatMappingFactory::createD3D9VertexDeclaration(device, rm->VertexBound.VertexElemVec);
 		}
 
 		/// IB
@@ -125,8 +129,6 @@ namespace Engine
 
 		/// Primitive
 		{
-			d3d9Renderable->setPrimCount(rm->VertexBound.VertexCount);
-
 			d3d9Renderable->setPrimType(D3D9FormatMappingFactory::getD3D9PrimType(rm->PrimType));
 		}
 
@@ -140,7 +142,8 @@ namespace Engine
 				DWORD shaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
 #endif
 				ID3DXEffect * effect = NULL;
-				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), (Util::Wstring(TO_UNICODE("../media/Effects/")) + rm->EffectName).c_str(), 
+				/// TODO!
+				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), rm->EffectName.c_str(), 
 					NULL, NULL, shaderFlags, NULL, &effect, NULL));
 				ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
 				effectMap[rm->EffectName] = effectPtr;
@@ -162,6 +165,34 @@ namespace Engine
 		}
 
 		return d3d9Renderable;
+	}
+	//---------------------------------------------------------------------
+	Util::u_int D3D9Helper::getPrimCount(D3DPRIMITIVETYPE type, Util::u_int vertexCount)
+	{
+		Util::u_int primCount = 0;
+
+		switch (type)
+		{
+		case D3DPT_TRIANGLELIST :
+			{
+				primCount = vertexCount / 3;
+				break;
+			}
+		case D3DPT_TRIANGLESTRIP :
+			{
+				primCount = vertexCount - 2;
+				break;
+			}
+		case D3DPT_LINELIST :
+			{
+				primCount = vertexCount / 2;
+			}
+		default:
+			WHISPERWIND_ASSERT(false);
+		}
+		WHISPERWIND_ASSERT(primCount > 0);
+
+		return primCount;
 	}
 
 }
