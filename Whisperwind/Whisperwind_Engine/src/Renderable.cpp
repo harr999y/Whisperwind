@@ -29,9 +29,9 @@ namespace Engine
 {
 	static const Util::Wstring COMPONENT_NAME(TO_UNICODE("Renderable"));
 	//---------------------------------------------------------------------
-	void Renderable::setEffectParamValue(const Util::String & paramName, const void * data)
+	inline void Renderable::setEffectSemanticValue( const Util::String & paramName, const void * data )
 	{
-		setEffectParamValue_impl(paramName, data);
+		setEffectSemanticValue_impl(paramName, data);
 	}
 	//---------------------------------------------------------------------
 	void Renderable::setTexture(const Util::String & paramName, const RenderTexturePtr & texture)

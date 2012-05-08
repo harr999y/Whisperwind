@@ -39,6 +39,9 @@
     <ClInclude Include="include\D3D9RenderTexture.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\D3D9RenderTarget.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\D3D9Plugin.cpp">

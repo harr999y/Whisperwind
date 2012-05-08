@@ -72,4 +72,9 @@ namespace Engine
 	{
 		return createTextureFromFile_impl(path);
 	}
+	//---------------------------------------------------------------------
+	RenderTargetPtr RenderSystem::createRenderTarget(const RenderTargetMappingPtr & rtm)
+	{
+		return createRenderTarget_impl(rtm);
+	}
 }

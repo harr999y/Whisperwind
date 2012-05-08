@@ -46,9 +46,9 @@ namespace Engine
 		Util::u_int VertexCount;
 	};
 
-	struct EffectParamSize
+	struct EffectHandleSize
 	{
-		EffectParamSize() :
+		EffectHandleSize() :
 			Handle(NULL),
 			Size(0)
 		{}
@@ -60,7 +60,8 @@ namespace Engine
 	class D3D9Renderable : public Renderable, public boost::enable_shared_from_this<D3D9Renderable>
 	{
 	public:
-		D3D9Renderable() : 
+		explicit D3D9Renderable(const IDirect3DDevice9Ptr & device) :
+		    mD3DDevice(device),
 		    mHasIndex(false),
 			mTechnique(0),
 			mPrimType(D3DPT_TRIANGLESTRIP)
@@ -78,14 +79,17 @@ namespace Engine
 		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
 
 	private:
-		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
+		virtual void setEffectSemanticValue_impl(const Util::String & paramName, const void * data);
 		virtual void update_impl(Util::time elapsedTime);
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture);
+		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target);
 
-		EffectParamSize getEffectParam(const Util::String & paramName);
+		EffectHandleSize getEffectHandleSize(const Util::String & paramName);
 
 	private:
-		typedef boost::unordered_map<Util::String, EffectParamSize> EffectParamMap;
+		typedef boost::unordered_map<Util::String, EffectHandleSize> EffectHandleMap;
+
+		IDirect3DDevice9Ptr mD3DDevice;
 
 		VertexBound mVertexBound;
 		IDirect3DIndexBuffer9Ptr mIndexBuffer;
@@ -93,7 +97,7 @@ namespace Engine
 		D3DXHANDLE mTechnique;
 		bool mHasIndex;
 		D3DPRIMITIVETYPE mPrimType;
-		EffectParamMap mEffectParamMap;
+		EffectHandleMap mEffectHandleMap;
 	};
 }
 

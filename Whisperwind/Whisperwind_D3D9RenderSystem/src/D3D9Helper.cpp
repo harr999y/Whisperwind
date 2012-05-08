@@ -69,7 +69,7 @@ namespace Engine
 		}
 #endif
 
-		D3D9RenderablePtr d3d9Renderable = boost::make_shared<D3D9Renderable>();
+		D3D9RenderablePtr d3d9Renderable = boost::make_shared<D3D9Renderable>(device);
 
 		/// Vertex bound
 		{

@@ -50,6 +50,7 @@ namespace Engine
 		inline RenderablePtr createRenderable(const RenderableMappingPtr & rm);
 		inline RenderTexturePtr createTexture(const TextureMappingPtr & tm);
 		inline RenderTexturePtr createTextureFromFile(const Util::Wstring & path);
+		inline RenderTargetPtr createRenderTarget(const RenderTargetMappingPtr & rtm);
 
 	public:
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
@@ -64,6 +65,7 @@ namespace Engine
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm) = 0;
 		virtual RenderTexturePtr createTexture_impl(const TextureMappingPtr & tm) = 0;
 		virtual RenderTexturePtr createTextureFromFile_impl(const Util::Wstring & path) = 0;
+		virtual RenderTargetPtr createRenderTarget_impl(const RenderTargetMappingPtr & rtm) = 0;
 
 	protected:
 		EngineConfigPtr mEngineConfig;

@@ -166,16 +166,6 @@ namespace Engine
 		BufferUsageFlag IndexUsage;
 	};
 
-	struct TextureMapping
-	{
-		Util::u_int Width;
-		Util::u_int Height;
-		Util::u_int Levels;
-		TextureType Type;
-		TextureCreateFlag Usage;
-		RenderPixelFormat Format;
-	};
-
 	struct RenderableMapping
 	{
 		RenderableMapping() :
@@ -189,6 +179,34 @@ namespace Engine
 		PrimitiveType PrimType;
 	};
 
+	struct TextureMapping
+	{
+		TextureMapping() :
+	        Levels(1),
+			Type(TT_2D)
+		{}
+
+		Util::u_int Width;
+		Util::u_int Height;
+		Util::u_int Levels;
+		TextureType Type;
+		TextureCreateFlag Usage;
+		RenderPixelFormat Format;
+	};
+
+	struct RenderTargetMapping
+	{
+		RenderTargetMapping() :
+	        MultiSampleType(0),
+			MultiSampleQuality(0)
+		{}
+
+		Util::u_int Width;
+		Util::u_int Height;
+		RenderPixelFormat Format;
+		Util::u_int MultiSampleType;
+		Util::u_int MultiSampleQuality;
+	};
 }
 
 #endif

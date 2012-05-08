@@ -38,8 +38,9 @@ THE SOFTWARE
 #include "D3D9Capability.h"
 #include "D3D9Helper.h"
 #include "D3D9Renderable.h"
-#include "D3D9RenderSystem.h"
 #include "D3D9RenderTexture.h"
+#include "D3D9RenderTarget.h"
+#include "D3D9RenderSystem.h"
 
 namespace Engine
 {
@@ -203,6 +204,22 @@ namespace Engine
 
 		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
 		d3d9RtPtr->setTexture(texturePtr);
+
+		return d3d9RtPtr;
+	}
+	//---------------------------------------------------------------------
+	RenderTargetPtr D3D9RenderSystem::createRenderTarget_impl(const RenderTargetMappingPtr & rtm)
+	{
+		D3DFORMAT fmt = D3D9FormatMappingFactory::getD3D9PixelFormat(rtm->Format);
+		IDirect3DSurface9 * surface = NULL;
+
+		IF_FAILED_EXCEPTION(mD3DDevice->CreateRenderTarget(rtm->Width, rtm->Height, fmt, 
+			static_cast<D3DMULTISAMPLE_TYPE>(rtm->MultiSampleType), rtm->MultiSampleQuality, false, &surface, NULL), "Render target create failed!");
+
+		IDirect3DSurface9Ptr surfacePtr = Util::makeCOMPtr(surface);
+
+		D3D9RenderTargetPtr d3d9RtPtr = boost::make_shared<D3D9RenderTarget>();
+		d3d9RtPtr->setSurface(surfacePtr);
 
 		return d3d9RtPtr;
 	}

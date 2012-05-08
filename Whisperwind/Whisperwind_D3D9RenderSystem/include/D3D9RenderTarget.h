@@ -22,26 +22,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_TEXTURE_H_
-#define _RENDER_TEXTURE_H_
+#ifndef _D3D9_RENDER_TARGET_H_
+#define _D3D9_RENDER_TARGET_H_
 
 #include "Util.h"
-#include "RenderMappingDefines.h"
+#include "RenderTarget.h"
+#include "D3D9Typedefs.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API RenderTexture
+	class D3D9RenderTarget : public RenderTarget
 	{
 	public:
-		RenderTexture()
+		D3D9RenderTarget()
 		{}
 
-	protected:
-		virtual ~RenderTexture()
+		~D3D9RenderTarget()
 		{}
+
+	public:
+		SET_GET_CONST_VALUE(IDirect3DSurface9Ptr, Surface);
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderTexture);
+		IDirect3DSurface9Ptr mSurface;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(D3D9RenderTarget);
 	};
 }
 

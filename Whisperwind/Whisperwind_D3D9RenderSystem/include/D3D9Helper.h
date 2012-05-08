@@ -60,16 +60,16 @@ namespace Engine
 
 #ifdef WHISPERWIND_DEBUG
 #define DX_IF_FAILED_DEBUG_PRINT(x) \
-{ \
-	HRESULT hr = S_OK; hr = (x); \
-	if (FAILED(hr)) \
 	{ \
-		Util::String str(&(#x)[0]); \
-		Util::Wstring wstr; \
-		Util::StringToWstring(str, wstr); \
-		DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
-	} \
-}
+		HRESULT hr = S_OK; hr = (x); \
+		if (FAILED(hr)) \
+		{ \
+			Util::String str(&(#x)[0]); \
+			Util::Wstring wstr; \
+			Util::StringToWstring(str, wstr); \
+			DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)) \
+		} \
+	}
 #else
 #define DX_IF_FAILED_DEBUG_PRINT(x) \
 	(x);

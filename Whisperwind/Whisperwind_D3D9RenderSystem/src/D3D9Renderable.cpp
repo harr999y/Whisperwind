@@ -23,57 +23,69 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/make_shared.hpp>
+
 #include "DebugDefine.h"
 #include "CheckedCast.h"
 #include "EngineManager.h"
 #include "RenderSystem.h"
 #include "D3D9ForwardDeclare.h"
-#include "D3D9Renderable.h"
 #include "D3D9Helper.h"
 #include "D3D9RenderTexture.h"
+#include "D3D9RenderTarget.h"
+#include "D3D9Renderable.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void D3D9Renderable::setEffectParamValue_impl(const Util::String & paramName, const void * data)
+	void D3D9Renderable::setEffectSemanticValue_impl(const Util::String & paramName, const void * data)
 	{
 		WHISPERWIND_ASSERT(data != NULL);
 
-		EffectParamSize eps = getEffectParam(paramName);
+		EffectHandleSize ehs = getEffectHandleSize(paramName);
 
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(eps.Handle, data, eps.Size));
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(ehs.Handle, data, ehs.Size));
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture)
 	{
-		//EffectParamSize eps = getEffectParam(paramName);
-
 		D3D9RenderTexturePtr d3d9TexPtr = Util::checkedPtrCast<D3D9RenderTexture>(texture);
-
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(paramName.c_str(), d3d9TexPtr->getTexture().get()));		
+		if (d3d9TexPtr)
+			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(paramName.c_str(), d3d9TexPtr->getTexture().get()))
+		else
+			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(paramName.c_str(), NULL));
 	}
 	//---------------------------------------------------------------------
-	EffectParamSize D3D9Renderable::getEffectParam(const Util::String & paramName)
+	void D3D9Renderable::setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target)
 	{
-		EffectParamSize eps;
-		if (mEffectParamMap.find(paramName) == mEffectParamMap.end())
+		D3D9RenderTargetPtr d3d9SurfacePtr = Util::checkedPtrCast<D3D9RenderTarget>(target);
+		if (d3d9SurfacePtr)
+			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, d3d9SurfacePtr->getSurface().get()))
+		else
+			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, NULL))
+	}
+	//---------------------------------------------------------------------
+	EffectHandleSize D3D9Renderable::getEffectHandleSize(const Util::String & paramName)
+	{
+		EffectHandleSize ehs;
+		if (mEffectHandleMap.find(paramName) == mEffectHandleMap.end())
 		{
-			eps.Handle = mEffect->GetParameterByName(NULL, paramName.c_str());
-			WHISPERWIND_ASSERT(eps.Handle != NULL);
+			ehs.Handle = mEffect->GetParameterBySemantic(NULL, paramName.c_str());
+			WHISPERWIND_ASSERT(ehs.Handle != NULL);
 
 			D3DXPARAMETER_DESC paramDesc;
-			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(eps.Handle, &paramDesc));
-			eps.Size = paramDesc.Bytes;
+			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(ehs.Handle, &paramDesc));
+			ehs.Size = paramDesc.Bytes;
 
-			mEffectParamMap[paramName] = eps;
+			mEffectHandleMap[paramName] = ehs;
 		}
 		else
 		{
-			eps = mEffectParamMap[paramName];
+			ehs = mEffectHandleMap[paramName];
 		}
-		WHISPERWIND_ASSERT((eps.Handle != 0) && (eps.Size != 0));
+		WHISPERWIND_ASSERT((ehs.Handle != 0) && (ehs.Size != 0));
 
-		return eps;
+		return ehs;
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::update_impl(Util::time /*elapsedTime*/)

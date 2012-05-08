@@ -51,8 +51,8 @@ THE SOFTWARE
 		HANDLE handle = ::GetStdHandle(STD_OUTPUT_HANDLE); \
 		CONSOLE_SCREEN_BUFFER_INFO oldInfo; \
 		::GetConsoleScreenBufferInfo(handle, &oldInfo ); \
-		::SetConsoleTextAttribute(handle,FOREGROUND_INTENSITY |FOREGROUND_RED); \
-		DEBUG_PRINT(x); \
+		::SetConsoleTextAttribute(handle,FOREGROUND_INTENSITY | FOREGROUND_RED); \
+		DEBUG_PRINT(x) \
 		::SetConsoleTextAttribute(handle, oldInfo.wAttributes); \
 	}
 

@@ -70,26 +70,26 @@ namespace GamePlay
 		/// Test for creating some content.
 		Engine::VoidDataPtr data(new (Util::real[20]));
 		Util::real * elem = boost::static_pointer_cast<Util::real>(data).get();
-		elem[0] = 0;
-		elem[1] = 0;
+		elem[0] = -1;
+		elem[1] = -1;
 		elem[2] = 1;
 		elem[3] = 0;
-		elem[4] = 0;
-		elem[5] = 0;
+		elem[4] = 1;
+		elem[5] = -1;
 		elem[6] = 1;
 		elem[7] = 1;
-		elem[8] = 1;
+		elem[8] = 0;
 		elem[9] = 0;
 		elem[10] = 1;
-		elem[11] = 1;
+		elem[11] = -1;
 		elem[12] = 1;
 		elem[13] = 1;
 		elem[14] = 1;
-		elem[15] = 0;
+		elem[15] = 1;
 		elem[16] = 1;
-		elem[17] = 0;
-		elem[18] = 0;
-		elem[19] = 1;
+		elem[17] = 1;
+		elem[18] = 1;
+		elem[19] = 0;
 
 		Engine::VoidDataPtr data2(new (Util::real[4]));
 		Util::real * elem2 = boost::static_pointer_cast<Util::real>(data2).get();
@@ -121,15 +121,19 @@ namespace GamePlay
 		rm->VertexBound.VertexCount = 4;
 		rm->VertexBound.VertexUsage = Engine::BUF_STATIC;
 		
-		rm->IndexBound.HasIndex = false;
-// 		Engine::VoidDataPtr data3(new (Util::u_int16[6]));
-// 		Util::u_int16 * elem3 = boost::static_pointer_cast<Util::u_int16>(data3).get();
-// 		elem3[0] = 0;
-// 		elem3[1] = 1;
-// 		elem3[2] = 2;
-// 		elem3[3] = 3;
-// 		elem3[4] = 4;
-// 		elem3[5] = 5;
+		rm->IndexBound.HasIndex = true;
+ 		Engine::VoidDataPtr data3(new (Util::u_int16[4]));
+ 		Util::u_int16 * elem3 = boost::static_pointer_cast<Util::u_int16>(data3).get();
+ 		elem3[0] = 0;
+ 		elem3[1] = 1;
+ 		elem3[2] = 2;
+ 		elem3[3] = 3;
+ 	
+		rm->IndexBound.IndexData.Data = data3;
+		rm->IndexBound.IndexData.DataSize = sizeof(Util::u_int16) * 4;
+		rm->IndexBound.IndexData.Stride = sizeof(Util::u_int16);
+		rm->IndexBound.IndexFmt = Engine::INDEX_16;
+		rm->IndexBound.IndexUsage = Engine::BUF_STATIC;
 
 		rm->PrimType = Engine::PT_TRIANGLE_STRIP;
 		rm->EffectName = TO_UNICODE("../media/Effects/Test.fx");
@@ -150,17 +154,17 @@ namespace GamePlay
 		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createTextureFromFile(texturePath);
 	}
 	//---------------------------------------------------------------------
-	void GamePlayFramework::updateCallback(Engine::ComponentType type, Util::time /*elapsedTime*/)
+	void GamePlayFramework::updateCallback(Engine::ComponentType type, Util::time elapsedTime)
 	{
 		Engine::SceneComponentPtr comp;
 		IF_FALSE_RETURN(mActor->getComponent(type, comp));
 
 		/// TODO!Test!
-// 		static Util::real num = 0.0f;
-// 		num += 1.f * elapsedTime;
-// 		Util::real test[4] = {num, num, num, 1.0f};
+ 		static Util::real num = 0.0f;
+ 		num += 1.f * elapsedTime;
+ 		Util::real test[4] = {num, num, num, 1.0f};
  		Engine::RenderablePtr renderable = Util::checkedPtrCast<Engine::Renderable>(comp);
-		//renderable->setEffectParamValue("preColor", static_cast<void *>(test));
+		renderable->setEffectSemanticValue("COLOR3", static_cast<void *>(test));
 
 		renderable->setTexture("tex", mRenderTexture);
 	}

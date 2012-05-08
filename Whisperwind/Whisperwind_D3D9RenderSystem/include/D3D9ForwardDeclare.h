@@ -45,6 +45,9 @@ namespace Engine
 	class D3D9RenderTexture;
 	typedef boost::shared_ptr<D3D9RenderTexture> D3D9RenderTexturePtr;
 
+	class D3D9RenderTarget;
+	typedef boost::shared_ptr<D3D9RenderTarget> D3D9RenderTargetPtr;
+
 }
 
 #endif

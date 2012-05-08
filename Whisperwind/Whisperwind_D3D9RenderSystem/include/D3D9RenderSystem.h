@@ -53,6 +53,7 @@ namespace Engine
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm);
 		virtual RenderTexturePtr createTexture_impl(const TextureMappingPtr & tm);
 		virtual RenderTexturePtr createTextureFromFile_impl(const Util::Wstring & path);
+		virtual RenderTargetPtr createRenderTarget_impl(const RenderTargetMappingPtr & rtm);
 
 		void createDevice(HWND window);
 		bool reset();
