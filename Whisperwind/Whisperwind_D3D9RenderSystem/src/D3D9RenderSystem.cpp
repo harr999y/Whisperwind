@@ -24,6 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/make_shared.hpp>
+#include <boost/typeof/typeof.hpp>
 
 #include "MakeCOMPtr.h"
 #include "CheckedCast.h"
@@ -54,6 +55,7 @@ namespace Engine
 	{
 		mEngineConfig.reset();
 		mCapability.reset();
+		mEffectMap.clear();
 		mD3DDevice.reset();
 		mD3D.reset();
 		::DestroyWindow(mWindow);
@@ -78,12 +80,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	bool D3D9RenderSystem::render_impl(const RenderablePtr & renderable)
 	{
-		if (getIsDeviceLost())
-		{
-			if (!reset())
-				return false;
-		}
-
 		if (!checkDeviceLostBeforeDraw())
 		{
 			/// Draw
@@ -107,7 +103,7 @@ namespace Engine
 			effect->SetTechnique(d3d9Renderable->getTechnique());
 
 			Util::u_int passNum = 0;
-			DX_IF_FAILED_DEBUG_PRINT(effect->Begin(&passNum, 0));
+			DX_IF_FAILED_RETURN_FALSE(effect->Begin(&passNum, 0));
 			for (Util::u_int passIt = 0; passIt < passNum; ++passIt)
 			{
 				DX_IF_FAILED_DEBUG_PRINT(effect->BeginPass(passIt));
@@ -127,15 +123,23 @@ namespace Engine
 				}
 				DX_IF_FAILED_DEBUG_PRINT(effect->EndPass());
 			}
-			DX_IF_FAILED_DEBUG_PRINT(effect->End());
+			DX_IF_FAILED_RETURN_FALSE(effect->End());
 		}
 
 		return true;
 	}
 	//---------------------------------------------------------------------
-	void D3D9RenderSystem::beginRendering_impl()
+	bool D3D9RenderSystem::beginRendering_impl()
 	{
-		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->BeginScene());
+		if (getIsDeviceLost())
+		{
+			if (!reset())
+				return false;
+		}
+
+		DX_IF_FAILED_RETURN_FALSE(mD3DDevice->BeginScene());
+
+		return true;
 	}
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::endRendering_impl()
@@ -147,11 +151,13 @@ namespace Engine
 		if (D3DERR_DEVICELOST == hr)
 		{
 			setIsDeviceLost(true);
+			onDeviceLost();
 		}
 		else if (D3DERR_DRIVERINTERNALERROR == hr)
 		{
 			/// Do as DXUT does.See the comment here:http://www.koders.com/cpp/fid0B76F09FD0760D71DF1C69C93BADA2141D522C85.aspx#L3799
 			setIsDeviceLost(true);
+			onDeviceLost();
 		}
 	}
 	//---------------------------------------------------------------------
@@ -172,16 +178,18 @@ namespace Engine
 	{
 		RenderablePtr d3d9Renderable = D3D9Helper::createD3D9Renderable(mD3DDevice, mEffectMap, rm);
 
+		mRenderableMappingMap[rm] = d3d9Renderable;
+
 		return d3d9Renderable;
 	}
 	//---------------------------------------------------------------------
-	RenderTexturePtr D3D9RenderSystem::createTexture_impl(const TextureMappingPtr & tm)
+	RenderTexturePtr D3D9RenderSystem::createRenderTexture_impl(const RenderTextureMappingPtr & rtm)
 	{
-		Util::u_int usage = D3D9FormatMappingFactory::getD3D9TextureCreateFlag(tm->Usage);
-		D3DFORMAT fmt = D3D9FormatMappingFactory::getD3D9PixelFormat(tm->Format);
+		Util::u_int usage = D3D9FormatMappingFactory::getD3D9TextureCreateFlag(rtm->Usage);
+		D3DFORMAT fmt = D3D9FormatMappingFactory::getD3D9PixelFormat(rtm->Format);
 		IDirect3DTexture9 * texture = NULL;
 
-		IF_FAILED_EXCEPTION(mD3DDevice->CreateTexture(tm->Width, tm->Height, tm->Levels, usage, fmt, D3DPOOL_DEFAULT, &texture, NULL), 
+		IF_FAILED_EXCEPTION(mD3DDevice->CreateTexture(rtm->Width, rtm->Height, rtm->Levels, usage, fmt, D3DPOOL_DEFAULT, &texture, NULL), 
 			"Create texture failed!");
 
 		IDirect3DTexture9Ptr texPtr = Util::makeCOMPtr(texture);
@@ -189,10 +197,12 @@ namespace Engine
 		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
 		d3d9RtPtr->setTexture(texPtr);
 
+		mRenderTextureMappingMap[rtm] = d3d9RtPtr;
+
 		return d3d9RtPtr;
 	}
 	//---------------------------------------------------------------------
-	RenderTexturePtr D3D9RenderSystem::createTextureFromFile_impl(const Util::Wstring & path)
+	RenderTexturePtr D3D9RenderSystem::createRenderTextureFromFile_impl(const Util::Wstring & path)
 	{
 		IDirect3DTexture9 * texture = NULL;
 
@@ -204,6 +214,8 @@ namespace Engine
 
 		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
 		d3d9RtPtr->setTexture(texturePtr);
+
+		mRenderTextureFileMap[path] = d3d9RtPtr;
 
 		return d3d9RtPtr;
 	}
@@ -220,6 +232,8 @@ namespace Engine
 
 		D3D9RenderTargetPtr d3d9RtPtr = boost::make_shared<D3D9RenderTarget>();
 		d3d9RtPtr->setSurface(surfacePtr);
+
+		mRenderTargetMappingMap[rtm] = d3d9RtPtr;
 
 		return d3d9RtPtr;
 	}
@@ -285,12 +299,12 @@ namespace Engine
 			if (hr != D3DERR_DEVICELOST)
 				break;
 
-			::Sleep(500);
+			EngineManager::getSingleton().sleep(500);
 		}
 		mD3DDevice = Util::makeCOMPtr(d3dDevice);
 
 		D3DVIEWPORT9 viewport = 
-		{ 0, 0, mEngineConfig->getResolutionPair().first, mEngineConfig->getResolutionPair().second, 0.0f, 1.0f };
+		    { 0, 0, mEngineConfig->getResolutionPair().first, mEngineConfig->getResolutionPair().second, 0.0f, 1.0f };
 
 		mD3DDevice->SetViewport(&viewport);
 
@@ -317,9 +331,11 @@ namespace Engine
 		*/
 		while (FAILED(mD3DDevice->Reset(&mPresentParameters)))
 		{
-			 ::Sleep(1000);
+			 EngineManager::getSingleton().sleep(1000);
 		}
 		
+		onDeviceReset();
+
 		setIsDeviceLost(false);
 
 		return true;
@@ -329,4 +345,161 @@ namespace Engine
 	{
 		return (mD3DDevice->TestCooperativeLevel() != S_OK);
 	}
-}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::onDeviceLost()
+	{
+		/// Effect
+		{
+			BOOST_AUTO(it, mEffectMap.begin());
+			for (it; it != mEffectMap.end(); ++it)
+			{
+				it->second->OnLostDevice();
+			}
+		}
+
+		/// Renderable
+		{
+			BOOST_AUTO(it, mRenderableMappingMap.begin());
+			for (it; it != mRenderableMappingMap.end(); ++it)
+			{
+				RenderableWeakPtr renderableWeak = it->second;
+				if (!renderableWeak.expired())
+				{
+					RenderablePtr renderable = renderableWeak.lock();
+					D3D9RenderablePtr d3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(renderable);
+					d3d9Renderable->onDeviceLost();
+				}
+			}
+		}
+
+		/// Texture from file
+		{
+			BOOST_AUTO(it, mRenderTextureFileMap.begin());
+			for (it; it != mRenderTextureFileMap.end(); ++it)
+			{
+				RenderTextureWeakPtr textureWeak = it->second;
+				if (!textureWeak.expired())
+				{
+					RenderTexturePtr texture = textureWeak.lock();
+					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
+					d3d9Texture->onDeviceLost();
+				}
+			}
+		}
+
+		/// Texture from creating
+		{
+			BOOST_AUTO(it, mRenderTextureMappingMap.begin());
+			for (it; it != mRenderTextureMappingMap.end(); ++it)
+			{
+				RenderTextureWeakPtr textureWeak = it->second;
+				if (!textureWeak.expired())
+				{
+					RenderTexturePtr texture = textureWeak.lock();
+					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
+					d3d9Texture->onDeviceLost();
+				}
+			}
+		}
+
+		/// Render target
+		{
+			BOOST_AUTO(it, mRenderTargetMappingMap.begin());
+			for (it; it != mRenderTargetMappingMap.end(); ++it)
+			{
+				RenderTargetWeakPtr targetWeak = it->second;
+				if (!targetWeak.expired())
+				{
+					RenderTargetPtr target = targetWeak.lock();
+					D3D9RenderTargetPtr d3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(target);
+					d3d9Target->onDeviceLost();
+				}
+			}
+		}
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::onDeviceReset()
+	{
+		/// Effect
+		{
+			BOOST_AUTO(it, mEffectMap.begin());
+			for (it; it != mEffectMap.end(); ++it)
+			{
+				it->second->OnResetDevice();
+			}
+		}
+
+		/// Renderable
+		{
+			BOOST_AUTO(it, mRenderableMappingMap.begin());
+			for (it; it != mRenderableMappingMap.end(); ++it)
+			{
+				const RenderableMappingPtr & renderableMapping = it->first;
+				RenderableWeakPtr renderableWeak = it->second;
+				if (!renderableWeak.expired())
+				{
+					RenderablePtr renderable = renderableWeak.lock();
+					D3D9RenderablePtr d3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(renderable);
+
+					D3D9RenderablePtr newD3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(this->createRenderable(renderableMapping));
+					d3d9Renderable->onDeviceReset(newD3d9Renderable);
+				}
+			}
+		}
+
+		/// Texture from file
+		{
+			BOOST_AUTO(it, mRenderTextureFileMap.begin());
+			for (it; it != mRenderTextureFileMap.end(); ++it)
+			{
+				const Util::Wstring & wstr = it->first;
+				RenderTextureWeakPtr textureWeak = it->second;
+				if (!textureWeak.expired())
+				{
+					RenderTexturePtr texture = textureWeak.lock();
+					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
+
+					D3D9RenderTexturePtr newD3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(this->createRenderTextureFromFile(wstr));
+					d3d9Texture->onDeviceReset(newD3d9Texture);
+				}
+			}
+		}
+
+		/// Texture from creating
+		{
+			BOOST_AUTO(it, mRenderTextureMappingMap.begin());
+			for (it; it != mRenderTextureMappingMap.end(); ++it)
+			{
+				const RenderTextureMappingPtr & textureMapping = it->first;
+				RenderTextureWeakPtr textureWeak = it->second;
+				if (!textureWeak.expired())
+				{
+					RenderTexturePtr texture = textureWeak.lock();
+					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
+
+					D3D9RenderTexturePtr newD3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(this->createRenderTexture(textureMapping));
+					d3d9Texture->onDeviceReset(newD3d9Texture);
+				}
+			}
+		}
+
+		/// Render target
+		{
+			BOOST_AUTO(it, mRenderTargetMappingMap.begin());
+			for (it; it != mRenderTargetMappingMap.end(); ++it)
+			{
+				const RenderTargetMappingPtr & targetMapping = it->first;
+				RenderTargetWeakPtr targetWeak = it->second;
+				if (!targetWeak.expired())
+				{
+					RenderTargetPtr target = targetWeak.lock();
+					D3D9RenderTargetPtr d3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(target);
+
+					D3D9RenderTargetPtr newD3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(this->createRenderTarget(targetMapping));
+					d3d9Target->onDeviceReset(newD3d9Target);
+				}
+			}
+		}
+	}
+
+} /// end namespace

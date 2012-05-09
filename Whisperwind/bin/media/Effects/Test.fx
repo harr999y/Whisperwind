@@ -6,8 +6,8 @@ sampler_state
 {
 	Texture = <tex>;
 	MipFilter = None;
-	MinFilter = Anisotropic;
-	MagFilter = Anisotropic;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
 };
 
 float4 preColor : COLOR3;

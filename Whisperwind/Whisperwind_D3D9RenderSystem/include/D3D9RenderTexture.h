@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _D3D9_RENDER_TEXTURE_H_
 
 #include "RenderTexture.h"
+#include "D3D9ForwardDeclare.h"
 #include "D3D9Typedefs.h"
 
 namespace Engine
@@ -38,6 +39,10 @@ namespace Engine
 
 		~D3D9RenderTexture()
 		{}
+
+	public:
+		void onDeviceLost();
+		void onDeviceReset(const D3D9RenderTexturePtr & newTexture);
 
 	public:
 		SET_GET_CONST_VALUE(IDirect3DTexture9Ptr, Texture);

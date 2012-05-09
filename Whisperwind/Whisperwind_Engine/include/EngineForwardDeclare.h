@@ -27,6 +27,7 @@ THE SOFTWARE
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <boost/unordered_map.hpp>
 
 namespace Engine
@@ -38,7 +39,7 @@ namespace Engine
 	class Renderable;
 	struct BufferData;
 	struct VertexElement;
-	struct TextureMapping;
+	struct RenderTextureMapping;
 	struct RenderTargetMapping;
 	struct RenderableMapping;
 	class RenderTexture;
@@ -52,12 +53,18 @@ namespace Engine
 	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;
 	typedef boost::shared_ptr<PluginConfig> PluginConfigPtr;
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
-	typedef std::vector<RenderablePtr> RenderableVector;
+	typedef boost::weak_ptr<Renderable> RenderableWeakPtr;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
-	typedef boost::shared_ptr<TextureMapping> TextureMappingPtr;
+	typedef boost::unordered_map<RenderableMappingPtr, RenderableWeakPtr>RenderableMappingMap;
+	typedef boost::shared_ptr<RenderTextureMapping> RenderTextureMappingPtr;
 	typedef boost::shared_ptr<RenderTargetMapping> RenderTargetMappingPtr;
 	typedef boost::shared_ptr<RenderTexture>RenderTexturePtr;
+	typedef boost::weak_ptr<RenderTexture> RenderTextureWeakPtr;
+	typedef boost::unordered_map<Util::Wstring, RenderTextureWeakPtr>RenderTextureFileMap;
+	typedef boost::unordered_map<RenderTextureMappingPtr, RenderTextureWeakPtr>RenderTextureMappingMap;
 	typedef boost::shared_ptr<RenderTarget> RenderTargetPtr;
+	typedef boost::weak_ptr<RenderTarget> RenderTargetWeakPtr;
+	typedef boost::unordered_map<RenderTargetMappingPtr, RenderTargetWeakPtr>RenderTargetMappingMap;
 	typedef boost::shared_ptr<SceneManager> SceneManagerPtr;
 	typedef boost::shared_ptr<SceneNode> SceneNodePtr;
 	typedef boost::unordered_map<Util::Wstring, SceneNodePtr> SceneNodeMap;

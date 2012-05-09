@@ -179,9 +179,9 @@ namespace Engine
 		PrimitiveType PrimType;
 	};
 
-	struct TextureMapping
+	struct RenderTextureMapping
 	{
-		TextureMapping() :
+		RenderTextureMapping() :
 	        Levels(1),
 			Type(TT_2D)
 		{}

@@ -54,6 +54,7 @@ namespace GamePlay
 	void GamePlayFramework::run()
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
+
 		engineMgr.setup();
 
 		createScene();
@@ -151,7 +152,7 @@ namespace GamePlay
 		Engine::EngineManager::getSingleton().getSceneManager()->getRootNode()->addChildNode(node);
 
 		Util::Wstring texturePath(TO_UNICODE("../media/Textures/test.dds"));
-		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createTextureFromFile(texturePath);
+		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderTextureFromFile(texturePath);
 	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::updateCallback(Engine::ComponentType type, Util::time elapsedTime)

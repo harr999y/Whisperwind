@@ -42,14 +42,14 @@ namespace Engine
 
 	public:
 		inline void init();
-		inline void beginRendering();
+		inline bool beginRendering();
 		inline bool render(const RenderablePtr & renderable);
 		inline void endRendering();
 		inline void clearFrame(Util::u_int flag, Util::real zValue = 1.0, Util::u_int stencilValue = 0);
 		inline bool isPaused();
 		inline RenderablePtr createRenderable(const RenderableMappingPtr & rm);
-		inline RenderTexturePtr createTexture(const TextureMappingPtr & tm);
-		inline RenderTexturePtr createTextureFromFile(const Util::Wstring & path);
+		inline RenderTexturePtr createRenderTexture(const RenderTextureMappingPtr & rtm);
+		inline RenderTexturePtr createRenderTextureFromFile(const Util::Wstring & path);
 		inline RenderTargetPtr createRenderTarget(const RenderTargetMappingPtr & rtm);
 
 	public:
@@ -57,14 +57,14 @@ namespace Engine
 
 	private:
 		virtual void init_impl() = 0;
-		virtual void beginRendering_impl() = 0;
+		virtual bool beginRendering_impl() = 0;
 		virtual bool render_impl(const RenderablePtr & renderable) = 0;
 		virtual void endRendering_impl() = 0;
 		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue) = 0;
 		virtual bool isPaused_impl() = 0;
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm) = 0;
-		virtual RenderTexturePtr createTexture_impl(const TextureMappingPtr & tm) = 0;
-		virtual RenderTexturePtr createTextureFromFile_impl(const Util::Wstring & path) = 0;
+		virtual RenderTexturePtr createRenderTexture_impl(const RenderTextureMappingPtr & rtm) = 0;
+		virtual RenderTexturePtr createRenderTextureFromFile_impl(const Util::Wstring & path) = 0;
 		virtual RenderTargetPtr createRenderTarget_impl(const RenderTargetMappingPtr & rtm) = 0;
 
 	protected:

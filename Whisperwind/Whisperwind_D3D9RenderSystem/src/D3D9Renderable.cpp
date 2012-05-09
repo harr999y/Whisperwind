@@ -24,6 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
 
 #include "DebugDefine.h"
 #include "CheckedCast.h"
@@ -91,5 +92,25 @@ namespace Engine
 	void D3D9Renderable::update_impl(Util::time /*elapsedTime*/)
 	{
 		EngineManager::getSingleton().getRenderSystem()->render(this->shared_from_this());
+	}
+	//---------------------------------------------------------------------
+	void D3D9Renderable::onDeviceLost()
+	{
+		BOOST_FOREACH(IDirect3DVertexBuffer9Ptr & vertexBuf, mVertexBound.VertexBufferVec)
+		{
+			vertexBuf.reset();
+		}
+
+		mVertexBound.VertexDeclaration.reset();
+
+		mIndexBuffer.reset();
+	}
+	//---------------------------------------------------------------------
+	void D3D9Renderable::onDeviceReset(const D3D9RenderablePtr & newRenderable)
+	{
+		mVertexBound.VertexBufferVec = newRenderable->getVertexBound().VertexBufferVec;
+		mVertexBound.VertexDeclaration = newRenderable->getVertexBound().VertexDeclaration;
+
+		mIndexBuffer = newRenderable->getIndexBuffer();
 	}
 }

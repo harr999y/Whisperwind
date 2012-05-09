@@ -65,5 +65,11 @@
     <ClCompile Include="src\D3D9Renderable.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\D3D9RenderTexture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\D3D9RenderTarget.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

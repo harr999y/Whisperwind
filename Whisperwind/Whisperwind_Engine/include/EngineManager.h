@@ -46,6 +46,7 @@ namespace Engine
 		void shutDown();
 
 		void installPlugin(const Util::PluginPtr & plugin);
+		void sleep(Util::u_int milliSecond);
 
 	public:
 		SET_GET_CONST_VALUE(Util::Wstring, WindowName);

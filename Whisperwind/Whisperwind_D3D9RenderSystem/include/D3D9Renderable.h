@@ -30,6 +30,7 @@ THE SOFTWARE
 #include <boost/enable_shared_from_this.hpp>
 
 #include "Renderable.h"
+#include "D3D9ForwardDeclare.h"
 #include "D3D9Typedefs.h"
 
 namespace Engine
@@ -69,6 +70,10 @@ namespace Engine
 
 		~D3D9Renderable()
 		{}
+
+	public:
+		void onDeviceLost();
+		void onDeviceReset(const D3D9RenderablePtr & newRenderable);
 
 	public:
 		SET_GET_VALUE(VertexBound, VertexBound);

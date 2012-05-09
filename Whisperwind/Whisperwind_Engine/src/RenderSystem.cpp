@@ -33,9 +33,9 @@ namespace Engine
 		init_impl();
 	}
 	//---------------------------------------------------------------------
-	void RenderSystem::beginRendering()
+	bool RenderSystem::beginRendering()
 	{
-		beginRendering_impl();
+		return (beginRendering_impl());
 	}
 	//---------------------------------------------------------------------
 	bool RenderSystem::render(const RenderablePtr & renderable)
@@ -63,14 +63,14 @@ namespace Engine
 		return createRenderable_impl(rm);
 	}
 	//---------------------------------------------------------------------
-	RenderTexturePtr RenderSystem::createTexture_impl(const TextureMappingPtr & tm)
+	Engine::RenderTexturePtr RenderSystem::createRenderTexture( const RenderTextureMappingPtr & rtm )
 	{
-		return createTexture_impl(tm);
+		return createRenderTexture_impl(rtm);
 	}
 	//---------------------------------------------------------------------
-	RenderTexturePtr RenderSystem::createTextureFromFile(const Util::Wstring & path)
+	RenderTexturePtr RenderSystem::createRenderTextureFromFile(const Util::Wstring & path)
 	{
-		return createTextureFromFile_impl(path);
+		return createRenderTextureFromFile_impl(path);
 	}
 	//---------------------------------------------------------------------
 	RenderTargetPtr RenderSystem::createRenderTarget(const RenderTargetMappingPtr & rtm)

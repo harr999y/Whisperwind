@@ -38,6 +38,8 @@
     <ClCompile Include="src\D3D9RenderSystem.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
+    <ClCompile Include="src\D3D9RenderTarget.cpp" />
+    <ClCompile Include="src\D3D9RenderTexture.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E20E609E-4003-4D78-8792-21CF601B9EF3}</ProjectGuid>

@@ -101,10 +101,11 @@ namespace Engine
 
 			/// Important way to save CPU when minimized or something else.
 			if (mRenderSystem->isPaused())
-				mTimer->sleep(1);
+				this->sleep(1);
 
 			mRenderSystem->clearFrame(FCF_TARGET | FCF_ZBUFFER);
-			mRenderSystem->beginRendering();
+
+			IF_FALSE_CONTINUE(mRenderSystem->beginRendering());
 
 			mSceneManager->update(mTimer->getElapsedTime());
 
@@ -126,6 +127,11 @@ namespace Engine
 		plugin->install();
 
 		mPluginVector.push_back(plugin);
+	}
+	//---------------------------------------------------------------------
+	void EngineManager::sleep(Util::u_int milliSecond)
+	{
+		mTimer->sleep(milliSecond);
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::loadPlugins()
