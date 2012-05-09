@@ -46,12 +46,18 @@ namespace Engine
 
 	public:
 		void addChildNode(const SceneNodePtr & sceneNode);
-		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outSceneNode);
-		/// Don't use ref,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.
+		void destroyChildNode(const Util::Wstring & name);
+		void destroyAllChildNode();
+		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode);
+		bool getParentNode(SceneNodePtr & outParentNode);
+
+		/// I don't use ref here,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.
 		void attachSceneObject(SceneObjectPtr sceneObj);
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
 		void dettachAllSceneObject();
-		void update(Util::time elapsedTime);
+
+		void preUpdate(Util::time elapsedTime);
+		void postUpdate(Util::time elapsedTime);
 
 		template <typename CallBack>
 		void regUpdateCallback(CallBack cb)
@@ -59,13 +65,16 @@ namespace Engine
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
+		SET_VALUE(SceneNodePtr, ParentNode);
 
 	private:
-		virtual void update_impl(Util::time elapsedTime) = 0;
+		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
+		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
 
 	protected:
 		SceneObjectMap mSceneObjectMap;
 		SceneNodeMap mChildSceneNodeMap;
+		SceneNodePtr mParentNode;
 		Util::Wstring mName;
 
 	private:

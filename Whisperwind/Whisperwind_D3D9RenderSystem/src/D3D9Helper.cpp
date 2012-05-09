@@ -142,11 +142,10 @@ namespace Engine
 				DWORD shaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
 #endif
 				ID3DXEffect * effect = NULL;
-				/// TODO!
 				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), rm->EffectName.c_str(), 
 					NULL, NULL, shaderFlags, NULL, &effect, NULL));
 				ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
-				effectMap[rm->EffectName] = effectPtr;
+				effectMap.insert(ID3DXEffectMap::value_type(rm->EffectName, effectPtr));
 
 				d3d9Renderable->setEffect(effectPtr);
 			}

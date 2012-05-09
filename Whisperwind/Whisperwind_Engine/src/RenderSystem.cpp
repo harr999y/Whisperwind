@@ -48,6 +48,11 @@ namespace Engine
 		endRendering_impl();
 	}
 	//---------------------------------------------------------------------
+	void RenderSystem::present()
+	{
+		present_impl();
+	}
+	//---------------------------------------------------------------------
 	void RenderSystem::clearFrame(Util::u_int flag, Util::real zValue, Util::u_int stencilValue)
 	{
 		clearFrame_impl(flag, zValue, stencilValue);

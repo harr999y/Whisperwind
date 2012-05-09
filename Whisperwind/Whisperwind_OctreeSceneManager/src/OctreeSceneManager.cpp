@@ -48,8 +48,14 @@ namespace Engine
 		mRootNode = boost::make_shared<OctreeSceneNode>(ROOT_SCENE_NODE_NAME);
 	}
 	//---------------------------------------------------------------------
-	void OctreeSceneManager::update_impl(Util::time elapsedTime)
+	void OctreeSceneManager::preUpdate_impl(Util::time elapsedTime)
 	{
-		mRootNode->update(elapsedTime);
+		mRootNode->preUpdate(elapsedTime);
 	}
+	//---------------------------------------------------------------------
+	void OctreeSceneManager::postUpdate_impl(Util::time elapsedTime)
+	{
+		mRootNode->postUpdate(elapsedTime);
+	}
+
 }

@@ -97,6 +97,8 @@ namespace Engine
 	{
 		while (!getQuitLooping())
 		{
+			Util::time elapsedTime = mTimer->getElapsedTime();
+
 			WindowsEventHandle::handleWindowsMsg();
 
 			/// Important way to save CPU when minimized or something else.
@@ -107,9 +109,13 @@ namespace Engine
 
 			IF_FALSE_CONTINUE(mRenderSystem->beginRendering());
 
-			mSceneManager->update(mTimer->getElapsedTime());
+			mSceneManager->preUpdate(elapsedTime);
 
 			mRenderSystem->endRendering();
+
+			mSceneManager->postUpdate(elapsedTime);
+
+			mRenderSystem->present();
 		}
 	}
 	//---------------------------------------------------------------------

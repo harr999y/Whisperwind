@@ -30,6 +30,9 @@ THE SOFTWARE
 namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	void Actor::update_impl(Util::time /*elapsedTime*/)
+	void Actor::preUpdate_impl(Util::time /*elapsedTime*/)
+	{}
+	//---------------------------------------------------------------------
+	void Actor::postUpdate_impl(Util::time /*elapsedTime*/)
 	{}
 }

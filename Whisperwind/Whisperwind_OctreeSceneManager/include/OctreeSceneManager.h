@@ -39,7 +39,8 @@ namespace Engine
 		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name);
 		virtual void initRootNode();
 		virtual void init_impl();
-		virtual void update_impl(Util::time elapsedTime);
+		virtual void preUpdate_impl(Util::time elapsedTime);
+		virtual void postUpdate_impl(Util::time elapsedTime);
 	};
 }
 

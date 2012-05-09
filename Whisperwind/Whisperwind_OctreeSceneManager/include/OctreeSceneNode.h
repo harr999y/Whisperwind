@@ -40,7 +40,8 @@ namespace Engine
 		{}
 
 	private:
-		virtual void update_impl(Util::time elapsedTime);
+		virtual void preUpdate_impl(Util::time elapsedTime);
+		virtual void postUpdate_impl(Util::time elapsedTime);
 	};
 }
 

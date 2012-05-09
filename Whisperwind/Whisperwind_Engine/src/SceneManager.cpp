@@ -35,15 +35,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	SceneManager::~SceneManager()
 	{
-		BOOST_AUTO(node, mSceneNodeMap.begin());
-		for (node; node != mSceneNodeMap.end(); ++node)
-		{
-			node->second->dettachAllSceneObject();
-		}
-
-		mRootNode->dettachAllSceneObject();
+		detroyAllSceneNode();
 
 		mRootNode.reset();
+
 		mSceneNodeMap.clear();
 	}
 	//---------------------------------------------------------------------
@@ -58,7 +53,7 @@ namespace Engine
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) == mSceneNodeMap.end());
 
 		SceneNodePtr sceneNode = createSceneNode_impl(name);
-		mSceneNodeMap[name] = sceneNode;
+		mSceneNodeMap.insert(SceneNodeMap::value_type(name, sceneNode));
 
 		return sceneNode;
 	}
@@ -68,11 +63,38 @@ namespace Engine
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) != mSceneNodeMap.end());
 
 		return mSceneNodeMap[name];
+	}	
+	//---------------------------------------------------------------------
+	void SceneManager::destroySceneNode(const Util::Wstring & name)
+	{
+		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) != mSceneNodeMap.end());
+
+		SceneNodePtr & node = mSceneNodeMap[name];
+		SceneNodePtr parentNode;
+
+		if (node->getParentNode(parentNode))
+			parentNode->destroyChildNode(node->getName());
+
+		mSceneNodeMap.erase(name);
 	}
 	//---------------------------------------------------------------------
-	void SceneManager::update(Util::time elapsedTime)
+	void SceneManager::detroyAllSceneNode()
 	{
-		update_impl(elapsedTime);
+		BOOST_AUTO(it, mSceneNodeMap.begin());
+		for (it; it != mSceneNodeMap.end(); /**/)
+		{
+			destroySceneNode((it++)->second->getName());
+		}
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::preUpdate(Util::time elapsedTime)
+	{
+		preUpdate_impl(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::postUpdate(Util::time elapsedTime)
+	{
+		postUpdate_impl(elapsedTime);
 	}
 
 }

@@ -56,10 +56,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::dettachAllSceneObject()
 	{
-		BOOST_AUTO(obj, mSceneObjectMap.begin());
-		for (obj; obj != mSceneObjectMap.end(); ++obj)
+		BOOST_AUTO(it, mSceneObjectMap.begin());
+		for (it; it != mSceneObjectMap.end(); /**/)
 		{
-			obj->second->setAttachedSceneNode(NULL_SCENE_NODE);
+			dettachSceneObject((it++)->second);
 		}
 
 		mSceneObjectMap.clear();
@@ -69,38 +69,82 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(mChildSceneNodeMap.find(sceneNode->getName()) == mChildSceneNodeMap.end());
 
-		mChildSceneNodeMap[sceneNode->getName()] = sceneNode;
+		mChildSceneNodeMap.insert(SceneNodeMap::value_type(sceneNode->getName(), sceneNode));
+		sceneNode->setParentNode(this->shared_from_this());
 	}
 	//---------------------------------------------------------------------
-	bool SceneNode::getChildNode(const Util::Wstring & name, SceneNodePtr & outSceneNode)
+	void SceneNode::destroyChildNode(const Util::Wstring & name)
 	{
 		if (mChildSceneNodeMap.find(name) != mChildSceneNodeMap.end())
 		{
-			outSceneNode = mChildSceneNodeMap[name];
+			SceneNodePtr childNode = mChildSceneNodeMap[name];
+			childNode->dettachAllSceneObject();
+			childNode->destroyAllChildNode();
+			childNode->setParentNode(NULL_SCENE_NODE);
+			mChildSceneNodeMap.erase(name);
+		}
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::destroyAllChildNode()
+	{
+		BOOST_AUTO(it, mChildSceneNodeMap.begin());
+		for (it; it != mChildSceneNodeMap.end(); /**/)
+		{
+			destroyChildNode((it++)->second->getName());
+		}
+	}
+	//---------------------------------------------------------------------
+	bool SceneNode::getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode)
+	{
+		if (mChildSceneNodeMap.find(name) != mChildSceneNodeMap.end())
+		{
+			outChildNode = mChildSceneNodeMap[name];
 			return true;
 		}
 
 		return false;
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::update(Util::time elapsedTime)
+	bool SceneNode::getParentNode(SceneNodePtr & outParentNode)
+	{
+		if (mParentNode)
+		{
+			outParentNode = mParentNode;
+			return true;
+		}
+
+		return false;
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::preUpdate(Util::time elapsedTime)
 	{
 		if (mCallback)
 			mCallback(this->shared_from_this(), elapsedTime);
 
-		BOOST_AUTO(childNode, mChildSceneNodeMap.begin());
-		for (childNode; childNode != mChildSceneNodeMap.end(); ++childNode)
+		/// Child nodes
 		{
-			childNode->second->update(elapsedTime);
+			BOOST_AUTO(it, mChildSceneNodeMap.begin());
+			for (it; it != mChildSceneNodeMap.end(); ++it)
+			{
+				it->second->preUpdate(elapsedTime);
+			}
 		}
 
-		BOOST_AUTO(obj, mSceneObjectMap.begin());
-		for (obj; obj != mSceneObjectMap.end(); ++obj)
+		/// Objects
 		{
-			obj->second->update(elapsedTime);
+			BOOST_AUTO(it, mSceneObjectMap.begin());
+			for (it; it != mSceneObjectMap.end(); ++it)
+			{
+				it->second->preUpdate(elapsedTime);
+			}
 		}
 
-		update_impl(elapsedTime);
+		preUpdate_impl(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::postUpdate(Util::time elapsedTime)
+	{
+		postUpdate_impl(elapsedTime);
 	}
 
 }

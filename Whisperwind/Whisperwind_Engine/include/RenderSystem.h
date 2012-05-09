@@ -45,6 +45,7 @@ namespace Engine
 		inline bool beginRendering();
 		inline bool render(const RenderablePtr & renderable);
 		inline void endRendering();
+		inline void present();
 		inline void clearFrame(Util::u_int flag, Util::real zValue = 1.0, Util::u_int stencilValue = 0);
 		inline bool isPaused();
 		inline RenderablePtr createRenderable(const RenderableMappingPtr & rm);
@@ -60,6 +61,7 @@ namespace Engine
 		virtual bool beginRendering_impl() = 0;
 		virtual bool render_impl(const RenderablePtr & renderable) = 0;
 		virtual void endRendering_impl() = 0;
+		virtual void present_impl() = 0;
 		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue) = 0;
 		virtual bool isPaused_impl() = 0;
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm) = 0;

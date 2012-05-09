@@ -41,10 +41,12 @@ namespace Engine
 
 	public:
 		void init();
-		void update(Util::time elapsedTime);
+		void preUpdate(Util::time elapsedTime);
+		void postUpdate(Util::time elapsedTime);
 
 		SceneNodePtr createSceneNode(const Util::Wstring & name);
 		SceneNodePtr & getSceneNode(const Util::Wstring & name);
+		void destroySceneNode(const Util::Wstring & name);
 
 	public:
 		GET_VALUE(SceneNodePtr, RootNode);
@@ -53,11 +55,14 @@ namespace Engine
 		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name) = 0;
 		virtual void init_impl() = 0;
 		virtual void initRootNode() = 0;
-		virtual void update_impl(Util::time elapsedTime) = 0;
+		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
+		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
+
+		void detroyAllSceneNode();
 
 	protected:
 		SceneNodePtr mRootNode;
-		/// save all nodes.
+		/// save all nodes.CANNOT use to do anything unless find and destroy!
 		SceneNodeMap mSceneNodeMap;
 
 	private:

@@ -28,11 +28,21 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void SceneComponent::update(Util::time elapsedTime)
+	void SceneComponent::preUpdate(Util::time elapsedTime)
 	{
+		if (!getCanUpdate())
+			return;
+
 		if (mCallback)
 			mCallback(mCompType, elapsedTime);
 
-		update_impl(elapsedTime);
+		preUpdate_impl(elapsedTime);
 	}
+	//---------------------------------------------------------------------
+	void SceneComponent::postUpdate(Util::time elapsedTime)
+	{
+		if (!getCanUpdate())
+			postUpdate_impl(elapsedTime);
+	}
+
 }

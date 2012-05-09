@@ -35,8 +35,7 @@ namespace Engine
 	{
 	public:
 		Renderable() : 
-		  SceneComponent(CT_RENDERABLE),
-		  mNeedReset(false)
+		  SceneComponent(CT_RENDERABLE)
 		{}
 
 	public:
@@ -45,9 +44,6 @@ namespace Engine
 		inline void setEffectSemanticValue(const Util::String & paramName, const void * data);
 		inline void setTexture(const Util::String & paramName, const RenderTexturePtr & texture);
 		inline void setRenderTarget(const Util::String & paramName, const RenderTexturePtr & texture);
-
-	public:
-		SET_GET_CONST_VALUE(bool, NeedReset);
 		
 	protected:
 		virtual ~Renderable()
@@ -57,9 +53,6 @@ namespace Engine
 		virtual void setEffectSemanticValue_impl(const Util::String & paramName, const void * data = NULL) = 0;
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture) = 0;
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target) = 0;
-
-	private:
-		bool mNeedReset;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Renderable);

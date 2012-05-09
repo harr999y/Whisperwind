@@ -43,7 +43,8 @@ namespace Engine
 	{
 	public:
 		explicit SceneComponent(ComponentType type) :
-		    mCompType(type)
+		    mCompType(type),
+			mCanUpdate(true)
 		{}
 
 	protected:
@@ -51,24 +52,31 @@ namespace Engine
 		{}
 
 	public:
-		void update(Util::time elapsedTime);
+		void preUpdate(Util::time elapsedTime);
+		void postUpdate(Util::time elapsedTime);
 		virtual const Util::Wstring & getName() const = 0;
 
 		template <typename CallBack>
 		void regUpdateCallback(CallBack cb)
 		{ mCallback = cb; }
 
+	protected:
+		SET_GET_CONST_VALUE(bool, CanUpdate);
+
 	public:
 		SET_GET_CONST_VALUE(ComponentType, CompType);
 
 	private:
-		virtual void update_impl(Util::time elapsedTime) = 0;
+		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
+		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
 
 	private:
 		typedef boost::function<void (ComponentType, Util::time)> Callback;
 		Callback mCallback;
 
 		ComponentType mCompType;
+
+		bool mCanUpdate;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneComponent);

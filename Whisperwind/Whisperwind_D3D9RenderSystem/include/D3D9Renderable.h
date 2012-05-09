@@ -85,7 +85,8 @@ namespace Engine
 
 	private:
 		virtual void setEffectSemanticValue_impl(const Util::String & paramName, const void * data);
-		virtual void update_impl(Util::time elapsedTime);
+		virtual void preUpdate_impl(Util::time elapsedTime);
+		virtual void postUpdate_impl(Util::time elapsedTime);
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture);
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target);
 
@@ -93,6 +94,8 @@ namespace Engine
 
 	private:
 		typedef boost::unordered_map<Util::String, EffectHandleSize> EffectHandleMap;
+
+		bool mCanRender;
 
 		IDirect3DDevice9Ptr mD3DDevice;
 

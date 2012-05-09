@@ -44,15 +44,18 @@ namespace Engine
 		{}
 
 	public:
-		void update(Util::time elapsedTime);
+		void preUpdate(Util::time elapsedTime);
+		void postUpdate(Util::time elapsedTime);
 		void regComponent(ComponentType type, const SceneComponentPtr & sceneComp);
 		bool getComponent(ComponentType type, SceneComponentPtr & scene);
+		void unRegComponent(ComponentType type);
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
 
 	private:
-		virtual void update_impl(Util::time elapsedTime) = 0;
+		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
+		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
 
 	private:
 		/// TODO:Sorry for finally I used friend.And if I find a way not to use it,I'll modify it!
@@ -62,6 +65,7 @@ namespace Engine
  		SET_GET_CONST_VALUE(SceneNodePtr, AttachedSceneNode);
 
 	protected:
+		/// Just do an enum hack!
 		SceneComponentPtr mSceneComponents[CT_MAX];
 		SceneNodePtr mAttachedSceneNode;
 		Util::Wstring mName;

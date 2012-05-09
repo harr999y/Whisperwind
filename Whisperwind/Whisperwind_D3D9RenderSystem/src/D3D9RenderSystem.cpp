@@ -149,7 +149,10 @@ namespace Engine
 	void D3D9RenderSystem::endRendering_impl()
 	{
 		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->EndScene());
-
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::present_impl()
+	{
 		HRESULT hr;
 		hr = mD3DDevice->Present(NULL, NULL, NULL, NULL);
 		if (D3DERR_DEVICELOST == hr)
@@ -186,7 +189,7 @@ namespace Engine
   			(D3DPOOL_DEFAULT == D3D9Helper::getCreationPool(rm->IndexBound.IndexUsage)))
 		{
 			if (mRenderableMappingMap.find(rm) == mRenderableMappingMap.end())
-				mRenderableMappingMap[rm] = d3d9Renderable;
+				mRenderableMappingMap.insert(RenderableMappingMap::value_type(rm, d3d9Renderable));
 		}
 
 		return d3d9Renderable;
@@ -207,13 +210,24 @@ namespace Engine
 		d3d9RtPtr->setTexture(texPtr);
 
 		if (mRenderTextureMappingMap.find(rtm) == mRenderTextureMappingMap.end())
-			mRenderTextureMappingMap[rtm] = d3d9RtPtr;
+			mRenderTextureMappingMap.insert(RenderTextureMappingMap::value_type(rtm, d3d9RtPtr));
 
 		return d3d9RtPtr;
 	}
 	//---------------------------------------------------------------------
 	RenderTexturePtr D3D9RenderSystem::createRenderTextureFromFile_impl(const Util::Wstring & path)
 	{
+		/// For repetitive creation.
+		if (mRenderTextureFileMap.find(path) != mRenderTextureFileMap.end())
+		{
+			RenderTextureWeakPtr textureWeak = mRenderTextureFileMap[path];
+			if (!textureWeak.expired())
+			{
+				RenderTexturePtr texture = textureWeak.lock();
+				return texture;
+			}
+		}
+
 		IDirect3DTexture9 * texture = NULL;
 
 		Util::String str;
@@ -226,7 +240,7 @@ namespace Engine
 		d3d9RtPtr->setTexture(texturePtr);
 
 		if (mRenderTextureFileMap.find(path) == mRenderTextureFileMap.end())
-			mRenderTextureFileMap[path] = d3d9RtPtr;
+			mRenderTextureFileMap.insert(RenderTextureFileMap::value_type(path, d3d9RtPtr));
 
 		return d3d9RtPtr;
 	}
@@ -245,7 +259,7 @@ namespace Engine
 		d3d9RtPtr->setSurface(surfacePtr);
 
 		if (mRenderTargetMappingMap.find(rtm) == mRenderTargetMappingMap.end())
-			mRenderTargetMappingMap[rtm] = d3d9RtPtr;
+			mRenderTargetMappingMap.insert(RenderTargetMappingMap::value_type(rtm, d3d9RtPtr));
 
 		return d3d9RtPtr;
 	}

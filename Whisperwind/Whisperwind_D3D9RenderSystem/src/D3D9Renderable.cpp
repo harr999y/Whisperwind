@@ -78,7 +78,7 @@ namespace Engine
 			DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(ehs.Handle, &paramDesc));
 			ehs.Size = paramDesc.Bytes;
 
-			mEffectHandleMap[paramName] = ehs;
+			mEffectHandleMap.insert(EffectHandleMap::value_type(paramName, ehs));
 		}
 		else
 		{
@@ -89,10 +89,13 @@ namespace Engine
 		return ehs;
 	}
 	//---------------------------------------------------------------------
-	void D3D9Renderable::update_impl(Util::time /*elapsedTime*/)
+	void D3D9Renderable::preUpdate_impl(Util::time /*elapsedTime*/)
 	{
 		EngineManager::getSingleton().getRenderSystem()->render(this->shared_from_this());
 	}
+	//---------------------------------------------------------------------
+	void D3D9Renderable::postUpdate_impl(Util::time /*elapsedTime*/)
+	{}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::onDeviceLost()
 	{
@@ -104,6 +107,8 @@ namespace Engine
 		mVertexBound.VertexDeclaration.reset();
 
 		mIndexBuffer.reset();
+
+		setCanUpdate(false);
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::onDeviceReset(const D3D9RenderablePtr & newRenderable)
@@ -112,5 +117,7 @@ namespace Engine
 		mVertexBound.VertexDeclaration = newRenderable->getVertexBound().VertexDeclaration;
 
 		mIndexBuffer = newRenderable->getIndexBuffer();
+
+		setCanUpdate(true);
 	}
 }

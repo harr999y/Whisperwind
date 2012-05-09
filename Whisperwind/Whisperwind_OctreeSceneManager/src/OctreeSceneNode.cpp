@@ -28,7 +28,13 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void OctreeSceneNode::update_impl(Util::time elapsedTime)
+	void OctreeSceneNode::preUpdate_impl(Util::time elapsedTime)
+	{
+		/// TODO!
+		elapsedTime;
+	}
+	//---------------------------------------------------------------------
+	void OctreeSceneNode::postUpdate_impl(Util::time elapsedTime)
 	{
 		/// TODO!
 		elapsedTime;

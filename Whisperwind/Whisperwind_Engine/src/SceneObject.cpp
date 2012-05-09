@@ -31,16 +31,28 @@ THE SOFTWARE
 
 namespace Engine
 {
+	static const SceneComponentPtr NULL_SCENE_COMPONENT;
 	//---------------------------------------------------------------------
-	void SceneObject::update(Util::time elapsedTime)
+	void SceneObject::preUpdate( Util::time elapsedTime )
 	{
 		BOOST_FOREACH(SceneComponentPtr & comp, mSceneComponents)
 		{
 			if (comp != NULL)
-				comp->update(elapsedTime);
+				comp->preUpdate(elapsedTime);
 		}
 
-		update_impl(elapsedTime);
+		preUpdate_impl(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void SceneObject::postUpdate( Util::time elapsedTime )
+	{
+		BOOST_FOREACH(SceneComponentPtr & comp, mSceneComponents)
+		{
+			if (comp != NULL)
+				comp->postUpdate(elapsedTime);
+		}
+
+		postUpdate_impl(elapsedTime);
 	}
 	//---------------------------------------------------------------------
 	void SceneObject::regComponent(ComponentType type, const SceneComponentPtr & sceneComp)
@@ -58,4 +70,10 @@ namespace Engine
 		outSceneComp = mSceneComponents[type];
 		return true;
 	}
+	//---------------------------------------------------------------------
+	void SceneObject::unRegComponent(ComponentType type)
+	{
+		mSceneComponents[type] = NULL_SCENE_COMPONENT;
+	}
+
 }
