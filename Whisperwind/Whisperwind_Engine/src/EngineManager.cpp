@@ -46,9 +46,11 @@ namespace Engine
 #ifdef WHISPERWIND_DEBUG
 	static const Util::String PLUGIN_CONFIG_PATH("../config/Plugin_d.cfg");
 	static const Util::String ENGINE_CONFIG_PATH("../config/EngineConfig_d.cfg");
+	static const Util::String RESOURCE_CONFIG_PATH("../config/Resource_d.cfg");
 #else
 	static const Util::String PLUGIN_CONFIG_PATH("../config/Plugin.cfg");
 	static const Util::String ENGINE_CONFIG_PATH("../config/EngineConfig.cfg");
+	static const Util::String RESOURCE_CONFIG_PATH("../config/Resource.cfg");
 #endif
 	//---------------------------------------------------------------------
 	EngineManager EngineManager::mSingleton;
@@ -124,6 +126,8 @@ namespace Engine
 		clearResources();
 		clearPlugins();
 		clearConfigs();
+
+		mResourceManager.reset();
 
 		WHISPERWIND_LOG(TO_UNICODE("Quit engine done!"));
 	}

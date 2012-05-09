@@ -57,8 +57,9 @@ namespace Engine
 		virtual const Util::Wstring & getName() const = 0;
 
 		template <typename CallBack>
-		void regUpdateCallback(CallBack cb)
-		{ mCallback = cb; }
+		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }
+		template <typename CallBack>
+		void regPostUpdateCallback(CallBack cb) { mPostCallback = cb; }
 
 	protected:
 		SET_GET_CONST_VALUE(bool, CanUpdate);
@@ -72,7 +73,8 @@ namespace Engine
 
 	private:
 		typedef boost::function<void (ComponentType, Util::time)> Callback;
-		Callback mCallback;
+		Callback mPreCallback;
+		Callback mPostCallback;
 
 		ComponentType mCompType;
 

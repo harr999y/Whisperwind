@@ -25,6 +25,23 @@ THE SOFTWARE
 #ifndef _RESOURCE_H_
 #define _RESOURCE_H_
 
+#include "Util.h"
 
+namespace Engine
+{
+	class Resource
+	{
+	public:
+		Resource()
+		{}
+
+	protected:
+		~Resource()
+		{}
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Resource);
+	};
+}
 
 #endif

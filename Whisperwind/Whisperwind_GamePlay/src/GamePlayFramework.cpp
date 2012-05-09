@@ -145,7 +145,7 @@ namespace GamePlay
 		Util::Wstring actorName(TO_UNICODE("test"));
 		mActor = boost::make_shared<Actor>(actorName);
 		mActor->regComponent(Engine::CT_RENDERABLE, renderable);
-		renderable->regUpdateCallback(boost::bind(&GamePlayFramework::updateCallback, boost::ref(*this), _1, _2));
+		renderable->regPreUpdateCallback(boost::bind(&GamePlayFramework::preUpdateCallback, boost::ref(*this), _1, _2));
 
 		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName);
 		node->attachSceneObject(mActor);
@@ -155,7 +155,7 @@ namespace GamePlay
 		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderTextureFromFile(texturePath);
 	}
 	//---------------------------------------------------------------------
-	void GamePlayFramework::updateCallback(Engine::ComponentType type, Util::time elapsedTime)
+	void GamePlayFramework::preUpdateCallback(Engine::ComponentType type, Util::time elapsedTime)
 	{
 		Engine::SceneComponentPtr comp;
 		IF_FALSE_RETURN(mActor->getComponent(type, comp));

@@ -33,8 +33,8 @@ namespace Engine
 		if (!getCanUpdate())
 			return;
 
-		if (mCallback)
-			mCallback(mCompType, elapsedTime);
+		if (mPreCallback)
+			mPreCallback(mCompType, elapsedTime);
 
 		preUpdate_impl(elapsedTime);
 	}
@@ -42,7 +42,12 @@ namespace Engine
 	void SceneComponent::postUpdate(Util::time elapsedTime)
 	{
 		if (!getCanUpdate())
-			postUpdate_impl(elapsedTime);
+			return;
+
+		if (mPostCallback)
+			mPostCallback(mCompType, elapsedTime);
+
+		postUpdate_impl(elapsedTime);
 	}
 
 }

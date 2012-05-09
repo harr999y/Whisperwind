@@ -43,7 +43,7 @@ namespace GamePlay
 		void run();
 
 		/// TODO!
-		void updateCallback(Engine::ComponentType type, Util::time elapsedTime);
+		void preUpdateCallback(Engine::ComponentType type, Util::time elapsedTime);
 
 	private:
 		void createScene();

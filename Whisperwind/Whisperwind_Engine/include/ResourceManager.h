@@ -22,3 +22,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _RESOURCE_MANAGER_H_
+#define _RESOURCE_MANAGER_H_
+
+#include "Util.h"
+
+namespace Engine
+{
+	class ResourceManager
+	{
+
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(ResourceManager);
+	};
+}
+
+#endif

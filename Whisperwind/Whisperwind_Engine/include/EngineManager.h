@@ -76,6 +76,7 @@ namespace Engine
 
 		RenderSystemPtr mRenderSystem;
 		SceneManagerPtr mSceneManager;
+		ResourceManagerPtr mResourceManager;
 
 		EngineConfigPtr mEngineConfig;
 		PluginConfigPtr mPluginConfig;
