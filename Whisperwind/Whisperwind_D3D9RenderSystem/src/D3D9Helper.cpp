@@ -74,7 +74,7 @@ namespace Engine
 		/// Vertex bound
 		{
 			const DWORD usage = (rm->VertexBound.VertexUsage != BUF_STATIC) ? (D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY) : 0;
-			const D3DPOOL pool = (rm->VertexBound.VertexUsage != BUF_STATIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+			const D3DPOOL pool = getCreationPool(rm->VertexBound.VertexUsage);
 			const DWORD lockFlag = ((usage & D3DUSAGE_DYNAMIC) != 0) ? D3DLOCK_DISCARD : 0;
 
 			IDirect3DVertexBuffer9 * vb = NULL;
@@ -106,7 +106,7 @@ namespace Engine
 			d3d9Renderable->setHasIndex(true);
 
 			const DWORD usage = (rm->IndexBound.IndexUsage != BUF_STATIC) ? (D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY) : 0;
-			const D3DPOOL pool = (rm->IndexBound.IndexUsage != BUF_STATIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+			const D3DPOOL pool = getCreationPool(rm->IndexBound.IndexUsage);
 
 			IDirect3DIndexBuffer9 * ib = NULL;
 			D3DFORMAT idxFmt = (INDEX_16 == rm->IndexBound.IndexFmt) ? D3DFMT_INDEX16 : D3DFMT_INDEX32;
@@ -193,6 +193,11 @@ namespace Engine
 		WHISPERWIND_ASSERT(primCount > 0);
 
 		return primCount;
+	}
+	//---------------------------------------------------------------------
+	D3DPOOL D3D9Helper::getCreationPool(BufferUsageFlag flag)
+	{
+		return ((flag != BUF_STATIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED);
 	}
 
 }

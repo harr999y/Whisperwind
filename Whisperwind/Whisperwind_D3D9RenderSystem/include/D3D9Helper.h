@@ -37,6 +37,7 @@ THE SOFTWARE
 #include "StringConverter.h"
 #include "DebugDefine.h"
 #include "EngineForwardDeclare.h"
+#include "RenderMappingDefines.h"
 #include "D3D9Typedefs.h"
 
 namespace Engine
@@ -52,6 +53,7 @@ namespace Engine
 	public:
 		static RenderablePtr createD3D9Renderable(const IDirect3DDevice9Ptr & device, ID3DXEffectMap & effectMap, const RenderableMappingPtr & rm);
 		static Util::u_int getPrimCount(D3DPRIMITIVETYPE type, Util::u_int vertexCount);
+		static D3DPOOL getCreationPool(BufferUsageFlag flag);
 
 	private:
 		MAKE_STATIC_CLASS(D3D9Helper);
@@ -60,16 +62,16 @@ namespace Engine
 
 #ifdef WHISPERWIND_DEBUG
 #define DX_IF_FAILED_DEBUG_PRINT(x) \
+{ \
+	HRESULT hr = S_OK; hr = (x); \
+	if (FAILED(hr)) \
 	{ \
-		HRESULT hr = S_OK; hr = (x); \
-		if (FAILED(hr)) \
-		{ \
-			Util::String str(&(#x)[0]); \
-			Util::Wstring wstr; \
-			Util::StringToWstring(str, wstr); \
-			DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)) \
-		} \
-	}
+		Util::String str(&(#x)[0]); \
+		Util::Wstring wstr; \
+		Util::StringToWstring(str, wstr); \
+		DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)) \
+	} \
+}
 #else
 #define DX_IF_FAILED_DEBUG_PRINT(x) \
 	(x);
@@ -90,9 +92,11 @@ namespace Engine
     }
 #else
 #define DX_IF_FAILED_RETURN_FALSE(x) \
+{ \
 	HRESULT hr; hr = (x); \
 	if (FAILED(hr)) \
-		return false;
+	return false; \
+}
 #endif
 
 #ifdef WHISPERWIND_DEBUG

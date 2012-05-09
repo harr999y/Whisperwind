@@ -56,6 +56,10 @@ namespace Engine
 		mEngineConfig.reset();
 		mCapability.reset();
 		mEffectMap.clear();
+		mRenderableMappingMap.clear();
+		mRenderTextureFileMap.clear();
+		mRenderTextureMappingMap.clear();
+		mRenderTargetMappingMap.clear();
 		mD3DDevice.reset();
 		mD3D.reset();
 		::DestroyWindow(mWindow);
@@ -178,7 +182,12 @@ namespace Engine
 	{
 		RenderablePtr d3d9Renderable = D3D9Helper::createD3D9Renderable(mD3DDevice, mEffectMap, rm);
 
-		mRenderableMappingMap[rm] = d3d9Renderable;
+  		if ((D3DPOOL_DEFAULT == D3D9Helper::getCreationPool(rm->VertexBound.VertexUsage)) ||
+  			(D3DPOOL_DEFAULT == D3D9Helper::getCreationPool(rm->IndexBound.IndexUsage)))
+		{
+			if (mRenderableMappingMap.find(rm) == mRenderableMappingMap.end())
+				mRenderableMappingMap[rm] = d3d9Renderable;
+		}
 
 		return d3d9Renderable;
 	}
@@ -197,7 +206,8 @@ namespace Engine
 		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
 		d3d9RtPtr->setTexture(texPtr);
 
-		mRenderTextureMappingMap[rtm] = d3d9RtPtr;
+		if (mRenderTextureMappingMap.find(rtm) == mRenderTextureMappingMap.end())
+			mRenderTextureMappingMap[rtm] = d3d9RtPtr;
 
 		return d3d9RtPtr;
 	}
@@ -215,7 +225,8 @@ namespace Engine
 		D3D9RenderTexturePtr d3d9RtPtr = boost::make_shared<D3D9RenderTexture>();
 		d3d9RtPtr->setTexture(texturePtr);
 
-		mRenderTextureFileMap[path] = d3d9RtPtr;
+		if (mRenderTextureFileMap.find(path) == mRenderTextureFileMap.end())
+			mRenderTextureFileMap[path] = d3d9RtPtr;
 
 		return d3d9RtPtr;
 	}
@@ -233,7 +244,8 @@ namespace Engine
 		D3D9RenderTargetPtr d3d9RtPtr = boost::make_shared<D3D9RenderTarget>();
 		d3d9RtPtr->setSurface(surfacePtr);
 
-		mRenderTargetMappingMap[rtm] = d3d9RtPtr;
+		if (mRenderTargetMappingMap.find(rtm) == mRenderTargetMappingMap.end())
+			mRenderTargetMappingMap[rtm] = d3d9RtPtr;
 
 		return d3d9RtPtr;
 	}

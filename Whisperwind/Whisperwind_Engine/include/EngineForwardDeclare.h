@@ -49,6 +49,12 @@ namespace Engine
 	class SceneObject;
 	class SceneComponent;
 
+	/** For the unordered_maps nowadays.
+	@note:
+	    For below's unordered_maps I DONOT need to write my own hash function,
+		because now I just use std::wstring and boost::shared_ptr,and these two all
+		have their own implementations,I think I cannot write a better one.
+	*/
 	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
 	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;
 	typedef boost::shared_ptr<PluginConfig> PluginConfigPtr;
