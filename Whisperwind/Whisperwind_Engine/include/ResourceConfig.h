@@ -22,10 +22,35 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _RESOURCE_CONFIG_H_
+#define _RESOURCE_CONFIG_H_
 
-#include "Resource.h"
+#include "Util.h"
+#include "Config.h"
 
 namespace Engine
 {
+	class ResourceConfig : public Config
+	{
+	public:
+		explicit ResourceConfig(const Util::String & name) :
+		    Config(name)
+		{}
 
+		~ResourceConfig()
+		{}
+
+	public:
+		GET_CONST_VALUE(Util::WstringVector, FolderVec);
+		GET_CONST_VALUE(Util::WstringVector, SevenZVec);
+
+	private:
+		virtual void parse_impl();
+
+	private:
+		Util::WstringVector mFolderVec;
+		Util::WstringVector mSevenZVec;
+	};
 }
+
+#endif

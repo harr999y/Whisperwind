@@ -58,14 +58,13 @@ namespace Util
 
 		mRootNode = mDoc->first_node(ROOT_NODE_NAME.c_str());
 
-		WHISPERWIND_ASSERT(mRootNode && "This xml dont has root node!");
+		WHISPERWIND_ASSERT(mRootNode && "This xml doesnot have root node!");
 	}
 	//---------------------------------------------------------------------
 	bool XmlReader::advanceFirstChildNode(const Util::String & nodeName)
 	{
 		mCurrentNode = mRootNode->first_node(nodeName.c_str());
 
-		WHISPERWIND_ASSERT(mCurrentNode && "Dont have this node!");
 		IF_NULL_RETURN_FALSE(mCurrentNode);
 
 		return true;

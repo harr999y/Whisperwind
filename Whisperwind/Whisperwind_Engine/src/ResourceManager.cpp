@@ -23,9 +23,94 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
+
+#include "ExceptionDefine.h"
+#include "ResourceConfig.h"
 #include "ResourceManager.h"
+
+namespace
+{
+	void traverseFolderWithWin32API(const Util::Wstring & path, Util::WstringVector & allFiles);
+}
 
 namespace Engine
 {
+#ifdef WHISPERWIND_DEBUG
+	static const Util::String RESOURCE_CONFIG_PATH("../config/Resource_d.cfg");
+#else
+	static const Util::String RESOURCE_CONFIG_PATH("../config/Resource.cfg");
+#endif
+	//---------------------------------------------------------------------
+	ResourceManager::ResourceManager()
+	{
+		mResourceConfig = boost::make_shared<ResourceConfig>(RESOURCE_CONFIG_PATH);
+
+		parse();
+	}
+	//---------------------------------------------------------------------
+	void ResourceManager::parse()
+	{
+		mResourceConfig->parse();
+
+		/// Folder
+		{
+			Util::WstringVector fileVec;
+			const Util::WstringVector & folderVec = mResourceConfig->getFolderVec();
+			BOOST_FOREACH(const Util::Wstring & path, folderVec)
+			{
+				traverseFolderWithWin32API(path, fileVec);
+
+				BOOST_FOREACH(const Util::Wstring & name, fileVec)
+				{
+					mFilePathMap.insert(FilePathMap::value_type(name, path + name));
+				}
+			}
+		}
+
+		/// TODO:7z
+		{}
+
+		mResourceConfig.reset();
+	}
+	//---------------------------------------------------------------------
+	Util::Wstring ResourceManager::getResourcePath(const Util::Wstring & name)
+	{
+		if (mFilePathMap.find(name) == mFilePathMap.end())
+		{
+			Util::String str;
+			Util::WstringToString(name, str);
+			WHISPERWIND_EXCEPTION(str + " cannot find!");
+		}
+
+		return mFilePathMap[name];
+	}
+
+}
+
+namespace
+{
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
+	void traverseFolderWithWin32API(const Util::Wstring & path, Util::WstringVector & allFiles)
+	{
+		WIN32_FIND_DATA fileData;
+		HANDLE findResult;
+		Util::Wstring findPattern = path + TO_UNICODE("*.*");
+
+		findResult = FindFirstFile(findPattern.c_str(), &fileData);
+		do
+		{
+			if ((findResult != INVALID_HANDLE_VALUE) &&
+				NULL == (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+			{
+				allFiles.push_back(fileData.cFileName);
+			}
+		} while (FindNextFile(findResult, &fileData));
+	}
 
 }

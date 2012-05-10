@@ -32,7 +32,6 @@ THE SOFTWARE
 
 namespace Util
 {
-	static const String LOG_PATH("../Whisperwind.log");
 	//---------------------------------------------------------------------
 	LogManager LogManager::mSingleton;
 	LogManager & LogManager::getSingleton()
@@ -42,8 +41,11 @@ namespace Util
 	//---------------------------------------------------------------------
 	LogManager::LogManager()
 	{
+		/// As global initialise is random,I put this string here.
+		static const String LOG_PATH("../Whisperwind.log");
+
 		mStream.open(LOG_PATH, std::ios::out | std::ios::trunc);
-		IF_FALSE_RETURN(mStream.is_open());
+		WHISPERWIND_ASSERT(mStream.is_open());
 	}
 	//---------------------------------------------------------------------
 	LogManager::~LogManager()

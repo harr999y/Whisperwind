@@ -31,8 +31,10 @@ THE SOFTWARE
 #include "D3D9FormatMapping.h"
 #include "D3D9Helper.h"
 
-namespace Engine
+namespace
 {
+	using namespace Engine;
+
 	//---------------------------------------------------------------------
 	// Helper functions.
 	//---------------------------------------------------------------------
@@ -143,7 +145,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 #undef CASE_MATCH_RETURN
 #undef CASE_UNMATCH_ASSERT
+}
 
+namespace Engine
+{
 	//---------------------------------------------------------------------
 	// D3D9FormatMappingFactory
 	//---------------------------------------------------------------------

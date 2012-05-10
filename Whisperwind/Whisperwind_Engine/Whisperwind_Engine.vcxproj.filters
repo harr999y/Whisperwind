@@ -82,6 +82,9 @@
     <ClInclude Include="include\RenderTarget.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="include\ResourceConfig.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EngineManager.cpp">
@@ -105,9 +108,6 @@
     <ClCompile Include="src\EngineConfigDefines.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resource.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
     <ClCompile Include="src\RenderSystem.cpp">
       <Filter>Render</Filter>
     </ClCompile>
@@ -123,11 +123,14 @@
     <ClCompile Include="src\SceneNode.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResourceManager.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
     <ClCompile Include="src\SceneComponent.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceConfig.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceManager.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

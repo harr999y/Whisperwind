@@ -40,13 +40,13 @@ namespace Engine
 		{}
 
 	public:
-		GET_CONST_VALUE(Util::StringVector, StringVector);
+		GET_CONST_VALUE(Util::StringVector, PluginVec);
 
 	private:
 		virtual void parse_impl();
 
 	private:
-		Util::StringVector mStringVector;
+		Util::StringVector mPluginVec;
 	};
 }
 

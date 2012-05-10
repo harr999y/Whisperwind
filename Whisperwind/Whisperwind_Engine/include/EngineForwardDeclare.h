@@ -50,6 +50,7 @@ namespace Engine
 	class SceneComponent;
 	class Resource;
 	class ResourceManager;
+	class ResourceConfig;
 
 	/** For the unordered_maps nowadays.
 	@note:
@@ -60,6 +61,7 @@ namespace Engine
 	typedef boost::shared_ptr<RenderSystem> RenderSystemPtr;
 	typedef boost::shared_ptr<EngineConfig> EngineConfigPtr;
 	typedef boost::shared_ptr<PluginConfig> PluginConfigPtr;
+	typedef boost::shared_ptr<ResourceConfig> ResourceConfigPtr;
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
 	typedef boost::weak_ptr<Renderable> RenderableWeakPtr;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;

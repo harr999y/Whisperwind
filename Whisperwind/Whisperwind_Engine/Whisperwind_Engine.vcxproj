@@ -18,6 +18,7 @@
     <ClInclude Include="include\EngineManager.h" />
     <ClInclude Include="include\RenderTarget.h" />
     <ClInclude Include="include\RenderTexture.h" />
+    <ClInclude Include="include\ResourceConfig.h" />
     <ClInclude Include="include\SceneComponent.h" />
     <ClInclude Include="include\PluginConfig.h" />
     <ClInclude Include="include\Renderable.h" />
@@ -41,7 +42,7 @@
     <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\Renderable.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
-    <ClCompile Include="src\Resource.cpp" />
+    <ClCompile Include="src\ResourceConfig.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\SceneComponent.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />

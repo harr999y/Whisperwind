@@ -29,7 +29,7 @@ THE SOFTWARE
 
 namespace Engine
 {
-	class Resource
+	class WHISPERWIND_API Resource
 	{
 	public:
 		Resource()

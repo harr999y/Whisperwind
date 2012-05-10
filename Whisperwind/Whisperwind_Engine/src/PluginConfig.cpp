@@ -23,8 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include <boost/make_shared.hpp>
-
 #include "ExceptionDefine.h"
 #include "XmlReader.h"
 #include "PluginConfig.h"
@@ -36,13 +34,13 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void PluginConfig::parse_impl()
 	{
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(NODE_NAME), "Engine config " + NODE_NAME + "parse failed!");
+		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(NODE_NAME), "Plugin config " + NODE_NAME + " parse failed!");
 
 		try
 		{
 			do
 			{
-				mStringVector.push_back(mXmlReader->getAttribute(ATTRIBUTE_NAME));
+				mPluginVec.push_back(mXmlReader->getAttribute(ATTRIBUTE_NAME));
 			}while (mXmlReader->advanceNextSiblingNode(NODE_NAME));
 		}
 		catch (std::exception & e)

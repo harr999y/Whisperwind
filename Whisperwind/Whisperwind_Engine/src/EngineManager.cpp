@@ -38,6 +38,7 @@ THE SOFTWARE
 #include "RenderSystem.h"
 #include "RenderMappingDefines.h"
 #include "SceneManager.h"
+#include "ResourceManager.h"
 #include "EngineManager.h"
 
 namespace Engine
@@ -61,7 +62,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	EngineManager::EngineManager()
 	{
-		init();
+		/// NOTE:Here we'd better DONNOT do any init,just as what the init() method do,
+		/// because the global initialise is random,you may come up with some strange 
+		/// problems.Such as the static const strings in cpp,WTF!
 	}
 	//---------------------------------------------------------------------
 	EngineManager::~EngineManager()
@@ -73,8 +76,10 @@ namespace Engine
 	void EngineManager::init()
 	{
 		setQuitLooping(false);
+
 		setEngineConfig(boost::make_shared<EngineConfig>(ENGINE_CONFIG_PATH));
 		setPluginConfig(boost::make_shared<PluginConfig>(PLUGIN_CONFIG_PATH));
+		setResourceManager(boost::make_shared<ResourceManager>());
 		mTimer = boost::make_shared<Util::WindowsTimer>();
 
 		loadConfigs();
@@ -91,6 +96,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::setup()
 	{
+		/// Do init here,DONOT put it in constructor.
+		init();
+
 		loadPlugins();
 		loadResources();
 	}
@@ -146,7 +154,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::loadPlugins()
 	{
-		Util::StringVector strVec = mPluginConfig->getStringVector();
+		Util::StringVector strVec = mPluginConfig->getPluginVec();
 		Util::Wstring wstr;
 		BOOST_FOREACH(const Util::String & str, strVec)
 		{

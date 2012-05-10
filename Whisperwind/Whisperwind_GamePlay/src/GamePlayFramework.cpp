@@ -34,6 +34,7 @@ THE SOFTWARE
 #include "RenderTexture.h"
 #include "RenderSystem.h"
 #include "SceneManager.h"
+#include "ResourceManager.h"
 #include "SceneNode.h"
 #include "GamePlayForwardDeclare.h"
 #include "Actor.h"
@@ -69,6 +70,8 @@ namespace GamePlay
 	void GamePlayFramework::createScene()
 	{
 		/// Test for creating some content.
+		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
+
 		Engine::VoidDataPtr data(new (Util::real[20]));
 		Util::real * elem = boost::static_pointer_cast<Util::real>(data).get();
 		elem[0] = -1;
@@ -137,7 +140,7 @@ namespace GamePlay
 		rm->IndexBound.IndexUsage = Engine::BUF_STATIC;
 
 		rm->PrimType = Engine::PT_TRIANGLE_STRIP;
-		rm->EffectName = TO_UNICODE("../media/Effects/Test.fx");
+		rm->EffectName = engineMgr.getResourceManager()->getResourcePath(TO_UNICODE("Test.fx"));
 		rm->TechniqueName = "Test";
 
 		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
@@ -149,9 +152,9 @@ namespace GamePlay
 
 		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName);
 		node->attachSceneObject(mActor);
-		Engine::EngineManager::getSingleton().getSceneManager()->getRootNode()->addChildNode(node);
+		engineMgr.getSceneManager()->getRootNode()->addChildNode(node);
 
-		Util::Wstring texturePath(TO_UNICODE("../media/Textures/test.dds"));
+		Util::Wstring texturePath(engineMgr.getResourceManager()->getResourcePath(TO_UNICODE("test.dds")));
 		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderTextureFromFile(texturePath);
 	}
 	//---------------------------------------------------------------------

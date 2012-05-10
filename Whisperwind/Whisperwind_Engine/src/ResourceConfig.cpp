@@ -22,38 +22,56 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RESOURCE_MANAGER_H_
-#define _RESOURCE_MANAGER_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
-#include "boost/unordered_map.hpp"
+#include "ExceptionDefine.h"
+#include "XmlReader.h"
+#include "ResourceConfig.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API ResourceManager
+	static const Util::String FOLDER("Folder");
+	static const Util::String SEVEN_Z("7Z");
+	static const Util::String ATTRIBUTE_NAME("path");
+	//---------------------------------------------------------------------
+	void ResourceConfig::parse_impl()
 	{
-	public:
-		ResourceManager();
+		if (mXmlReader->advanceFirstChildNode(FOLDER))
+		{
+			try
+			{
+				do
+				{
+					Util::String str(mXmlReader->getAttribute(ATTRIBUTE_NAME));
+					Util::Wstring wstr;
+					Util::StringToWstring(str, wstr);
 
-		~ResourceManager()
-		{}
+					mFolderVec.push_back(wstr);
+				} while (mXmlReader->advanceNextSiblingNode(FOLDER));
+			}
+			catch (std::exception & e)
+			{
+				WHISPERWIND_EXCEPTION(Util::String("Resource config parse failed : ") + e.what());
+			}
+		}
 
-	public:
-		Util::Wstring getResourcePath(const Util::Wstring & name);
+		if (mXmlReader->advanceFirstChildNode(SEVEN_Z))
+		{
+			try
+			{
+				do
+				{
+					Util::String str(mXmlReader->getAttribute(ATTRIBUTE_NAME));
+					Util::Wstring wstr;
+					Util::StringToWstring(str, wstr);
 
-	private:
-		void parse();
+					mFolderVec.push_back(wstr);
+				} while (mXmlReader->advanceNextSiblingNode(SEVEN_Z));
+			}
+			catch (std::exception & e)
+			{
+				WHISPERWIND_EXCEPTION(Util::String("Resource config parse failed : ") + e.what());
+			}
+		}
+	}
 
-	private:
-		ResourceConfigPtr mResourceConfig;
-
-		typedef boost::unordered_map<Util::Wstring, Util::Wstring> FilePathMap;
-		FilePathMap mFilePathMap;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(ResourceManager);
-	};
 }
-
-#endif

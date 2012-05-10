@@ -32,7 +32,6 @@ THE SOFTWARE
 
 #include <vector>
 
-#include "UtilCommon.h"
 #include "Util.h"
 
 namespace Util

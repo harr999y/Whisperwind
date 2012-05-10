@@ -52,6 +52,7 @@ namespace Engine
 		SET_GET_CONST_VALUE(Util::Wstring, WindowName);
 		SET_GET_VALUE(RenderSystemPtr, RenderSystem);
 		SET_GET_VALUE(SceneManagerPtr, SceneManager);
+		SET_GET_CONST_VALUE(ResourceManagerPtr, ResourceManager);
 		SET_GET_CONST_VALUE(bool, QuitLooping);
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
 		SET_GET_CONST_VALUE(PluginConfigPtr, PluginConfig);

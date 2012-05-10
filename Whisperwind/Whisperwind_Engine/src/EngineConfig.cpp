@@ -49,12 +49,12 @@ namespace Engine
 		Util::String valueStr;
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::FULL_SCREEN), 
-			"Engine config " + EngineConfigDefine::FULL_SCREEN + "parse failed!");
+			"Engine config " + EngineConfigDefine::FULL_SCREEN + " parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		setFullScreen(boost::lexical_cast<bool>(valueStr));
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::RESOLUTION), 
-			"Engine config " + EngineConfigDefine::RESOLUTION + "parse failed!");
+			"Engine config " + EngineConfigDefine::RESOLUTION + " parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		Util::StringVector strVec;
 		boost::split(strVec, valueStr, boost::is_any_of("*"));
@@ -63,22 +63,22 @@ namespace Engine
 		setResolutionPair(resPair);
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::MULTI_SAMPLE_QUALITY), 
-			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_QUALITY + "parse failed!");
+			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_QUALITY + " parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		setMultiSampleQuality(boost::lexical_cast<Util::u_int>(valueStr));
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::MULTI_SAMPLE_TYPE), 
-			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_TYPE + "parse failed!");
+			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_TYPE + " parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		setMultiSampleType(boost::lexical_cast<Util::s_int>(valueStr));
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::VSYNC), 
-			"Engine config " + EngineConfigDefine::VSYNC + "parse failed!");
+			"Engine config " + EngineConfigDefine::VSYNC + " parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		setVSync(boost::lexical_cast<bool>(valueStr));
 
 		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::PERF_HUD), 
-			"Engine config " + EngineConfigDefine::PERF_HUD + "parse failed!");
+			"Engine config " + EngineConfigDefine::PERF_HUD + " parse failed!");
 		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
 		setPerfHUD(boost::lexical_cast<bool>(valueStr));
 	}
