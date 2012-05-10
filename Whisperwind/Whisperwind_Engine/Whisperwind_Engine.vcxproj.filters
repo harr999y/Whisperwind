@@ -85,6 +85,15 @@
     <ClInclude Include="include\ResourceConfig.h">
       <Filter>Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="include\MeshResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhysicsResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TerrainResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EngineManager.cpp">
