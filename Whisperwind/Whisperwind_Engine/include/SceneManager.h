@@ -30,6 +30,9 @@ THE SOFTWARE
 
 namespace Engine
 {
+	/** This structure has been refered to Clayman's very article:http://blog.csdn.net/soilwork/article/details/4131367
+	      Thanks very much!
+	*/
 	class WHISPERWIND_API SceneManager
 	{
 	public:
@@ -62,8 +65,14 @@ namespace Engine
 
 	protected:
 		SceneNodePtr mRootNode;
-		/// save all nodes.CANNOT use to do anything unless find and destroy!
+		/// Save all nodes.CANNOT use to do anything unless find or destroy!
 		SceneNodeMap mSceneNodeMap;
+		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
+		SceneNodeMap mSceneGraphMap;
+		/// For the static objects which only need to do static spatial.DONNOT care about the position.
+		SceneNodeMap mStaticSpatialGraphMap;
+		/// For the dymamic objects which need to do dynamic spatial.DONNOT care about the position.
+		SceneNodeMap mDynamicSpatialGraphMap;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneManager);

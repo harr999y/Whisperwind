@@ -33,9 +33,9 @@ namespace Engine
 {
 	enum ComponentType
 	{
-		CT_RENDERABLE,
 		CT_PHYSICABLE,
 		CT_SOUNDABLE,
+		CT_RENDERABLE,  /// Make the renderable to be the last one,so that it can render the latest state.
 		CT_MAX
 	};
 
