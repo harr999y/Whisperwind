@@ -23,6 +23,9 @@
     <Filter Include="ErrorCheck">
       <UniqueIdentifier>{4261a927-e316-44f6-b01d-e4f202315a30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{b032d2b8-105b-4e34-bed7-e6fe0bf0b144}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MemoryDefines.h">
@@ -79,6 +82,18 @@
     <ClInclude Include="include\UtilSetting.h">
       <Filter>Util Header</Filter>
     </ClInclude>
+    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXCollision.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXColors.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXPackedVector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Boost.data_time.cpp">
@@ -99,5 +114,25 @@
     <ClCompile Include="src\XmlReader.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXCollision.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathConvert.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathMatrix.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathMisc.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathVector.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXPackedVector.inl">
+      <Filter>Math</Filter>
+    </None>
   </ItemGroup>
 </Project>
