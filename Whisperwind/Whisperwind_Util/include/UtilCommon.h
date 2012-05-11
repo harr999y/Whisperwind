@@ -25,8 +25,6 @@ THE SOFTWARE
 #ifndef _UTIL_COMMON_H_
 #define _UTIL_COMMON_H_
 
-#pragma warning(push, 4)
-
 /** for unicode */
 #ifndef UNICODE
     #ifndef _UNICODE

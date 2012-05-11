@@ -30,24 +30,23 @@ THE SOFTWARE
     Use it in console when debug mode,in win32 when release mode!
 */
 
-#include "ApplicationCofig.h"
 #include "ExceptionDefine.h"
 #include "DebugDefine.h"
+#include "MathDefine.h"
+
+#include "ApplicationCofig.h"
 #include "GamePlayFramework.h"
 
 #ifdef WHISPERWIND_DEBUG
-    #include <iostream>
     Util::s_int main()
 #else
-	/** for windows.h's warning level */
-	#pragma warning(push, 3)
-	#include <windows.h>
-	#pragma warning(pop)
     Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
 #endif
 	{
 		try
 		{
+			IF_FALSE_EXCEPTION(XMVerifyCPUSupport(), "Donot support XnaMath!");
+
 			GamePlay::GamePlayFramework framework(APPLICATION_NAME);
 			framework.run();
 		}

@@ -24,3 +24,4 @@
 /Whisperwind/Whisperwind_Dependencies/Visual Leak Detector
 *.ib_pdb_index
 *.fxo
+*.cache

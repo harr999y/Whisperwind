@@ -82,7 +82,7 @@
     <ClInclude Include="include\UtilSetting.h">
       <Filter>Util Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\Whisperwind_Dependencies\XnaMath\xnamath.h">
+    <ClInclude Include="include\MathDefine.h">
       <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
@@ -105,19 +105,5 @@
     <ClCompile Include="src\XmlReader.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathconvert.inl">
-      <Filter>Math</Filter>
-    </None>
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmatrix.inl">
-      <Filter>Math</Filter>
-    </None>
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmisc.inl">
-      <Filter>Math</Filter>
-    </None>
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathvector.inl">
-      <Filter>Math</Filter>
-    </None>
   </ItemGroup>
 </Project>

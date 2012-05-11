@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Whisperwind_Dependencies\XnaMath\xnamath.h" />
     <ClInclude Include="include\CheckedCast.h" />
     <ClInclude Include="include\DebugDefine.h" />
+    <ClInclude Include="include\MathDefine.h" />
     <ClInclude Include="include\Profile.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Util.h" />
@@ -40,12 +40,6 @@
     <ClCompile Include="src\StringConverter.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathconvert.inl" />
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmatrix.inl" />
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmisc.inl" />
-    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathvector.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}</ProjectGuid>

@@ -106,7 +106,7 @@ namespace
 		do
 		{
 			if ((findResult != INVALID_HANDLE_VALUE) &&
-				NULL == (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				(NULL == (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)))
 			{
 				allFiles.push_back(fileData.cFileName);
 			}
