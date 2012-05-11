@@ -82,16 +82,7 @@
     <ClInclude Include="include\UtilSetting.h">
       <Filter>Util Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXCollision.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXColors.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMath.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXPackedVector.h">
+    <ClInclude Include="..\Whisperwind_Dependencies\XnaMath\xnamath.h">
       <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
@@ -116,22 +107,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXCollision.inl">
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathconvert.inl">
       <Filter>Math</Filter>
     </None>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathConvert.inl">
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmatrix.inl">
       <Filter>Math</Filter>
     </None>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathMatrix.inl">
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmisc.inl">
       <Filter>Math</Filter>
     </None>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathMisc.inl">
-      <Filter>Math</Filter>
-    </None>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathVector.inl">
-      <Filter>Math</Filter>
-    </None>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXPackedVector.inl">
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathvector.inl">
       <Filter>Math</Filter>
     </None>
   </ItemGroup>

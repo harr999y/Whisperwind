@@ -11,10 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXCollision.h" />
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXColors.h" />
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMath.h" />
-    <ClInclude Include="..\Whisperwind_Dependencies\DirectXMath\DirectXPackedVector.h" />
+    <ClInclude Include="..\Whisperwind_Dependencies\XnaMath\xnamath.h" />
     <ClInclude Include="include\CheckedCast.h" />
     <ClInclude Include="include\DebugDefine.h" />
     <ClInclude Include="include\Profile.h" />
@@ -45,12 +42,10 @@
     <ClCompile Include="src\XmlReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXCollision.inl" />
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathConvert.inl" />
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathMatrix.inl" />
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathMisc.inl" />
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXMathVector.inl" />
-    <None Include="..\Whisperwind_Dependencies\DirectXMath\DirectXPackedVector.inl" />
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathconvert.inl" />
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmatrix.inl" />
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathmisc.inl" />
+    <None Include="..\Whisperwind_Dependencies\XnaMath\xnamathvector.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}</ProjectGuid>
