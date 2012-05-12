@@ -118,8 +118,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::preUpdate(Util::time elapsedTime)
 	{
-		if (mCallback)
-			mCallback(this->shared_from_this(), elapsedTime);
+		if (mPreCallback)
+			mPreCallback(this->shared_from_this(), elapsedTime);
 
 		/// Child nodes
 		{
@@ -144,7 +144,37 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::postUpdate(Util::time elapsedTime)
 	{
+		if (mPostCallback)
+			mPostCallback(this->shared_from_this(), elapsedTime);
+
+		/// Child nodes
+		{
+			BOOST_AUTO(it, mChildSceneNodeMap.begin());
+			for (it; it != mChildSceneNodeMap.end(); ++it)
+			{
+				it->second->postUpdate(elapsedTime);
+			}
+		}
+
+		/// Objects
+		{
+			BOOST_AUTO(it, mSceneObjectMap.begin());
+			for (it; it != mSceneObjectMap.end(); ++it)
+			{
+				it->second->postUpdate(elapsedTime);
+			}
+		}
+
 		postUpdate_impl(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::addToRenderQueue()
+	{
+		BOOST_AUTO(it, mSceneObjectMap.begin());
+		for (it; it != mSceneObjectMap.end(); ++it)
+		{
+			it->second->addToRenderQueue();
+		}
 	}
 
 }

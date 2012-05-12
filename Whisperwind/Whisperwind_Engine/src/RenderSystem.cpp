@@ -23,6 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/make_shared.hpp>
+
+#include "RenderMappingDefines.h"
+#include "RenderQueue.h"
+#include "Renderable.h"
 #include "RenderSystem.h"
 
 namespace Engine
@@ -30,6 +35,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void RenderSystem::init()
 	{
+		mOpaqueRenderQueue = boost::make_shared<RenderQueue>();
+		mTransparentRenderQueue = boost::make_shared<RenderQueue>();
+
 		init_impl();
 	}
 	//---------------------------------------------------------------------
@@ -82,4 +90,19 @@ namespace Engine
 	{
 		return createRenderTarget_impl(rtm);
 	}
+	//---------------------------------------------------------------------
+	void RenderSystem::addToRenderQueue(const RenderablePtr & renderable)
+	{
+		if (RT_OPAQUE == renderable->getRenderType())
+			mOpaqueRenderQueue->addRenderable(renderable);
+		else
+			mTransparentRenderQueue->addRenderable(renderable);
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::renderScene(Util::time elapsedTime)
+	{
+		mOpaqueRenderQueue->render(elapsedTime);
+		mTransparentRenderQueue->render(elapsedTime);
+	}
+
 }

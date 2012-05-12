@@ -40,6 +40,9 @@ namespace Engine
 		mRootNode.reset();
 
 		mSceneNodeMap.clear();
+		mStaticSpatialGraphMap.clear();
+		mSceneGraphMap.clear();
+		mDynamicSpatialGraphMap.clear();
 	}
 	//---------------------------------------------------------------------
 	void SceneManager::init()
@@ -48,12 +51,22 @@ namespace Engine
 		init_impl();
 	}
 	//---------------------------------------------------------------------
-	SceneNodePtr SceneManager::createSceneNode( const Util::Wstring & name )
+	SceneNodePtr SceneManager::createSceneNode(const Util::Wstring & name, NodeType type)
 	{
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) == mSceneNodeMap.end());
 
 		SceneNodePtr sceneNode = createSceneNode_impl(name);
 		mSceneNodeMap.insert(SceneNodeMap::value_type(name, sceneNode));
+
+		if (NT_STATIC == type)
+		{
+			mStaticSpatialGraphMap.insert(SceneNodeWeakMap::value_type(name, sceneNode));
+		}
+		else
+		{
+			mSceneGraphMap.insert(SceneNodeWeakMap::value_type(name, sceneNode));
+			mDynamicSpatialGraphMap.insert(SceneNodeWeakMap::value_type(name, sceneNode));
+		}
 
 		return sceneNode;
 	}
@@ -89,6 +102,13 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneManager::preUpdate(Util::time elapsedTime)
 	{
+		/// TODO!
+		BOOST_AUTO(it, mSceneNodeMap.begin());
+		for (it; it != mSceneNodeMap.end(); ++it)
+		{
+			it->second->addToRenderQueue();
+		}
+
 		preUpdate_impl(elapsedTime);
 	}
 	//---------------------------------------------------------------------

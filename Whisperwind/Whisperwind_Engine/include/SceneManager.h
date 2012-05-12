@@ -30,16 +30,21 @@ THE SOFTWARE
 
 namespace Engine
 {
+	enum NodeType
+	{
+		NT_STATIC,
+		NT_DYNAMIC
+	};
+
 	/** This structure has been refered to Clayman's very article:http://blog.csdn.net/soilwork/article/details/4131367
 	      Thanks very much!
 	*/
 	class WHISPERWIND_API SceneManager
 	{
-	public:
+	protected:
 		SceneManager()
 		{}
 
-	protected:
 		virtual ~SceneManager();
 
 	public:
@@ -47,7 +52,7 @@ namespace Engine
 		void preUpdate(Util::time elapsedTime);
 		void postUpdate(Util::time elapsedTime);
 
-		SceneNodePtr createSceneNode(const Util::Wstring & name);
+		SceneNodePtr createSceneNode(const Util::Wstring & name, NodeType type);
 		SceneNodePtr & getSceneNode(const Util::Wstring & name);
 		void destroySceneNode(const Util::Wstring & name);
 
@@ -65,14 +70,17 @@ namespace Engine
 
 	protected:
 		SceneNodePtr mRootNode;
-		/// Save all nodes.CANNOT use to do anything unless find or destroy!
+		/// Save all nodes.CANNOT use to do anything unless find or destroy!It controll the node's lifetime.
 		SceneNodeMap mSceneNodeMap;
-		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
-		SceneNodeMap mSceneGraphMap;
 		/// For the static objects which only need to do static spatial.DONNOT care about the position.
-		SceneNodeMap mStaticSpatialGraphMap;
+		SceneNodeWeakMap mStaticSpatialGraphMap;
+
+		/** These maps  donnot dispatch to derived class. */
+	private:
+		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
+		SceneNodeWeakMap mSceneGraphMap;
 		/// For the dymamic objects which need to do dynamic spatial.DONNOT care about the position.
-		SceneNodeMap mDynamicSpatialGraphMap;
+		SceneNodeWeakMap mDynamicSpatialGraphMap;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneManager);

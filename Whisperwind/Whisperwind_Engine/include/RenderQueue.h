@@ -22,25 +22,35 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _TERRAIN_RESOURCE_H_
-#define _TERRAIN_RESOURCE_H_
+#ifndef _RENDER_QUEUE_H_
+#define _RENDER_QUEUE_H_
 
 #include "Util.h"
-#include "Resource.h"
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API TerrainResource : public Resource
+	class RenderQueue
 	{
 	public:
-		TerrainResource()
+		RenderQueue()
 		{}
 
-		~TerrainResource()
+		~RenderQueue()
 		{}
+
+	public:
+		void addRenderable(const RenderablePtr & renderable);
+		void render(Util::time elapsedTime);
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(TerrainResource);
+		void sort();
+
+	private:
+		RenderableVector mRenderableVec;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(RenderQueue);
 	};
 }
 

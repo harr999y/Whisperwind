@@ -28,8 +28,6 @@ THE SOFTWARE
 
 #include "DebugDefine.h"
 #include "CheckedCast.h"
-#include "EngineManager.h"
-#include "RenderSystem.h"
 #include "D3D9ForwardDeclare.h"
 #include "D3D9Helper.h"
 #include "D3D9RenderTexture.h"
@@ -89,14 +87,6 @@ namespace Engine
 		return ehs;
 	}
 	//---------------------------------------------------------------------
-	void D3D9Renderable::preUpdate_impl(Util::time /*elapsedTime*/)
-	{
-		EngineManager::getSingleton().getRenderSystem()->render(this->shared_from_this());
-	}
-	//---------------------------------------------------------------------
-	void D3D9Renderable::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-	//---------------------------------------------------------------------
 	void D3D9Renderable::onDeviceLost()
 	{
 		BOOST_FOREACH(IDirect3DVertexBuffer9Ptr & vertexBuf, mVertexBound.VertexBufferVec)
@@ -107,8 +97,6 @@ namespace Engine
 		mVertexBound.VertexDeclaration.reset();
 
 		mIndexBuffer.reset();
-
-		setCanUpdate(false);
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::onDeviceReset(const D3D9RenderablePtr & newRenderable)
@@ -117,7 +105,5 @@ namespace Engine
 		mVertexBound.VertexDeclaration = newRenderable->getVertexBound().VertexDeclaration;
 
 		mIndexBuffer = newRenderable->getIndexBuffer();
-
-		setCanUpdate(true);
 	}
 }

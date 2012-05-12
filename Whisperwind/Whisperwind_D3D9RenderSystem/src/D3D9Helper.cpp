@@ -163,6 +163,11 @@ namespace Engine
 			d3d9Renderable->setTechnique(tech);
 		}
 
+		/// RenderType
+		{
+			d3d9Renderable->setRenderType(rm->RenderingType);
+		}
+
 		return d3d9Renderable;
 	}
 	//---------------------------------------------------------------------

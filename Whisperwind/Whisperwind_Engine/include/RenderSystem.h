@@ -32,15 +32,17 @@ namespace Engine
 {
 	class WHISPERWIND_API RenderSystem
 	{
-	public:
+	protected:
 		RenderSystem()
 		{}
 
-	protected:
 		virtual ~RenderSystem() 
 		{}
 
 	public:
+		void addToRenderQueue(const RenderablePtr & renderable);
+		void renderScene(Util::time elapsedTime);
+
 		inline void init();
 		inline bool beginRendering();
 		inline bool render(const RenderablePtr & renderable);
@@ -51,7 +53,7 @@ namespace Engine
 		inline RenderablePtr createRenderable(const RenderableMappingPtr & rm);
 		inline RenderTexturePtr createRenderTexture(const RenderTextureMappingPtr & rtm);
 		inline RenderTexturePtr createRenderTextureFromFile(const Util::Wstring & path);
-		inline RenderTargetPtr createRenderTarget(const RenderTargetMappingPtr & rtm);
+		inline RenderTargetPtr createRenderTarget(const RenderTargetMappingPtr & rtm);		
 
 	public:
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
@@ -71,6 +73,10 @@ namespace Engine
 
 	protected:
 		EngineConfigPtr mEngineConfig;
+
+	private:
+		RenderQueuePtr mOpaqueRenderQueue;
+		RenderQueuePtr mTransparentRenderQueue;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(RenderSystem);

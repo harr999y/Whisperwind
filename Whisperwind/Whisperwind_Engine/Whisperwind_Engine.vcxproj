@@ -17,7 +17,7 @@
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
     <ClInclude Include="include\MeshResource.h" />
-    <ClInclude Include="include\PhysicsResource.h" />
+    <ClInclude Include="include\RenderQueue.h" />
     <ClInclude Include="include\RenderTarget.h" />
     <ClInclude Include="include\RenderTexture.h" />
     <ClInclude Include="include\ResourceConfig.h" />
@@ -31,7 +31,6 @@
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneNode.h" />
     <ClInclude Include="include\SceneObject.h" />
-    <ClInclude Include="include\TerrainResource.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
     <ClInclude Include="include\WindowsHelper.h" />
   </ItemGroup>
@@ -44,6 +43,7 @@
     <ClCompile Include="src\EngineConfig.cpp" />
     <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\Renderable.cpp" />
+    <ClCompile Include="src\RenderQueue.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\ResourceConfig.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />

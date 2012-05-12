@@ -34,16 +34,17 @@ namespace Engine
 {
 	class WHISPERWIND_API SceneObject
 	{
-	public:
+	protected:
 		explicit SceneObject(const Util::Wstring & name) :
 		    mName(name)
 		{}
 
-	protected:
 		virtual ~SceneObject()
 		{}
 
 	public:
+		void addToRenderQueue();
+
 		void preUpdate(Util::time elapsedTime);
 		void postUpdate(Util::time elapsedTime);
 		void regComponent(ComponentType type, const SceneComponentPtr & sceneComp);
@@ -52,6 +53,7 @@ namespace Engine
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
+		SET_GET_CONST_VALUE(RenderablePtr, Renderable);
 
 	private:
 		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
@@ -61,10 +63,11 @@ namespace Engine
 		/// TODO:Sorry for finally I used friend.And if I find a way not to use it,I'll modify it!
  		friend void SceneNode::attachSceneObject(SceneObjectPtr sceneObj);
  		friend void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj);
-		friend void SceneNode::dettachAllSceneObject();
  		SET_GET_CONST_VALUE(SceneNodePtr, AttachedSceneNode);
 
 	protected:
+		RenderablePtr mRenderable;
+
 		/// Just do an enum hack!
 		SceneComponentPtr mSceneComponents[CT_MAX];
 		SceneNodePtr mAttachedSceneNode;

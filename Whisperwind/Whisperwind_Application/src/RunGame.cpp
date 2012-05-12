@@ -40,6 +40,11 @@ THE SOFTWARE
 #ifdef WHISPERWIND_DEBUG
     Util::s_int main()
 #else
+	/** for windows.h's warning level */
+	#pragma warning(push, 3)
+	#include <windows.h>
+	#pragma warning(pop)
+
     Util::s_int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, Util::s_int)
 #endif
 	{

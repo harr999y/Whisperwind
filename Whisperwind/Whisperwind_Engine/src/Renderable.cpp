@@ -27,9 +27,8 @@ THE SOFTWARE
 
 namespace Engine
 {
-	static const Util::Wstring COMPONENT_NAME(TO_UNICODE("Renderable"));
 	//---------------------------------------------------------------------
-	inline void Renderable::setEffectSemanticValue( const Util::String & paramName, const void * data )
+	void Renderable::setEffectSemanticValue( const Util::String & paramName, const void * data )
 	{
 		setEffectSemanticValue_impl(paramName, data);
 	}
@@ -39,8 +38,15 @@ namespace Engine
 		setTexture_impl(paramName, texture);
 	}
 	//---------------------------------------------------------------------
-	const Util::Wstring & Renderable::getName() const
+	void Renderable::preRender(Util::time elapsedTime)
 	{
-		return COMPONENT_NAME;
+		if (mPreRenderCallback)
+			mPreRenderCallback(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void Renderable::postRender(Util::time elapsedTime)
+	{
+		if (mPostRenderCallback)
+			mPostRenderCallback(elapsedTime);
 	}
 }

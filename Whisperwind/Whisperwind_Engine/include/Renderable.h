@@ -25,34 +25,51 @@ THE SOFTWARE
 #ifndef _RENDERABLE_H_
 #define _RENDERABLE_H_
 
+#include <boost/function.hpp>
+
 #include "Util.h"
 #include "EngineForwardDeclare.h"
-#include "SceneComponent.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API Renderable : public SceneComponent
+	class WHISPERWIND_API Renderable
 	{
-	public:
+	protected:
 		Renderable() : 
-		  SceneComponent(CT_RENDERABLE)
+			 mRenderType(RT_OPAQUE)
+		{}
+
+		virtual ~Renderable()
 		{}
 
 	public:
-		virtual const Util::Wstring & getName() const;
-
 		inline void setEffectSemanticValue(const Util::String & paramName, const void * data);
 		inline void setTexture(const Util::String & paramName, const RenderTexturePtr & texture);
 		inline void setRenderTarget(const Util::String & paramName, const RenderTexturePtr & texture);
-		
-	protected:
-		virtual ~Renderable()
-		{}
+
+		template <typename CallBack>
+		void regPreRenderCallback(CallBack cb) { mPreRenderCallback = cb; }
+		template <typename CallBack>
+		void regPostRenderCallback(CallBack cb) { mPostRenderCallback = cb; }
+
+		void preRender(Util::time elapsedTime);
+		void postRender(Util::time elapsedTime);
+
+	public:
+		SET_GET_CONST_VALUE(RenderType, RenderType);
 
 	private:
 		virtual void setEffectSemanticValue_impl(const Util::String & paramName, const void * data = NULL) = 0;
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture) = 0;
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target) = 0;
+
+	private:
+		typedef boost::function<void (Util::time)> Callback;
+		Callback mPreRenderCallback;
+		Callback mPostRenderCallback;
+
+		RenderType mRenderType;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Renderable);

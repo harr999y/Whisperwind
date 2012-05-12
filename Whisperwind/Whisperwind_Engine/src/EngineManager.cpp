@@ -111,15 +111,14 @@ namespace Engine
 
 			WindowsEventHandle::handleWindowsMsg();
 
-			/// Important way to save CPU when minimized or something else.
-			if (mRenderSystem->isPaused())
-				this->sleep(1);
+			mSceneManager->preUpdate(elapsedTime);
 
+			/// TODO!
 			mRenderSystem->clearFrame(FCF_TARGET | FCF_ZBUFFER);
 
 			IF_FALSE_CONTINUE(mRenderSystem->beginRendering());
 
-			mSceneManager->preUpdate(elapsedTime);
+			mRenderSystem->renderScene(elapsedTime);
 
 			mRenderSystem->endRendering();
 

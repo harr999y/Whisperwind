@@ -88,11 +88,8 @@
     <ClInclude Include="include\MeshResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="include\PhysicsResource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TerrainResource.h">
-      <Filter>Resource</Filter>
+    <ClInclude Include="include\RenderQueue.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="src\ResourceManager.cpp">
       <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderQueue.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -31,18 +31,17 @@ namespace Util
 {
 	class WHISPERWIND_API Timer
 	{
-	public:
+	protected:
 		Timer();
+
+		virtual ~Timer()
+		{}
 
 	public:
 		inline time getElapsedTime();
 		inline void sleep(Util::u_int milliTime);
 
 		SET_GET_CONST_VALUE(real, Zoom);
-
-	protected:
-		virtual ~Timer()
-		{}
 
 	private:
 		virtual time getElapsedTime_impl() = 0;

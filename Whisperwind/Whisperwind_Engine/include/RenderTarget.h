@@ -32,11 +32,10 @@ namespace Engine
 	/** NOTE: Only use when we need multisampled rendertarget. */
 	class WHISPERWIND_API RenderTarget
 	{
-	public:
+	protected:
 		RenderTarget()
 		{}
 
-	protected:
 		virtual ~RenderTarget()
 		{}
 

@@ -32,11 +32,10 @@ namespace Engine
 {
 	class WHISPERWIND_API RenderTexture
 	{
-	public:
+	protected:
 		RenderTexture()
 		{}
 
-	protected:
 		virtual ~RenderTexture()
 		{}
 

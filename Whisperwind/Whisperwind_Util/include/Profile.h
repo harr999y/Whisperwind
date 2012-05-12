@@ -38,9 +38,16 @@ namespace Util
 	/** Base class for profile. */
 	class WHISPERWIND_API Profile
 	{
-	public:
+	protected:
 		/// Constructor.
 		Profile();
+
+		/** Destructor.
+		@note 
+		    The rule set it to be virtual.
+		*/
+		virtual ~Profile()
+		{}
 
 	public:
 		/// return profile result.
@@ -50,13 +57,7 @@ namespace Util
 		/// end test.
 		void endTest();
 
-	protected:
-		/** Destructor.
-		@note 
-		    The rule set it to be virtual.
-		*/
-		virtual ~Profile()
-		{}
+
 
 	private:
 		/** virtual function for profile algorithm implementation.

@@ -27,11 +27,18 @@ THE SOFTWARE
 
 #include "DebugDefine.h"
 #include "SceneComponent.h"
+#include "EngineManager.h"
+#include "RenderSystem.h"
 #include "SceneObject.h"
 
 namespace Engine
 {
 	static const SceneComponentPtr NULL_SCENE_COMPONENT;
+	//---------------------------------------------------------------------
+	void SceneObject::addToRenderQueue()
+	{
+		EngineManager::getSingleton().getRenderSystem()->addToRenderQueue(mRenderable);
+	}
 	//---------------------------------------------------------------------
 	void SceneObject::preUpdate( Util::time elapsedTime )
 	{

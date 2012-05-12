@@ -35,12 +35,11 @@ namespace Engine
 {
 	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>
 	{
-	public:
+	protected:
 		explicit SceneNode(const Util::Wstring & name) :
-		    mName(name)
+		mName(name)
 		{}
 
-	protected:
 		virtual ~SceneNode()
 		{}
 
@@ -50,6 +49,7 @@ namespace Engine
 		void destroyAllChildNode();
 		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode);
 		bool getParentNode(SceneNodePtr & outParentNode);
+		void addToRenderQueue();
 
 		/// I don't use ref here,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.
 		void attachSceneObject(SceneObjectPtr sceneObj);
@@ -60,8 +60,9 @@ namespace Engine
 		void postUpdate(Util::time elapsedTime);
 
 		template <typename CallBack>
-		void regUpdateCallback(CallBack cb)
-		{ mCallback = cb; }
+		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }
+		template <typename CallBack>
+		void regPostUpdateCallback(CallBack cb) { mPostCallback = cb; }
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
@@ -79,7 +80,8 @@ namespace Engine
 
 	private:
 		typedef boost::function<void (SceneNodePtr, Util::time)> Callback;
-		Callback mCallback;
+		Callback mPreCallback;
+		Callback mPostCallback;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneNode);

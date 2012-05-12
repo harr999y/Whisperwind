@@ -107,6 +107,12 @@ namespace Engine
 		TCF_AUTO_MIPMAP = 3 << 0,
 	};
 
+	enum RenderType
+	{
+		RT_OPAQUE,
+		RT_TRANSPARENT
+	};
+
 	struct VertexElement
 	{
 		VertexElement(Util::s_int16 streamIndex, Util::s_int16 offset, VertexElementType type, 
@@ -169,7 +175,8 @@ namespace Engine
 	struct RenderableMapping
 	{
 		RenderableMapping() :
-			PrimType(PT_TRIANGLE_STRIP)
+			PrimType(PT_TRIANGLE_STRIP),
+			RenderingType(RT_OPAQUE)
 		{}
 
 		VertexMapping VertexBound;
@@ -177,6 +184,7 @@ namespace Engine
 		Util::Wstring EffectName;
 		Util::String TechniqueName;
 		PrimitiveType PrimType;
+		RenderType RenderingType;
 	};
 
 	struct RenderTextureMapping

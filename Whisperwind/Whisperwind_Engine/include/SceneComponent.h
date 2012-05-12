@@ -35,19 +35,17 @@ namespace Engine
 	{
 		CT_PHYSICABLE,
 		CT_SOUNDABLE,
-		CT_RENDERABLE,  /// Make the renderable to be the last one,so that it can render the latest state.
 		CT_MAX
 	};
 
 	class SceneComponent
 	{
-	public:
+	protected:
 		explicit SceneComponent(ComponentType type) :
 		    mCompType(type),
 			mCanUpdate(true)
 		{}
 
-	protected:
 		virtual ~SceneComponent()
 		{}
 

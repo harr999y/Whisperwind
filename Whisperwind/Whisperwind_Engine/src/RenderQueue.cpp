@@ -22,26 +22,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _PHYSICS_RESOURCE_H_
-#define _PHYSICS_RESOURCE_H_
 
-#include "Util.h"
-#include "Resource.h"
+#include <boost/foreach.hpp>
+
+#include "EngineManager.h"
+#include "RenderSystem.h"
+#include "Renderable.h"
+#include "RenderQueue.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API PhysicsResource : public Resource
+	//---------------------------------------------------------------------
+	void RenderQueue::addRenderable(const RenderablePtr & renderable)
 	{
-	public:
-		PhysicsResource()
-		{}
+		mRenderableVec.push_back(renderable);
+	}
+	//---------------------------------------------------------------------
+	void RenderQueue::render(Util::time elapsedTime)
+	{
+		BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
+		{
+			renderable->preRender(elapsedTime);
+			EngineManager::getSingleton().getRenderSystem()->render(renderable);
+			renderable->postRender(elapsedTime);
+		}
 
-		~PhysicsResource()
-		{}
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(PhysicsResource);
-	};
+		mRenderableVec.clear();
+	}
+	//---------------------------------------------------------------------
+	void RenderQueue::sort()
+	{
+		/// TODO!
+	}
 }
-
-#endif

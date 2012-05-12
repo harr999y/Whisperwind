@@ -147,10 +147,10 @@ namespace GamePlay
 
 		Util::Wstring actorName(TO_UNICODE("test"));
 		mActor = boost::make_shared<Actor>(actorName);
-		mActor->regComponent(Engine::CT_RENDERABLE, renderable);
-		renderable->regPreUpdateCallback(boost::bind(&GamePlayFramework::preUpdateCallback, boost::ref(*this), _1, _2));
+		mActor->setRenderable(renderable);
+		renderable->regPostRenderCallback(boost::bind(&GamePlayFramework::preUpdateCallback, boost::ref(*this), _1));
 
-		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName);
+		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName, Engine::NT_STATIC);
 		node->attachSceneObject(mActor);
 		engineMgr.getSceneManager()->getRootNode()->addChildNode(node);
 
@@ -158,16 +158,16 @@ namespace GamePlay
 		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderTextureFromFile(texturePath);
 	}
 	//---------------------------------------------------------------------
-	void GamePlayFramework::preUpdateCallback(Engine::ComponentType type, Util::time elapsedTime)
+	void GamePlayFramework::preUpdateCallback(Util::time elapsedTime)
 	{
-		Engine::SceneComponentPtr comp;
-		IF_FALSE_RETURN(mActor->getComponent(type, comp));
+		Engine::RenderablePtr renderable;
+		renderable = mActor->getRenderable();
+		IF_NULL_RETURN(renderable);
 
 		/// TODO!Test!
  		static Util::real num = 0.0f;
  		num += 1.f * elapsedTime;
  		Util::real test[4] = {num, num, num, 1.0f};
- 		Engine::RenderablePtr renderable = Util::checkedPtrCast<Engine::Renderable>(comp);
 		renderable->setEffectSemanticValue("COLOR3", static_cast<void *>(test));
 
 		renderable->setTexture("tex", mRenderTexture);

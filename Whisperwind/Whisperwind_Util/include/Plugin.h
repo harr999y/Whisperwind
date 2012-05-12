@@ -34,6 +34,7 @@ namespace Util
 	public:
 		explicit Plugin_Interface(const Wstring & name) : mName(name)
 		{}
+
 		virtual ~Plugin_Interface()
 		{}
 
