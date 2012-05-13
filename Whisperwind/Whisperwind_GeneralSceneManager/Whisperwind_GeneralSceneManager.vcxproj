@@ -11,22 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\OctreeForwardDeclare.h" />
-    <ClInclude Include="include\OctreePlugin.h" />
-    <ClInclude Include="include\OctreeSceneManager.h" />
+    <ClInclude Include="include\GeneralForwardDeclare.h" />
+    <ClInclude Include="include\GeneralPlugin.h" />
+    <ClInclude Include="include\GeneralSceneManager.h" />
     <ClInclude Include="include\OctreeSceneNode.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\OctreePlugin.cpp" />
-    <ClCompile Include="src\OctreePluginDll.cpp" />
-    <ClCompile Include="src\OctreeSceneManager.cpp" />
+    <ClCompile Include="src\GeneralPlugin.cpp" />
+    <ClCompile Include="src\GeneralPluginDll.cpp" />
+    <ClCompile Include="src\GeneralSceneManager.cpp" />
     <ClCompile Include="src\OctreeSceneNode.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>WhisperwindOctreeSceneManager</RootNamespace>
-    <ProjectName>Whisperwind_OctreeSceneManager</ProjectName>
+    <ProjectName>Whisperwind_GeneralSceneManager</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -22,25 +22,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _OCTREE_SCENE_MANAGER_H_
-#define _OCTREE_SCENE_MANAGER_H_
+#ifndef _GENERAL_PLUGIN_H_
+#define _GENERAL_PLUGIN_H_
 
-#include "SceneManager.h"
+#include "Plugin.h"
 
 namespace Engine
 {
-	class OctreeSceneManager : public SceneManager
+	class GeneralPlugin : public Util::Plugin_Interface
 	{
 	public:
-		~OctreeSceneManager()
+		explicit GeneralPlugin(const Util::Wstring & name) : 
+		    Plugin_Interface(name)
 		{}
 
-	private:
-		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name);
-		virtual void initRootNode();
-		virtual void init_impl();
-		virtual void preUpdate_impl(Util::time elapsedTime);
-		virtual void postUpdate_impl(Util::time elapsedTime);
+		~GeneralPlugin()
+		{}
+
+	public:
+		virtual void install();
+		virtual void uninstall();
 	};
 }
 

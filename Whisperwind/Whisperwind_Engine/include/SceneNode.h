@@ -29,6 +29,7 @@ THE SOFTWARE
 #include <boost/function.hpp>
 
 #include "Util.h"
+#include "MathDefine.h"
 #include "EngineForwardDeclare.h"
 
 namespace Engine
@@ -37,7 +38,7 @@ namespace Engine
 	{
 	protected:
 		explicit SceneNode(const Util::Wstring & name) :
-		mName(name)
+		    mName(name)
 		{}
 
 		virtual ~SceneNode()
@@ -77,6 +78,8 @@ namespace Engine
 		SceneNodeMap mChildSceneNodeMap;
 		SceneNodePtr mParentNode;
 		Util::Wstring mName;
+		XMFLOAT3 mPosition;
+		XMFLOAT3 mRelativePositon;
 
 	private:
 		typedef boost::function<void (SceneNodePtr, Util::time)> Callback;

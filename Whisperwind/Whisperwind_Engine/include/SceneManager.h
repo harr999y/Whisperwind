@@ -74,13 +74,13 @@ namespace Engine
 		SceneNodeMap mSceneNodeMap;
 		/// For the static objects which only need to do static spatial.DONNOT care about the position.
 		SceneNodeWeakMap mStaticSpatialGraphMap;
+		/// For the dymamic objects which need to do dynamic spatial.DONNOT care about the position.
+		SceneNodeWeakMap mDynamicSpatialGraphMap;
 
-		/** These maps  donnot dispatch to derived class. */
+		/** SceneGraph doesnot dispatch to derived class. */
 	private:
 		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
 		SceneNodeWeakMap mSceneGraphMap;
-		/// For the dymamic objects which need to do dynamic spatial.DONNOT care about the position.
-		SceneNodeWeakMap mDynamicSpatialGraphMap;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneManager);

@@ -23,18 +23,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "OctreePlugin.h"
+#include "GeneralPlugin.h"
 #include "EngineManager.h"
 #include <boost/make_shared.hpp>
-#include "OctreeSceneManager.h"
-#include "OctreeForwardDeclare.h"
+#include "GeneralSceneManager.h"
+#include "GeneralForwardDeclare.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void OctreePlugin::install()
+	void GeneralPlugin::install()
 	{
-		OctreeSceneManagerPtr octreeSm = boost::make_shared<OctreeSceneManager>();
+		GeneralSceneManagerPtr octreeSm = boost::make_shared<GeneralSceneManager>();
 
 		EngineManager & engineMgr = EngineManager::getSingleton();
 		octreeSm->init();
@@ -42,7 +42,7 @@ namespace Engine
 		engineMgr.setSceneManager(octreeSm);
 	}
 	//---------------------------------------------------------------------
-	void OctreePlugin::uninstall()
+	void GeneralPlugin::uninstall()
 	{
 		EngineManager & engineMgr = EngineManager::getSingleton();
 		engineMgr.setSceneManager(SceneManagerPtr());

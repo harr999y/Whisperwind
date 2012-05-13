@@ -23,17 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "OctreePlugin.h"
+#include "GeneralPlugin.h"
 #include "EngineManager.h"
 #include <boost/make_shared.hpp>
 
-static const Util::Wstring DLL_NAME(TO_UNICODE("OctreeSceneManager"));
+static const Util::Wstring DLL_NAME(TO_UNICODE("GeneralSceneManager"));
 
 namespace Engine
 {
 	extern "C" void WHISPERWIND_API dllLoadEntry(void)
 	{
-		Util::PluginPtr plugin = boost::make_shared<OctreePlugin>(DLL_NAME);
+		Util::PluginPtr plugin = boost::make_shared<GeneralPlugin>(DLL_NAME);
 		EngineManager::getSingleton().installPlugin(plugin);
 	}
 }

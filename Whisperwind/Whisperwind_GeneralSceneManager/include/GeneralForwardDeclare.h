@@ -22,27 +22,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _OCTREE_PLUGIN_H_
-#define _OCTREE_PLUGIN_H_
+#ifndef _GENERAL_FORWARD_DECLARE_H_
+#define _GENERAL_FORWARD_DECLARE_H_
 
-#include "Plugin.h"
+#include <boost/shared_ptr.hpp>
 
 namespace Engine
 {
-	class OctreePlugin : public Util::Plugin_Interface
-	{
-	public:
-		explicit OctreePlugin(const Util::Wstring & name) : 
-		    Plugin_Interface(name)
-		{}
+	class GeneralSceneManager;
+	typedef boost::shared_ptr<GeneralSceneManager> GeneralSceneManagerPtr;
 
-		~OctreePlugin()
-		{}
-
-	public:
-		virtual void install();
-		virtual void uninstall();
-	};
+	class OctreeSceneNode;
+	typedef boost::shared_ptr<OctreeSceneNode> OctreeSceneNodePtr;
 }
 
 #endif

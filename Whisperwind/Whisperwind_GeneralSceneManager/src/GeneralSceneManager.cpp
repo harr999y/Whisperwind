@@ -25,35 +25,35 @@ THE SOFTWARE
 
 #include <boost/make_shared.hpp>
 
-#include "OctreeForwardDeclare.h"
-#include "OctreeSceneManager.h"
+#include "GeneralForwardDeclare.h"
 #include "OctreeSceneNode.h"
+#include "GeneralSceneManager.h"
 
 namespace Engine
 {
 	static const Util::Wstring ROOT_SCENE_NODE_NAME(TO_UNICODE("OctreeRootNode"));
 	//---------------------------------------------------------------------
-	SceneNodePtr OctreeSceneManager::createSceneNode_impl(const Util::Wstring & name)
+	SceneNodePtr GeneralSceneManager::createSceneNode_impl(const Util::Wstring & name)
 	{
 		SceneNodePtr sceneNode = boost::make_shared<OctreeSceneNode>(name);
 
 		return sceneNode;
 	}
 	//---------------------------------------------------------------------
-	void OctreeSceneManager::init_impl()
+	void GeneralSceneManager::init_impl()
 	{}
 	//---------------------------------------------------------------------
-	void OctreeSceneManager::initRootNode()
+	void GeneralSceneManager::initRootNode()
 	{
 		mRootNode = boost::make_shared<OctreeSceneNode>(ROOT_SCENE_NODE_NAME);
 	}
 	//---------------------------------------------------------------------
-	void OctreeSceneManager::preUpdate_impl(Util::time elapsedTime)
+	void GeneralSceneManager::preUpdate_impl(Util::time elapsedTime)
 	{
 		mRootNode->preUpdate(elapsedTime);
 	}
 	//---------------------------------------------------------------------
-	void OctreeSceneManager::postUpdate_impl(Util::time elapsedTime)
+	void GeneralSceneManager::postUpdate_impl(Util::time elapsedTime)
 	{
 		mRootNode->postUpdate(elapsedTime);
 	}

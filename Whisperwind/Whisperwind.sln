@@ -8,11 +8,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_D3D9RenderSyste
 		{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B} = {EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_OctreeSceneManager", "Whisperwind_OctreeSceneManager\Whisperwind_OctreeSceneManager.vcxproj", "{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B} = {EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_Application", "Whisperwind_Application\Whisperwind_Application.vcxproj", "{FDA9E47F-C5D9-4B1C-AF1E-23ED26DE9B7F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E20E609E-4003-4D78-8792-21CF601B9EF3} = {E20E609E-4003-4D78-8792-21CF601B9EF3}
@@ -42,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_Util", "Whisper
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E5EF7291-0436-4FE0-8296-EA468EB132F2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_OctreeSceneManager", "Whisperwind_GeneralSceneManager\Whisperwind_GeneralSceneManager.vcxproj", "{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -52,10 +49,6 @@ Global
 		{E20E609E-4003-4D78-8792-21CF601B9EF3}.Debug|Win32.Build.0 = Debug|Win32
 		{E20E609E-4003-4D78-8792-21CF601B9EF3}.Release|Win32.ActiveCfg = Release|Win32
 		{E20E609E-4003-4D78-8792-21CF601B9EF3}.Release|Win32.Build.0 = Release|Win32
-		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Debug|Win32.Build.0 = Debug|Win32
-		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Release|Win32.ActiveCfg = Release|Win32
-		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Release|Win32.Build.0 = Release|Win32
 		{FDA9E47F-C5D9-4B1C-AF1E-23ED26DE9B7F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{FDA9E47F-C5D9-4B1C-AF1E-23ED26DE9B7F}.Debug|Win32.Build.0 = Debug|Win32
 		{FDA9E47F-C5D9-4B1C-AF1E-23ED26DE9B7F}.Release|Win32.ActiveCfg = Release|Win32
@@ -76,6 +69,10 @@ Global
 		{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}.Debug|Win32.Build.0 = Debug|Win32
 		{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}.Release|Win32.ActiveCfg = Release|Win32
 		{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}.Release|Win32.Build.0 = Release|Win32
+		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Debug|Win32.Build.0 = Debug|Win32
+		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Release|Win32.ActiveCfg = Release|Win32
+		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
