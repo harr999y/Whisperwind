@@ -31,7 +31,13 @@ namespace GamePlay
 {
 	class GamePlayFramework;
 	class Actor;
+	class ActorFactory;
+	class Camera;
+
 	typedef boost::shared_ptr<Actor> ActorPtr;
+	typedef boost::shared_ptr<ActorFactory> ActorFactoryPtr;
+	typedef boost::shared_ptr<Camera> CameraPtr;
+
 }
 
 #endif

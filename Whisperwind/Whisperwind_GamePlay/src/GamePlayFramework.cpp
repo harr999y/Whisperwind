@@ -28,6 +28,7 @@ THE SOFTWARE
 #include <boost/make_shared.hpp>
 
 #include "CheckedCast.h"
+#include "MathDefine.h"
 #include "EngineManager.h"
 #include "Renderable.h"
 #include "RenderMappingDefines.h"
@@ -38,6 +39,7 @@ THE SOFTWARE
 #include "SceneNode.h"
 #include "GamePlayForwardDeclare.h"
 #include "Actor.h"
+#include "Camera.h"
 #include "GamePlayFramework.h"
 
 namespace GamePlay
@@ -55,8 +57,9 @@ namespace GamePlay
 	void GamePlayFramework::run()
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
-
 		engineMgr.setup();
+
+		engineMgr.getSceneManager()->regSceneObjectFactory(boost::make_shared<ActorFactory>());
 
 		createScene();
 
@@ -146,16 +149,20 @@ namespace GamePlay
 		Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 
 		Util::Wstring actorName(TO_UNICODE("test"));
-		mActor = boost::make_shared<Actor>(actorName);
+		mActor = Util::checkedPtrCast<Actor>(engineMgr.getSceneManager()->createSceneObject(TO_UNICODE("Actor"), actorName));
 		mActor->setRenderable(renderable);
 		renderable->regPostRenderCallback(boost::bind(&GamePlayFramework::preUpdateCallback, boost::ref(*this), _1));
 
 		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName, Engine::NT_STATIC);
+		node->setPosition(XMVectorSet(0.0f, 2.0f, 0.0f, 0.0f));
 		node->attachSceneObject(mActor);
-		engineMgr.getSceneManager()->getRootNode()->addChildNode(node);
 
 		Util::Wstring texturePath(engineMgr.getResourceManager()->getResourcePath(TO_UNICODE("test.dds")));
 		mRenderTexture = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderTextureFromFile(texturePath);
+
+		mCamera = boost::make_shared<Camera>(0.0f, 2000.0f);
+		mCamera->setPosition(XMFLOAT3(0.0, 0.0, 0.0));
+		mCamera->setLookAt(XMFLOAT3(0.0, 1.0, 0.0));
 	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::preUpdateCallback(Util::time elapsedTime)

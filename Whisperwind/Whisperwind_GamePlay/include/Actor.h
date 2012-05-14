@@ -28,13 +28,14 @@ THE SOFTWARE
 #include "Util.h"
 #include "EngineForwardDeclare.h"
 #include "SceneObject.h"
+#include "SceneObjectFactory.h"
 
 namespace GamePlay
 {
 	class Actor : public Engine::SceneObject
 	{
 	public:
-		Actor (Util::Wstring & name) :
+		Actor (const Util::Wstring & name) :
 		    SceneObject(name)
 		{}
 
@@ -44,6 +45,18 @@ namespace GamePlay
 	private:
 		virtual void preUpdate_impl(Util::time elapsedTime);
 		virtual void postUpdate_impl(Util::time elapsedTime);
+	};
+
+	class ActorFactory : public Engine::SceneObjectFactory
+	{
+	public:
+		ActorFactory();
+
+		~ActorFactory()
+		{}
+
+	public:
+		virtual Engine::SceneObjectPtr create(const Util::Wstring & objName);
 	};
 
 }

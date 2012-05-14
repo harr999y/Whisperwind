@@ -23,35 +23,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include <boost/make_shared.hpp>
+#include <algorithm>
 
-#include "CheckedCast.h"
-#include "Renderable.h"
-#include "Actor.h"
+#include "DebugDefine.h"
+#include "SceneManager.h"
+#include "EngineManager.h"
+#include "GeneralSceneNode.h"
 
-namespace GamePlay
+namespace Engine
 {
 	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	void Actor::preUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-	//---------------------------------------------------------------------
-	void Actor::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-
-	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("Actor"));
-	//---------------------------------------------------------------------
-	ActorFactory::ActorFactory() : 
-	    Engine::SceneObjectFactory(ACTOR_FACTORY_NAME)
-	{}
-	//---------------------------------------------------------------------
-	Engine::SceneObjectPtr ActorFactory::create(const Util::Wstring & objName)
+	SceneNodePtr & GeneralSceneNode::createChildNode_impl(const Util::Wstring & name)
 	{
-		return boost::make_shared<Actor>(objName);
+		SceneNodePtr & sceneNode = EngineManager::getSingleton().getSceneManager()->createSceneNode(name, NT_AS_CHILD | mNodeType);
+
+		mChildSceneNodeVec.push_back(sceneNode);
+		sceneNode->setParentNode(this->shared_from_this());
+		addChildNode(sceneNode);
+
+		return sceneNode;
 	}
+	//---------------------------------------------------------------------
+	void GeneralSceneNode::preUpdate_impl(Util::time /*elapsedTime*/)
+	{}
+	//---------------------------------------------------------------------
+	void GeneralSceneNode::postUpdate_impl(Util::time /*elapsedTime*/)
+	{}
 
 }

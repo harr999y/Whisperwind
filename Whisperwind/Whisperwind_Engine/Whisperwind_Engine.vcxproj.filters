@@ -70,9 +70,6 @@
     <ClInclude Include="include\SceneNode.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="include\ResourceManager.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="include\SceneComponent.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -90,6 +87,15 @@
     </ClInclude>
     <ClInclude Include="include\RenderQueue.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Viewport.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ResourceManager.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneObjectFactory.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

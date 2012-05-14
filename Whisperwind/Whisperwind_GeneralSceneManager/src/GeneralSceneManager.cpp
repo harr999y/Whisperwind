@@ -24,18 +24,39 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/make_shared.hpp>
+#include <boost/typeof/typeof.hpp>
+#include <boost/foreach.hpp>
 
-#include "GeneralForwardDeclare.h"
-#include "OctreeSceneNode.h"
+#include "SceneNode.h"
+#include "SceneObject.h"
+#include "GeneralSceneNode.h"
 #include "GeneralSceneManager.h"
 
 namespace Engine
 {
-	static const Util::Wstring ROOT_SCENE_NODE_NAME(TO_UNICODE("OctreeRootNode"));
+	static const Util::Wstring ROOT_SCENE_NODE_NAME(TO_UNICODE("SceneGraphRoot"));
 	//---------------------------------------------------------------------
-	SceneNodePtr GeneralSceneManager::createSceneNode_impl(const Util::Wstring & name)
+	GeneralSceneManager::~GeneralSceneManager()
 	{
-		SceneNodePtr sceneNode = boost::make_shared<OctreeSceneNode>(name);
+		destroyAllSceneNode();
+		destroyAllSceneObject();
+	}
+	//---------------------------------------------------------------------
+	SceneNodePtr GeneralSceneManager::createSceneNode_impl(const Util::Wstring & name, Util::u_int nodeType)
+	{
+		GeneralSceneNodePtr sceneNode = boost::make_shared<GeneralSceneNode>(name, nodeType);
+
+		if ((NT_DYNAMIC & nodeType) != 0)
+		{
+			if (0 == (NT_AS_CHILD & nodeType))
+				mSceneGraphVec.push_back(sceneNode);
+
+			mDynamicSpatialPartitionVec.push_back(sceneNode);
+		}
+		else if ((NT_STATIC & nodeType) != 0)
+		{
+			mStaticSpatialPartitionVec.push_back(sceneNode);
+		}
 
 		return sceneNode;
 	}
@@ -43,19 +64,113 @@ namespace Engine
 	void GeneralSceneManager::init_impl()
 	{}
 	//---------------------------------------------------------------------
-	void GeneralSceneManager::initRootNode()
+	void GeneralSceneManager::destroySceneNode_impl(const Util::Wstring & name)
 	{
-		mRootNode = boost::make_shared<OctreeSceneNode>(ROOT_SCENE_NODE_NAME);
+		SceneNodePtr & node = mSceneNodeMap[name];
+		Util::u_int nodeType = node->getNodeType();
+
+		if ((nodeType & NT_DYNAMIC) != 0)
+		{
+			if (0 == (nodeType & NT_AS_CHILD))
+			{
+				BOOST_AUTO(it, mSceneGraphVec.begin());
+				for ( ; it != mSceneGraphVec.end(); ++ it)
+				{
+					if (name == (*it)->getName())
+					{
+						mSceneGraphVec.erase(it);
+						break;
+					}
+				}
+			}
+
+			BOOST_AUTO(it, mStaticSpatialPartitionVec.begin());
+			for ( ; it != mStaticSpatialPartitionVec.end(); ++ it)
+			{
+				if (name == (*it)->getName())
+				{
+					mStaticSpatialPartitionVec.erase(it);
+					break;
+				}
+			}
+		}
+		else if ((nodeType & NT_STATIC) != 0)
+		{
+			BOOST_AUTO(it, mDynamicSpatialPartitionVec.begin());
+			for ( ; it != mDynamicSpatialPartitionVec.end(); ++ it)
+			{
+				if (name == (*it)->getName())
+				{
+					mDynamicSpatialPartitionVec.erase(it);
+					break;
+				}
+			}
+		}
+	}
+	//---------------------------------------------------------------------
+	void GeneralSceneManager::destroyAllSceneNode_impl()
+	{
+		mSceneGraphVec.clear();
+		mStaticSpatialPartitionVec.clear();
+		mDynamicSpatialPartitionVec.clear();
 	}
 	//---------------------------------------------------------------------
 	void GeneralSceneManager::preUpdate_impl(Util::time elapsedTime)
 	{
-		mRootNode->preUpdate(elapsedTime);
+		updateSceneGraph();
+		
+		/// Scene object
+		{
+			BOOST_AUTO(it, mSceneObjectMap.begin());
+			for (it; it != mSceneObjectMap.end(); ++it)
+			{
+				it->second->preUpdate(elapsedTime);
+			}
+		}
+		
+		/// TODO:Find visibilty
+		{
+			/// StaticSpatialPartitionVec
+			{
+				BOOST_AUTO(it, mStaticSpatialPartitionVec.begin());
+				for (it; it != mStaticSpatialPartitionVec.end(); ++it)
+				{
+					(*it)->addToRenderQueue();
+				}
+			}
+
+			/// DynamicSpatialPartitionVec
+			{
+				BOOST_AUTO(it, mDynamicSpatialPartitionVec.begin());
+				for (it; it != mDynamicSpatialPartitionVec.end(); ++it)
+				{
+					(*it)->addToRenderQueue();
+				}
+			}
+		}
 	}
 	//---------------------------------------------------------------------
 	void GeneralSceneManager::postUpdate_impl(Util::time elapsedTime)
 	{
-		mRootNode->postUpdate(elapsedTime);
+		updateSceneGraph();
+
+		/// Scene object
+		{
+			BOOST_AUTO(it, mSceneObjectMap.begin());
+			for (it; it != mSceneObjectMap.end(); ++it)
+			{
+				it->second->postUpdate(elapsedTime);
+			}
+		}
+	}
+	//---------------------------------------------------------------------
+	void GeneralSceneManager::updateSceneGraph()
+	{
+		BOOST_AUTO(it, mSceneGraphVec.begin());
+		for (it; it != mSceneGraphVec.end(); ++it)
+		{
+			(*it)->update(false);
+		}
 	}
 
 }

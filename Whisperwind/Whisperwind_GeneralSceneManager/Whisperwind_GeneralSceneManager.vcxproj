@@ -14,13 +14,13 @@
     <ClInclude Include="include\GeneralForwardDeclare.h" />
     <ClInclude Include="include\GeneralPlugin.h" />
     <ClInclude Include="include\GeneralSceneManager.h" />
-    <ClInclude Include="include\OctreeSceneNode.h" />
+    <ClInclude Include="include\GeneralSceneNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GeneralPlugin.cpp" />
     <ClCompile Include="src\GeneralPluginDll.cpp" />
     <ClCompile Include="src\GeneralSceneManager.cpp" />
-    <ClCompile Include="src\OctreeSceneNode.cpp" />
+    <ClCompile Include="src\GeneralSceneNode.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}</ProjectGuid>
@@ -78,6 +78,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +106,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

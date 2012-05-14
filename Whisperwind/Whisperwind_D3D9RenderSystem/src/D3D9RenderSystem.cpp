@@ -67,8 +67,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void D3D9RenderSystem::init_impl()
 	{
-		mEngineConfig = EngineManager::getSingleton().getEngineConfig();
-
 		mWindow = WindowsHelper::createWindow();
 
 		mD3D = Util::makeCOMPtr(Direct3DCreate9(D3D_SDK_VERSION));
@@ -328,11 +326,6 @@ namespace Engine
 			EngineManager::getSingleton().sleep(500);
 		}
 		mD3DDevice = Util::makeCOMPtr(d3dDevice);
-
-		D3DVIEWPORT9 viewport = 
-		    { 0, 0, mEngineConfig->getResolutionPair().first, mEngineConfig->getResolutionPair().second, 0.0f, 1.0f };
-
-		mD3DDevice->SetViewport(&viewport);
 
 		WHISPERWIND_LOG(TO_UNICODE("Create device done!"));
 	}

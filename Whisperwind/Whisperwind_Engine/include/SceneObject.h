@@ -54,6 +54,7 @@ namespace Engine
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
 		SET_GET_CONST_VALUE(RenderablePtr, Renderable);
+		GET_VALUE(SceneNodePtr, AttachedSceneNode);
 
 	private:
 		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
@@ -63,7 +64,7 @@ namespace Engine
 		/// TODO:Sorry for finally I used friend.And if I find a way not to use it,I'll modify it!
  		friend void SceneNode::attachSceneObject(SceneObjectPtr sceneObj);
  		friend void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj);
- 		SET_GET_CONST_VALUE(SceneNodePtr, AttachedSceneNode);
+ 		SET_VALUE(SceneNodePtr, AttachedSceneNode);
 
 	protected:
 		RenderablePtr mRenderable;

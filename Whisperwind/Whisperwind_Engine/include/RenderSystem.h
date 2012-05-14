@@ -57,6 +57,7 @@ namespace Engine
 
 	public:
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
+		SET_GET_CONST_VALUE(ViewportPtr, Viewport);
 
 	private:
 		virtual void init_impl() = 0;
@@ -73,6 +74,7 @@ namespace Engine
 
 	protected:
 		EngineConfigPtr mEngineConfig;
+		ViewportPtr mViewport;
 
 	private:
 		RenderQueuePtr mOpaqueRenderQueue;

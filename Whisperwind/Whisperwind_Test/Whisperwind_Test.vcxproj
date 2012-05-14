@@ -67,6 +67,7 @@
       <AdditionalIncludeDirectories>../Whisperwind_Dependencies;./include;%(AdditionalIncludeDirectories);../Whisperwind_Util/include</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
       <DisableSpecificWarnings>4127;4251;4275</DisableSpecificWarnings>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,6 +95,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
       <DisableSpecificWarnings>4127;4251;4275</DisableSpecificWarnings>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

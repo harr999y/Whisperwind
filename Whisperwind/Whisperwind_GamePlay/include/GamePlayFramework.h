@@ -52,6 +52,7 @@ namespace GamePlay
 	private:
 		ActorPtr mActor;
 		Engine::RenderTexturePtr mRenderTexture;
+		CameraPtr mCamera;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);

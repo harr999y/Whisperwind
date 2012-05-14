@@ -22,26 +22,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _OCTREE_SCENE_NODE_H_
-#define _OCTREE_SCENE_NODE_H_
+#ifndef _VIEWPORT_H_
+#define _VIEWPORT_H_
 
-#include "SceneNode.h"
+#include "Util.h"
 
 namespace Engine
 {
-	class OctreeSceneNode : public SceneNode
+	class WHISPERWIND_API Viewport
 	{
 	public:
-		OctreeSceneNode(const Util::Wstring & name) :
-		    SceneNode(name)
+		Viewport(Util::u_int top, Util::u_int left, Util::u_int width, Util::u_int height) :
+		    mTop(top),
+			mLeft(left),
+			mWidth(width),
+			mHeight(height)
 		{}
 
-		~OctreeSceneNode()
-		{}
+	public:
+		SET_GET_CONST_VALUE(Util::u_int, Top);
+		SET_GET_CONST_VALUE(Util::u_int, Left);
+		SET_GET_CONST_VALUE(Util::u_int, Width);
+		SET_GET_CONST_VALUE(Util::u_int, Height);
 
 	private:
-		virtual void preUpdate_impl(Util::time elapsedTime);
-		virtual void postUpdate_impl(Util::time elapsedTime);
+		Util::u_int mTop;
+		Util::u_int mLeft;
+		Util::u_int mWidth;
+		Util::u_int mHeight;
 	};
 }
 

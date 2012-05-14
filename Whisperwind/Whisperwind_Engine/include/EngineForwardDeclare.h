@@ -47,11 +47,13 @@ namespace Engine
 	class SceneManager;
 	class SceneNode;
 	class SceneObject;
+	class SceneObjectFactory;
 	class SceneComponent;
 	class Resource;
 	class ResourceManager;
 	class ResourceConfig;
 	class RenderQueue;
+	class Viewport;
 
 	/** For the unordered_maps nowadays.
 	@note:
@@ -79,15 +81,18 @@ namespace Engine
 	typedef boost::unordered_map<RenderTargetMappingPtr, RenderTargetWeakPtr>RenderTargetMappingMap;
 	typedef boost::shared_ptr<SceneManager> SceneManagerPtr;
 	typedef boost::shared_ptr<SceneNode> SceneNodePtr;
-	typedef boost::weak_ptr<SceneNode> SceneNodeWeakPtr;
+	typedef std::vector<SceneNodePtr> SceneNodeVector;
 	typedef boost::unordered_map<Util::Wstring, SceneNodePtr> SceneNodeMap;
-	typedef boost::unordered_map<Util::Wstring, SceneNodeWeakPtr> SceneNodeWeakMap;
 	typedef boost::shared_ptr<SceneObject> SceneObjectPtr;
+	typedef std::vector<SceneObjectPtr> SceneObjectVector;
 	typedef boost::unordered_map<Util::Wstring, SceneObjectPtr> SceneObjectMap;
+	typedef boost::shared_ptr<SceneObjectFactory> SceneObjectFactoryPtr;
+	typedef boost::unordered_map<Util::Wstring, SceneObjectFactoryPtr> SceneObjectFactoryMap;
 	typedef boost::shared_ptr<SceneComponent> SceneComponentPtr;
 	typedef boost::shared_ptr<Resource> ResourcePtr;
 	typedef boost::shared_ptr<ResourceManager> ResourceManagerPtr;
 	typedef boost::shared_ptr<RenderQueue> RenderQueuePtr;
+	typedef boost::shared_ptr<Viewport> ViewportPtr;
 }
 
 #endif

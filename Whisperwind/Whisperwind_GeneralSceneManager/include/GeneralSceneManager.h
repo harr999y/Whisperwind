@@ -25,22 +25,42 @@ THE SOFTWARE
 #ifndef _GENERAL_SCENE_MANAGER_H_
 #define _GENERAL_SCENE_MANAGER_H_
 
+#include <boost/enable_shared_from_this.hpp>
+
 #include "SceneManager.h"
+#include "GeneralForwardDeclare.h"
 
 namespace Engine
 {
-	class GeneralSceneManager : public SceneManager
+	
+	/** This structure has been refered to Clayman's very article:http://blog.csdn.net/soilwork/article/details/4131367
+	      Thanks very much!
+	*/
+	class GeneralSceneManager : public SceneManager, public boost::enable_shared_from_this<GeneralSceneManager>
 	{
 	public:
-		~GeneralSceneManager()
+		GeneralSceneManager()
 		{}
 
+		~GeneralSceneManager();
+
 	private:
-		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name);
-		virtual void initRootNode();
+		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name, Util::u_int nodeType);
 		virtual void init_impl();
 		virtual void preUpdate_impl(Util::time elapsedTime);
 		virtual void postUpdate_impl(Util::time elapsedTime);
+		virtual void destroySceneNode_impl(const Util::Wstring & name);
+		virtual void destroyAllSceneNode_impl();
+
+		void updateSceneGraph();
+
+	private:
+		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
+		SceneNodeVector mSceneGraphVec;
+		/// For the dymamic objects which need to do dynamic spatial partition.DONNOT care about the position.
+		SceneNodeVector mDynamicSpatialPartitionVec;
+		/// For the static objects which only need to do static spatial partition.DONNOT care about the position.
+		SceneNodeVector mStaticSpatialPartitionVec;
 	};
 }
 

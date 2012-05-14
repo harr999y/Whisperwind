@@ -23,83 +23,107 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <algorithm>
 #include <boost/typeof/typeof.hpp>
 
 #include "DebugDefine.h"
 #include "SceneObject.h"
+#include "SceneManager.h"
 #include "SceneNode.h"
 
 namespace Engine
 {
 	static const SceneNodePtr NULL_SCENE_NODE;
 	//---------------------------------------------------------------------
+	SceneNode::~SceneNode()
+	{
+		dettachAllSceneObject();
+		removeAllChildNode();
+	}
+	//---------------------------------------------------------------------
 	void SceneNode::attachSceneObject(SceneObjectPtr sceneObj)
 	{
-		WHISPERWIND_ASSERT(mSceneObjectMap.find(sceneObj->getName()) == mSceneObjectMap.end());
+		WHISPERWIND_ASSERT(std::find(mSceneObjectVec.begin(), mSceneObjectVec.end(), sceneObj) == mSceneObjectVec.end());
 
 		if (sceneObj->getAttachedSceneNode())
 			sceneObj->getAttachedSceneNode()->dettachSceneObject(sceneObj);
 
-		mSceneObjectMap[sceneObj->getName()] = sceneObj;
+		mSceneObjectVec.push_back(sceneObj);
 
 		sceneObj->setAttachedSceneNode(this->shared_from_this());
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj)
 	{
-		WHISPERWIND_ASSERT(mSceneObjectMap.find(sceneObj->getName()) != mSceneObjectMap.end());
+		WHISPERWIND_ASSERT(std::find(mSceneObjectVec.begin(), mSceneObjectVec.end(), sceneObj) != mSceneObjectVec.end());
 
 		sceneObj->setAttachedSceneNode(NULL_SCENE_NODE);
 
-		mSceneObjectMap.erase(sceneObj->getName());
+		mSceneObjectVec.erase(std::find(mSceneObjectVec.begin(), mSceneObjectVec.end(), sceneObj));
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::dettachAllSceneObject()
 	{
-		BOOST_AUTO(it, mSceneObjectMap.begin());
-		for (it; it != mSceneObjectMap.end(); /**/)
+		while (!mSceneObjectVec.empty())
 		{
-			dettachSceneObject((it++)->second);
+			dettachSceneObject(*(mSceneObjectVec.begin()));
 		}
 
-		mSceneObjectMap.clear();
+		mSceneObjectVec.clear();
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::addChildNode(const SceneNodePtr & sceneNode)
+	SceneNodePtr & SceneNode::createChildNode(const Util::Wstring & name)
 	{
-		WHISPERWIND_ASSERT(mChildSceneNodeMap.find(sceneNode->getName()) == mChildSceneNodeMap.end());
+		return createChildNode_impl(name);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::addChildNode(const SceneNodePtr & childNode)
+	{
+		WHISPERWIND_ASSERT(std::find(mChildSceneNodeVec.begin(), mChildSceneNodeVec.end(), childNode) == mChildSceneNodeVec.end());
 
-		mChildSceneNodeMap.insert(SceneNodeMap::value_type(sceneNode->getName(), sceneNode));
-		sceneNode->setParentNode(this->shared_from_this());
+		mChildSceneNodeVec.push_back(childNode);
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::destroyChildNode(const Util::Wstring & name)
+	void SceneNode::setParentNode(const SceneNodePtr & parentNode)
 	{
-		if (mChildSceneNodeMap.find(name) != mChildSceneNodeMap.end())
+		if (mParentNode)
 		{
-			SceneNodePtr childNode = mChildSceneNodeMap[name];
-			childNode->dettachAllSceneObject();
-			childNode->destroyAllChildNode();
+			SceneNodePtr me = this->shared_from_this();
+			mParentNode->removeChildNode(me);
+		}
+
+		mParentNode = parentNode;
+		mParentNode->addChildNode(this->shared_from_this());
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::removeChildNode(SceneNodePtr & childNode)
+	{
+		BOOST_AUTO(childIt, std::find(mChildSceneNodeVec.begin(), mChildSceneNodeVec.end(), childNode));
+		if (childIt != mChildSceneNodeVec.end())
+		{
 			childNode->setParentNode(NULL_SCENE_NODE);
-			mChildSceneNodeMap.erase(name);
+			mChildSceneNodeVec.erase(childIt);
 		}
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::destroyAllChildNode()
+	void SceneNode::removeAllChildNode()
 	{
-		BOOST_AUTO(it, mChildSceneNodeMap.begin());
-		for (it; it != mChildSceneNodeMap.end(); /**/)
+		while (!mChildSceneNodeVec.empty())
 		{
-			destroyChildNode((it++)->second->getName());
+			removeChildNode(*(mChildSceneNodeVec.begin()));
 		}
+		mChildSceneNodeVec.clear();
 	}
 	//---------------------------------------------------------------------
 	bool SceneNode::getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode)
 	{
-		if (mChildSceneNodeMap.find(name) != mChildSceneNodeMap.end())
+		for (SceneNodeVector::const_iterator childIt; childIt != mChildSceneNodeVec.end(); ++ childIt)
 		{
-			outChildNode = mChildSceneNodeMap[name];
-			return true;
+			if (name == (*childIt)->getName())
+			{
+				outChildNode = *childIt;
+				return true;
+			}
 		}
 
 		return false;
@@ -116,64 +140,61 @@ namespace Engine
 		return false;
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::preUpdate(Util::time elapsedTime)
-	{
-		if (mPreCallback)
-			mPreCallback(this->shared_from_this(), elapsedTime);
-
-		/// Child nodes
-		{
-			BOOST_AUTO(it, mChildSceneNodeMap.begin());
-			for (it; it != mChildSceneNodeMap.end(); ++it)
-			{
-				it->second->preUpdate(elapsedTime);
-			}
-		}
-
-		/// Objects
-		{
-			BOOST_AUTO(it, mSceneObjectMap.begin());
-			for (it; it != mSceneObjectMap.end(); ++it)
-			{
-				it->second->preUpdate(elapsedTime);
-			}
-		}
-
-		preUpdate_impl(elapsedTime);
-	}
-	//---------------------------------------------------------------------
-	void SceneNode::postUpdate(Util::time elapsedTime)
-	{
-		if (mPostCallback)
-			mPostCallback(this->shared_from_this(), elapsedTime);
-
-		/// Child nodes
-		{
-			BOOST_AUTO(it, mChildSceneNodeMap.begin());
-			for (it; it != mChildSceneNodeMap.end(); ++it)
-			{
-				it->second->postUpdate(elapsedTime);
-			}
-		}
-
-		/// Objects
-		{
-			BOOST_AUTO(it, mSceneObjectMap.begin());
-			for (it; it != mSceneObjectMap.end(); ++it)
-			{
-				it->second->postUpdate(elapsedTime);
-			}
-		}
-
-		postUpdate_impl(elapsedTime);
-	}
-	//---------------------------------------------------------------------
 	void SceneNode::addToRenderQueue()
 	{
-		BOOST_AUTO(it, mSceneObjectMap.begin());
-		for (it; it != mSceneObjectMap.end(); ++it)
+		BOOST_AUTO(it, mSceneObjectVec.begin());
+		for (it; it != mSceneObjectVec.end(); ++it)
 		{
-			it->second->addToRenderQueue();
+			(*it)->addToRenderQueue();
+		}
+	}
+	//---------------------------------------------------------------------
+	XMVECTOR SceneNode::getPosition()
+	{
+		if (mParentNode)
+			return mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition);
+		else
+			return XMLoadFloat3(&mPosition);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::setPosition(FXMVECTOR position)
+	{
+		XMStoreFloat3(&mPosition, position);
+
+		if (mParentNode)
+			XMStoreFloat3(&mRelativePosition, position - mParentNode->getPosition());
+
+		mNeedUpdateChilds = true;
+	}
+	//---------------------------------------------------------------------
+	XMVECTOR SceneNode::getRelativePosition()
+	{
+		WHISPERWIND_ASSERT(mParentNode != NULL);
+
+		return XMLoadFloat3(&mRelativePosition);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::setRelativePosition(FXMVECTOR relPosition)
+	{
+		WHISPERWIND_ASSERT(mParentNode != NULL);
+
+		XMStoreFloat3(&mRelativePosition, relPosition);
+
+		if (mParentNode)
+			XMStoreFloat3(&mPosition, relPosition + mParentNode->getPosition());
+
+		mNeedUpdateChilds = true;
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::update(bool updateChildPosition)
+	{
+		if (updateChildPosition)
+			XMStoreFloat3(&mPosition, mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition));
+
+		BOOST_AUTO(it, mChildSceneNodeVec.begin());
+		for (it; it != mChildSceneNodeVec.end(); ++it)
+		{
+			(*it)->update(mNeedUpdateChilds);
 		}
 	}
 

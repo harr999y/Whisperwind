@@ -28,6 +28,8 @@ THE SOFTWARE
 
 #include "DebugDefine.h"
 #include "SceneNode.h"
+#include "SceneObject.h"
+#include "SceneObjectFactory.h"
 #include "SceneManager.h"
 
 namespace Engine
@@ -35,40 +37,22 @@ namespace Engine
 	//---------------------------------------------------------------------
 	SceneManager::~SceneManager()
 	{
-		detroyAllSceneNode();
-
-		mRootNode.reset();
-
 		mSceneNodeMap.clear();
-		mStaticSpatialGraphMap.clear();
-		mSceneGraphMap.clear();
-		mDynamicSpatialGraphMap.clear();
 	}
 	//---------------------------------------------------------------------
 	void SceneManager::init()
 	{
-		initRootNode();
 		init_impl();
 	}
 	//---------------------------------------------------------------------
-	SceneNodePtr SceneManager::createSceneNode(const Util::Wstring & name, NodeType type)
+	SceneNodePtr & SceneManager::createSceneNode(const Util::Wstring & name, Util::u_int nodeType)
 	{
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) == mSceneNodeMap.end());
 
-		SceneNodePtr sceneNode = createSceneNode_impl(name);
+		SceneNodePtr sceneNode = createSceneNode_impl(name, nodeType);
 		mSceneNodeMap.insert(SceneNodeMap::value_type(name, sceneNode));
 
-		if (NT_STATIC == type)
-		{
-			mStaticSpatialGraphMap.insert(SceneNodeWeakMap::value_type(name, sceneNode));
-		}
-		else
-		{
-			mSceneGraphMap.insert(SceneNodeWeakMap::value_type(name, sceneNode));
-			mDynamicSpatialGraphMap.insert(SceneNodeWeakMap::value_type(name, sceneNode));
-		}
-
-		return sceneNode;
+		return mSceneNodeMap[name];
 	}
 	//---------------------------------------------------------------------
 	SceneNodePtr & SceneManager::getSceneNode(const Util::Wstring & name)
@@ -76,45 +60,96 @@ namespace Engine
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) != mSceneNodeMap.end());
 
 		return mSceneNodeMap[name];
-	}	
+	}
 	//---------------------------------------------------------------------
 	void SceneManager::destroySceneNode(const Util::Wstring & name)
 	{
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) != mSceneNodeMap.end());
 
 		SceneNodePtr & node = mSceneNodeMap[name];
-		SceneNodePtr parentNode;
+		node->removeAllChildNode();
+		node->dettachAllSceneObject();
 
+		SceneNodePtr parentNode;
 		if (node->getParentNode(parentNode))
-			parentNode->destroyChildNode(node->getName());
+			parentNode->removeChildNode(node);
+
+		destroySceneNode_impl(name);
 
 		mSceneNodeMap.erase(name);
 	}
 	//---------------------------------------------------------------------
-	void SceneManager::detroyAllSceneNode()
+	void SceneManager::destroyAllSceneNode()
 	{
-		BOOST_AUTO(it, mSceneNodeMap.begin());
-		for (it; it != mSceneNodeMap.end(); /**/)
+		while (!mSceneNodeMap.empty())
 		{
-			destroySceneNode((it++)->second->getName());
+			destroySceneNode((mSceneNodeMap.begin())->second->getName());
 		}
+
+		destroyAllSceneNode_impl();
+
+		mSceneNodeMap.clear();
 	}
 	//---------------------------------------------------------------------
 	void SceneManager::preUpdate(Util::time elapsedTime)
 	{
-		/// TODO!
-		BOOST_AUTO(it, mSceneNodeMap.begin());
-		for (it; it != mSceneNodeMap.end(); ++it)
-		{
-			it->second->addToRenderQueue();
-		}
+		if (mPreCallback)
+			mPreCallback(elapsedTime);
 
 		preUpdate_impl(elapsedTime);
 	}
 	//---------------------------------------------------------------------
 	void SceneManager::postUpdate(Util::time elapsedTime)
 	{
+		if (mPostCallback)
+			mPostCallback(elapsedTime);
+
 		postUpdate_impl(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::regSceneObjectFactory(const SceneObjectFactoryPtr & factory)
+	{
+		WHISPERWIND_ASSERT(mSceneObjectFactoryMap.find(factory->getName()) == mSceneObjectFactoryMap.end());
+
+		mSceneObjectFactoryMap.insert(SceneObjectFactoryMap::value_type(factory->getName(), factory));
+	}
+	//---------------------------------------------------------------------
+	SceneObjectPtr & SceneManager::createSceneObject(const Util::Wstring & type, const Util::Wstring & name)
+	{
+		WHISPERWIND_ASSERT(mSceneObjectFactoryMap.find(type) != mSceneObjectFactoryMap.end());
+		WHISPERWIND_ASSERT(mSceneObjectMap.find(name) == mSceneObjectMap.end());
+
+		mSceneObjectMap.insert(SceneObjectMap::value_type(name, mSceneObjectFactoryMap[type]->create(name)));
+
+		return mSceneObjectMap[name];
+	}
+	//---------------------------------------------------------------------
+	SceneObjectPtr & SceneManager::getSceneObject(const Util::Wstring & name)
+	{
+		WHISPERWIND_ASSERT(mSceneObjectMap.find(name) != mSceneObjectMap.end());
+
+		return mSceneObjectMap[name];
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::destroySceneObject(const Util::Wstring & name)
+	{
+		WHISPERWIND_ASSERT(mSceneObjectMap.find(name) != mSceneObjectMap.end());
+
+		SceneNodePtr & parentNode = mSceneObjectMap[name]->getAttachedSceneNode();
+		if (parentNode)
+		    parentNode->dettachSceneObject(mSceneObjectMap[name]);
+
+		mSceneObjectMap.erase(name);
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::destroyAllSceneObject()
+	{
+		while (!mSceneObjectMap.empty())
+		{
+			destroySceneObject((mSceneObjectMap.begin())->second->getName());
+		}
+
+		mSceneObjectMap.clear();
 	}
 
 }

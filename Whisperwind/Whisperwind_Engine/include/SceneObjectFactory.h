@@ -22,21 +22,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _SCENE_OBJECT_FACTORY_H_
+#define _SCENE_OBJECT_FACTORY_H_
 
-#include "OctreeSceneNode.h"
+#include "Util.h"
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
-	//---------------------------------------------------------------------
-	void OctreeSceneNode::preUpdate_impl(Util::time elapsedTime)
+	class WHISPERWIND_API SceneObjectFactory
 	{
-		/// TODO!
-		elapsedTime;
-	}
-	//---------------------------------------------------------------------
-	void OctreeSceneNode::postUpdate_impl(Util::time elapsedTime)
-	{
-		/// TODO!
-		elapsedTime;
-	}
+	protected:
+		explicit SceneObjectFactory(const Util::Wstring & name) :
+		    mName(name)
+		{}
+
+		~SceneObjectFactory()
+		{}
+
+	public:
+		virtual SceneObjectPtr create(const Util::Wstring & objName) = 0;
+
+	public:
+		GET_CONST_VALUE(Util::Wstring, Name);
+
+	protected:
+		Util::Wstring mName;
+	};
 }
+
+#endif

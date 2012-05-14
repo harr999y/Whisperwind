@@ -25,6 +25,8 @@ THE SOFTWARE
 #ifndef _SCENE_MANAGER_H_
 #define _SCENE_MANAGER_H_
 
+#include <boost/function.hpp>
+
 #include "Util.h"
 #include "EngineForwardDeclare.h"
 
@@ -32,13 +34,11 @@ namespace Engine
 {
 	enum NodeType
 	{
-		NT_STATIC,
-		NT_DYNAMIC
+		NT_STATIC = 1 << 0,
+		NT_DYNAMIC = 1 << 1,
+		NT_AS_CHILD = 1 << 2
 	};
 
-	/** This structure has been refered to Clayman's very article:http://blog.csdn.net/soilwork/article/details/4131367
-	      Thanks very much!
-	*/
 	class WHISPERWIND_API SceneManager
 	{
 	protected:
@@ -52,35 +52,44 @@ namespace Engine
 		void preUpdate(Util::time elapsedTime);
 		void postUpdate(Util::time elapsedTime);
 
-		SceneNodePtr createSceneNode(const Util::Wstring & name, NodeType type);
+		SceneNodePtr & createSceneNode(const Util::Wstring & name, Util::u_int nodeType);
 		SceneNodePtr & getSceneNode(const Util::Wstring & name);
 		void destroySceneNode(const Util::Wstring & name);
 
-	public:
-		GET_VALUE(SceneNodePtr, RootNode);
+		SceneObjectPtr & createSceneObject(const Util::Wstring & type, const Util::Wstring & name);
+		SceneObjectPtr & getSceneObject(const Util::Wstring & name);
+		void destroySceneObject(const Util::Wstring & name);
 
-	private:
-		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name) = 0;
-		virtual void init_impl() = 0;
-		virtual void initRootNode() = 0;
-		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
-		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
+		template <typename CallBack>
+		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }
+		template <typename CallBack>
+		void regPostUpdateCallback(CallBack cb) { mPostCallback = cb; }
 
-		void detroyAllSceneNode();
+		void regSceneObjectFactory(const SceneObjectFactoryPtr & factory);
 
 	protected:
-		SceneNodePtr mRootNode;
-		/// Save all nodes.CANNOT use to do anything unless find or destroy!It controll the node's lifetime.
-		SceneNodeMap mSceneNodeMap;
-		/// For the static objects which only need to do static spatial.DONNOT care about the position.
-		SceneNodeWeakMap mStaticSpatialGraphMap;
-		/// For the dymamic objects which need to do dynamic spatial.DONNOT care about the position.
-		SceneNodeWeakMap mDynamicSpatialGraphMap;
+		void destroyAllSceneNode();
+		void destroyAllSceneObject();
 
-		/** SceneGraph doesnot dispatch to derived class. */
 	private:
-		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
-		SceneNodeWeakMap mSceneGraphMap;
+		virtual void init_impl() = 0;
+		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name, Util::u_int nodeType) = 0;
+		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
+		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
+		virtual void destroySceneNode_impl(const Util::Wstring & name) = 0;
+		virtual void destroyAllSceneNode_impl() = 0;
+
+	protected:
+		/// Save all nodes.CANNOT use to do anything unless find or destroy!
+		SceneNodeMap mSceneNodeMap;
+		SceneObjectMap mSceneObjectMap;
+
+	private:
+		typedef boost::function<void (Util::time)> Callback;
+		Callback mPreCallback;
+		Callback mPostCallback;
+
+		SceneObjectFactoryMap mSceneObjectFactoryMap;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneManager);

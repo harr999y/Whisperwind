@@ -22,36 +22,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
 
-#include <boost/make_shared.hpp>
-
-#include "CheckedCast.h"
-#include "Renderable.h"
-#include "Actor.h"
+#include "MathDefine.h"
+#include "EngineForwardDeclare.h"
 
 namespace GamePlay
 {
-	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	void Actor::preUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-	//---------------------------------------------------------------------
-	void Actor::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-
-	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("Actor"));
-	//---------------------------------------------------------------------
-	ActorFactory::ActorFactory() : 
-	    Engine::SceneObjectFactory(ACTOR_FACTORY_NAME)
-	{}
-	//---------------------------------------------------------------------
-	Engine::SceneObjectPtr ActorFactory::create(const Util::Wstring & objName)
+	class Camera
 	{
-		return boost::make_shared<Actor>(objName);
-	}
+	public:
+		Camera(Util::real nearCilp, Util::real farClip);
 
+		~Camera()
+		{}
+
+	public:
+		XMMATRIX getViewMatrix();
+		XMMATRIX getProjMatrix();
+
+	public:
+		SET_GET_CONST_VALUE(XMFLOAT3, Position);
+		SET_GET_CONST_VALUE(XMFLOAT3, LookAt);
+		SET_GET_CONST_VALUE(XMFLOAT3, UpDirection);
+		SET_GET_CONST_VALUE(XMFLOAT4, Orientation);
+
+	private:
+		XMFLOAT3 mPosition;
+		XMFLOAT3 mLookAt;
+		XMFLOAT3 mUpDirection;
+		XMFLOAT4 mOrientation;
+
+		Util::real mNearClip;
+		Util::real mFarClip;
+		Util::real mAspect;
+
+		Engine::ViewportPtr mViewport;
+	};
 }
+
+#endif

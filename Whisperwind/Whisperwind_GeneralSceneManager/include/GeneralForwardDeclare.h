@@ -32,8 +32,9 @@ namespace Engine
 	class GeneralSceneManager;
 	typedef boost::shared_ptr<GeneralSceneManager> GeneralSceneManagerPtr;
 
-	class OctreeSceneNode;
-	typedef boost::shared_ptr<OctreeSceneNode> OctreeSceneNodePtr;
+	class GeneralSceneNode;
+	typedef boost::shared_ptr<GeneralSceneNode> GeneralSceneNodePtr;
+
 }
 
 #endif

@@ -23,35 +23,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include <boost/make_shared.hpp>
-
-#include "CheckedCast.h"
-#include "Renderable.h"
-#include "Actor.h"
+#include "EngineManager.h"
+#include "RenderSystem.h"
+#include "Viewport.h"
+#include "Camera.h"
 
 namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	void Actor::preUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-	//---------------------------------------------------------------------
-	void Actor::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-
-	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("Actor"));
-	//---------------------------------------------------------------------
-	ActorFactory::ActorFactory() : 
-	    Engine::SceneObjectFactory(ACTOR_FACTORY_NAME)
-	{}
-	//---------------------------------------------------------------------
-	Engine::SceneObjectPtr ActorFactory::create(const Util::Wstring & objName)
+	Camera::Camera(Util::real nearCilp, Util::real farClip) :
+        mNearClip(nearCilp),
+	    mFarClip(farClip)
 	{
-		return boost::make_shared<Actor>(objName);
+		mViewport = Engine::EngineManager::getSingleton().getRenderSystem()->getViewport();
+
+		mAspect = static_cast<Util::real>(mViewport->getWidth()) / static_cast<Util::real>(mViewport->getHeight());
+	}
+	//---------------------------------------------------------------------
+	XMMATRIX Camera::getViewMatrix()
+	{
+		return XMMatrixLookAtLH(XMLoadFloat3(&mPosition), XMLoadFloat3(&mLookAt), XMLoadFloat3(&mUpDirection));
+	}
+	//---------------------------------------------------------------------
+	XMMATRIX Camera::getProjMatrix()
+	{		
+		return XMMatrixPerspectiveFovLH(XM_PI / 2.0, mAspect, mNearClip, mFarClip);
 	}
 
 }

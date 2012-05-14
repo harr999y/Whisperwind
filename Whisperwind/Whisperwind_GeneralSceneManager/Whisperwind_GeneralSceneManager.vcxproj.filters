@@ -12,9 +12,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\OctreeSceneNode.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\GeneralSceneManager.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -24,11 +21,11 @@
     <ClInclude Include="include\GeneralPlugin.h">
       <Filter>Dll Plugin</Filter>
     </ClInclude>
+    <ClInclude Include="include\GeneralSceneNode.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\OctreeSceneNode.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\GeneralSceneManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -37,6 +34,9 @@
     </ClCompile>
     <ClCompile Include="src\GeneralPlugin.cpp">
       <Filter>Dll Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeneralSceneNode.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

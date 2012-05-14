@@ -25,9 +25,12 @@ THE SOFTWARE
 
 #include <boost/make_shared.hpp>
 
+#include "EngineManager.h"
+#include "EngineConfig.h"
 #include "RenderMappingDefines.h"
 #include "RenderQueue.h"
 #include "Renderable.h"
+#include "Viewport.h"
 #include "RenderSystem.h"
 
 namespace Engine
@@ -37,6 +40,8 @@ namespace Engine
 	{
 		mOpaqueRenderQueue = boost::make_shared<RenderQueue>();
 		mTransparentRenderQueue = boost::make_shared<RenderQueue>();
+		mEngineConfig = EngineManager::getSingleton().getEngineConfig();
+		mViewport = boost::make_shared<Viewport>(0, 0, mEngineConfig->getResolutionPair().first, mEngineConfig->getResolutionPair().second);
 
 		init_impl();
 	}

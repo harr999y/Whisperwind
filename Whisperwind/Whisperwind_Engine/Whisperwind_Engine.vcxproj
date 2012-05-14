@@ -31,6 +31,8 @@
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneNode.h" />
     <ClInclude Include="include\SceneObject.h" />
+    <ClInclude Include="include\SceneObjectFactory.h" />
+    <ClInclude Include="include\Viewport.h" />
     <ClInclude Include="include\WindowsEventHandle.h" />
     <ClInclude Include="include\WindowsHelper.h" />
   </ItemGroup>
@@ -114,6 +116,7 @@
       <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,6 +144,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>../Whisperwind_Dependencies;../Whisperwind_Util/include;./include</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

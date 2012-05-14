@@ -22,36 +22,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _GENERAL_SCENE_NODE_H_
+#define _GENERAL_SCENE_NODE_H_
 
-#include <boost/make_shared.hpp>
+#include "Util.h"
+#include "GeneralForwardDeclare.h"
+#include "SceneNode.h"
 
-#include "CheckedCast.h"
-#include "Renderable.h"
-#include "Actor.h"
-
-namespace GamePlay
+namespace Engine
 {
-	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	void Actor::preUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-	//---------------------------------------------------------------------
-	void Actor::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-
-	//---------------------------------------------------------------------
-	// Actor
-	//---------------------------------------------------------------------
-	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("Actor"));
-	//---------------------------------------------------------------------
-	ActorFactory::ActorFactory() : 
-	    Engine::SceneObjectFactory(ACTOR_FACTORY_NAME)
-	{}
-	//---------------------------------------------------------------------
-	Engine::SceneObjectPtr ActorFactory::create(const Util::Wstring & objName)
+	class GeneralSceneNode : public SceneNode
 	{
-		return boost::make_shared<Actor>(objName);
-	}
+	public:
+		GeneralSceneNode(const Util::Wstring & name, Util::u_int nodeType) :
+		    SceneNode(name, nodeType)
+		{}
+
+		~GeneralSceneNode()
+		{}
+
+	private:
+		virtual SceneNodePtr & createChildNode_impl(const Util::Wstring & name);
+		virtual void preUpdate_impl(Util::time elapsedTime);
+		virtual void postUpdate_impl(Util::time elapsedTime);
+	};
 
 }
+
+#endif

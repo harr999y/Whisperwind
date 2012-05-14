@@ -25,8 +25,8 @@ THE SOFTWARE
 #ifndef _SCENE_NODE_H_
 #define _SCENE_NODE_H_
 
-#include <boost/enable_shared_from_this.hpp>
 #include <boost/function.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include "Util.h"
 #include "MathDefine.h"
@@ -37,54 +37,54 @@ namespace Engine
 	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>
 	{
 	protected:
-		explicit SceneNode(const Util::Wstring & name) :
-		    mName(name)
+		SceneNode(const Util::Wstring & name, Util::u_int nodeType) :
+		    mName(name),
+			mPosition(0.0f, 0.0f, 0.0f),
+			mRelativePosition(0.0f, 0.0f, 0.0f),
+			mNodeType(nodeType)
 		{}
 
-		virtual ~SceneNode()
-		{}
+		virtual ~SceneNode();
 
 	public:
-		void addChildNode(const SceneNodePtr & sceneNode);
-		void destroyChildNode(const Util::Wstring & name);
-		void destroyAllChildNode();
+		/// NOTO:This createChildNode only means they have spatial hierarchy ralationships.
+		SceneNodePtr & createChildNode(const Util::Wstring & name);
+		void removeChildNode(SceneNodePtr & childNode);
+		void removeAllChildNode();
 		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode);
 		bool getParentNode(SceneNodePtr & outParentNode);
+		void setParentNode(const SceneNodePtr & parentNode);
 		void addToRenderQueue();
+		XMVECTOR getPosition();
+		void setPosition(FXMVECTOR position);
+		XMVECTOR getRelativePosition();
+		void setRelativePosition(FXMVECTOR relPosition);
 
 		/// I don't use ref here,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.
 		void attachSceneObject(SceneObjectPtr sceneObj);
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
 		void dettachAllSceneObject();
 
-		void preUpdate(Util::time elapsedTime);
-		void postUpdate(Util::time elapsedTime);
-
-		template <typename CallBack>
-		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }
-		template <typename CallBack>
-		void regPostUpdateCallback(CallBack cb) { mPostCallback = cb; }
+		void update(bool updateChildPosition);
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
-		SET_VALUE(SceneNodePtr, ParentNode);
-
-	private:
-		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
-		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
+		GET_CONST_VALUE(Util::u_int, NodeType);
 
 	protected:
-		SceneObjectMap mSceneObjectMap;
-		SceneNodeMap mChildSceneNodeMap;
+		virtual SceneNodePtr & createChildNode_impl(const Util::Wstring & name) = 0;
+
+		void addChildNode(const SceneNodePtr & childNode);
+
+	protected:
+		SceneObjectVector mSceneObjectVec;
+		SceneNodeVector mChildSceneNodeVec;
 		SceneNodePtr mParentNode;
 		Util::Wstring mName;
+		bool mNeedUpdateChilds;
+		Util::u_int mNodeType;
 		XMFLOAT3 mPosition;
-		XMFLOAT3 mRelativePositon;
-
-	private:
-		typedef boost::function<void (SceneNodePtr, Util::time)> Callback;
-		Callback mPreCallback;
-		Callback mPostCallback;
+		XMFLOAT3 mRelativePosition;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneNode);

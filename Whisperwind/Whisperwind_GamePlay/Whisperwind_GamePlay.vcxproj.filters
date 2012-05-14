@@ -16,6 +16,9 @@
     <Filter Include="Actor">
       <UniqueIdentifier>{e5451ff5-482a-42ef-acfd-1fbc6169dbca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{ba4ec58b-b767-48bf-ab06-72a0a8a4c2ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GamePlayFramework.h">
@@ -27,6 +30,9 @@
     <ClInclude Include="include\Actor.h">
       <Filter>Actor</Filter>
     </ClInclude>
+    <ClInclude Include="include\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GamePlayFramework.cpp">
@@ -34,6 +40,9 @@
     </ClCompile>
     <ClCompile Include="include\Actor.cpp">
       <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
