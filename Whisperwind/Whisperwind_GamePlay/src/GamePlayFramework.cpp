@@ -154,7 +154,7 @@ namespace GamePlay
 		renderable->regPostRenderCallback(boost::bind(&GamePlayFramework::preUpdateCallback, boost::ref(*this), _1));
 
 		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName, Engine::NT_STATIC);
-		node->setPosition(XMVectorSet(0.0f, 2.0f, 0.0f, 0.0f));
+		node->setPosition(XMVectorSet(0.0f, 0.0f, 20.0f, 0.0f));
 		node->attachSceneObject(mActor);
 
 		Util::Wstring texturePath(engineMgr.getResourceManager()->getResourcePath(TO_UNICODE("test.dds")));
@@ -162,7 +162,9 @@ namespace GamePlay
 
 		mCamera = boost::make_shared<Camera>(0.0f, 2000.0f);
 		mCamera->setPosition(XMFLOAT3(0.0, 0.0, 0.0));
-		mCamera->setLookAt(XMFLOAT3(0.0, 1.0, 0.0));
+		mCamera->setLookAt(XMFLOAT3(0.0, 0.0, 1.0));
+
+		engineMgr.getSceneManager()->regPreUpdateCallback(boost::bind(&GamePlayFramework::changePos, boost::ref(*this), _1));
 	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::preUpdateCallback(Util::time elapsedTime)
@@ -178,6 +180,24 @@ namespace GamePlay
 		renderable->setEffectSemanticValue("COLOR3", static_cast<void *>(test));
 
 		renderable->setTexture("tex", mRenderTexture);
+
+		XMMATRIX matrix = XMMatrixIdentity();;
+		Engine::SceneNodePtr & node = mActor->getAttachedSceneNode();
+		if (node)
+		{
+			XMVECTOR pos = node->getPosition();
+			pos -= XMVectorSet(0.0f, 0.0f, 1.1f, 0.0f) * elapsedTime;
+			node->setPosition(pos);
+			matrix = XMMatrixTranslationFromVector(pos);
+		}
+
+		matrix *= mCamera->getViewMatrix() * mCamera->getProjMatrix();
+		renderable->setEffectSemanticValue("PROJ", static_cast<void *>(&matrix));
+	}
+	//---------------------------------------------------------------------
+	void GamePlayFramework::changePos(Util::time /*elapsedTime*/)
+	{
+
 	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::destroyScene()

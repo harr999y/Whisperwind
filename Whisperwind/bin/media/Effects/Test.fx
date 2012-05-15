@@ -11,6 +11,7 @@ sampler_state
 };
 
 float4 preColor : COLOR3;
+float4x4 proj : PROJ;
 
 void VS( float4 pos : POSITION0,
 				//float4 color : TEXCOORD1,
@@ -20,7 +21,7 @@ void VS( float4 pos : POSITION0,
 			   out float2 oCoord : TEXCOORD0)
 {
 	//oColor = color;
-	oPos = pos ;
+	oPos = mul(pos, proj);
 	oCoord = coord;
 }
 
@@ -28,7 +29,7 @@ void PS(  //float4 color : TEXCOORD1,
 				float2 coord : TEXCOORD0,
 				out float4 oColor : COLOR0)
 {
-	oColor = tex2D(TestSampler, coord) + preColor * 0.03;
+	oColor = tex2D(TestSampler, coord);// + preColor * 0.03;
 }
 
 technique Test

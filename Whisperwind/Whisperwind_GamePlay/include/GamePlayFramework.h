@@ -44,6 +44,7 @@ namespace GamePlay
 
 		/// TODO!
 		void preUpdateCallback(Util::time elapsedTime);
+		void changePos(Util::time elapsedTime);
 
 	private:
 		void createScene();
