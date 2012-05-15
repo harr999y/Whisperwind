@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISForceFeedback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISInputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISJoyStick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISKeyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\OISObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\win32\Win32ForceFeedback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\win32\Win32InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\win32\Win32JoyStick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\win32\Win32KeyBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\src\win32\Win32Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISFactoryCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISForceFeedback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OIS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISInputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISJoyStick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISKeyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISMouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISMultiTouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\OISPrereqs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\win32\Win32ForceFeedback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\win32\Win32InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\win32\Win32JoyStick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\win32\Win32KeyBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\win32\Win32Mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Analysis Engines\Ogre Develop\ogredeps\src\ois\includes\win32\Win32Prereqs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{75EB4842-30FD-4071-ABF5-9F9B44639C80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9F062379-9FEE-4356-914E-7A18CAF40D1D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
