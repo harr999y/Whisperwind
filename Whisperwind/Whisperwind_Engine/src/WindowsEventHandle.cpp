@@ -23,8 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "WindowsEventHandle.h"
+#include "DebugDefine.h"
 #include "EngineManager.h"
+#include "WindowsEventHandle.h"
 
 namespace Engine
 {
@@ -73,6 +74,13 @@ namespace Engine
 	const HWND WindowsEventHandle::getWindow()
 	{
 		return mWindow;
+	}
+	//---------------------------------------------------------------------
+	const void WindowsEventHandle::getWindow(void * data)
+	{
+		WHISPERWIND_ASSERT(data);
+		HWND * hwnd = static_cast<HWND *>(data);
+		*hwnd = mWindow;
 	}
 	//---------------------------------------------------------------------
 	void WindowsEventHandle::setWindow(HWND window)

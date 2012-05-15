@@ -27,6 +27,11 @@ THE SOFTWARE
 
 /** Now I use XnaMath,and maybe someday I'll replace it. */
 
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
 #include <vector>
 #include <XnaMath/xnamath.h>
 

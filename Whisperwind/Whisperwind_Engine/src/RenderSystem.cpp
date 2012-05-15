@@ -106,8 +106,14 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void RenderSystem::renderScene(Util::time elapsedTime)
 	{
+		this->clearFrame(FCF_TARGET | FCF_ZBUFFER);
+
+		IF_FALSE_RETURN(this->beginRendering());
+
 		mOpaqueRenderQueue->render(elapsedTime);
 		mTransparentRenderQueue->render(elapsedTime);
+
+		this->endRendering();
 	}
 
 }

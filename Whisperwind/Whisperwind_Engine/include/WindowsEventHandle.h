@@ -40,6 +40,7 @@ namespace Engine
 		static void handleWindowsMsg();
 		static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 		static const HWND getWindow();
+		static const void getWindow(void * data);
 		static void setWindow(HWND window);
 			
 	private:

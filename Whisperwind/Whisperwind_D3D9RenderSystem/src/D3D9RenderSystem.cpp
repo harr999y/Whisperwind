@@ -216,7 +216,7 @@ namespace Engine
 	RenderTexturePtr D3D9RenderSystem::createRenderTextureFromFile_impl(const Util::Wstring & path)
 	{
 		/// For repetitive creation.
-		if (mRenderTextureFileMap.find(path) != mRenderTextureFileMap.end())
+		if (!getIsDeviceLost() && mRenderTextureFileMap.find(path) != mRenderTextureFileMap.end())
 		{
 			RenderTextureWeakPtr textureWeak = mRenderTextureFileMap[path];
 			if (!textureWeak.expired())

@@ -19,6 +19,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{ba4ec58b-b767-48bf-ab06-72a0a8a4c2ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GamePlayConfig">
+      <UniqueIdentifier>{3f4eccc7-49ba-4ba9-9fed-8746a308af37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GamePlayFramework.h">
@@ -48,6 +51,9 @@
   <ItemGroup>
     <None Include="..\bin\media\Effects\Test.fx">
       <Filter>Effects</Filter>
+    </None>
+    <None Include="..\bin\Config\GamePlayConfig.cfg">
+      <Filter>GamePlayConfig</Filter>
     </None>
   </ItemGroup>
 </Project>

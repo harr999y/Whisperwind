@@ -22,6 +22,7 @@
     <ClCompile Include="src\GamePlayFramework.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\bin\Config\GamePlayConfig.cfg" />
     <None Include="..\bin\media\Effects\Test.fx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

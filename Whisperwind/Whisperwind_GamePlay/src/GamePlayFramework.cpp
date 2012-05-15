@@ -23,6 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <sstream>
+#include <utility>
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
 #include <boost/make_shared.hpp>
@@ -37,6 +39,7 @@ THE SOFTWARE
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "SceneNode.h"
+#include "WindowsEventHandle.h"
 #include "GamePlayForwardDeclare.h"
 #include "Actor.h"
 #include "Camera.h"
@@ -45,14 +48,19 @@ THE SOFTWARE
 namespace GamePlay
 {
 	//---------------------------------------------------------------------
-	GamePlayFramework::GamePlayFramework(const Util::Wstring & name)
+	GamePlayFramework::GamePlayFramework(const Util::Wstring & name) :
+		mRightMouseDown(false)
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
 		engineMgr.setWindowName(name);
 	}
 	//---------------------------------------------------------------------
 	GamePlayFramework::~GamePlayFramework()
-	{}
+	{
+		mKeyboard.reset();
+		mMouse.reset();
+		mInputManager.reset();
+	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::run()
 	{
@@ -60,6 +68,8 @@ namespace GamePlay
 		engineMgr.setup();
 
 		engineMgr.getSceneManager()->regSceneObjectFactory(boost::make_shared<ActorFactory>());
+
+		initInput();
 
 		createScene();
 
@@ -70,6 +80,31 @@ namespace GamePlay
 		engineMgr.shutDown();
 	}
 	//---------------------------------------------------------------------
+	void GamePlayFramework::initInput()
+	{
+		OIS::ParamList paramList;
+
+		Util::u_int windowHandle;
+		Engine::WindowsEventHandle::getWindow(&windowHandle);
+		std::ostringstream windowHandleStr;
+		windowHandleStr << windowHandle;
+		paramList.insert(std::make_pair("WINDOW", windowHandleStr.str()));
+
+		paramList.insert(std::make_pair(std::string("w32_mouse"), "DISCL_FOREGROUND"));
+		paramList.insert(std::make_pair(std::string("w32_mouse"), "DISCL_NONEXCLUSIVE"));
+
+		mInputManager = boost::shared_ptr<OIS::InputManager>(OIS::InputManager::createInputSystem(paramList),
+		    boost::bind(&OIS::InputManager::destroyInputSystem, _1));
+
+		mKeyboard = boost::shared_ptr<OIS::Keyboard>(static_cast<OIS::Keyboard *>(mInputManager->createInputObject(OIS::OISKeyboard, true)), 
+			boost::bind(&OIS::InputManager::destroyInputObject, boost::ref(*(mInputManager.get())), _1));
+		mMouse = boost::shared_ptr<OIS::Mouse>(static_cast<OIS::Mouse *>(mInputManager->createInputObject(OIS::OISMouse, true)), 
+			boost::bind(&OIS::InputManager::destroyInputObject, boost::ref(*(mInputManager.get())), _1));
+
+		mKeyboard->setEventCallback(this);
+		mMouse->setEventCallback(this);
+	}
+	//---------------------------------------------------------------------
 	void GamePlayFramework::createScene()
 	{
 		/// Test for creating some content.
@@ -77,12 +112,12 @@ namespace GamePlay
 
 		Engine::VoidDataPtr data(new (Util::real[20]));
 		Util::real * elem = boost::static_pointer_cast<Util::real>(data).get();
-		elem[0] = -1;
+		elem[0] = -1.25;
 		elem[1] = -1;
 		elem[2] = 1;
 		elem[3] = 0;
 		elem[4] = 1;
-		elem[5] = -1;
+		elem[5] = -1.25;
 		elem[6] = 1;
 		elem[7] = 1;
 		elem[8] = 0;
@@ -154,7 +189,7 @@ namespace GamePlay
 		renderable->regPostRenderCallback(boost::bind(&GamePlayFramework::preUpdateCallback, boost::ref(*this), _1));
 
 		Engine::SceneNodePtr node = Engine::EngineManager::getSingleton().getSceneManager()->createSceneNode(actorName, Engine::NT_STATIC);
-		node->setPosition(XMVectorSet(0.0f, 0.0f, 20.0f, 0.0f));
+		node->setPosition(XMVectorSet(0.0f, 0.0f, 5.0f, 0.0f));
 		node->attachSceneObject(mActor);
 
 		Util::Wstring texturePath(engineMgr.getResourceManager()->getResourcePath(TO_UNICODE("test.dds")));
@@ -162,9 +197,9 @@ namespace GamePlay
 
 		mCamera = boost::make_shared<Camera>(0.0f, 2000.0f);
 		mCamera->setPosition(XMFLOAT3(0.0, 0.0, 0.0));
-		mCamera->setLookAt(XMFLOAT3(0.0, 0.0, 1.0));
+		mCamera->lookAt(XMVectorSet(0.0, 0.0, 1.0, 0.0));
 
-		engineMgr.getSceneManager()->regPreUpdateCallback(boost::bind(&GamePlayFramework::changePos, boost::ref(*this), _1));
+		engineMgr.getSceneManager()->regPreUpdateCallback(boost::bind(&GamePlayFramework::preUpdate, boost::ref(*this), _1));
 	}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::preUpdateCallback(Util::time elapsedTime)
@@ -173,7 +208,6 @@ namespace GamePlay
 		renderable = mActor->getRenderable();
 		IF_NULL_RETURN(renderable);
 
-		/// TODO!Test!
  		static Util::real num = 0.0f;
  		num += 1.f * elapsedTime;
  		Util::real test[4] = {num, num, num, 1.0f};
@@ -186,19 +220,70 @@ namespace GamePlay
 		if (node)
 		{
 			XMVECTOR pos = node->getPosition();
-			pos -= XMVectorSet(0.0f, 0.0f, 1.1f, 0.0f) * elapsedTime;
+			//pos -= XMVectorSet(0.0f, 0.0f, 3.1f, 0.0f) * elapsedTime;
 			node->setPosition(pos);
 			matrix = XMMatrixTranslationFromVector(pos);
 		}
 
 		matrix *= mCamera->getViewMatrix() * mCamera->getProjMatrix();
-		renderable->setEffectSemanticValue("PROJ", static_cast<void *>(&matrix));
+		renderable->setEffectSemanticValue("WORLDVIEWPROJ", static_cast<void *>(&matrix));
 	}
 	//---------------------------------------------------------------------
-	void GamePlayFramework::changePos(Util::time /*elapsedTime*/)
+	bool GamePlayFramework::keyPressed(const OIS::KeyEvent & arg)
 	{
+		Util::u_int moveDirection = mCamera->getKeyCombinationFromEvent(arg);
 
+		mCamera->move(moveDirection);
+
+		return true;
 	}
+	//---------------------------------------------------------------------
+	bool GamePlayFramework::keyReleased(const OIS::KeyEvent & arg)
+	{
+		Util::u_int unmoveDirection = mCamera->getKeyCombinationFromEvent(arg);
+
+		mCamera->stopMove(unmoveDirection);
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	bool GamePlayFramework::mouseMoved(const OIS::MouseEvent & arg)
+	{
+		if (mRightMouseDown)
+			mCamera->rotate(static_cast<Util::real>(arg.state.Y.rel), static_cast<Util::real>(arg.state.X.rel));
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	bool GamePlayFramework::mousePressed(const OIS::MouseEvent & /*arg*/, OIS::MouseButtonID id)
+	{
+		if (id == OIS::MB_Right)
+			mRightMouseDown = true;
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	bool GamePlayFramework::mouseReleased(const OIS::MouseEvent & /*arg*/, OIS::MouseButtonID id)
+	{
+		if (id == OIS::MB_Right)
+			mRightMouseDown = false;
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	void GamePlayFramework::preUpdate(Util::time elapsedTime)
+	{
+		if (mMouse)
+			mMouse->capture();
+
+		if (mKeyboard)
+			mKeyboard->capture();
+
+		mCamera->update(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void postUpdate(Util::time /*elapsedTime*/)
+	{}
 	//---------------------------------------------------------------------
 	void GamePlayFramework::destroyScene()
 	{}

@@ -25,6 +25,10 @@ THE SOFTWARE
 #ifndef _GAMEPLAY_FRAMEWORK_H_
 #define _GAMEPLAY_FRAMEWORK_H_
 
+#pragma warning(push, 3)
+#include <OIS/includes/OIS.h>
+#pragma warning(pop)
+
 #include "Util.h"
 /// TODO!
 #include "EngineForwardDeclare.h"
@@ -33,7 +37,7 @@ THE SOFTWARE
 
 namespace GamePlay
 {
-	class WHISPERWIND_API GamePlayFramework
+	class WHISPERWIND_API GamePlayFramework : public OIS::KeyListener, public OIS::MouseListener
 	{
 	public:
 		explicit GamePlayFramework(const Util::Wstring & name);
@@ -44,9 +48,17 @@ namespace GamePlay
 
 		/// TODO!
 		void preUpdateCallback(Util::time elapsedTime);
-		void changePos(Util::time elapsedTime);
+		void preUpdate(Util::time elapsedTime);
+		void postUpdate(Util::time elapsedTime);
+
+		virtual bool keyPressed(const OIS::KeyEvent & arg);
+		virtual bool keyReleased(const OIS::KeyEvent & arg);
+		virtual bool mouseMoved(const OIS::MouseEvent & arg);
+		virtual bool mousePressed(const OIS::MouseEvent & arg, OIS::MouseButtonID id);
+		virtual bool mouseReleased(const OIS::MouseEvent & arg, OIS::MouseButtonID id);
 
 	private:
+		void initInput();
 		void createScene();
 		void destroyScene();
 
@@ -54,6 +66,15 @@ namespace GamePlay
 		ActorPtr mActor;
 		Engine::RenderTexturePtr mRenderTexture;
 		CameraPtr mCamera;
+
+		typedef boost::shared_ptr<OIS::InputManager> InputManagerPtr;
+		typedef boost::shared_ptr<OIS::Keyboard> KeyboardPtr;
+		typedef boost::shared_ptr<OIS::Mouse> MousePtr;
+ 		InputManagerPtr mInputManager;
+ 		KeyboardPtr mKeyboard;
+ 		MousePtr mMouse;
+
+		bool mRightMouseDown;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);

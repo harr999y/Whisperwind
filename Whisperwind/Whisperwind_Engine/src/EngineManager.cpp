@@ -113,14 +113,7 @@ namespace Engine
 
 			mSceneManager->preUpdate(elapsedTime);
 
-			/// TODO!
-			mRenderSystem->clearFrame(FCF_TARGET | FCF_ZBUFFER);
-
-			IF_FALSE_CONTINUE(mRenderSystem->beginRendering());
-
 			mRenderSystem->renderScene(elapsedTime);
-
-			mRenderSystem->endRendering();
 
 			mSceneManager->postUpdate(elapsedTime);
 

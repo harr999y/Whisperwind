@@ -30,24 +30,160 @@ THE SOFTWARE
 
 namespace GamePlay
 {
+	static const Util::real MOVE_SPEED = 1.0f;
 	//---------------------------------------------------------------------
 	Camera::Camera(Util::real nearCilp, Util::real farClip) :
         mNearClip(nearCilp),
-	    mFarClip(farClip)
+	    mFarClip(farClip),
+		mUpDirection(0.0f, 1.0f, 0.0f),
+		mNeedUpdateViewMatrix(true),
+		mPitchRadians(0.0f),
+		mYawRadians(0.0f)
 	{
 		mViewport = Engine::EngineManager::getSingleton().getRenderSystem()->getViewport();
 
 		mAspect = static_cast<Util::real>(mViewport->getWidth()) / static_cast<Util::real>(mViewport->getHeight());
+
+		XMStoreFloat4(&mOrientation, XMQuaternionIdentity());
+
+		mIsMoveDirection[0] = mIsMoveDirection[1] = mIsMoveDirection[2] = mIsMoveDirection[3] = false;
+
+		XMStoreFloat4x4(&mProjMatrix, XMMatrixPerspectiveFovLH(XM_PI / 2.0, mAspect, mNearClip, mFarClip));
 	}
 	//---------------------------------------------------------------------
 	XMMATRIX Camera::getViewMatrix()
 	{
-		return XMMatrixLookAtLH(XMLoadFloat3(&mPosition), XMLoadFloat3(&mLookAt), XMLoadFloat3(&mUpDirection));
+		if (mNeedUpdateViewMatrix)
+			XMStoreFloat4x4(&mViewMatrix, XMMatrixLookAtLH(XMLoadFloat3(&mPosition), XMLoadFloat3(&mLookAt), XMLoadFloat3(&mUpDirection)));
+
+		return XMLoadFloat4x4(&mViewMatrix);
 	}
 	//---------------------------------------------------------------------
 	XMMATRIX Camera::getProjMatrix()
 	{		
-		return XMMatrixPerspectiveFovLH(XM_PI / 2.0, mAspect, mNearClip, mFarClip);
+		return XMLoadFloat4x4(&mProjMatrix);
+	}
+	//---------------------------------------------------------------------
+	void Camera::move(Util::u_int moveDirection)
+	{
+		if (moveDirection & MD_FORWARD)
+			mIsMoveDirection[0] = true;
+		else if (moveDirection & MD_BACK)
+			mIsMoveDirection[1] = true;
+		else if (moveDirection & MD_LEFT)
+			mIsMoveDirection[2] = true;
+		else if (moveDirection & MD_RIGHT)
+			mIsMoveDirection[3] = true;
+	}
+	//---------------------------------------------------------------------
+	void Camera::stopMove(Util::u_int moveDirection)
+	{
+		if (moveDirection & MD_FORWARD)
+			mIsMoveDirection[0] = false;
+		else if (moveDirection & MD_BACK)
+			mIsMoveDirection[1] = false;
+		else if (moveDirection & MD_LEFT)
+			mIsMoveDirection[2] = false;
+		else if (moveDirection & MD_RIGHT)
+			mIsMoveDirection[3] = false;
+	}
+	//---------------------------------------------------------------------
+	void Camera::doMove(Util::time deltaTime)
+	{
+		if (!(mIsMoveDirection[0] || mIsMoveDirection[1] || mIsMoveDirection[2] || mIsMoveDirection[3]))
+			return;
+
+		XMFLOAT3 translationVec(0.0f, 0.0f, 0.0f);
+		if (mIsMoveDirection[0])
+			translationVec.z += MOVE_SPEED;
+		if (mIsMoveDirection[1])
+			translationVec.z -= MOVE_SPEED;
+		if (mIsMoveDirection[2])
+			translationVec.x -= MOVE_SPEED;
+		if (mIsMoveDirection[3])
+			translationVec.x += MOVE_SPEED;
+
+		XMVECTOR vector = XMVector3Rotate(XMLoadFloat3(&translationVec), XMLoadFloat4(&mOrientation)) * deltaTime + XMLoadFloat3(&mPosition);
+		XMVECTOR pos = XMLoadFloat3(&mPosition);
+		XMVECTOR lookAt = vector - pos + XMLoadFloat3(&mLookAt);
+		XMStoreFloat3(&mPosition, vector);
+		XMStoreFloat3(&mLookAt, lookAt);
+	}
+	//---------------------------------------------------------------------
+	void Camera::rotate(Util::real pitchAngle, Util::real yawAngle/*, Util::real zoom*/)
+	{
+		Util::real pitchRadians = XMConvertToRadians(pitchAngle * 0.1f);
+		mPitchRadians += pitchRadians;
+		mPitchRadians = XMMax(-XM_PI / 2.0f, mPitchRadians);
+		mPitchRadians = XMMin(+XM_PI / 2.0f, mPitchRadians);
+
+		Util::real yawRadians = XMConvertToRadians(yawAngle * 0.1f);
+		mYawRadians += yawRadians;
+
+		XMMATRIX rotMatrix;
+		rotMatrix = XMMatrixRotationRollPitchYaw(mPitchRadians, mYawRadians, 0.0f);
+
+		XMVECTOR lookAtVec;
+		XMVECTOR upVec = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMStoreFloat3(&mUpDirection, XMVector3TransformCoord(upVec, rotMatrix));
+		lookAtVec = XMVector3TransformCoord(XMLoadFloat3(&mPosLookDelta), rotMatrix);
+
+		/// update lookat
+		XMStoreFloat3(&mLookAt, XMLoadFloat3(&mPosition) + lookAtVec);
+
+		/// update orientation
+		XMStoreFloat4(&mOrientation, XMQuaternionRotationMatrix(rotMatrix));
+
+		mNeedUpdateViewMatrix = true;
+	}
+	//---------------------------------------------------------------------
+	void Camera::lookAt(FXMVECTOR destVec)
+	{
+		calcOrientation(destVec);
+
+		XMStoreFloat3(&mLookAt, destVec);
+
+		XMStoreFloat3(&mPosLookDelta, XMLoadFloat3(&mLookAt) - XMLoadFloat3(&mPosition));
+
+		mNeedUpdateViewMatrix = true;
+	}
+	//---------------------------------------------------------------------
+	void Camera::calcOrientation(FXMVECTOR destVec)
+	{
+		XMVECTOR direction = XMVector3NormalizeEst(destVec - XMLoadFloat3(&mPosition));
+		XMVECTOR xVec = XMVector3Cross(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), direction);
+		xVec = XMVector3NormalizeEst(xVec);
+		XMVECTOR yVec = XMVector3Cross(direction, xVec);
+		yVec = XMVector3NormalizeEst(yVec);
+
+		XMMATRIX rotateMatrix = XMMatrixSet(
+			XMVectorGetX(xVec), XMVectorGetX(yVec), XMVectorGetX(direction), 0.0f,
+			XMVectorGetY(xVec), XMVectorGetY(yVec), XMVectorGetY(direction), 0.0f,
+			XMVectorGetZ(xVec), XMVectorGetZ(yVec), XMVectorGetZ(direction), 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f);
+
+		XMVECTOR quat = XMQuaternionRotationMatrix(rotateMatrix);
+		mOrientation = XMFLOAT4(-XMVectorGetY(quat), -XMVectorGetZ(quat), -XMVectorGetW(quat), XMVectorGetX(quat));
+	}
+	//---------------------------------------------------------------------
+	void Camera::update(Util::time elapsedTime)
+	{
+		doMove(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	Util::u_int Camera::getKeyCombinationFromEvent(const OIS::KeyEvent & arg)
+	{
+		Util::u_int flag = 0;
+		if (OIS::KC_W == arg.key)
+			flag |= MD_FORWARD;
+		else if (OIS::KC_S == arg.key)
+			flag |= MD_BACK;
+		else if (OIS::KC_A == arg.key)
+			flag |= MD_LEFT;
+		else if (OIS::KC_D == arg.key)
+			flag |= MD_RIGHT;
+
+		return flag;
 	}
 
 }
