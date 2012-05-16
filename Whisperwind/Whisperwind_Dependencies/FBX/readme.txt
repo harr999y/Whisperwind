@@ -1,0 +1,2 @@
+Because the FBX Sdk is too big,so I just put this empty folder here.
+And if you want to build and use the MeshConverter,you need to copy the sdk's include and lib folders to here and copy the .dll to bin/$(Configuration).

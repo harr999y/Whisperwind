@@ -215,7 +215,7 @@ namespace GamePlay
 
 		renderable->setTexture("tex", mRenderTexture);
 
-		XMMATRIX matrix = XMMatrixIdentity();;
+		XMMATRIX matrix = XMMatrixIdentity();
 		Engine::SceneNodePtr & node = mActor->getAttachedSceneNode();
 		if (node)
 		{

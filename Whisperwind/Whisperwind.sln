@@ -43,6 +43,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_GeneralSceneMan
 		{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B} = {EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_MeshConverter", "Whisperwind_MeshConverter\Whisperwind_MeshConverter.vcxproj", "{1A40AB9B-D338-42F4-BBDC-22940EA7E797}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF} = {C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -77,6 +82,10 @@ Global
 		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Debug|Win32.Build.0 = Debug|Win32
 		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Release|Win32.ActiveCfg = Release|Win32
 		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}.Release|Win32.Build.0 = Release|Win32
+		{1A40AB9B-D338-42F4-BBDC-22940EA7E797}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1A40AB9B-D338-42F4-BBDC-22940EA7E797}.Debug|Win32.Build.0 = Debug|Win32
+		{1A40AB9B-D338-42F4-BBDC-22940EA7E797}.Release|Win32.ActiveCfg = Release|Win32
+		{1A40AB9B-D338-42F4-BBDC-22940EA7E797}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,5 +93,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E20E609E-4003-4D78-8792-21CF601B9EF3} = {4736207B-AE0A-45A7-8D96-EC049A5F5CFA}
 		{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD} = {4736207B-AE0A-45A7-8D96-EC049A5F5CFA}
+		{1A40AB9B-D338-42F4-BBDC-22940EA7E797} = {E5EF7291-0436-4FE0-8296-EA468EB132F2}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,16 @@
+<root>
+	<!-- Currently donnot support submesh and skeleton. -->
+	<mesh>
+		<material ambient="0xFFFFFFFF" opcity="1"  effect="test.fx" technique="test" />
+		<vertexbuffer vertexcount="1">
+			<vertex>
+				<position x="1.0" y="0.0" z="1.0" />
+				<normal x="1.0" y="0.0" z="1.0" />
+				<texcoord u="1.0" v="0.0" />
+			</vertex>
+		</vertexbuffer>
+		<triangles>
+			<tiangle v1="0" v2="1" v3="2" />
+		</triangles>
+	</mesh>
+</root>

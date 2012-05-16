@@ -22,72 +22,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _CAMERA_H_
-#define _CAMERA_H_
 
-#pragma warning(push, 3)
-#include <OIS/includes/OIS.h>
-#pragma warning(pop)
+#include "MeshConverter.h"
 
-#include "MathDefine.h"
-#include "EngineForwardDeclare.h"
-
-namespace GamePlay
+namespace Tool
 {
-	enum MoveDirection
+	//---------------------------------------------------------------------
+	void MeshConverter::convertFbxToXml()
 	{
-		MD_LEFT = 1 << 1,
-		MD_RIGHT = 1 << 2,
-		MD_FORWARD = 1<<3,
-		MD_BACK = 1 << 4
-	};
 
-	class Camera
+	}
+	//---------------------------------------------------------------------
+	void MeshConverter::convertXmlToWmesh()
 	{
-	public:
-		Camera(Util::real nearCilp, Util::real farClip);
 
-		~Camera()
-		{}
+	}
+	//---------------------------------------------------------------------
+	void MeshConverter::convertWmeshToXml()
+	{
 
-	public:
-		XMMATRIX getViewMatrix();
-		XMMATRIX getProjMatrix();
-		void move(Util::u_int moveDirection);
-		void stopMove(Util::u_int moveDirection);
-		void rotate(Util::real pitchAngle, Util::real yawAngle/*, Util::real zoom*/);
-		void lookAt(FXMVECTOR destVec);
-		void update(Util::time elapsedTime);
+	}
 
-		Util::u_int getKeyCombinationFromEvent(const OIS::KeyEvent & arg);
-
-	public:
-		SET_GET_CONST_VALUE(XMFLOAT3, Position);
-
-	private:
-		void doMove(Util::time deltaTime);
-
-	private:
-		XMFLOAT3 mPosition;
-		XMFLOAT3 mLookAt;
-		XMFLOAT3 mUpDirection;
-		XMFLOAT4 mOrientation;
-		XMFLOAT3 mPosLookDelta;
-		bool mIsMoveDirection[4]; /// The sequence is forward,back,left,right.
-
-		Util::real mNearClip;
-		Util::real mFarClip;
-		Util::real mAspect;
-
-		XMFLOAT4X4 mProjMatrix;
-		XMFLOAT4X4 mViewMatrix;
-		bool mNeedUpdateViewMatrix;
-
-		Util::real mPitchRadians;
-		Util::real mYawRadians;
-
-		Engine::ViewportPtr mViewport;
-	};
 }
-
-#endif

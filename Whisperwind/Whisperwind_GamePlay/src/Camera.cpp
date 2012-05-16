@@ -139,31 +139,11 @@ namespace GamePlay
 	//---------------------------------------------------------------------
 	void Camera::lookAt(FXMVECTOR destVec)
 	{
-		calcOrientation(destVec);
-
 		XMStoreFloat3(&mLookAt, destVec);
 
 		XMStoreFloat3(&mPosLookDelta, XMLoadFloat3(&mLookAt) - XMLoadFloat3(&mPosition));
 
 		mNeedUpdateViewMatrix = true;
-	}
-	//---------------------------------------------------------------------
-	void Camera::calcOrientation(FXMVECTOR destVec)
-	{
-		XMVECTOR direction = XMVector3NormalizeEst(destVec - XMLoadFloat3(&mPosition));
-		XMVECTOR xVec = XMVector3Cross(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), direction);
-		xVec = XMVector3NormalizeEst(xVec);
-		XMVECTOR yVec = XMVector3Cross(direction, xVec);
-		yVec = XMVector3NormalizeEst(yVec);
-
-		XMMATRIX rotateMatrix = XMMatrixSet(
-			XMVectorGetX(xVec), XMVectorGetX(yVec), XMVectorGetX(direction), 0.0f,
-			XMVectorGetY(xVec), XMVectorGetY(yVec), XMVectorGetY(direction), 0.0f,
-			XMVectorGetZ(xVec), XMVectorGetZ(yVec), XMVectorGetZ(direction), 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f);
-
-		XMVECTOR quat = XMQuaternionRotationMatrix(rotateMatrix);
-		mOrientation = XMFLOAT4(-XMVectorGetY(quat), -XMVectorGetZ(quat), -XMVectorGetW(quat), XMVectorGetX(quat));
 	}
 	//---------------------------------------------------------------------
 	void Camera::update(Util::time elapsedTime)

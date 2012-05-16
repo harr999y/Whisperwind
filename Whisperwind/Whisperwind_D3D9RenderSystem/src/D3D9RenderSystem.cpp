@@ -388,6 +388,10 @@ namespace Engine
 					D3D9RenderablePtr d3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(renderable);
 					d3d9Renderable->onDeviceLost();
 				}
+				else
+				{
+					mRenderableMappingMap.erase(it);
+				}
 			}
 		}
 
@@ -402,6 +406,10 @@ namespace Engine
 					RenderTexturePtr texture = textureWeak.lock();
 					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
 					d3d9Texture->onDeviceLost();
+				}
+				else
+				{
+					mRenderTextureFileMap.erase(it);
 				}
 			}
 		}
@@ -418,6 +426,10 @@ namespace Engine
 					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
 					d3d9Texture->onDeviceLost();
 				}
+				else
+				{
+					mRenderTextureMappingMap.erase(it);
+				}
 			}
 		}
 
@@ -432,6 +444,10 @@ namespace Engine
 					RenderTargetPtr target = targetWeak.lock();
 					D3D9RenderTargetPtr d3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(target);
 					d3d9Target->onDeviceLost();
+				}
+				else
+				{
+					mRenderTargetMappingMap.erase(it);
 				}
 			}
 		}
@@ -463,6 +479,10 @@ namespace Engine
 					D3D9RenderablePtr newD3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(this->createRenderable(renderableMapping));
 					d3d9Renderable->onDeviceReset(newD3d9Renderable);
 				}
+				else
+				{
+					mRenderableMappingMap.erase(it);
+				}
 			}
 		}
 
@@ -480,6 +500,10 @@ namespace Engine
 
 					D3D9RenderTexturePtr newD3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(this->createRenderTextureFromFile(wstr));
 					d3d9Texture->onDeviceReset(newD3d9Texture);
+				}
+				else
+				{
+					mRenderTextureFileMap.erase(it);
 				}
 			}
 		}
@@ -499,6 +523,10 @@ namespace Engine
 					D3D9RenderTexturePtr newD3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(this->createRenderTexture(textureMapping));
 					d3d9Texture->onDeviceReset(newD3d9Texture);
 				}
+				else
+				{
+					mRenderTextureMappingMap.erase(it);
+				}
 			}
 		}
 
@@ -516,6 +544,10 @@ namespace Engine
 
 					D3D9RenderTargetPtr newD3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(this->createRenderTarget(targetMapping));
 					d3d9Target->onDeviceReset(newD3d9Target);
+				}
+				else
+				{
+					mRenderTargetMappingMap.erase(it);
 				}
 			}
 		}
