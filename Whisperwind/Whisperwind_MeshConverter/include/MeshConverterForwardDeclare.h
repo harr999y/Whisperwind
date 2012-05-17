@@ -27,15 +27,10 @@ THE SOFTWARE
 
 #include <boost/shared_ptr.hpp>
 
-class FbxManager;
-class FbxScene;
-
 namespace Tool
 {
 	class FbxXmlConverter;
 
-	typedef boost::shared_ptr<FbxManager> FbxManagerPtr;
-	typedef boost::shared_ptr<FbxScene> FbxScenePtr;
 	typedef boost::shared_ptr<FbxXmlConverter> FbxXmlConverterPtr;
 
  }

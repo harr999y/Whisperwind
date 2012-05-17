@@ -22,22 +22,53 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _MESH_CONVERTER_H_
-#define _MESH_CONVERTER_H_
+#ifndef _XML_WRITER_H_
+#define _XML_WRITER_H_
+
+#include <fstream>
+#include <boost/shared_ptr.hpp>
+#include <rapidxml/rapidxml.hpp>
+
+/// disable the bad_cast warning.
+#pragma warning(push)
+#pragma warning(disable : 4244)
+#include <rapidxml/rapidxml_utils.hpp>
+#pragma warning(pop)
 
 #include "Util.h"
 
-namespace Tool
+namespace Util
 {
-	class MeshConverter
+	typedef Util::String::value_type XmlCharType;
+	typedef rapidxml::xml_node<XmlCharType> XmlNode;
+
+	class WHISPERWIND_API XmlWriter
 	{
 	public:
-		static void convertFbxToXml();
-		static void convertXmlToWmesh();
-		static void convertWmeshToXml();
+		XmlWriter();
+
+		~XmlWriter()
+		{}
+
+	public:
+		XmlNode * appendNode(XmlNode * parentNode, const XmlCharType * name);
+		void appendAttribute(XmlNode * node, const XmlCharType * attribute, const XmlCharType * value);
+		void writeToFile(const Util::Wstring & filePath);
+
+	public:
+		GET_PTR(XmlNode, RootNode);
 
 	private:
-		MAKE_STATIC_CLASS(MeshConverter);
+		typedef rapidxml::xml_document<XmlCharType> Doc;
+		typedef boost::shared_ptr<Doc> DocPtr;
+		DocPtr mDoc;
+
+		XmlNode * mRootNode;
+
+		std::ofstream mXmlStream;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(XmlWriter);
 	};
 
 }

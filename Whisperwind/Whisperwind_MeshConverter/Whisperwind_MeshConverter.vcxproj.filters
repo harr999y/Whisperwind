@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\MeshConverter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\MeshConverterForwardDeclare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -25,9 +22,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MeshConverter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\RunConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

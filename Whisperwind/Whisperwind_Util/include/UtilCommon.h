@@ -102,6 +102,9 @@ THE SOFTWARE
 #define GET_VALUE(type, name) \
 	inline type & get##name() { return m##name; }
 
+#define GET_PTR(type, name) \
+	inline type * get##name() { return m##name; }
+
 #define GET_CONST_VALUE(type, name) \
 	inline const type & get##name() const { return m##name; }
 

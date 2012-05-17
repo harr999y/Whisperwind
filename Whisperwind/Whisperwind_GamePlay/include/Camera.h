@@ -87,6 +87,9 @@ namespace GamePlay
 		Util::real mYawRadians;
 
 		Engine::ViewportPtr mViewport;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Camera);
 	};
 }
 

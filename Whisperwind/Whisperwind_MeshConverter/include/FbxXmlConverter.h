@@ -25,6 +25,8 @@ THE SOFTWARE
 #ifndef _FBX_XML_CONVERTER_H_
 #define _FBX_XML_CONVERTER_H_
 
+#include <fbxsdk.h>
+
 #include "Util.h"
 #include "MeshConverterForwardDeclare.h"
 
@@ -33,14 +35,26 @@ namespace Tool
 	class FbxXmlConverter
 	{
 	public:
-		FbxXmlConverter(const Util::Wstring & path);
+		explicit FbxXmlConverter(const Util::String & filePath);
 
-		~FbxXmlConverter()
-		{}
+		~FbxXmlConverter();
+
+	public:
+		Util::Wstring convertToXml();
 
 	private:
-		FbxManagerPtr mFbxManager;
-		FbxScenePtr mFbxScene;
+		void doWalk(FbxNode * fbxNode);
+		void processMesh(FbxNode * fbxNode);
+
+	private:
+		FbxManager * mFbxManager;
+		FbxScene * mFbxScene;
+
+		Util::String mPath;
+		Util::XmlWriterPtr mXmlWriter;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(FbxXmlConverter);
 	};
 
 }

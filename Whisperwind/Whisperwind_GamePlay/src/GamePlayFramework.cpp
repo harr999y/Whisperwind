@@ -97,9 +97,9 @@ namespace GamePlay
 		    boost::bind(&OIS::InputManager::destroyInputSystem, _1));
 
 		mKeyboard = boost::shared_ptr<OIS::Keyboard>(static_cast<OIS::Keyboard *>(mInputManager->createInputObject(OIS::OISKeyboard, true)), 
-			boost::bind(&OIS::InputManager::destroyInputObject, boost::ref(*(mInputManager.get())), _1));
+			boost::bind(&OIS::InputManager::destroyInputObject, boost::ref(*mInputManager), _1));
 		mMouse = boost::shared_ptr<OIS::Mouse>(static_cast<OIS::Mouse *>(mInputManager->createInputObject(OIS::OISMouse, true)), 
-			boost::bind(&OIS::InputManager::destroyInputObject, boost::ref(*(mInputManager.get())), _1));
+			boost::bind(&OIS::InputManager::destroyInputObject, boost::ref(*mInputManager), _1));
 
 		mKeyboard->setEventCallback(this);
 		mMouse->setEventCallback(this);

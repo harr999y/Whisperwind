@@ -30,6 +30,7 @@
     <ClInclude Include="include\UtilTypedefs.h" />
     <ClInclude Include="include\UtilWarningDisable.h" />
     <ClInclude Include="include\XmlReader.h" />
+    <ClInclude Include="include\XmlWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Boost.data_time.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="src\StringConverter.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
+    <ClCompile Include="src\XmlWriter.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}</ProjectGuid>

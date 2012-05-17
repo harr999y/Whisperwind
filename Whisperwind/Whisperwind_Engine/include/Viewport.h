@@ -50,6 +50,9 @@ namespace Engine
 		Util::u_int mLeft;
 		Util::u_int mWidth;
 		Util::u_int mHeight;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Viewport);
 	};
 }
 

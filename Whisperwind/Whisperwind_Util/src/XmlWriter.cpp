@@ -23,24 +23,64 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "MeshConverter.h"
+#include <boost/make_shared.hpp>
 
-namespace Tool
+/// disable the unreferenced formal parameter warning.
+#pragma warning(push)
+#pragma warning(disable : 4100)
+#include <rapidxml/rapidxml_print.hpp>
+#pragma warning(pop)
+
+#include "DebugDefine.h"
+#include "ExceptionDefine.h"
+#include "XmlWriter.h"
+
+namespace Util
 {
 	//---------------------------------------------------------------------
-	void MeshConverter::convertFbxToXml()
+	XmlWriter::XmlWriter()
 	{
+		mDoc = boost::make_shared<Doc>();
 
+		XmlCharType * nodeName = mDoc->allocate_string("root");
+		mRootNode = mDoc->allocate_node(rapidxml::node_element, nodeName);
+		mDoc->append_node(mRootNode);
 	}
 	//---------------------------------------------------------------------
-	void MeshConverter::convertXmlToWmesh()
+	XmlNode * XmlWriter::appendNode(XmlNode * parentNode, const XmlCharType * name)
 	{
+		WHISPERWIND_ASSERT(parentNode);
 
+		XmlCharType * nodeName = mDoc->allocate_string(name);
+		XmlNode * node = mDoc->allocate_node(rapidxml::node_element, nodeName);
+		parentNode->append_node(node);
+
+		return node;
 	}
 	//---------------------------------------------------------------------
-	void MeshConverter::convertWmeshToXml()
+	void XmlWriter::appendAttribute(XmlNode * node, const XmlCharType * attribute, const XmlCharType * value)
 	{
+		WHISPERWIND_ASSERT(node);
 
+		XmlCharType * attributeName = mDoc->allocate_string(attribute);
+		XmlCharType * valueStr = mDoc->allocate_string(value);
+
+		node->append_attribute(mDoc->allocate_attribute(attributeName, valueStr));
+	}
+	//---------------------------------------------------------------------
+	void XmlWriter::writeToFile(const Util::Wstring & filePath)
+	{
+		mXmlStream.open(filePath, std::ios::out | std::ios::trunc);
+		if (!mXmlStream.is_open())
+		{
+			Util::String str;
+			Util::WstringToString(filePath, str);
+			WHISPERWIND_EXCEPTION((str + " open failed!").c_str());
+		}
+
+		mXmlStream << *mDoc;
+
+		mXmlStream.close();
 	}
 
 }

@@ -85,6 +85,9 @@
     <ClInclude Include="include\MathDefine.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="include\XmlWriter.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Boost.data_time.cpp">
@@ -103,6 +106,9 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="src\XmlReader.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XmlWriter.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>

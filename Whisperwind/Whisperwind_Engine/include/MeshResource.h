@@ -39,8 +39,6 @@ namespace Engine
 		~MeshResource()
 		{}
 
-	private:
-		DISALLOW_COPY_AND_ASSIGN(MeshResource);
 	};
 }
 

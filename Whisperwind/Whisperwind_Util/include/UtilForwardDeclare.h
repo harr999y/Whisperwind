@@ -35,6 +35,9 @@ namespace Util
 	class XmlReader;
 	typedef boost::shared_ptr<XmlReader> XmlReaderPtr;
 
+	class XmlWriter;
+	typedef boost::shared_ptr<XmlWriter> XmlWriterPtr;
+
 	class Timer;
 	typedef boost::shared_ptr<Timer> TimerPtr;
 }

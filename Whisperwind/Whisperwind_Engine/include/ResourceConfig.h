@@ -50,6 +50,9 @@ namespace Engine
 	private:
 		Util::WstringVector mFolderVec;
 		Util::WstringVector mSevenZVec;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(ResourceConfig);
 	};
 }
 

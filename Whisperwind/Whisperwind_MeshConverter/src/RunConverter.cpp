@@ -22,3 +22,52 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+
+#include <boost/algorithm/string.hpp>
+
+#include "Util.h"
+#include "ExceptionDefine.h"
+#include "DebugDefine.h"
+#include "FbxXmlConverter.h"
+
+int main(int argc, char ** argv)
+{
+	try
+	{
+		if (argc > 2)
+		{
+			WHISPERWIND_EXCEPTION("Too many args!");
+		}
+		else if (argc <= 1)
+		{
+			WHISPERWIND_EXCEPTION("You should assign a file path,the best way is dragging the file to the exe or write a bat.");
+		}
+
+		if (boost::algorithm::find_first(argv[1], ".fbx"))
+		{
+			Tool::FbxXmlConverter converter(argv[1]);
+			converter.convertToXml();
+		}
+		else if (boost::algorithm::find_first(argv[1], ".wmesh"))
+		{
+
+		}
+		else if (boost::algorithm::find_first(argv[1], ".wmesh.xml"))
+		{
+
+		}
+	}
+	catch (Util::Exception & e)
+	{
+#ifdef WHISPERWIND_DEBUG
+		DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
+#else
+		Util::Wstring errorInfo;
+		Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
+		WHISPERWIND_LOG(errorInfo);
+		::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
+#endif
+	}
+
+	return 0;
+}

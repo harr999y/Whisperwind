@@ -23,16 +23,123 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include <FBX/include/fbxsdk.h>
+#include "UtilWarningDisable.h"
 
+#include <boost/bind.hpp>
+#include <boost/ref.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+
+#include "ExceptionDefine.h"
+#include "XmlWriter.h"
 #include "FbxXmlConverter.h"
 
 namespace Tool
 {
+	static const Util::Wstring XML_SUFFIX(TO_UNICODE(".wmesh.xml"));
 	//---------------------------------------------------------------------
-	FbxXmlConverter::FbxXmlConverter(const Util::Wstring & path)
+	FbxXmlConverter::FbxXmlConverter(const Util::String & filePath)  :
+        mPath(filePath)
 	{
-		mFbxManager = boost::shared_ptr<FbxManager>(FbxManager::Create(), &FbxManager::Destroy);
+		mFbxManager = FbxManager::Create();
+		IF_NULL_EXCEPTION(mFbxManager, (filePath + " FbxManager create failed!").c_str());
+
+		FbxIOSettings * fbxIos = FbxIOSettings::Create(mFbxManager, IOSROOT);
+		IF_NULL_EXCEPTION(fbxIos, (filePath + " FbxIOSettings create failed!").c_str());
+		mFbxManager->SetIOSettings(fbxIos);
+
+		FbxString path = FbxGetApplicationDirectory();
+		mFbxManager->LoadPluginsDirectory(path.Buffer());
+
+		mFbxScene = FbxScene::Create(mFbxManager, "");
+		IF_NULL_EXCEPTION(mFbxScene, (filePath + " FbxScene create failed!").c_str());
+
+		FbxImporter * sceneImporter = FbxImporter::Create(mFbxManager, "");
+		IF_NULL_EXCEPTION(sceneImporter, (filePath + " FbxImporter create failed!").c_str());
+		IF_FALSE_EXCEPTION(sceneImporter->Initialize(filePath.c_str(), -1, fbxIos), (filePath + " parse error!").c_str());
+		sceneImporter->Import(mFbxScene);
+		sceneImporter->Destroy();
+	}
+		//---------------------------------------------------------------------
+	FbxXmlConverter::~FbxXmlConverter()
+	{
+		if (mFbxManager)
+			mFbxManager->Destroy();
+	}
+	//---------------------------------------------------------------------
+	Util::Wstring FbxXmlConverter::convertToXml()
+	{
+		/// save to xml
+		try
+		{
+			mXmlWriter = boost::make_shared<Util::XmlWriter>();
+
+			FbxNode * rootNode = mFbxScene->GetRootNode();
+			IF_NULL_EXCEPTION(rootNode, (mPath + " Get root node failed!").c_str());
+			for (int it = 0; it < rootNode->GetChildCount(); ++it)
+			{
+				doWalk(rootNode->GetChild(it));
+			}
+
+			Util::Wstring wstrPath;
+			Util::StringToWstring(mPath, wstrPath);
+			Util::WstringVector wstrVec;
+			boost::split(wstrVec, wstrPath, boost::is_any_of("."));
+			wstrPath = wstrVec[0] + XML_SUFFIX;
+			mXmlWriter->writeToFile(wstrPath);
+
+			return wstrPath;
+		}
+		catch (Util::Exception & /*e*/)
+		{
+			WHISPERWIND_EXCEPTION((mPath + " write to xml failed!"));
+		}
+	}
+	//---------------------------------------------------------------------
+	void FbxXmlConverter::doWalk(FbxNode * fbxNode)
+	{
+		IF_NULL_RETURN(fbxNode);
+
+		FbxNodeAttribute * nodeAtribute = fbxNode->GetNodeAttribute();
+		IF_NULL_RETURN(nodeAtribute);
+
+		switch (nodeAtribute->GetAttributeType())
+		{
+		case FbxNodeAttribute::eMesh:
+			{
+				processMesh(fbxNode);
+				break;
+			}
+		}
+
+		for (int it = 0; it < fbxNode->GetChildCount(); ++it)
+		{
+			doWalk(fbxNode);
+		}
+	}
+	//---------------------------------------------------------------------
+	void FbxXmlConverter::processMesh(FbxNode * fbxNode)
+	{
+		IF_NULL_RETURN(fbxNode);
+
+		FbxMesh * fbxMesh = static_cast<FbxMesh *>(fbxNode->GetNodeAttribute());
+
+		if (!fbxMesh->IsTriangleMesh())
+		{
+			FbxGeometryConverter converter(mFbxManager);
+			converter.TriangulateInPlace(fbxNode);
+			fbxMesh = static_cast<FbxMesh *>(fbxNode->GetNodeAttribute());
+		}
+
+		/// save
+		{
+			Util::XmlNode * meshNode = mXmlWriter->appendNode(mXmlWriter->getRootNode(), "mesh");
+
+			mXmlWriter->appendNode(meshNode, "material");
+			mXmlWriter->appendNode(meshNode, "vertexbuffer");
+
+		}
 	}
 
 }
