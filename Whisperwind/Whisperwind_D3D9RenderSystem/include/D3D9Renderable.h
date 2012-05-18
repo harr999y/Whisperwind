@@ -84,7 +84,8 @@ namespace Engine
 		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
 
 	private:
-		virtual void setEffectSemanticValue_impl(const Util::String & paramName, const void * data);
+		virtual void setEffectSemanticValue_impl(const Util::String & semanticName, const void * data);
+		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture);
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target);
 

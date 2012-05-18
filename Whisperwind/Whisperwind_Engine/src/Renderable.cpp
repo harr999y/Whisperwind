@@ -28,9 +28,14 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void Renderable::setEffectSemanticValue( const Util::String & paramName, const void * data )
+	void Renderable::setEffectSemanticValue( const Util::String & semanticName, const void * data )
 	{
-		setEffectSemanticValue_impl(paramName, data);
+		setEffectSemanticValue_impl(semanticName, data);
+	}
+	//---------------------------------------------------------------------
+	void Renderable::setEffectParamValue(const Util::String & paramName, const void * data)
+	{
+		setEffectParamValue_impl(paramName, data);
 	}
 	//---------------------------------------------------------------------
 	void Renderable::setTexture(const Util::String & paramName, const RenderTexturePtr & texture)

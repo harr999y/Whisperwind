@@ -37,13 +37,23 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	void D3D9Renderable::setEffectSemanticValue_impl(const Util::String & paramName, const void * data)
+	void D3D9Renderable::setEffectSemanticValue_impl(const Util::String & semanticName, const void * data)
 	{
 		WHISPERWIND_ASSERT(data != NULL);
 
-		EffectHandleSize ehs = getEffectHandleSize(paramName);
+		EffectHandleSize ehs = getEffectHandleSize(semanticName);
 
 		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(ehs.Handle, data, ehs.Size));
+	}
+	//---------------------------------------------------------------------
+	void D3D9Renderable::setEffectParamValue_impl(const Util::String & paramName, const void * data)
+	{
+		WHISPERWIND_ASSERT(data != NULL);
+
+		D3DXPARAMETER_DESC paramDesc;
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(paramName.c_str(), &paramDesc));
+
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(paramName.c_str(), data, paramDesc.Bytes));
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture)

@@ -1,16 +1,169 @@
 <root>
-	<!-- Currently donnot support submesh and skeleton. -->
 	<mesh>
-		<material ambient="0xFFFFFFFF" opcity="1"  effect="test.fx" technique="test" />
-		<vertexbuffer vertexcount="1">
+		<material effect="DiffuseBump.fx" technique="Default">
+			<param name="diffuseTexture" value="seafloor.dds"/>
+			<param name="normalMap" value="NMP_Ripples2_512.dds"/>
+		</material>
+		<vertexbuffer vertexcount="8">
 			<vertex>
-				<position x="1.0" y="0.0" z="1.0" />
-				<normal x="1.0" y="0.0" z="1.0" />
-				<texcoord u="1.0" v="0.0" />
+				<position x="-5" y="-5" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="0"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="0"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="0"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="10"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="10"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="10"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="10"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="10"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="10"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="-5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="10"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="5" y="5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="0"/>
+				<texcoord u="0" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="-5" z="10"/>
+				<texcoord u="1" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="10"/>
+				<texcoord u="0" v="1"/>
+			</vertex>
+			<vertex>
+				<position x="-5" y="5" z="0"/>
+				<texcoord u="0" v="0"/>
 			</vertex>
 		</vertexbuffer>
-		<triangles>
-			<tiangle v1="0" v2="1" v3="2" />
+		<triangles trianglescount="12">
+			<triangle v1="0" v2="2" v3="3"/>
+			<triangle v1="3" v2="1" v3="0"/>
+			<triangle v1="4" v2="5" v3="7"/>
+			<triangle v1="7" v2="6" v3="4"/>
+			<triangle v1="0" v2="1" v3="5"/>
+			<triangle v1="5" v2="4" v3="0"/>
+			<triangle v1="1" v2="3" v3="7"/>
+			<triangle v1="7" v2="5" v3="1"/>
+			<triangle v1="3" v2="2" v3="6"/>
+			<triangle v1="6" v2="7" v3="3"/>
+			<triangle v1="2" v2="0" v3="4"/>
+			<triangle v1="4" v2="6" v3="2"/>
 		</triangles>
 	</mesh>
 </root>
+

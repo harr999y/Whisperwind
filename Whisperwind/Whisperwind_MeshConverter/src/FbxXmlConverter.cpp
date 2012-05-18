@@ -61,7 +61,7 @@ namespace Tool
 		sceneImporter->Import(mFbxScene);
 		sceneImporter->Destroy();
 	}
-		//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 	FbxXmlConverter::~FbxXmlConverter()
 	{
 		if (mFbxManager)
@@ -84,9 +84,9 @@ namespace Tool
 
 			Util::Wstring wstrPath;
 			Util::StringToWstring(mPath, wstrPath);
-			Util::WstringVector wstrVec;
-			boost::split(wstrVec, wstrPath, boost::is_any_of("."));
-			wstrPath = wstrVec[0] + XML_SUFFIX;
+			boost::erase_last(wstrPath, ".FBX");
+			boost::erase_last(wstrPath, ".fbx");
+			wstrPath += XML_SUFFIX;
 			mXmlWriter->writeToFile(wstrPath);
 
 			return wstrPath;
@@ -136,9 +136,171 @@ namespace Tool
 		{
 			Util::XmlNode * meshNode = mXmlWriter->appendNode(mXmlWriter->getRootNode(), "mesh");
 
-			mXmlWriter->appendNode(meshNode, "material");
-			mXmlWriter->appendNode(meshNode, "vertexbuffer");
+			Util::XmlNode * materialNode = mXmlWriter->appendNode(meshNode, "material");
+			{
+				/// material
+				FbxNode * fbxNode = fbxMesh->GetNode();
+				Util::u_int materialCount = fbxNode->GetMaterialCount();
+				if (materialCount > 0)
+				{
+					FbxSurfaceMaterial * fbxMaterial = fbxNode->GetMaterial(0);
+					if (fbxMaterial)
+					{
+						const FbxImplementation * implementation = GetImplementation(fbxMaterial, FBXSDK_IMPLEMENTATION_HLSL);
+						if (implementation)
+						{
+							const FbxBindingTable * rootTable = implementation->GetRootTable();
+							if (rootTable)
+							{
+								FbxString effectFile = rootTable->DescAbsoluteURL.Get();
+								Util::StringVector strVec;
+								Util::String effectName(effectFile.Buffer());
+								boost::algorithm::split(strVec, effectName, boost::is_any_of("\\"));
+								mXmlWriter->appendAttribute(materialNode, "effect", strVec.rbegin()->c_str());
 
+								FbxString techniqueName = rootTable->DescTAG.Get();
+								mXmlWriter->appendAttribute(materialNode, "technique", techniqueName.Buffer());
+
+								Util::u_int entryNum = rootTable->GetEntryCount();
+								for (Util::u_int entryIt = 0; entryIt < entryNum; ++entryIt)
+								{
+									const FbxBindingTableEntry & entry = rootTable->GetEntry(entryIt);
+									const char * entrySrcType = entry.GetEntryType(true);
+									FbxProperty fbxProperty;
+
+									if (strcmp(FbxPropertyEntryView::sEntryType, entrySrcType) == 0)
+									{
+										fbxProperty = fbxMaterial->FindPropertyHierarchical(entry.GetSource());
+										if (!fbxProperty.IsValid())
+										{
+											fbxProperty = fbxMaterial->RootProperty.FindHierarchical(entry.GetSource());
+										}
+									}
+									else if (strcmp(FbxConstantEntryView::sEntryType, entrySrcType) == 0)
+									{
+										fbxProperty = implementation->GetConstants().FindHierarchical(entry.GetSource());
+									}
+
+									if (fbxProperty.IsValid())
+									{
+										if (fbxProperty.GetSrcObjectCount(FBX_TYPE(FbxTexture)) > 0)
+										{
+											for (Util::s_int texIt = 0; texIt < fbxProperty.GetSrcObjectCount(FBX_TYPE(FbxFileTexture)); ++texIt)
+											{
+												FbxFileTexture * texture = fbxProperty.GetSrcObject(FBX_TYPE(FbxFileTexture), texIt);
+												IF_NULL_CONTINUE(texture);
+
+												Util::XmlNode * paramNode = mXmlWriter->appendNode(materialNode, "param");
+												mXmlWriter->appendAttribute(paramNode, "name", texture->GetDstProperty().GetNameAsCStr());
+												mXmlWriter->appendAttribute(paramNode, "value", texture->GetMediaName().Buffer());
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			Util::u_int vertexCount = fbxMesh->GetControlPointsCount();
+			Util::XmlNode * vbNode = mXmlWriter->appendNode(meshNode, "vertexbuffer");
+			mXmlWriter->appendAttribute(vbNode, "vertexcount", (boost::lexical_cast<Util::String>(vertexCount)).c_str());
+
+			if (vertexCount > 0)
+			{
+				Util::u_int polygonCount = fbxMesh->GetPolygonCount();
+
+				FbxVector4 * vertexBuf = fbxMesh->GetControlPoints();
+				IF_NULL_EXCEPTION(vertexBuf, mPath + " get vertex buffer failed!");
+
+				for (Util::u_int polygonIt = 0; polygonIt < polygonCount; ++polygonIt)
+				{
+					Util::s_int polygonSize = fbxMesh->GetPolygonSize(polygonIt);
+					if (-1 == polygonSize)
+						continue;
+
+					for (Util::s_int polygonIndex = 0; polygonIndex < polygonSize; ++polygonIndex)
+					{
+						Util::s_int vertexIt = fbxMesh->GetPolygonVertex(polygonIt, polygonIndex);
+
+						Util::XmlNode * vertexNode = mXmlWriter->appendNode(vbNode, "vertex");
+						{
+							Util::XmlNode * positionNode = mXmlWriter->appendNode(vertexNode, "position");
+							mXmlWriter->appendAttribute(positionNode, "x", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][0]).c_str());
+							mXmlWriter->appendAttribute(positionNode, "y", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][1]).c_str());
+							mXmlWriter->appendAttribute(positionNode, "z", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][2]).c_str());
+
+							FbxVector2 uv;
+							FbxGeometryElementUV * elemUV = fbxMesh->GetElementUV(0);
+							IF_NULL_EXCEPTION(elemUV, "Error!");
+							switch (elemUV->GetMappingMode())
+							{
+							case FbxGeometryElement::eByControlPoint:
+								{
+									switch (elemUV->GetReferenceMode())
+									{
+									case FbxGeometryElement::eDirect:
+										{
+											uv = elemUV->GetDirectArray().GetAt(vertexIt);
+											break;
+										}
+									case FbxGeometryElement::eIndexToDirect:
+										{
+											Util::u_int id = elemUV->GetIndexArray().GetAt(vertexIt);
+											uv = elemUV->GetDirectArray().GetAt(id);
+											break;
+										}
+									}
+									break;
+								}
+							case FbxGeometryElement::eByPolygonVertex:
+								{
+									Util::s_int uvIndex = fbxMesh->GetTextureUVIndex(polygonIt, polygonIndex);
+									if (-1 == uvIndex)
+										continue;
+
+									switch (elemUV->GetReferenceMode())
+									{
+									case FbxGeometryElement::eDirect:
+									case FbxGeometryElement::eIndexToDirect:
+										{
+											uv = elemUV->GetDirectArray().GetAt(uvIndex);
+											break;
+										}
+									}
+
+									break;
+								}
+							} // switch
+
+							Util::XmlNode * uvNode = mXmlWriter->appendNode(vertexNode, "texcoord");
+							mXmlWriter->appendAttribute(uvNode, "u", boost::lexical_cast<Util::String>(uv[0]).c_str());
+							mXmlWriter->appendAttribute(uvNode, "v", boost::lexical_cast<Util::String>(uv[1]).c_str());
+						}
+					}
+				}
+			}
+			
+			Util::u_int trianglesCount = fbxMesh->GetPolygonCount();
+			Util::XmlNode * trianglesNode = mXmlWriter->appendNode(meshNode, "triangles");
+			mXmlWriter->appendAttribute(trianglesNode, "trianglescount", boost::lexical_cast<Util::String>(trianglesCount).c_str());
+
+			if (trianglesCount > 0)
+			{
+				Util::u_int indexCount = fbxMesh->GetPolygonVertexCount();
+				Util::s_int * indexBuf = fbxMesh->GetPolygonVertices();
+				IF_NULL_EXCEPTION(indexBuf, mPath + " get index buffer failed!");
+				for (Util::u_int it = 0; it < indexCount; /**/)
+				{
+					Util::XmlNode * triangleNode = mXmlWriter->appendNode(trianglesNode, "triangle");
+					mXmlWriter->appendAttribute(triangleNode, "v1", boost::lexical_cast<Util::String>(indexBuf[it]).c_str());
+					mXmlWriter->appendAttribute(triangleNode, "v2", boost::lexical_cast<Util::String>(indexBuf[it + 1]).c_str());
+					mXmlWriter->appendAttribute(triangleNode, "v3", boost::lexical_cast<Util::String>(indexBuf[it + 2]).c_str());
+
+					it += 3;
+				}
+			}
 		}
 	}
 

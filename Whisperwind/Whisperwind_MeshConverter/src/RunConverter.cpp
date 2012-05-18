@@ -43,16 +43,16 @@ int main(int argc, char ** argv)
 			WHISPERWIND_EXCEPTION("You should assign a file path,the best way is dragging the file to the exe or write a bat.");
 		}
 
-		if (boost::algorithm::find_first(argv[1], ".fbx"))
+		if (boost::algorithm::find_first(argv[1], ".fbx") || boost::algorithm::find_first(argv[1], ".FBX"))
 		{
 			Tool::FbxXmlConverter converter(argv[1]);
 			converter.convertToXml();
 		}
-		else if (boost::algorithm::find_first(argv[1], ".wmesh"))
+		else if (boost::algorithm::find_first(argv[1], ".wmesh.xml"))
 		{
 
 		}
-		else if (boost::algorithm::find_first(argv[1], ".wmesh.xml"))
+		else if (boost::algorithm::find_first(argv[1], ".wmesh"))
 		{
 
 		}
