@@ -40,9 +40,6 @@
     <ClInclude Include="include\Singleton.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="include\XmlReader.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="include\UtilWarningDisable.h">
       <Filter>Util Header</Filter>
     </ClInclude>
@@ -85,7 +82,10 @@
     <ClInclude Include="include\MathDefine.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="include\XmlWriter.h">
+    <ClInclude Include="include\XmlManipulator.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BoostSerialization.h">
       <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>

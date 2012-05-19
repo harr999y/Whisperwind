@@ -115,7 +115,7 @@ namespace Engine
 		mChildSceneNodeVec.clear();
 	}
 	//---------------------------------------------------------------------
-	bool SceneNode::getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode)
+	bool SceneNode::getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode) const
 	{
 		for (SceneNodeVector::const_iterator childIt; childIt != mChildSceneNodeVec.end(); ++ childIt)
 		{
@@ -129,7 +129,7 @@ namespace Engine
 		return false;
 	}
 	//---------------------------------------------------------------------
-	bool SceneNode::getParentNode(SceneNodePtr & outParentNode)
+	bool SceneNode::getParentNode(SceneNodePtr & outParentNode) const
 	{
 		if (mParentNode)
 		{
@@ -149,7 +149,7 @@ namespace Engine
 		}
 	}
 	//---------------------------------------------------------------------
-	XMVECTOR SceneNode::getPosition()
+	XMVECTOR SceneNode::getPosition() const
 	{
 		if (mParentNode)
 			return mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition);
@@ -167,7 +167,7 @@ namespace Engine
 		mNeedUpdateChilds = true;
 	}
 	//---------------------------------------------------------------------
-	XMVECTOR SceneNode::getRelativePosition()
+	XMVECTOR SceneNode::getRelativePosition() const
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
 

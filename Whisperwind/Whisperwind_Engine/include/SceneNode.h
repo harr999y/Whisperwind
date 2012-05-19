@@ -51,13 +51,13 @@ namespace Engine
 		SceneNodePtr & createChildNode(const Util::Wstring & name);
 		void removeChildNode(SceneNodePtr & childNode);
 		void removeAllChildNode();
-		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode);
-		bool getParentNode(SceneNodePtr & outParentNode);
+		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode) const;
+		bool getParentNode(SceneNodePtr & outParentNode) const;
 		void setParentNode(const SceneNodePtr & parentNode);
 		void addToRenderQueue();
-		XMVECTOR getPosition();
+		XMVECTOR getPosition() const;
 		void setPosition(FXMVECTOR position);
-		XMVECTOR getRelativePosition();
+		XMVECTOR getRelativePosition() const;
 		void setRelativePosition(FXMVECTOR relPosition);
 
 		/// I don't use ref here,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.

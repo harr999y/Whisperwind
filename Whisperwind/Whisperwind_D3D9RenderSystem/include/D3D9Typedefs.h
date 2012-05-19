@@ -57,7 +57,7 @@ namespace Engine
 	typedef std::vector<IDirect3DVertexBuffer9Ptr> IDirect3DVertexBuffer9PtrVector;
 	typedef std::vector<Util::u_int> VertexStrideVector;
 
-	typedef boost::unordered_map<Util::Wstring, ID3DXEffectPtr> ID3DXEffectMap;
+	typedef boost::unordered_map<Util::String, ID3DXEffectPtr> ID3DXEffectMap;
 }
 
 #endif

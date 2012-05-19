@@ -66,10 +66,7 @@ namespace Util
 			boost::posix_time::second_clock::local_time());		
 		strTime[10] = ' ';
 
-		String outEvent;
-		WstringToString(event, outEvent);
-		
-		mStream  << (strTime + " : " + outEvent).c_str() << std::endl;
+		mStream  << (strTime + " : " + WstringToString(event)).c_str() << std::endl;
 		mStream.flush();
 
 		DEBUG_PRINT(event);

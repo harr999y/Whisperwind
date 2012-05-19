@@ -79,9 +79,7 @@ namespace Engine
 	{
 		if (mFilePathMap.find(name) == mFilePathMap.end())
 		{
-			Util::String str;
-			Util::WstringToString(name, str);
-			WHISPERWIND_EXCEPTION(str + " cannot find!");
+			WHISPERWIND_EXCEPTION(Util::WstringToString(name) + " cannot find!");
 		}
 
 		return mFilePathMap[name];

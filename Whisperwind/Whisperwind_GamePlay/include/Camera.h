@@ -52,14 +52,14 @@ namespace GamePlay
 
 	public:
 		XMMATRIX getViewMatrix();
-		XMMATRIX getProjMatrix();
+		XMMATRIX getProjMatrix() const;
 		void move(Util::u_int moveDirection);
 		void stopMove(Util::u_int moveDirection);
 		void rotate(Util::real pitchAngle, Util::real yawAngle/*, Util::real zoom*/);
 		void lookAt(FXMVECTOR destVec);
 		void update(Util::time elapsedTime);
 
-		Util::u_int getKeyCombinationFromEvent(const OIS::KeyEvent & arg);
+		Util::u_int getKeyCombinationFromEvent(const OIS::KeyEvent & arg) const;
 
 	public:
 		SET_GET_CONST_VALUE(XMFLOAT3, Position);

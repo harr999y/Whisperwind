@@ -25,14 +25,11 @@ THE SOFTWARE
 #ifndef _MESH_CONVERTER_FORWARD_DECLARE_H_
 #define _MESH_CONVERTER_FORWARD_DECLARE_H_
 
-#include <boost/shared_ptr.hpp>
-
 namespace Tool
 {
 	class FbxXmlConverter;
-
-	typedef boost::shared_ptr<FbxXmlConverter> FbxXmlConverterPtr;
-
+	class XmlWmeshConverter;
+	class WmeshXmlConverter;
  }
 
 #endif

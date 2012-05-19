@@ -30,7 +30,7 @@ THE SOFTWARE
 
 namespace GamePlay
 {
-	static const Util::real MOVE_SPEED = 1.0f;
+	static const Util::real MOVE_SPEED = 2.0f;
 	//---------------------------------------------------------------------
 	Camera::Camera(Util::real nearCilp, Util::real farClip) :
         mNearClip(nearCilp),
@@ -59,7 +59,7 @@ namespace GamePlay
 		return XMLoadFloat4x4(&mViewMatrix);
 	}
 	//---------------------------------------------------------------------
-	XMMATRIX Camera::getProjMatrix()
+	XMMATRIX Camera::getProjMatrix() const
 	{		
 		return XMLoadFloat4x4(&mProjMatrix);
 	}
@@ -151,7 +151,7 @@ namespace GamePlay
 		doMove(elapsedTime);
 	}
 	//---------------------------------------------------------------------
-	Util::u_int Camera::getKeyCombinationFromEvent(const OIS::KeyEvent & arg)
+	Util::u_int Camera::getKeyCombinationFromEvent(const OIS::KeyEvent & arg) const
 	{
 		Util::u_int flag = 0;
 		if (OIS::KC_W == arg.key)

@@ -22,65 +22,59 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _SCENE_COMPONENT_H_
-#define _SCENE_COMPONENT_H_
 
-#include <boost/function.hpp>
-
-#include "Util.h"
+#include "BoostSerialization.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
-	enum ComponentType
+	template<class Archive>
+	void serialize(Archive & ar, Engine::VertexElement & ve, const Util::u_int /*version*/)
 	{
-		CT_PHYSICABLE,
-		CT_SOUNDABLE,
-		CT_MAX
-	};
+		ar & ve.StreamIndex;
+		ar & ve.Offset;
+		ar & ve.Type;
+		ar & ve.Usage;
+		ar & ve.UsageIndex;
+	}
 
-	class SceneComponent
+	template<class Archive>
+	void serialize(Archive & ar, Engine::BufferData & bd, const Util::u_int /*version*/)
 	{
-	protected:
-		explicit SceneComponent(ComponentType type) :
-		    mCompType(type),
-			mCanUpdate(true)
-		{}
+		ar & bd.DataVec;
+		ar & bd.DataSize;
+		ar & bd.Stride;
+	}
 
-		virtual ~SceneComponent()
-		{}
+	template<class Archive>
+	void serialize(Archive & ar, Engine::VertexMapping & vm, const Util::u_int /*version*/)
+	{
+		ar & vm.VertexCount;
+		ar & vm.VertexDataVec;
+		ar & vm.VertexElemVec;
+		ar & vm.VertexUsage;
+	}
 
-	public:
-		void preUpdate(Util::time elapsedTime);
-		void postUpdate(Util::time elapsedTime);
-		virtual const Util::Wstring & getName() const = 0;
+	template<class Archive>
+	void serialize(Archive & ar, Engine::IndexMapping & im, const Util::u_int /*version*/)
+	{
+		ar & im.HasIndex;
+		ar & im.IndexData;
+		ar & im.IndexFmt;
+		ar & im.IndexUsage;
+	}
 
-		template <typename CallBack>
-		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }
-		template <typename CallBack>
-		void regPostUpdateCallback(CallBack cb) { mPostCallback = cb; }
+	template<class Archive>
+	void serialize(Archive & ar, Engine::RenderableMapping & rm, const Util::u_int /*version*/)
+	{
+		ar & rm.VertexBound;
+		ar & rm.IndexBound;
+		ar & rm.EffectName;
+		ar & rm.TechniqueName;
+		ar & rm.PrimType;
+		ar & rm.RenderingType;
+		ar & rm.ParamTextureVec;
+		ar & rm.ParamValueVec;
+	}
 
-	public:
-		SET_GET_CONST_VALUE(ComponentType, CompType);
-
-	protected:
-		SET_GET_CONST_VALUE(bool, CanUpdate);
-
-	private:
-		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
-		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
-
-	private:
-		typedef boost::function<void (ComponentType, Util::time)> Callback;
-		Callback mPreCallback;
-		Callback mPostCallback;
-
-		ComponentType mCompType;
-
-		bool mCanUpdate;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(SceneComponent);
-	};
 }
-
-#endif

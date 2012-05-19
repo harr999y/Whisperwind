@@ -18,16 +18,8 @@
 				<texcoord u="0" v="1"/>
 			</vertex>
 			<vertex>
-				<position x="5" y="5" z="0"/>
-				<texcoord u="0" v="1"/>
-			</vertex>
-			<vertex>
 				<position x="5" y="-5" z="0"/>
 				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="0"/>
-				<texcoord u="1" v="0"/>
 			</vertex>
 			<vertex>
 				<position x="-5" y="-5" z="10"/>
@@ -42,112 +34,8 @@
 				<texcoord u="1" v="1"/>
 			</vertex>
 			<vertex>
-				<position x="5" y="5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
 				<position x="-5" y="5" z="10"/>
 				<texcoord u="0" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="10"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="-5" z="0"/>
-				<texcoord u="1" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="-5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="-5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="10"/>
-				<texcoord u="0" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="-5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="5" z="0"/>
-				<texcoord u="1" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="-5" z="10"/>
-				<texcoord u="0" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="-5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="5" z="0"/>
-				<texcoord u="1" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="5" z="10"/>
-				<texcoord u="0" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="5" y="5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="5" z="0"/>
-				<texcoord u="0" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="0"/>
-				<texcoord u="1" v="0"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="-5" z="10"/>
-				<texcoord u="1" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="5" z="10"/>
-				<texcoord u="0" v="1"/>
-			</vertex>
-			<vertex>
-				<position x="-5" y="5" z="0"/>
-				<texcoord u="0" v="0"/>
 			</vertex>
 		</vertexbuffer>
 		<triangles trianglescount="12">

@@ -103,9 +103,13 @@ THE SOFTWARE
 	inline type & get##name() { return m##name; }
 
 #define GET_PTR(type, name) \
-	inline type * get##name() { return m##name; }
+	inline type * get##name() const { return m##name; }
 
 #define GET_CONST_VALUE(type, name) \
 	inline const type & get##name() const { return m##name; }
+
+/// For boost::serialization
+#define BOOST_SERIALIZATION_NONINSTRUSIVE_FRIEND_FUNC(ClassName) \
+template<typename type> friend void serialize(type &, ClassName &, const Util::u_int /*version*/);
 
 #endif

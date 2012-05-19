@@ -23,6 +23,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{516635bf-8a56-40b5-ba08-a94cc7200bfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Src">
+      <UniqueIdentifier>{fd12bce8-b893-4745-8383-b66608157a58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\EngineForwardDeclare.h">
@@ -96,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="include\SceneObjectFactory.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BoostSerialization_impl.h">
+      <Filter>Engine Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

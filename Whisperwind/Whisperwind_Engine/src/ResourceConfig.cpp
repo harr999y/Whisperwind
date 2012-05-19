@@ -24,7 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "ExceptionDefine.h"
-#include "XmlReader.h"
+#include "XmlManipulator.h"
 #include "ResourceConfig.h"
 
 namespace Engine
@@ -35,18 +35,20 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void ResourceConfig::parse_impl()
 	{
-		if (mXmlReader->advanceFirstChildNode(FOLDER))
+		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		IF_NULL_EXCEPTION(rootNode, "Resource config donnot have root node!");
+
+		Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, FOLDER);
+		if (node)
 		{
 			try
 			{
 				do
 				{
-					Util::String str(mXmlReader->getAttribute(ATTRIBUTE_NAME));
-					Util::Wstring wstr;
-					Util::StringToWstring(str, wstr);
+					mFolderVec.push_back(Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_NAME)));
 
-					mFolderVec.push_back(wstr);
-				} while (mXmlReader->advanceNextSiblingNode(FOLDER));
+					node = mXmlReader->getNextSiblingNode(node);
+				} while (node);
 			}
 			catch (std::exception & e)
 			{
@@ -54,18 +56,17 @@ namespace Engine
 			}
 		}
 
-		if (mXmlReader->advanceFirstChildNode(SEVEN_Z))
+		node = mXmlReader->getFirstNode(rootNode, SEVEN_Z);
+		if (node)
 		{
 			try
 			{
 				do
 				{
-					Util::String str(mXmlReader->getAttribute(ATTRIBUTE_NAME));
-					Util::Wstring wstr;
-					Util::StringToWstring(str, wstr);
+					mFolderVec.push_back(Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_NAME)));
 
-					mFolderVec.push_back(wstr);
-				} while (mXmlReader->advanceNextSiblingNode(SEVEN_Z));
+					node = mXmlReader->getNextSiblingNode(node);
+				} while (node);
 			}
 			catch (std::exception & e)
 			{

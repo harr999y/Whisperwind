@@ -22,64 +22,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _SCENE_COMPONENT_H_
-#define _SCENE_COMPONENT_H_
-
-#include <boost/function.hpp>
+#ifndef _WMESH_XML_CONVERTER_H_
+#define _WMESH_XML_CONVERTER_H_
 
 #include "Util.h"
 
-namespace Engine
+namespace Tool
 {
-	enum ComponentType
+	class WmeshXmlConverter
 	{
-		CT_PHYSICABLE,
-		CT_SOUNDABLE,
-		CT_MAX
-	};
+	public:
+		explicit WmeshXmlConverter(const Util::String & path);
 
-	class SceneComponent
-	{
-	protected:
-		explicit SceneComponent(ComponentType type) :
-		    mCompType(type),
-			mCanUpdate(true)
-		{}
-
-		virtual ~SceneComponent()
+		~WmeshXmlConverter()
 		{}
 
 	public:
-		void preUpdate(Util::time elapsedTime);
-		void postUpdate(Util::time elapsedTime);
-		virtual const Util::Wstring & getName() const = 0;
-
-		template <typename CallBack>
-		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }
-		template <typename CallBack>
-		void regPostUpdateCallback(CallBack cb) { mPostCallback = cb; }
-
-	public:
-		SET_GET_CONST_VALUE(ComponentType, CompType);
-
-	protected:
-		SET_GET_CONST_VALUE(bool, CanUpdate);
+		void converteToXml();
 
 	private:
-		virtual void preUpdate_impl(Util::time elapsedTime) = 0;
-		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
-
-	private:
-		typedef boost::function<void (ComponentType, Util::time)> Callback;
-		Callback mPreCallback;
-		Callback mPostCallback;
-
-		ComponentType mCompType;
-
-		bool mCanUpdate;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(SceneComponent);
+		DISALLOW_COPY_AND_ASSIGN(WmeshXmlConverter);
 	};
 }
 

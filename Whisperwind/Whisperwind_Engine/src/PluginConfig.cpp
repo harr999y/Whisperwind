@@ -24,7 +24,7 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "ExceptionDefine.h"
-#include "XmlReader.h"
+#include "XmlManipulator.h"
 #include "PluginConfig.h"
 
 namespace Engine
@@ -34,14 +34,20 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void PluginConfig::parse_impl()
 	{
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(NODE_NAME), "Plugin config " + NODE_NAME + " parse failed!");
+		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		IF_NULL_EXCEPTION(rootNode, "Plugin config donnot have root node!");
+
+		Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, NODE_NAME);
+		IF_FALSE_EXCEPTION(node, "Plugin config " + NODE_NAME + " parse failed!");
 
 		try
 		{
 			do
 			{
-				mPluginVec.push_back(mXmlReader->getAttribute(ATTRIBUTE_NAME));
-			}while (mXmlReader->advanceNextSiblingNode(NODE_NAME));
+				mPluginVec.push_back(mXmlReader->getAttribute(node, ATTRIBUTE_NAME));
+
+				node = mXmlReader->getNextSiblingNode(node);
+			} while (node);
 		}
 		catch (std::exception & e)
 		{

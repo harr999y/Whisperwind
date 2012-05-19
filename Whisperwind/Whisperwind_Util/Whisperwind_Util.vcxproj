@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BoostSerialization.h" />
     <ClInclude Include="include\CheckedCast.h" />
     <ClInclude Include="include\DebugDefine.h" />
     <ClInclude Include="include\MathDefine.h" />
@@ -29,8 +30,7 @@
     <ClInclude Include="include\UtilForwardDeclare.h" />
     <ClInclude Include="include\UtilTypedefs.h" />
     <ClInclude Include="include\UtilWarningDisable.h" />
-    <ClInclude Include="include\XmlReader.h" />
-    <ClInclude Include="include\XmlWriter.h" />
+    <ClInclude Include="include\XmlManipulator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Boost.data_time.cpp" />

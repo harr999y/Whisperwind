@@ -22,3 +22,66 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _XML_WMESH_CONVERTER_H_
+#define _XML_WMESH_CONVERTER_H_
+
+#include <boost/lexical_cast.hpp>
+
+#include "Util.h"
+#include "XmlManipulator.h"
+#include "RenderMappingDefines.h"
+
+namespace Tool
+{
+	class XmlWmeshConverter
+	{
+	public:
+		explicit XmlWmeshConverter(const Util::String & path);
+
+		~XmlWmeshConverter()
+		{}
+
+		void converteToWmesh();
+
+	private:
+		Util::XmlReaderPtr mXmlReader;
+		Util::String mPath;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(XmlWmeshConverter);
+
+	private:
+		template <typename type>
+		Engine::IndexMapping getIndexMapping(const Util::XmlNode * trianglesNode, Util::u_int indexCount)
+		{
+			Engine::IndexMapping indexBound;
+
+			indexBound.HasIndex = true;
+
+			Engine::Uint8Vector dataVec((sizeof(type) / sizeof(Engine::Uint8Vector::value_type)) * indexCount);
+			type * data = reinterpret_cast<type *>(dataVec.data());
+
+			Util::XmlNode * triNode = mXmlReader->getFirstNode(trianglesNode, "triangle");
+			if (triNode)
+			{
+				do
+				{
+					*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v1"));
+					*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v2"));
+					*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v3"));
+
+					triNode = mXmlReader->getNextSiblingNode(triNode);
+				} while (triNode);
+			}
+
+			indexBound.IndexData.DataVec = dataVec;
+			indexBound.IndexData.DataSize = sizeof(type) * indexCount;
+			indexBound.IndexData.Stride = sizeof(type);
+
+			return indexBound;
+		}
+	};
+
+}
+
+#endif

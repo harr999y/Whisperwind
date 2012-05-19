@@ -29,7 +29,7 @@ THE SOFTWARE
 #include <boost/algorithm/string.hpp>
 
 #include "ExceptionDefine.h"
-#include "XmlReader.h"
+#include "XmlManipulator.h"
 #include "EngineConfigDefines.h"
 #include "EngineConfig.h"
 
@@ -46,40 +46,44 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void  EngineConfig::parse_impl()
 	{
+		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		IF_NULL_EXCEPTION(rootNode, "Engine config donnot have root!");
+
+		Util::XmlNode * node = NULL;
 		Util::String valueStr;
 
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::FULL_SCREEN), 
-			"Engine config " + EngineConfigDefine::FULL_SCREEN + " parse failed!");
-		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::FULL_SCREEN);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::FULL_SCREEN + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setFullScreen(boost::lexical_cast<bool>(valueStr));
 
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::RESOLUTION), 
-			"Engine config " + EngineConfigDefine::RESOLUTION + " parse failed!");
-		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::RESOLUTION);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::RESOLUTION + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		Util::StringVector strVec;
 		boost::split(strVec, valueStr, boost::is_any_of("*"));
 		Util::UintPair resPair;
 		resPair = std::make_pair(boost::lexical_cast<Util::u_int>(strVec[0]), boost::lexical_cast<Util::u_int>(strVec[1]));
 		setResolutionPair(resPair);
 
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::MULTI_SAMPLE_QUALITY), 
-			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_QUALITY + " parse failed!");
-		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::MULTI_SAMPLE_QUALITY);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::MULTI_SAMPLE_QUALITY + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setMultiSampleQuality(boost::lexical_cast<Util::u_int>(valueStr));
 
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::MULTI_SAMPLE_TYPE), 
-			"Engine config " + EngineConfigDefine::MULTI_SAMPLE_TYPE + " parse failed!");
-		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::MULTI_SAMPLE_TYPE);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::MULTI_SAMPLE_TYPE + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setMultiSampleType(boost::lexical_cast<Util::s_int>(valueStr));
 
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::VSYNC), 
-			"Engine config " + EngineConfigDefine::VSYNC + " parse failed!");
-		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::VSYNC);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::VSYNC + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setVSync(boost::lexical_cast<bool>(valueStr));
 
-		IF_FALSE_EXCEPTION(mXmlReader->advanceFirstChildNode(EngineConfigDefine::PERF_HUD), 
-			"Engine config " + EngineConfigDefine::PERF_HUD + " parse failed!");
-		valueStr = mXmlReader->getAttribute(CONFIG_VALUE);
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::PERF_HUD);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::PERF_HUD + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setPerfHUD(boost::lexical_cast<bool>(valueStr));
 	}
 }

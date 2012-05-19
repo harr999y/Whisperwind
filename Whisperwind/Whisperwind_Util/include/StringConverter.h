@@ -36,9 +36,9 @@ THE SOFTWARE
 
 namespace Util
 {
-	WHISPERWIND_API void StringToWstring(const String & src, Wstring & dest);
+	WHISPERWIND_API Wstring StringToWstring(const String & src);
 
-	WHISPERWIND_API void WstringToString(const Wstring & src, String & dest);
+	WHISPERWIND_API String WstringToString(const Wstring & src);
 }
 
 #endif

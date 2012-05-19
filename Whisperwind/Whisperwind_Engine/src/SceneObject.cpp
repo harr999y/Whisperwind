@@ -69,7 +69,7 @@ namespace Engine
 		mSceneComponents[type] = sceneComp;
 	}
 	//---------------------------------------------------------------------
-	bool SceneObject::getComponent(ComponentType type, SceneComponentPtr & outSceneComp)
+	bool SceneObject::getComponent(ComponentType type, SceneComponentPtr & outSceneComp) const
 	{
 		if (NULL == mSceneComponents[type])
 			return false;

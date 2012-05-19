@@ -23,12 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
 #include "Util.h"
 #include "ExceptionDefine.h"
 #include "DebugDefine.h"
+#include "StringConverter.h"
 #include "FbxXmlConverter.h"
+#include "XmlWmeshConverter.h"
 
 int main(int argc, char ** argv)
 {
@@ -45,12 +48,16 @@ int main(int argc, char ** argv)
 
 		if (boost::algorithm::find_first(argv[1], ".fbx") || boost::algorithm::find_first(argv[1], ".FBX"))
 		{
-			Tool::FbxXmlConverter converter(argv[1]);
-			converter.convertToXml();
+			Tool::FbxXmlConverter fbx2XmlConverter(argv[1]);
+			Util::Wstring xmlPath = fbx2XmlConverter.convertToXml();
+
+			Tool::XmlWmeshConverter xml2WmeshConverter(Util::WstringToString(xmlPath));
+			xml2WmeshConverter.converteToWmesh();
 		}
 		else if (boost::algorithm::find_first(argv[1], ".wmesh.xml"))
 		{
-
+			Tool::XmlWmeshConverter xml2WmeshConverter(argv[1]);
+			xml2WmeshConverter.converteToWmesh();
 		}
 		else if (boost::algorithm::find_first(argv[1], ".wmesh"))
 		{
@@ -62,9 +69,7 @@ int main(int argc, char ** argv)
 #ifdef WHISPERWIND_DEBUG
 		DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
 #else
-		Util::Wstring errorInfo;
-		Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
-		WHISPERWIND_LOG(errorInfo);
+		WHISPERWIND_LOG(Util::StringToWstring(boost::diagnostic_information_what(e)));
 		::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
 #endif
 	}

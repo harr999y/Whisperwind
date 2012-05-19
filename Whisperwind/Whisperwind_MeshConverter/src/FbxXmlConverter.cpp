@@ -32,7 +32,7 @@ THE SOFTWARE
 #include <boost/lexical_cast.hpp>
 
 #include "ExceptionDefine.h"
-#include "XmlWriter.h"
+#include "XmlManipulator.h"
 #include "FbxXmlConverter.h"
 
 namespace Tool
@@ -82,8 +82,7 @@ namespace Tool
 				doWalk(rootNode->GetChild(it));
 			}
 
-			Util::Wstring wstrPath;
-			Util::StringToWstring(mPath, wstrPath);
+			Util::Wstring wstrPath = Util::StringToWstring(mPath);
 			boost::erase_last(wstrPath, ".FBX");
 			boost::erase_last(wstrPath, ".fbx");
 			wstrPath += XML_SUFFIX;
@@ -209,11 +208,14 @@ namespace Tool
 
 			if (vertexCount > 0)
 			{
+				std::vector<bool> vertexHasUsedVec(vertexCount, false);
+
 				Util::u_int polygonCount = fbxMesh->GetPolygonCount();
 
 				FbxVector4 * vertexBuf = fbxMesh->GetControlPoints();
 				IF_NULL_EXCEPTION(vertexBuf, mPath + " get vertex buffer failed!");
 
+				/// TODO:Now I just consider it only have one texcoord!
 				for (Util::u_int polygonIt = 0; polygonIt < polygonCount; ++polygonIt)
 				{
 					Util::s_int polygonSize = fbxMesh->GetPolygonSize(polygonIt);
@@ -223,17 +225,21 @@ namespace Tool
 					for (Util::s_int polygonIndex = 0; polygonIndex < polygonSize; ++polygonIndex)
 					{
 						Util::s_int vertexIt = fbxMesh->GetPolygonVertex(polygonIt, polygonIndex);
+						if ((-1 == vertexIt) || vertexHasUsedVec[vertexIt])
+							continue;
 
-						Util::XmlNode * vertexNode = mXmlWriter->appendNode(vbNode, "vertex");
+						vertexHasUsedVec[vertexIt] = true;
+
+						FbxGeometryElementUV * elemUV = fbxMesh->GetElementUV(0);
+						IF_NULL_EXCEPTION(elemUV, mPath + " get uv error!");
 						{
+							Util::XmlNode * vertexNode = mXmlWriter->appendNode(vbNode, "vertex");
 							Util::XmlNode * positionNode = mXmlWriter->appendNode(vertexNode, "position");
 							mXmlWriter->appendAttribute(positionNode, "x", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][0]).c_str());
 							mXmlWriter->appendAttribute(positionNode, "y", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][1]).c_str());
 							mXmlWriter->appendAttribute(positionNode, "z", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][2]).c_str());
-
+							
 							FbxVector2 uv;
-							FbxGeometryElementUV * elemUV = fbxMesh->GetElementUV(0);
-							IF_NULL_EXCEPTION(elemUV, "Error!");
 							switch (elemUV->GetMappingMode())
 							{
 							case FbxGeometryElement::eByControlPoint:

@@ -64,7 +64,6 @@ namespace GamePlay
 
 	private:
 		ActorPtr mActor;
-		Engine::RenderTexturePtr mRenderTexture;
 		CameraPtr mCamera;
 
 		typedef boost::shared_ptr<OIS::InputManager> InputManagerPtr;

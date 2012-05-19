@@ -27,14 +27,13 @@ THE SOFTWARE
 
 #include "ExceptionDefine.h"
 #include "DebugDefine.h"
-#include "XmlReader.h"
+#include "XmlManipulator.h"
 
 namespace Util
 {
 	static const String ROOT_NODE_NAME("root");
 	//---------------------------------------------------------------------
 	XmlReader::XmlReader(const Util::String &fileName) :
-	    mCurrentNode(NULL),
 		mRootNode(NULL)
 	{
 		try
@@ -61,27 +60,33 @@ namespace Util
 		WHISPERWIND_ASSERT(mRootNode && "This xml doesnot have root node!");
 	}
 	//---------------------------------------------------------------------
-	bool XmlReader::advanceFirstChildNode(const Util::String & nodeName)
+	XmlNode * XmlReader::getRootNode() const
 	{
-		mCurrentNode = mRootNode->first_node(nodeName.c_str());
-
-		IF_NULL_RETURN_FALSE(mCurrentNode);
-
-		return true;
+		return mRootNode;
 	}
 	//---------------------------------------------------------------------
-	bool XmlReader::advanceNextSiblingNode(const Util::String & nodeName)
+	XmlNode * XmlReader::getFirstNode(const XmlNode * parentNode, const Util::String & nodeName) const
 	{
-		mCurrentNode = mCurrentNode->next_sibling(nodeName.c_str());
+		WHISPERWIND_ASSERT(parentNode);
 
-		IF_NULL_RETURN_FALSE(mCurrentNode);
-
-		return true;
+		return parentNode->first_node(nodeName.c_str());
 	}
 	//---------------------------------------------------------------------
-	const Util::String XmlReader::getAttribute(const Util::String & attributeName)
+	XmlNode * XmlReader::getNextSiblingNode(const XmlNode * currentNode, bool regardlessName) const
 	{
-		Attribute * attribute = mCurrentNode->first_attribute(attributeName.c_str());
+		WHISPERWIND_ASSERT(currentNode);
+
+		if (regardlessName)
+			return currentNode->next_sibling();
+
+		return currentNode->next_sibling(currentNode->name());
+	}
+	//---------------------------------------------------------------------
+	Util::String XmlReader::getAttribute(const XmlNode * node, const Util::String & attributeName) const
+	{
+		WHISPERWIND_ASSERT(node);
+
+		Attribute * attribute = node->first_attribute(attributeName.c_str());
 		WHISPERWIND_ASSERT(attribute && "Dont have this attribute.");
 
 		return attribute->value();

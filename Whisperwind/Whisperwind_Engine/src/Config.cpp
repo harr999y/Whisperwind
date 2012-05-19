@@ -25,7 +25,7 @@ THE SOFTWARE
 
 #include <boost/make_shared.hpp>
 
-#include "XmlReader.h"
+#include "XmlManipulator.h"
 #include "ExceptionDefine.h"
 #include "Config.h"
 

@@ -33,7 +33,7 @@ THE SOFTWARE
 
 #include "DebugDefine.h"
 #include "ExceptionDefine.h"
-#include "XmlWriter.h"
+#include "XmlManipulator.h"
 
 namespace Util
 {
@@ -73,9 +73,7 @@ namespace Util
 		mXmlStream.open(filePath, std::ios::out | std::ios::trunc);
 		if (!mXmlStream.is_open())
 		{
-			Util::String str;
-			Util::WstringToString(filePath, str);
-			WHISPERWIND_EXCEPTION((str + " open failed!").c_str());
+			WHISPERWIND_EXCEPTION((Util::WstringToString(filePath) + " open failed!").c_str());
 		}
 
 		mXmlStream << *mDoc;

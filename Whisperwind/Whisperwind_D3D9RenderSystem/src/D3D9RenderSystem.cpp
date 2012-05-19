@@ -25,6 +25,7 @@ THE SOFTWARE
 
 #include <boost/make_shared.hpp>
 #include <boost/typeof/typeof.hpp>
+#include <boost/foreach.hpp>
 
 #include "MakeCOMPtr.h"
 #include "CheckedCast.h"
@@ -103,6 +104,21 @@ namespace Engine
 
 			ID3DXEffectPtr effect = d3d9Renderable->getEffect();
 			effect->SetTechnique(d3d9Renderable->getTechnique());
+
+			/// set texture/param etc.
+			{
+				const ParamValuePairVector & pairPVVec = d3d9Renderable->getParamValuePairVec();
+				BOOST_FOREACH(const ParamValuePair & pair, pairPVVec)
+				{
+					d3d9Renderable->setEffectParamValue(pair.first, pair.second.get());
+				}
+
+				const ParamTexturePairVector & pairPTVec = d3d9Renderable->getParamTexturePairVec();
+				BOOST_FOREACH(const ParamTexturePair & pair, pairPTVec)
+				{
+					d3d9Renderable->setTexture(pair.first, pair.second);
+				}
+			}
 
 			Util::u_int passNum = 0;
 			DX_IF_FAILED_RETURN_FALSE(effect->Begin(&passNum, 0));
@@ -228,9 +244,7 @@ namespace Engine
 
 		IDirect3DTexture9 * texture = NULL;
 
-		Util::String str;
-		Util::WstringToString(path, str);
-		IF_FAILED_EXCEPTION(D3DXCreateTextureFromFile(mD3DDevice.get(), path.c_str(), &texture), str + " create failed!");
+		IF_FAILED_EXCEPTION(D3DXCreateTextureFromFile(mD3DDevice.get(), path.c_str(), &texture), Util::WstringToString(path) + " create failed!");
 
 		IDirect3DTexture9Ptr texturePtr = Util::makeCOMPtr(texture);
 
@@ -350,7 +364,7 @@ namespace Engine
 		*/
 		while (FAILED(mD3DDevice->Reset(&mPresentParameters)))
 		{
-			 EngineManager::getSingleton().sleep(1000);
+			EngineManager::getSingleton().sleep(1000);
 		}
 		
 		onDeviceReset();

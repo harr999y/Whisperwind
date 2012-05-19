@@ -32,7 +32,7 @@ THE SOFTWARE
 #include "Timer.h"
 #include "WindowsEventHandle.h"
 #include "WindowsHelper.h"
-#include "XmlReader.h"
+#include "XmlManipulator.h"
 #include "EngineConfig.h"
 #include "PluginConfig.h"
 #include "RenderSystem.h"
@@ -147,14 +147,11 @@ namespace Engine
 	void EngineManager::loadPlugins()
 	{
 		Util::StringVector strVec = mPluginConfig->getPluginVec();
-		Util::Wstring wstr;
 		BOOST_FOREACH(const Util::String & str, strVec)
 		{
 			WindowsHelper::loadPlugin(str);
 
-			wstr.clear();
-			Util::StringToWstring(str, wstr);
-			WHISPERWIND_LOG(wstr + TO_UNICODE(" plugin load done!"));
+			WHISPERWIND_LOG(Util::StringToWstring(str) + TO_UNICODE(" plugin load done!"));
 		}
 
 		mPluginConfig.reset();

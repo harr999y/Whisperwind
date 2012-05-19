@@ -22,58 +22,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _XML_READER_H_
-#define _XML_READER_H_
+#ifndef _BOOST_SERIALIZATION_H_
+#define _BOOST_SERIALIZATION_H_
 
-#include <boost/shared_ptr.hpp>
-#include <rapidxml/rapidxml.hpp>
-
-/// disable the bad_cast warning.
 #pragma warning(push)
 #pragma warning(disable : 4244)
-#include <rapidxml/rapidxml_utils.hpp>
+#pragma warning(disable : 4310)
+#pragma warning(disable : 4308)
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/shared_ptr.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/utility.hpp>
+#include <boost/serialization/nvp.hpp>
+#include <boost/serialization/void_cast.hpp>
 #pragma warning(pop)
-
-#include "Util.h"
-
-namespace Util
-{
-	/** Class XmlReader.
-	@note:
-	    Use type char to parse.Then you can convert it into any format.
-	*/
-	class WHISPERWIND_API XmlReader
-	{
-	public:
-		explicit XmlReader(const Util::String &fileName);
-
-	public:
-		bool advanceFirstChildNode(const Util::String & nodeName);
-		bool advanceNextSiblingNode(const Util::String & nodeName);
-		const Util::String getAttribute(const Util::String & attributeName);
-
-	private:
-		void init(const Util::String & fileName);
-
-	private:
-		typedef Util::String::value_type CharType;
-		typedef rapidxml::xml_document<CharType> Doc;
-		typedef boost::shared_ptr<Doc> DocPtr;
-		DocPtr mDoc;
-
-		typedef rapidxml::xml_node<CharType> Node;
-		Node * mRootNode;
-		Node * mCurrentNode;
-
-		typedef rapidxml::file<CharType> File;
-		typedef boost::shared_ptr<File> FilePtr;
-		FilePtr mFileStream;
-
-		typedef rapidxml::xml_attribute<CharType> Attribute;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(XmlReader);
-	};
-}
 
 #endif

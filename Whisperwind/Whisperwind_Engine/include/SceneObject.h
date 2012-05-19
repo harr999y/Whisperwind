@@ -48,7 +48,7 @@ namespace Engine
 		void preUpdate(Util::time elapsedTime);
 		void postUpdate(Util::time elapsedTime);
 		void regComponent(ComponentType type, const SceneComponentPtr & sceneComp);
-		bool getComponent(ComponentType type, SceneComponentPtr & scene);
+		bool getComponent(ComponentType type, SceneComponentPtr & scene) const;
 		void unRegComponent(ComponentType type);
 
 	public:

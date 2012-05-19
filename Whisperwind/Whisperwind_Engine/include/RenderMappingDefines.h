@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _RENDER_MAPPING_DEFINES_H_
 
 #include <vector>
+#include <utility>
 #include <boost/shared_ptr.hpp>
 
 #include "Util.h"
@@ -120,6 +121,9 @@ namespace Engine
 		    StreamIndex(streamIndex), Offset(offset), Type(type), Usage(usage), UsageIndex(usageIndex)
 		{}
 
+		VertexElement()
+		{}
+
 		Util::s_int16 StreamIndex;
 		Util::s_int16 Offset;
 		VertexElementType Type;
@@ -129,7 +133,10 @@ namespace Engine
 
 	typedef std::vector<VertexElement> VertexElementVector;
 
+	/// Use it carefully!
 	typedef boost::shared_ptr<void> VoidDataPtr;
+
+	typedef std::vector<Util::u_int8> Uint8Vector;
 
 	struct BufferData
 	{
@@ -138,7 +145,7 @@ namespace Engine
 			Stride(0)
 	    {}
 
-	    VoidDataPtr Data;
+	    Uint8Vector DataVec;
 		Util::u_int DataSize;
 	    Util::u_int Stride;
 	};
@@ -172,6 +179,9 @@ namespace Engine
 		BufferUsageFlag IndexUsage;
 	};
 
+	typedef std::pair<Util::String, Util::String> EffectParamValuePair;
+	typedef std::vector<EffectParamValuePair> EffectParamValuePairVector;
+
 	struct RenderableMapping
 	{
 		RenderableMapping() :
@@ -181,10 +191,12 @@ namespace Engine
 
 		VertexMapping VertexBound;
 		IndexMapping IndexBound;
-		Util::Wstring EffectName;
+		Util::String EffectName;
 		Util::String TechniqueName;
 		PrimitiveType PrimType;
 		RenderType RenderingType;
+		EffectParamValuePairVector ParamTextureVec;
+		EffectParamValuePairVector ParamValueVec;
 	};
 
 	struct RenderTextureMapping
@@ -215,6 +227,7 @@ namespace Engine
 		Util::u_int MultiSampleType;
 		Util::u_int MultiSampleQuality;
 	};
+
 }
 
 #endif

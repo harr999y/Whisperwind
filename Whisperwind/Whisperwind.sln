@@ -45,6 +45,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_GeneralSceneMan
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Whisperwind_MeshConverter", "Whisperwind_MeshConverter\Whisperwind_MeshConverter.vcxproj", "{1A40AB9B-D338-42F4-BBDC-22940EA7E797}"
 	ProjectSection(ProjectDependencies) = postProject
+		{EFE0F704-BE91-4426-BD6D-CD533B8AAC3B} = {EFE0F704-BE91-4426-BD6D-CD533B8AAC3B}
 		{C940EF7B-AB59-43C9-B4E6-F3D25C6170FF} = {C940EF7B-AB59-43C9-B4E6-F3D25C6170FF}
 	EndProjectSection
 EndProject

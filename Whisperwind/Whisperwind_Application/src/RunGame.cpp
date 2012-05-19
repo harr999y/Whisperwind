@@ -60,9 +60,7 @@ THE SOFTWARE
 #ifdef WHISPERWIND_DEBUG
 		    DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
 #else
-			Util::Wstring errorInfo;
-			Util::StringToWstring(boost::diagnostic_information_what(e), errorInfo);
-			WHISPERWIND_LOG(errorInfo);
+			WHISPERWIND_LOG(Util::StringToWstring(boost::diagnostic_information_what(e)));
 			::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
 #endif
 	    }

@@ -67,9 +67,7 @@ namespace Engine
 	if (FAILED(hr)) \
 	{ \
 		Util::String str(&(#x)[0]); \
-		Util::Wstring wstr; \
-		Util::StringToWstring(str, wstr); \
-		DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)) \
+		DEBUG_PRINT_RED(Util::StringToWstring(str) + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)) \
 	} \
 }
 #else
@@ -84,9 +82,7 @@ namespace Engine
 	    if (FAILED(hr)) \
         { \
 			Util::String str(&(#x)[0]); \
-			Util::Wstring wstr; \
-			Util::StringToWstring(str, wstr); \
-			DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
+			DEBUG_PRINT_RED(Util::StringToWstring(str) + TO_UNICODE(" failed! The error is : ") + DXGetErrorString(hr)); \
 			return false; \
         } \
     }
@@ -105,9 +101,7 @@ namespace Engine
 	if (!(x)) \
 	{ \
 		Util::String str(&(#x)[0]); \
-		Util::Wstring wstr; \
-		Util::StringToWstring(str, wstr); \
-		DEBUG_PRINT_RED(wstr + TO_UNICODE(" failed!")); \
+		DEBUG_PRINT_RED(Util::StringToWstring(str) + TO_UNICODE(" failed!")); \
 	} \
 }
 #else

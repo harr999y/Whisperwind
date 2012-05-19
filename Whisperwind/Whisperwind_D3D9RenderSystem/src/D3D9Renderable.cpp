@@ -50,19 +50,20 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(data != NULL);
 
-		D3DXPARAMETER_DESC paramDesc;
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->GetParameterDesc(paramName.c_str(), &paramDesc));
+		EffectHandleSize ehs = getEffectHandleSize(paramName);
 
-		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(paramName.c_str(), data, paramDesc.Bytes));
+		DX_IF_FAILED_DEBUG_PRINT(mEffect->SetValue(ehs.Handle, data, ehs.Size));
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture)
 	{
+		EffectHandleSize ehs = getEffectHandleSize(paramName);
+
 		D3D9RenderTexturePtr d3d9TexPtr = Util::checkedPtrCast<D3D9RenderTexture>(texture);
 		if (d3d9TexPtr)
-			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(paramName.c_str(), d3d9TexPtr->getTexture().get()))
+			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(ehs.Handle, d3d9TexPtr->getTexture().get()))
 		else
-			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(paramName.c_str(), NULL));
+			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(ehs.Handle, NULL));
 	}
 	//---------------------------------------------------------------------
 	void D3D9Renderable::setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target)
@@ -80,6 +81,9 @@ namespace Engine
 		if (mEffectHandleMap.find(paramName) == mEffectHandleMap.end())
 		{
 			ehs.Handle = mEffect->GetParameterBySemantic(NULL, paramName.c_str());
+			if (NULL == ehs.Handle)
+				ehs.Handle = mEffect->GetParameterByName(NULL, paramName.c_str());
+
 			WHISPERWIND_ASSERT(ehs.Handle != NULL);
 
 			D3DXPARAMETER_DESC paramDesc;

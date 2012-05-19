@@ -27,21 +27,21 @@ THE SOFTWARE
 
 namespace Util
 {
-	void StringToWstring(const String & src, Wstring & dest)
+	Wstring StringToWstring(const String & src)
 	{
 		u_int const wcsLen = MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), NULL, 0);
 		std::vector<wchar_t> tmpVec(wcsLen + 1);
 		MultiByteToWideChar(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), &tmpVec[0], wcsLen);
 
-		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
+		return Wstring(tmpVec.begin(), tmpVec.end() - 1);
 	}
 
-	void WstringToString(const Wstring & src, String & dest)
+	String WstringToString(const Wstring & src)
 	{
 		u_int const mbsLen = WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), NULL, 0, NULL, NULL);
 		std::vector<char> tmpVec(mbsLen + 1);
 		WideCharToMultiByte(CP_ACP, 0, src.c_str(), static_cast<u_int>(src.size()), &tmpVec[0], mbsLen, NULL, NULL);
 
-		dest.assign(tmpVec.begin(), tmpVec.end() - 1);
+		return String(tmpVec.begin(), tmpVec.end() - 1);
 	}
 }

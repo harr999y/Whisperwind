@@ -1,0 +1,31 @@
+<root>
+	<mesh>
+		<material effect="DiffuseBump.fx" technique="Default">
+			<param name="diffuseTexture" value="seafloor.dds"/>
+			<param name="normalMap" value="NMP_Ripples2_512.dds"/>
+		</material>
+		<vertexbuffer vertexcount="4">
+			<vertex>
+				<position x="0.14129906892776489" y="-0.16676202416419983" z="0"/>
+				<texcoord u="0.75" v="0.25"/>
+			</vertex>
+			<vertex>
+				<position x="0.14129906892776489" y="-0.33352404832839966" z="0"/>
+				<texcoord u="0.75" v="0"/>
+			</vertex>
+			<vertex>
+				<position x="0.28259813785552979" y="-0.16676202416419983" z="0"/>
+				<texcoord u="1" v="0.25"/>
+			</vertex>
+			<vertex>
+				<position x="0.28259813785552979" y="-0.33352404832839966" z="0"/>
+				<texcoord u="1" v="0"/>
+			</vertex>
+		</vertexbuffer>
+		<triangles trianglescount="2">
+			<triangle v1="2" v2="0" v3="3"/>
+			<triangle v1="1" v2="3" v3="0"/>
+		</triangles>
+	</mesh>
+</root>
+

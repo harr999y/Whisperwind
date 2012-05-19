@@ -58,6 +58,12 @@ namespace Engine
 		Util::u_int Size;
 	};
 
+	typedef std::pair<Util::String, VoidDataPtr> ParamValuePair;
+	typedef std::vector<ParamValuePair> ParamValuePairVector;
+
+	typedef std::pair<Util::String, D3D9RenderTexturePtr> ParamTexturePair;
+	typedef std::vector<ParamTexturePair> ParamTexturePairVector;
+
 	class D3D9Renderable : public Renderable, public boost::enable_shared_from_this<D3D9Renderable>
 	{
 	public:
@@ -82,6 +88,8 @@ namespace Engine
 		SET_GET_CONST_VALUE(D3DXHANDLE, Technique);
 		SET_GET_CONST_VALUE(bool, HasIndex);
 		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
+		SET_GET_VALUE(ParamValuePairVector, ParamValuePairVec);
+		SET_GET_VALUE(ParamTexturePairVector, ParamTexturePairVec);
 
 	private:
 		virtual void setEffectSemanticValue_impl(const Util::String & semanticName, const void * data);
@@ -103,6 +111,8 @@ namespace Engine
 		bool mHasIndex;
 		D3DPRIMITIVETYPE mPrimType;
 		EffectHandleMap mEffectHandleMap;
+		ParamValuePairVector mParamValuePairVec;
+		ParamTexturePairVector mParamTexturePairVec;
 	};
 }
 

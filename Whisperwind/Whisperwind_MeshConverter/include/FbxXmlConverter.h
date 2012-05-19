@@ -28,7 +28,6 @@ THE SOFTWARE
 #include <fbxsdk.h>
 
 #include "Util.h"
-#include "MeshConverterForwardDeclare.h"
 
 namespace Tool
 {
