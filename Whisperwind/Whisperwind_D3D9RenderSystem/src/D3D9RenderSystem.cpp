@@ -126,7 +126,9 @@ namespace Engine
 			{
 				DX_IF_FAILED_DEBUG_PRINT(effect->BeginPass(passIt));
 				{
-					Util::u_int primCount = D3D9Helper::getPrimCount(d3d9Renderable->getPrimType(), d3d9Renderable->getVertexBound().VertexCount);
+					/// TODO:Some error.
+					//Util::u_int primCount = D3D9Helper::getPrimCount(d3d9Renderable->getPrimType(), d3d9Renderable->getVertexBound().VertexCount);
+					Util::u_int primCount = d3d9Renderable->getPrimCount();
 
 					if (d3d9Renderable->getHasIndex())
 					{

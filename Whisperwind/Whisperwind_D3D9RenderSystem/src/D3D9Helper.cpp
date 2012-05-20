@@ -139,6 +139,7 @@ namespace Engine
 		/// Primitive
 		{
 			d3d9Renderable->setPrimType(D3D9FormatMappingFactory::getD3D9PrimType(rm->PrimType));
+			d3d9Renderable->setPrimCount(rm->PrimCount);
 		}
 
 		/// Effect

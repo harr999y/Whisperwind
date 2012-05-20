@@ -186,7 +186,8 @@ namespace Engine
 	{
 		RenderableMapping() :
 			PrimType(PT_TRIANGLE_STRIP),
-			RenderingType(RT_OPAQUE)
+			RenderingType(RT_OPAQUE),
+			PrimCount(0)
 		{}
 
 		VertexMapping VertexBound;
@@ -194,6 +195,7 @@ namespace Engine
 		Util::String EffectName;
 		Util::String TechniqueName;
 		PrimitiveType PrimType;
+		Util::u_int PrimCount;
 		RenderType RenderingType;
 		EffectParamValuePairVector ParamTextureVec;
 		EffectParamValuePairVector ParamValueVec;

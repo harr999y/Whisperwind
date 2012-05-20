@@ -72,6 +72,7 @@ namespace Engine
 		ar & rm.EffectName;
 		ar & rm.TechniqueName;
 		ar & rm.PrimType;
+		ar & rm.PrimCount;
 		ar & rm.RenderingType;
 		ar & rm.ParamTextureVec;
 		ar & rm.ParamValueVec;

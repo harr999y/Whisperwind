@@ -165,26 +165,24 @@ namespace Tool
 		if (trianglesNode)
 		{
 			Util::u_int triangleCount = boost::lexical_cast<Util::u_int>(mXmlReader->getAttribute(trianglesNode, "trianglescount"));
-			if (trianglesNode)
+			if (triangleCount > 0)
 			{
-				if (triangleCount > 0)
+				Util::u_int indexCount = triangleCount * 3;
+				if (indexCount < 65536)
 				{
-					Util::u_int indexCount = triangleCount * 3;
-					if (indexCount < 65536)
-					{
-						rm.IndexBound = getIndexMapping<Util::u_int16>(trianglesNode, indexCount);
+					rm.IndexBound = getIndexMapping<Util::u_int16>(trianglesNode, indexCount);
 
-						rm.IndexBound.IndexFmt = Engine::INDEX_16;
-					}
-					else
-					{
-						rm.IndexBound = getIndexMapping<Util::u_int>(trianglesNode, indexCount);
+					rm.IndexBound.IndexFmt = Engine::INDEX_16;
+				}
+				else
+				{
+					rm.IndexBound = getIndexMapping<Util::u_int>(trianglesNode, indexCount);
 
-						rm.IndexBound.IndexFmt = Engine::INDEX_32;
-					}
+					rm.IndexBound.IndexFmt = Engine::INDEX_32;
 				}
 			}
 
+			rm.PrimCount = triangleCount;
 			rm.IndexBound.IndexUsage = Engine::BUF_STATIC;
 			rm.PrimType = Engine::PT_TRIANGLE_LIST;
 		}

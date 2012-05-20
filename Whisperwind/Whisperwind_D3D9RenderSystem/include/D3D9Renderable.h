@@ -88,6 +88,7 @@ namespace Engine
 		SET_GET_CONST_VALUE(D3DXHANDLE, Technique);
 		SET_GET_CONST_VALUE(bool, HasIndex);
 		SET_GET_CONST_VALUE(D3DPRIMITIVETYPE, PrimType);
+		SET_GET_CONST_VALUE(Util::u_int, PrimCount);
 		SET_GET_VALUE(ParamValuePairVector, ParamValuePairVec);
 		SET_GET_VALUE(ParamTexturePairVector, ParamTexturePairVec);
 
@@ -110,6 +111,7 @@ namespace Engine
 		D3DXHANDLE mTechnique;
 		bool mHasIndex;
 		D3DPRIMITIVETYPE mPrimType;
+		Util::u_int mPrimCount;
 		EffectHandleMap mEffectHandleMap;
 		ParamValuePairVector mParamValuePairVec;
 		ParamTexturePairVector mParamTexturePairVec;
