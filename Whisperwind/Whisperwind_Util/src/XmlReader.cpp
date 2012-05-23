@@ -53,7 +53,7 @@ namespace Util
 		mFileStream = boost::make_shared<File>(fileName.c_str());
 		mDoc = boost::make_shared<Doc>();
 
-		mDoc->parse<0>(mFileStream->data());
+		mDoc->parse<rapidxml::parse_no_data_nodes>(mFileStream->data());
 
 		mRootNode = mDoc->first_node(ROOT_NODE_NAME.c_str());
 

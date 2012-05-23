@@ -57,6 +57,22 @@ namespace Util
 		return String(tmpVec.begin(), tmpVec.end() - 1);
 	}
 
+	Wstring Utf8ToWstring(const String & src)
+	{
+		u_int const wcsLen = MultiByteToWideChar(CP_UTF8, 0, src.c_str(), static_cast<u_int>(src.size()), NULL, 0);
+		std::vector<wchar_t> tmpVec(wcsLen + 1);
+		MultiByteToWideChar(CP_UTF8, 0, src.c_str(), static_cast<u_int>(src.size()), &tmpVec[0], wcsLen);
+
+		return Wstring(tmpVec.begin(), tmpVec.end() - 1);
+	}
+
+	String Utf8ToAnsi(const String & src)
+	{
+		Wstring wsrc = Utf8ToWstring(src);
+
+		return WstringToString(wsrc);
+	}
+
 	XMVECTOR StringToVector(const String & str, size_t column)
 	{
 		XMVECTOR vec = XMVectorZero();

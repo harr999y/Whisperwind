@@ -33,6 +33,7 @@ THE SOFTWARE
 
 #include "DebugDefine.h"
 #include "ExceptionDefine.h"
+#include "StringConverter.h"
 #include "XmlManipulator.h"
 
 namespace Util
@@ -51,8 +52,12 @@ namespace Util
 	{
 		WHISPERWIND_ASSERT(parentNode);
 
-		XmlCharType * nodeName = mDoc->allocate_string(name);
-		XmlNode * node = mDoc->allocate_node(rapidxml::node_element, nodeName);
+		Util::String nameStr(name);
+		if (mConvertUtf8ToAnsi)
+			nameStr = Utf8ToAnsi(name).c_str();
+
+		name = mDoc->allocate_string(nameStr.c_str());
+		XmlNode * node = mDoc->allocate_node(rapidxml::node_element, name);
 		parentNode->append_node(node);
 
 		return node;
@@ -62,10 +67,18 @@ namespace Util
 	{
 		WHISPERWIND_ASSERT(node);
 
-		XmlCharType * attributeName = mDoc->allocate_string(attribute);
-		XmlCharType * valueStr = mDoc->allocate_string(value);
+		Util::String attributeStr(attribute);
+		Util::String valueStr(value);
+		if (mConvertUtf8ToAnsi)
+		{
+			attributeStr = Utf8ToAnsi(attribute).c_str();
+			valueStr = Utf8ToAnsi(value).c_str();
+		}
 
-		node->append_attribute(mDoc->allocate_attribute(attributeName, valueStr));
+		attribute = mDoc->allocate_string(attributeStr.c_str());
+		value = mDoc->allocate_string(valueStr.c_str());
+
+		node->append_attribute(mDoc->allocate_attribute(attribute, value));
 	}
 	//---------------------------------------------------------------------
 	void XmlWriter::writeToFile(const Util::Wstring & filePath)

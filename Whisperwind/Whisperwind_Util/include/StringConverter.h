@@ -36,6 +36,10 @@ namespace Util
 
 	WHISPERWIND_API String WstringToString(const Wstring & src);
 
+	WHISPERWIND_API String Utf8ToAnsi(const String & src);
+
+	WHISPERWIND_API Wstring Utf8ToWstring(const String & src);
+
 	WHISPERWIND_API XMVECTOR StringToVector(const String & str, size_t column);
 
 	WHISPERWIND_API String VectorToString(FXMVECTOR vector, size_t column);

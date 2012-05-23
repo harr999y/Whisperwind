@@ -36,7 +36,7 @@ THE SOFTWARE
 
 namespace
 {
-	void traverseFolderWithWin32API(const Util::Wstring & path, Util::WstringVector & allFiles);
+	void traverseFolderWithWin32API(const Engine::FolderPair & fp, Engine::FilePathMap & fileMap);
 }
 
 namespace Engine
@@ -62,16 +62,10 @@ namespace Engine
 
 		/// Folder
 		{
-			Util::WstringVector fileVec;
-			const Util::WstringVector & folderVec = mResourceConfig->getFolderVec();
-			BOOST_FOREACH(const Util::Wstring & path, folderVec)
+			const FolderPairVector & folderVec = mResourceConfig->getFolderVec();
+			BOOST_FOREACH(const FolderPair & it, folderVec)
 			{
-				traverseFolderWithWin32API(path, fileVec);
-
-				BOOST_FOREACH(const Util::Wstring & name, fileVec)
-				{
-					mFilePathMap.insert(FilePathMap::value_type(name, path + name));
-				}
+				traverseFolderWithWin32API(it, mFilePathMap);
 			}
 		}
 
@@ -125,19 +119,32 @@ namespace
 #include <windows.h>
 #pragma warning(pop)
 
-	void traverseFolderWithWin32API(const Util::Wstring & path, Util::WstringVector & allFiles)
+	void traverseFolderWithWin32API(const Engine::FolderPair & fp, Engine::FilePathMap & fileMap)
 	{
 		WIN32_FIND_DATA fileData;
 		HANDLE findResult;
-		Util::Wstring findPattern = path + TO_UNICODE("*.*");
+
+		Util::Wstring findPattern = fp.first + TO_UNICODE("*.*");
 
 		findResult = FindFirstFile(findPattern.c_str(), &fileData);
 		do
 		{
-			if ((findResult != INVALID_HANDLE_VALUE) &&
-				(NULL == (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)))
+			Util::Wstring name(fileData.cFileName);
+			if (boost::algorithm::equals(name, ".") || boost::algorithm::equals(name, ".."))
+				continue;
+
+			if (findResult != INVALID_HANDLE_VALUE)
 			{
-				allFiles.push_back(fileData.cFileName);
+				if (!fp.second || (0 == (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)))
+				{
+					WHISPERWIND_ASSERT(fileMap.find(name) == fileMap.end());
+
+					fileMap.insert(Engine::FilePathMap::value_type(name, fp.first + fileData.cFileName));
+				}
+				else if (fp.second && (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				{
+					traverseFolderWithWin32API(std::make_pair(fp.first + name + TO_UNICODE("/"), fp.second), fileMap);
+				}
 			}
 		} while (FindNextFile(findResult, &fileData));
 	}

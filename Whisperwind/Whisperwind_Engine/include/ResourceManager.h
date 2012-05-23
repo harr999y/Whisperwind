@@ -31,6 +31,8 @@ THE SOFTWARE
 
 namespace Engine
 {
+	typedef boost::unordered_map<Util::Wstring, Util::Wstring> FilePathMap;
+
 	class WHISPERWIND_API ResourceManager
 	{
 	public:
@@ -50,7 +52,6 @@ namespace Engine
 	private:
 		ResourceConfigPtr mResourceConfig;
 
-		typedef boost::unordered_map<Util::Wstring, Util::Wstring> FilePathMap;
 		FilePathMap mFilePathMap;
 
 	private:

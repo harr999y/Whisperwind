@@ -23,6 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/lexical_cast.hpp>
+
 #include "ExceptionDefine.h"
 #include "XmlManipulator.h"
 #include "ResourceConfig.h"
@@ -31,7 +33,8 @@ namespace Engine
 {
 	static const Util::String FOLDER("Folder");
 	static const Util::String SEVEN_Z("7Z");
-	static const Util::String ATTRIBUTE_NAME("path");
+	static const Util::String ATTRIBUTE_PATH("path");
+	static const Util::String ATTRIBUTE_FIND("find_subfolder");
 	//---------------------------------------------------------------------
 	void ResourceConfig::parse_impl()
 	{
@@ -39,34 +42,23 @@ namespace Engine
 		IF_NULL_EXCEPTION(rootNode, "Resource config donnot have root node!");
 
 		Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, FOLDER);
-		try
+		while (node)
 		{
-			while (node)
-			{
-				mFolderVec.push_back(Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_NAME)));
+			mFolderVec.push_back(std::make_pair(
+				Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_PATH)),
+				boost::lexical_cast<bool>(mXmlReader->getAttribute(node, ATTRIBUTE_FIND))));
 
-				node = mXmlReader->getNextSiblingNode(node);
-			}
-		}
-		catch (std::exception & e)
-		{
-			WHISPERWIND_EXCEPTION(Util::String("Resource config parse failed : ") + e.what());
+			node = mXmlReader->getNextSiblingNode(node);
 		}
 
 		node = mXmlReader->getFirstNode(rootNode, SEVEN_Z);
-
-		try
+		while (node)
 		{
-			while (node)
-			{
-				mFolderVec.push_back(Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_NAME)));
+			mSevenZVec.push_back(std::make_pair(
+				Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_PATH)),
+				boost::lexical_cast<bool>(mXmlReader->getAttribute(node, ATTRIBUTE_FIND))));
 
-				node = mXmlReader->getNextSiblingNode(node);
-			}
-		}
-		catch (std::exception & e)
-		{
-			WHISPERWIND_EXCEPTION(Util::String("Resource config parse failed : ") + e.what());
+			node = mXmlReader->getNextSiblingNode(node);
 		}
 	}
 

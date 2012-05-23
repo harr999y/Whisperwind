@@ -25,11 +25,17 @@ THE SOFTWARE
 #ifndef _RESOURCE_CONFIG_H_
 #define _RESOURCE_CONFIG_H_
 
+#include <utility>
+#include <vector>
+
 #include "Util.h"
 #include "Config.h"
 
 namespace Engine
 {
+	typedef std::pair<Util::Wstring, bool> FolderPair;
+	typedef std::vector<FolderPair> FolderPairVector;
+
 	class ResourceConfig : public Config
 	{
 	public:
@@ -41,15 +47,15 @@ namespace Engine
 		{}
 
 	public:
-		GET_CONST_VALUE(Util::WstringVector, FolderVec);
-		GET_CONST_VALUE(Util::WstringVector, SevenZVec);
+		GET_CONST_VALUE(FolderPairVector, FolderVec);
+		GET_CONST_VALUE(FolderPairVector, SevenZVec);
 
 	private:
 		virtual void parse_impl();
 
 	private:
-		Util::WstringVector mFolderVec;
-		Util::WstringVector mSevenZVec;
+		FolderPairVector mFolderVec;
+		FolderPairVector mSevenZVec;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(ResourceConfig);

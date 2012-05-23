@@ -77,8 +77,8 @@ THE SOFTWARE
 
 #else
 
-	#define DEBUG_PRINT(x) (0)
-	#define DEBUG_PRINT_RED(x) (0)
+	#define DEBUG_PRINT(x) (x)
+	#define DEBUG_PRINT_RED(x) (x)
 	#define  WHISPERWIND_ASSERT(x) (0)
 
 #endif // WHISPERWIND_DEBUG

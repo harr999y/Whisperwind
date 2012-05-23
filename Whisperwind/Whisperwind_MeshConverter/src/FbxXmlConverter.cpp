@@ -74,6 +74,7 @@ namespace Tool
 	{
 		/// save to xml
 		mXmlWriter = boost::make_shared<Util::XmlWriter>();
+		mXmlWriter->setConvertUtf8ToAnsi(true);
 
 		mMeshNode = mXmlWriter->appendNode(mXmlWriter->getRootNode(), "mesh");
 		IF_NULL_EXCEPTION(mMeshNode, (mPath + " append mesh node failed!").c_str());

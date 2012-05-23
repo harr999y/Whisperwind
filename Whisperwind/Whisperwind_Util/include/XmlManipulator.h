@@ -87,6 +87,7 @@ namespace Util
 
 	public:
 		GET_PTR(XmlNode, RootNode);
+		SET_VALUE(bool, ConvertUtf8ToAnsi);
 
 	private:
 		typedef rapidxml::xml_document<XmlCharType> Doc;
@@ -96,6 +97,8 @@ namespace Util
 		XmlNode * mRootNode;
 
 		std::ofstream mXmlStream;
+
+		bool mConvertUtf8ToAnsi;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(XmlWriter);
