@@ -41,6 +41,8 @@ namespace Engine
 
 	public:
 		Util::Wstring getResourcePath(const Util::Wstring & name);
+		/// TODO:Async load!
+		ResourcePtr loadResource(const Util::Wstring & resource);
 
 	private:
 		void parse();

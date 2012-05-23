@@ -50,10 +50,13 @@ namespace Engine
 	class SceneObjectFactory;
 	class SceneComponent;
 	class Resource;
+	class MeshResource;
+	class SceneResource;
 	class ResourceManager;
 	class ResourceConfig;
 	class RenderQueue;
 	class Viewport;
+	class Camera;
 
 	/** For the unordered_maps nowadays.
 	@note:
@@ -67,18 +70,20 @@ namespace Engine
 	typedef boost::shared_ptr<ResourceConfig> ResourceConfigPtr;
 	typedef boost::shared_ptr<Renderable> RenderablePtr;
 	typedef std::vector<RenderablePtr> RenderableVector;
+	typedef boost::unordered_map<Util::Wstring, RenderablePtr> RenderableMap;
 	typedef boost::weak_ptr<Renderable> RenderableWeakPtr;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
-	typedef boost::unordered_map<RenderableMappingPtr, RenderableWeakPtr>RenderableMappingMap;
+	typedef std::vector<RenderableMappingPtr> RenderableMappingVector;
+	typedef boost::unordered_map<RenderableMappingPtr, RenderableWeakPtr> RenderableMappingWeakMap;
 	typedef boost::shared_ptr<RenderTextureMapping> RenderTextureMappingPtr;
 	typedef boost::shared_ptr<RenderTargetMapping> RenderTargetMappingPtr;
 	typedef boost::shared_ptr<RenderTexture>RenderTexturePtr;
 	typedef boost::weak_ptr<RenderTexture> RenderTextureWeakPtr;
-	typedef boost::unordered_map<Util::Wstring, RenderTextureWeakPtr>RenderTextureFileMap;
-	typedef boost::unordered_map<RenderTextureMappingPtr, RenderTextureWeakPtr>RenderTextureMappingMap;
+	typedef boost::unordered_map<Util::Wstring, RenderTextureWeakPtr> RenderTextureFileWeakMap;
+	typedef boost::unordered_map<RenderTextureMappingPtr, RenderTextureWeakPtr> RenderTextureMappingWeakMap;
 	typedef boost::shared_ptr<RenderTarget> RenderTargetPtr;
 	typedef boost::weak_ptr<RenderTarget> RenderTargetWeakPtr;
-	typedef boost::unordered_map<RenderTargetMappingPtr, RenderTargetWeakPtr>RenderTargetMappingMap;
+	typedef boost::unordered_map<RenderTargetMappingPtr, RenderTargetWeakPtr> RenderTargetMappingWeakMap;
 	typedef boost::shared_ptr<SceneManager> SceneManagerPtr;
 	typedef boost::shared_ptr<SceneNode> SceneNodePtr;
 	typedef std::vector<SceneNodePtr> SceneNodeVector;
@@ -90,9 +95,13 @@ namespace Engine
 	typedef boost::unordered_map<Util::Wstring, SceneObjectFactoryPtr> SceneObjectFactoryMap;
 	typedef boost::shared_ptr<SceneComponent> SceneComponentPtr;
 	typedef boost::shared_ptr<Resource> ResourcePtr;
+	typedef boost::shared_ptr<MeshResource> MeshResourcePtr;
+	typedef boost::shared_ptr<SceneResource> SceneResourcePtr;
 	typedef boost::shared_ptr<ResourceManager> ResourceManagerPtr;
 	typedef boost::shared_ptr<RenderQueue> RenderQueuePtr;
 	typedef boost::shared_ptr<Viewport> ViewportPtr;
+	typedef boost::shared_ptr<Camera> CameraPtr;
+
 }
 
 #endif

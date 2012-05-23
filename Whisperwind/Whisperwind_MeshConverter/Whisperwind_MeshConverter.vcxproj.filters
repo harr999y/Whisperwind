@@ -20,9 +20,6 @@
     <ClInclude Include="include\XmlWmeshConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\WmeshXmlConverter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RunConverter.cpp">
@@ -32,9 +29,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\FbxXmlConverter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WmeshXmlConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

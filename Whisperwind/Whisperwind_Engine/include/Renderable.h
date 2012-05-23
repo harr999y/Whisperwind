@@ -25,9 +25,8 @@ THE SOFTWARE
 #ifndef _RENDERABLE_H_
 #define _RENDERABLE_H_
 
-#include <boost/function.hpp>
-
 #include "Util.h"
+#include "MathDefine.h"
 #include "EngineForwardDeclare.h"
 #include "RenderMappingDefines.h"
 
@@ -44,15 +43,12 @@ namespace Engine
 		{}
 
 	public:
+		void setWorldViewProj(CXMMATRIX wvp) { XMStoreFloat4x4(&mWorldViewProj, wvp); }
+
 		inline void setEffectSemanticValue(const Util::String & semanticName, const void * data);
 		inline void setEffectParamValue(const Util::String & paramName, const void * data);
 		inline void setTexture(const Util::String & paramName, const RenderTexturePtr & texture);
 		inline void setRenderTarget(const Util::String & paramName, const RenderTexturePtr & texture);
-
-		template <typename CallBack>
-		void regPreRenderCallback(CallBack cb) { mPreRenderCallback = cb; }
-		template <typename CallBack>
-		void regPostRenderCallback(CallBack cb) { mPostRenderCallback = cb; }
 
 		void preRender(Util::time elapsedTime);
 		void postRender(Util::time elapsedTime);
@@ -67,11 +63,8 @@ namespace Engine
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target) = 0;
 
 	private:
-		typedef boost::function<void (Util::time)> Callback;
-		Callback mPreRenderCallback;
-		Callback mPostRenderCallback;
-
 		RenderType mRenderType;
+		XMFLOAT4X4 mWorldViewProj;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Renderable);

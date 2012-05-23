@@ -25,14 +25,10 @@ THE SOFTWARE
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
-#pragma warning(push, 3)
-#include <OIS/includes/OIS.h>
-#pragma warning(pop)
-
 #include "MathDefine.h"
 #include "EngineForwardDeclare.h"
 
-namespace GamePlay
+namespace Engine
 {
 	enum MoveDirection
 	{
@@ -42,10 +38,10 @@ namespace GamePlay
 		MD_BACK = 1 << 4
 	};
 
-	class Camera
+	class WHISPERWIND_API Camera
 	{
 	public:
-		Camera(Util::real nearCilp, Util::real farClip);
+		Camera(Util::real nearCilp, Util::real farClip, Util::real width, Util::real height);
 
 		~Camera()
 		{}
@@ -59,10 +55,13 @@ namespace GamePlay
 		void lookAt(FXMVECTOR destVec);
 		void update(Util::time elapsedTime);
 
-		Util::u_int getKeyCombinationFromEvent(const OIS::KeyEvent & arg) const;
+		void setPosition(FXMVECTOR pos) { XMStoreFloat3(&mPosition, pos); }
+		XMVECTOR getPosition() { return XMLoadFloat3(&mPosition); }
 
 	public:
-		SET_GET_CONST_VALUE(XMFLOAT3, Position);
+		SET_VALUE(Util::real, MoveSpeed);
+		SET_VALUE(Util::real, NearClip);
+		SET_VALUE(Util::real, FarClip);
 
 	private:
 		void doMove(Util::time deltaTime);
@@ -73,7 +72,9 @@ namespace GamePlay
 		XMFLOAT3 mUpDirection;
 		XMFLOAT4 mOrientation;
 		XMFLOAT3 mPosLookDelta;
+
 		bool mIsMoveDirection[4]; /// The sequence is forward,back,left,right.
+		Util::real mMoveSpeed;
 
 		Util::real mNearClip;
 		Util::real mFarClip;
@@ -85,8 +86,6 @@ namespace GamePlay
 
 		Util::real mPitchRadians;
 		Util::real mYawRadians;
-
-		Engine::ViewportPtr mViewport;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Camera);

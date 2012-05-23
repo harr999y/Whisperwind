@@ -4,9 +4,6 @@
     <Filter Include="Framework">
       <UniqueIdentifier>{0361d103-2ce2-4fb4-b10d-0205b0880189}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ScriptContent">
-      <UniqueIdentifier>{d05e9480-7362-498e-b503-168efe1ef814}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GamePlay Header">
       <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
     </Filter>
@@ -16,11 +13,11 @@
     <Filter Include="Actor">
       <UniqueIdentifier>{e5451ff5-482a-42ef-acfd-1fbc6169dbca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{ba4ec58b-b767-48bf-ab06-72a0a8a4c2ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GamePlayConfig">
       <UniqueIdentifier>{3f4eccc7-49ba-4ba9-9fed-8746a308af37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneContent">
+      <UniqueIdentifier>{d05e9480-7362-498e-b503-168efe1ef814}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,9 +30,6 @@
     <ClInclude Include="include\Actor.h">
       <Filter>Actor</Filter>
     </ClInclude>
-    <ClInclude Include="include\Camera.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GamePlayFramework.cpp">
@@ -44,16 +38,16 @@
     <ClCompile Include="include\Actor.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\bin\media\Effects\Test.fx">
-      <Filter>Effects</Filter>
-    </None>
     <None Include="..\bin\Config\GamePlayConfig.cfg">
       <Filter>GamePlayConfig</Filter>
+    </None>
+    <None Include="..\bin\media\Effects\default.fx">
+      <Filter>Effects</Filter>
+    </None>
+    <None Include="..\bin\media\Scenes\test.wscene">
+      <Filter>SceneContent</Filter>
     </None>
   </ItemGroup>
 </Project>

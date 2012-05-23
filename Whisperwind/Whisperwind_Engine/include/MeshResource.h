@@ -26,6 +26,7 @@ THE SOFTWARE
 #define _MESH_RESOURCE_H_
 
 #include "Util.h"
+#include "EngineForwardDeclare.h"
 #include "Resource.h"
 
 namespace Engine
@@ -39,6 +40,14 @@ namespace Engine
 		~MeshResource()
 		{}
 
+	public:
+		GET_CONST_VALUE(RenderableMappingVector, RenderableMappingVec);
+
+	private:
+		virtual void load(const Util::Wstring & resourcePath);
+
+	private:
+		RenderableMappingVector mRenderableMappingVec;
 	};
 }
 

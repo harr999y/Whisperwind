@@ -8,7 +8,7 @@ Whisperwind½«×÷ÎªÎÒµÄÊµÑéÔ°£¬À´ÈÃÎÒÈ¥Êµ¼ù¸÷ÖÖÏ£Íû³¢ÊÔºÍĞèÒªÕÆÎÕµÄ¼¼Êõ£¬Í¬Ê±ÎÒ»á½
 
 Whisperwind½«°éËæ×ÅÎÒµÄ¼¼ÊõÉúÑÄ£¬Ò»Â·×ßÏÂÈ¥£¬ÎÒ±Ø½«½«ÆäÒ»Ö±¸üĞÂÖ±µ½ÎÒ²»ÔÙ´¥Åö¼¼Êõ¡£Ô¸Éñ±£ÓÓ£¬ÎÒÄÜÒ»Ö±¼á³ÖÏÂÈ¥¡£
 
-×¢Òâ£ºÈôÏë±àÒëÇë×Ô´øÉÏBoost¿â£¬ÒòÌ«´óÃ»·ÅÉÏÀ´¡£·ÅÔÚWhisperwind\Whisperwind_Dependencies\boostÀïÃæ£¬Ö»·ÅboostÔ´ÎÄ¼ş¼Ğ¼´¿É¡£¿ªÆôVLD¼ì²âĞèÒª¼ÓÉÏvisual leak detector¿â£¬Ö±½Ó°²×°ÔÚWhisperwind\Whisperwind_DependenciesÏÂ¼´¿É¡£
+×¢Òâ£ºÈôÏë±àÒëÇë×Ô´øÉÏBoost¿â£¬ÒòÌ«´óÃ»·ÅÉÏÀ´¡£·ÅÔÚWhisperwind\Whisperwind_Dependencies\boostÀïÃæ£¬Ö»·ÅboostÔ´ÎÄ¼ş¼Ğ¼´¿É¡£¿ªÆôVLD¼ì²âĞèÒª¼ÓÉÏvisual leak detector¿â£¬Ö±½Ó°²×°ÔÚWhisperwind\Whisperwind_DependenciesÏÂ¼´¿É¡£FBXÒ²Çë½«includeºÍlib°´Ô­Ä¿Â¼½á¹¹¿½±´µ½Whisperwind\Whisperwind_Dependencies\FBXÀï¡£
 
 ½ÓÏÂÀ´ÂŞÁĞÏÂÄ¿Ç°Ïëµ½µÄ¸÷ÖÖÖ¸±ê£¬´ÓÍ¨ÓÃµ½ÌØ¶¨£º
 
@@ -32,21 +32,21 @@ Whisperwind½«°éËæ×ÅÎÒµÄ¼¼ÊõÉúÑÄ£¬Ò»Â·×ßÏÂÈ¥£¬ÎÒ±Ø½«½«ÆäÒ»Ö±¸üĞÂÖ±µ½ÎÒ²»ÔÙ´¥Åö¼¼Ê
 
 10.ÈçÎŞĞÔÄÜÎÊÌâ£¬¾¡Á¿²ÉÓÃÇåÎúÒ×¶®µÄ±í´ï·½Ê½ÓëÏÈ½øÒ×ÓÃµÄ¿â¡£
 
-11.ÔİÊ±Ö»¿¼ÂÇdx9ÏÂµÄÊµÏÖ¡£
+11.ÔİÊ±Ö»¿¼ÂÇdx9ÏÂµÄÊµÏÖ£¬µ«»á¾¡Á¿³éÏóÒÔÈÃÆä¿ÉÒÔ·½±ãÊÊÓ¦Ïòdx11µÄ×ª±ä¡£
 
 12.ÄÚ´æ·ÖÅäÔÚÎŞĞÔÄÜÎÊÌâµÄÇ°ÌáÏÂÄ¬ÈÏ²ÉÓÃÈ±Ê¡·½Ê½£¬ÓĞÎÊÌâÔÙ»»¡£
 
-13.¿ª·¢¹¤¾ßÎª£ºVS2010£¬IncrediBuild £¬Windbg£¬DebugDiag£¬Application Verifier£¬pix£¬vmmap£¬visual leak detector£¬PerfHUD£¬FX Composer£¬Intel Parallel Studio XE 2011µÈ¡£
+13.¿ª·¢¹¤¾ßÎª£ºVS2010£¬IncrediBuild £¬Windbg£¬DebugDiag£¬Application Verifier£¬pix£¬vmmap£¬visual leak detector£¬PerfHUD£¬FX Composer£¬Intel Parallel Studio XE 2011£¬FBXµÈ¡£
 
-14.»ù±¾¼Ü¹¹²Î¿¼OgreµÄDLL²å¼şÊ½ÌåÏµ£¬ÕâÑù¶ÔÓÚ¶àÖÖÊµÏÖ´óÓĞñÔÒæ¡£
+14.»ù±¾½á¹¹²Î¿¼OgreµÄDLL²å¼şÊ½ÌåÏµ£¬ÕâÑù¶ÔÓÚ¶àÖÖÊµÏÖ´óÓĞñÔÒæ¡£
 
 15.Òì³£´¦Àí¿´Çé¿ö¶ø¶¨£¬ÔÚÊµÊ±Ñ­»·ÖĞ¾Ü¾øÊ¹ÓÃ£¬µ«³õÊ¼»¯½×¶ÎÔòÄ¬ÈÏ²ÉÓÃ¡£
 
-16.Ä£ĞÍ¸ñÊ½ÏÈÓÃOgreµÄ£¬±Ï¾¹¸÷ÖÖµ¼³ö²å¼ş²»ºÃĞ´¡£
+16.Ä£ĞÍ¸ñÊ½ÓÃFBXÓÃÖĞ¼ä¸ñÊ½£¬Í¨¹ıĞ´µÄConverter×ªÎª.wmesh.xmlºÍ.wmesh¸ñÊ½£¬Í¨¹ıboost::serializationĞòÁĞ»¯³É¶ş½øÖÆ²¢¹©ÒıÇæÊ¹ÓÃ¡£
 
-17.Ôİ²»¹Ø×¢²å¼şÓë±à¼­Æ÷µÄ¿ª·¢¡£
+17.Ôİ²»¹Ø×¢Ì«¶àToolChainµÄ¿ª·¢¡£
 
-18.³ı´íÎóĞÅÏ¢ÍâËùÓĞÎÄ×Ö¾ùÓÃÎÄ±¾±£´æ£¬²»¿ÉÓ²±àÂë¡£
+18.³ı´íÎóĞÅÏ¢ºÍÖ¸¶¨ĞÅÏ¢ÍâËùÓĞÎÄ×Ö¾ùÓÃÎÄ±¾±£´æ£¬²»¿ÉÓ²±àÂë¡£
 
 19.UIÔİ¶¨Îª²ÉÓÃSflash¡£
 

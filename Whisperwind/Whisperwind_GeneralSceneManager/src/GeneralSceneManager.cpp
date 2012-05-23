@@ -169,7 +169,7 @@ namespace Engine
 		BOOST_AUTO(it, mSceneGraphVec.begin());
 		for (it; it != mSceneGraphVec.end(); ++it)
 		{
-			(*it)->update(false);
+			(*it)->update();
 		}
 	}
 

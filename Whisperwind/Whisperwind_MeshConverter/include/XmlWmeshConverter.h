@@ -44,6 +44,9 @@ namespace Tool
 		void converteToWmesh();
 
 	private:
+		void doConvert(const Util::XmlNode * submeshNode, Engine::RenderableMappingPtr & rm);
+
+	private:
 		Util::XmlReaderPtr mXmlReader;
 		Util::String mPath;
 
@@ -62,16 +65,13 @@ namespace Tool
 			type * data = reinterpret_cast<type *>(dataVec.data());
 
 			Util::XmlNode * triNode = mXmlReader->getFirstNode(trianglesNode, "triangle");
-			if (triNode)
+			while (triNode)
 			{
-				do
-				{
-					*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v1"));
-					*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v2"));
-					*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v3"));
+				*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v1"));
+				*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v2"));
+				*(data++) = boost::lexical_cast<type>(mXmlReader->getAttribute(triNode, "v3"));
 
-					triNode = mXmlReader->getNextSiblingNode(triNode);
-				} while (triNode);
+				triNode = mXmlReader->getNextSiblingNode(triNode);
 			}
 
 			indexBound.IndexData.DataVec = dataVec;

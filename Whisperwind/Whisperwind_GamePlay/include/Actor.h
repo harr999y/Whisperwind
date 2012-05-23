@@ -45,6 +45,8 @@ namespace GamePlay
 	private:
 		virtual void preUpdate_impl(Util::time elapsedTime);
 		virtual void postUpdate_impl(Util::time elapsedTime);
+
+		friend class ActorFactory;
 	};
 
 	class ActorFactory : public Engine::SceneObjectFactory
@@ -56,7 +58,7 @@ namespace GamePlay
 		{}
 
 	public:
-		virtual Engine::SceneObjectPtr create(const Util::Wstring & objName);
+		virtual Engine::SceneObjectPtr create_impl(const Util::Wstring & objName, const Engine::ResourcePtr & resource);
 	};
 
 }

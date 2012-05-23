@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BoostSerialization_impl.h" />
+    <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\EngineConfigDefines.h" />
     <ClInclude Include="include\EngineConfig.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\Resource.h" />
     <ClInclude Include="include\ResourceManager.h" />
+    <ClInclude Include="include\SceneResource.h" />
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneNode.h" />
     <ClInclude Include="include\SceneObject.h" />
@@ -38,7 +40,9 @@
     <ClInclude Include="include\WindowsHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\EngineConfigDefines.cpp" />
+    <ClCompile Include="src\MeshResource.cpp" />
     <ClCompile Include="src\PluginConfig.cpp" />
     <ClCompile Include="src\Config.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
@@ -54,6 +58,8 @@
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SceneNode.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
+    <ClCompile Include="src\SceneObjectFactory.cpp" />
+    <ClCompile Include="src\SceneResource.cpp" />
     <ClCompile Include="src\WindowsEventHandle.cpp" />
     <ClCompile Include="src\WindowsHelper.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>

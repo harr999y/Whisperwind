@@ -24,9 +24,14 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
 
 #include "CheckedCast.h"
+#include "EngineManager.h"
+#include "RenderSystem.h"
 #include "Renderable.h"
+#include "MeshResource.h"
+#include "GamePlayForwardDeclare.h"
 #include "Actor.h"
 
 namespace GamePlay
@@ -41,17 +46,30 @@ namespace GamePlay
 	{}
 
 	//---------------------------------------------------------------------
-	// Actor
+	// Actor factory
 	//---------------------------------------------------------------------
-	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("Actor"));
+	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("actor"));
 	//---------------------------------------------------------------------
 	ActorFactory::ActorFactory() : 
 	    Engine::SceneObjectFactory(ACTOR_FACTORY_NAME)
 	{}
 	//---------------------------------------------------------------------
-	Engine::SceneObjectPtr ActorFactory::create(const Util::Wstring & objName)
+	Engine::SceneObjectPtr ActorFactory::create_impl(const Util::Wstring & objName, const Engine::ResourcePtr & resource)
 	{
-		return boost::make_shared<Actor>(objName);
+		Engine::MeshResourcePtr mesh = Util::checkedPtrCast<Engine::MeshResource>(resource);
+		const Engine::RenderableMappingVector & rmVec = mesh->getRenderableMappingVec();
+
+		ActorPtr actor = boost::make_shared<Actor>(objName);
+
+		BOOST_FOREACH(const Engine::RenderableMappingPtr & rm, rmVec)
+		{
+			Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
+
+			if (renderable)
+				actor->addRenderable(rm->RenderableName, renderable);
+		}
+
+		return actor;
 	}
 
 }

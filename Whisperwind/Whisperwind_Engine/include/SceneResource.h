@@ -22,3 +22,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _SCENE_RESOURCE_H_
+#define _SCENE_RESOURCE_H_
+
+#include "Util.h"
+#include "XmlManipulator.h"
+#include "EngineForwardDeclare.h"
+#include "Resource.h"
+
+namespace Engine
+{
+	class WHISPERWIND_API SceneResource : public Resource
+	{
+	public:
+		SceneResource()
+		{}
+
+		~SceneResource()
+		{}
+
+	public:
+		GET_VALUE(CameraPtr, Camera);
+
+	private:
+		virtual void load(const Util::Wstring & resourcePath);
+
+		void processCamera(const Util::XmlReader & xmlReader, const Util::XmlNode * cameraNode);
+		void processSceneNode(const Util::XmlReader & xmlReader, const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode);
+		void processSceneObject(const Util::XmlReader & xmlReader, const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode);
+
+	private:
+		CameraPtr mCamera;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(SceneResource);
+	};
+}
+
+#endif

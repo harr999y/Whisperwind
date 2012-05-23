@@ -73,10 +73,10 @@ namespace Engine
 		bool mIsDeviceLost;
 		D3DPRESENT_PARAMETERS mPresentParameters;  /// Keep for device reset.
 		ID3DXEffectMap mEffectMap;
-		RenderableMappingMap mRenderableMappingMap;
-		RenderTextureMappingMap mRenderTextureMappingMap;
-		RenderTextureFileMap mRenderTextureFileMap;
-		RenderTargetMappingMap mRenderTargetMappingMap;
+		RenderableMappingWeakMap mRenderableMappingMap;
+		RenderTextureMappingWeakMap mRenderTextureMappingMap;
+		RenderTextureFileWeakMap mRenderTextureFileMap;
+		RenderTargetMappingWeakMap mRenderTargetMappingMap;
 	};
 }
 

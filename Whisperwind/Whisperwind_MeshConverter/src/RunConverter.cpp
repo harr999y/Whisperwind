@@ -37,7 +37,7 @@ int main(int argc, char ** argv)
 {
 	try
 	{
-		if (argc > 2)
+		if (argc > 3)
 		{
 			WHISPERWIND_EXCEPTION("Too many args!");
 		}
@@ -49,6 +49,8 @@ int main(int argc, char ** argv)
 		if (boost::algorithm::find_first(argv[1], ".fbx") || boost::algorithm::find_first(argv[1], ".FBX"))
 		{
 			Tool::FbxXmlConverter fbx2XmlConverter(argv[1]);
+			if ((argc == 3) && (boost::algorithm::equals(argv[2], "uv_inverse")))
+				fbx2XmlConverter.setUVInverse(true);
 			Util::Wstring xmlPath = fbx2XmlConverter.convertToXml();
 
 			Tool::XmlWmeshConverter xml2WmeshConverter(Util::WstringToString(xmlPath));
@@ -61,16 +63,16 @@ int main(int argc, char ** argv)
 		}
 		else if (boost::algorithm::find_first(argv[1], ".wmesh"))
 		{
-
+			/// TODO! .wmesh converte to .wmesh.xml. Now I donnot need it.
 		}
 	}
-	catch (Util::Exception & e)
+	catch (boost::exception & e)
 	{
 #ifdef WHISPERWIND_DEBUG
 		DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
 #else
 		WHISPERWIND_LOG(Util::StringToWstring(boost::diagnostic_information_what(e)));
-		::MessageBox(NULL, ERROR_NOTIFY.c_str(), TO_UNICODE("Error!"), MB_OK);		
+		::MessageBox(NULL, TO_UNICODE("Xml to wmesh failed!"), TO_UNICODE("Error!"), MB_OK);		
 #endif
 	}
 

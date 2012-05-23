@@ -23,8 +23,8 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{516635bf-8a56-40b5-ba08-a94cc7200bfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine Src">
-      <UniqueIdentifier>{fd12bce8-b893-4745-8383-b66608157a58}</UniqueIdentifier>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{165467d0-530d-4630-be24-72044d020664}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +103,12 @@
     <ClInclude Include="include\BoostSerialization_impl.h">
       <Filter>Engine Header</Filter>
     </ClInclude>
+    <ClInclude Include="include\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EngineManager.cpp">
@@ -152,6 +158,18 @@
     </ClCompile>
     <ClCompile Include="src\RenderQueue.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneObjectFactory.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneResource.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

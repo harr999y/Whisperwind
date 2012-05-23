@@ -23,6 +23,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include "UtilWarningDisable.h"
+
+/** for windows.h's warning level */
+#pragma warning(push, 3)
+#include <windows.h>
+#pragma warning(pop)
+
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+
+#include "DebugDefine.h"
+#include "ExceptionDefine.h"
 #include "StringConverter.h"
 
 namespace Util
@@ -44,4 +56,48 @@ namespace Util
 
 		return String(tmpVec.begin(), tmpVec.end() - 1);
 	}
+
+	XMVECTOR StringToVector(const String & str, size_t column)
+	{
+		XMVECTOR vec = XMVectorZero();
+		try
+		{
+			Util::StringVector strVec;
+			boost::algorithm::split(strVec, str, boost::is_any_of(","));
+
+			WHISPERWIND_ASSERT((strVec.size()) == column);
+
+			for (size_t it = 0; it < column; ++it)
+			{
+				vec = XMVectorSetByIndex(vec, boost::lexical_cast<real>(strVec[it]), it);
+			}
+		}
+		catch (boost::exception & e)
+		{
+			DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
+		}
+
+		return vec;
+	}
+
+	String VectorToString(FXMVECTOR vector, size_t column)
+	{
+		String str("");
+		try
+		{
+			for (size_t it = 0; it < column; ++it)
+			{
+				str += boost::lexical_cast<String>(XMVectorGetByIndex(vector, it)) + ",";
+			}
+
+			boost::algorithm::erase_last(str, ",");
+		}
+		catch (boost::exception & e)
+		{
+			DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
+		}
+
+		return str;
+	}
+
 }

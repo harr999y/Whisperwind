@@ -25,20 +25,20 @@ THE SOFTWARE
 #ifndef _STRING_CONVERTER_H_
 #define _STRING_CONVERTER_H_
 
-/** for windows.h's warning level */
-#pragma warning(push, 3)
-#include <windows.h>
-#pragma warning(pop)
-
 #include <vector>
 
 #include "Util.h"
+#include "MathDefine.h"
 
 namespace Util
 {
 	WHISPERWIND_API Wstring StringToWstring(const String & src);
 
 	WHISPERWIND_API String WstringToString(const Wstring & src);
+
+	WHISPERWIND_API XMVECTOR StringToVector(const String & str, size_t column);
+
+	WHISPERWIND_API String VectorToString(FXMVECTOR vector, size_t column);
 }
 
 #endif

@@ -23,51 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include "ExceptionDefine.h"
-#include "XmlManipulator.h"
-#include "ResourceConfig.h"
+#include "SceneObjectFactory.h"
 
 namespace Engine
 {
-	static const Util::String FOLDER("Folder");
-	static const Util::String SEVEN_Z("7Z");
-	static const Util::String ATTRIBUTE_NAME("path");
 	//---------------------------------------------------------------------
-	void ResourceConfig::parse_impl()
+	SceneObjectPtr SceneObjectFactory::create(const Util::Wstring & objName, const ResourcePtr & resource)
 	{
-		Util::XmlNode * rootNode = mXmlReader->getRootNode();
-		IF_NULL_EXCEPTION(rootNode, "Resource config donnot have root node!");
-
-		Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, FOLDER);
-		try
-		{
-			while (node)
-			{
-				mFolderVec.push_back(Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_NAME)));
-
-				node = mXmlReader->getNextSiblingNode(node);
-			}
-		}
-		catch (std::exception & e)
-		{
-			WHISPERWIND_EXCEPTION(Util::String("Resource config parse failed : ") + e.what());
-		}
-
-		node = mXmlReader->getFirstNode(rootNode, SEVEN_Z);
-
-		try
-		{
-			while (node)
-			{
-				mFolderVec.push_back(Util::StringToWstring(mXmlReader->getAttribute(node, ATTRIBUTE_NAME)));
-
-				node = mXmlReader->getNextSiblingNode(node);
-			}
-		}
-		catch (std::exception & e)
-		{
-			WHISPERWIND_EXCEPTION(Util::String("Resource config parse failed : ") + e.what());
-		}
+		return create_impl(objName, resource);
 	}
 
 }

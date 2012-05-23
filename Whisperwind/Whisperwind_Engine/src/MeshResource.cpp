@@ -22,27 +22,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _WMESH_XML_CONVERTER_H_
-#define _WMESH_XML_CONVERTER_H_
 
-#include "Util.h"
+#include <fstream>
 
-namespace Tool
+#include "StringConverter.h"
+#include "BoostSerialization_impl.h"
+#include "MeshResource.h"
+
+namespace Engine
 {
-	class WmeshXmlConverter
+	//---------------------------------------------------------------------
+	void MeshResource::load(const Util::Wstring & resourcePath)
 	{
-	public:
-		explicit WmeshXmlConverter(const Util::String & path);
+		std::ifstream ifs(Util::WstringToString(resourcePath), std::ios::binary);
+		boost::archive::binary_iarchive is(ifs);
 
-		~WmeshXmlConverter()
-		{}
+		is >> mRenderableMappingVec;
+	}
 
-	public:
-		void converteToXml();
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(WmeshXmlConverter);
-	};
 }
-
-#endif

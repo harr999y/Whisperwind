@@ -35,13 +35,23 @@ namespace Engine
 {
 	static const SceneNodePtr NULL_SCENE_NODE;
 	//---------------------------------------------------------------------
+	SceneNode::SceneNode(const Util::Wstring & name, Util::u_int nodeType) :
+	    mName(name),
+		mPosition(0.0f, 0.0f, 0.0f),
+		mRelativePosition(0.0f, 0.0f, 0.0f),
+		mNodeType(nodeType)
+	{
+		XMStoreFloat4(&mOrientation, XMQuaternionIdentity());
+		XMStoreFloat4(&mRelativeOrientation, XMQuaternionIdentity());
+	}
+	//---------------------------------------------------------------------
 	SceneNode::~SceneNode()
 	{
 		dettachAllSceneObject();
 		removeAllChildNode();
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::attachSceneObject(SceneObjectPtr sceneObj)
+	void SceneNode::attachSceneObject(SceneObjectPtr & sceneObj)
 	{
 		WHISPERWIND_ASSERT(std::find(mSceneObjectVec.begin(), mSceneObjectVec.end(), sceneObj) == mSceneObjectVec.end());
 
@@ -186,15 +196,58 @@ namespace Engine
 		mNeedUpdateChilds = true;
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::update(bool updateChildPosition)
+	XMVECTOR SceneNode::getOrientation() const
 	{
-		if (updateChildPosition)
-			XMStoreFloat3(&mPosition, mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition));
+		if (mParentNode)
+			return XMQuaternionMultiply(XMLoadFloat4(&mRelativeOrientation), mParentNode->getOrientation());
+		else
+			return XMLoadFloat4(&mOrientation);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::setOrientation(FXMVECTOR orientation)
+	{
+		XMStoreFloat4(&mOrientation, orientation);
 
-		BOOST_AUTO(it, mChildSceneNodeVec.begin());
-		for (it; it != mChildSceneNodeVec.end(); ++it)
+		if (mParentNode)
+			XMStoreFloat4(&mRelativeOrientation, XMQuaternionMultiply(XMQuaternionInverse(mParentNode->getOrientation()), orientation));
+
+		mNeedUpdateChilds = true;
+	}
+	//---------------------------------------------------------------------
+	XMVECTOR SceneNode::getRelativeOrientation() const
+	{
+		WHISPERWIND_ASSERT(mParentNode != NULL);
+
+		return XMLoadFloat4(&mRelativeOrientation);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::setRelativeOrientation(FXMVECTOR relOrientation)
+	{
+		WHISPERWIND_ASSERT(mParentNode != NULL);
+
+		XMStoreFloat4(&mRelativeOrientation, relOrientation);
+
+		if (mParentNode)
+			XMStoreFloat4(&mOrientation, XMQuaternionMultiply(mParentNode->getOrientation(), relOrientation));
+
+		mNeedUpdateChilds = true;
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::update()
+	{
+		if (mParentNode)
 		{
-			(*it)->update(mNeedUpdateChilds);
+			XMStoreFloat3(&mPosition, mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition));
+			XMStoreFloat4(&mOrientation, XMQuaternionMultiply(mParentNode->getOrientation(), XMLoadFloat4(&mRelativeOrientation)));
+		}
+		
+		if (mNeedUpdateChilds)
+		{
+			BOOST_AUTO(it, mChildSceneNodeVec.begin());
+			for (it; it != mChildSceneNodeVec.end(); ++it)
+			{
+				(*it)->update();
+			}
 		}
 	}
 

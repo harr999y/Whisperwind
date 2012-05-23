@@ -27,3 +27,4 @@ Whisperwind/Whisperwind_Dependencies/FBX/lib
 *.ib_pdb_index
 *.fxo
 *.cache
+*.enc

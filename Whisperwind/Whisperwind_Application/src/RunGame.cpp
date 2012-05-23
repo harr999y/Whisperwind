@@ -55,7 +55,7 @@ THE SOFTWARE
 			GamePlay::GamePlayFramework framework(APPLICATION_NAME);
 			framework.run();
 		}
-		catch (Util::Exception & e)
+		catch (boost::exception & e)
 		{
 #ifdef WHISPERWIND_DEBUG
 		    DEBUG_PRINT_RED(boost::diagnostic_information_what(e));

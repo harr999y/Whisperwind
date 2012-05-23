@@ -29,6 +29,7 @@ THE SOFTWARE
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4310)
 #pragma warning(disable : 4308)
+#pragma warning(disable : 4100)
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>

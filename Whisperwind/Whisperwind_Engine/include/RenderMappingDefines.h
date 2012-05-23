@@ -190,6 +190,7 @@ namespace Engine
 			PrimCount(0)
 		{}
 
+		Util::Wstring RenderableName;
 		VertexMapping VertexBound;
 		IndexMapping IndexBound;
 		Util::String EffectName;

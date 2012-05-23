@@ -62,6 +62,8 @@ namespace Util
 	//---------------------------------------------------------------------
 	XmlNode * XmlReader::getRootNode() const
 	{
+		WHISPERWIND_ASSERT(mRootNode);
+
 		return mRootNode;
 	}
 	//---------------------------------------------------------------------

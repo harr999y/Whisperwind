@@ -47,7 +47,6 @@ namespace GamePlay
 		void run();
 
 		/// TODO!
-		void preUpdateCallback(Util::time elapsedTime);
 		void preUpdate(Util::time elapsedTime);
 		void postUpdate(Util::time elapsedTime);
 
@@ -62,9 +61,11 @@ namespace GamePlay
 		void createScene();
 		void destroyScene();
 
+		Util::u_int getKeyCombinationFromEvent(const OIS::KeyEvent & arg) const;
+
 	private:
 		ActorPtr mActor;
-		CameraPtr mCamera;
+		Engine::CameraPtr mCamera;
 
 		typedef boost::shared_ptr<OIS::InputManager> InputManagerPtr;
 		typedef boost::shared_ptr<OIS::Keyboard> KeyboardPtr;

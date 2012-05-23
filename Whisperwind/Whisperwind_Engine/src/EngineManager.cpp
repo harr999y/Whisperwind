@@ -39,6 +39,7 @@ THE SOFTWARE
 #include "RenderMappingDefines.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "Camera.h"
 #include "EngineManager.h"
 
 namespace Engine
@@ -73,6 +74,15 @@ namespace Engine
 		/// threads destroyed and some dlls detached!
 	}
 	//---------------------------------------------------------------------
+	void EngineManager::setup()
+	{
+		/// Do init here,DONOT put it in constructor.
+		init();
+
+		loadPlugins();
+		loadResources();
+	}
+	//---------------------------------------------------------------------
 	void EngineManager::init()
 	{
 		setQuitLooping(false);
@@ -83,6 +93,12 @@ namespace Engine
 		mTimer = boost::make_shared<Util::WindowsTimer>();
 
 		loadConfigs();
+
+		mCamera = boost::make_shared<Camera>(
+			1.0f, 
+			2000.0f, 
+			static_cast<Util::real>(mEngineConfig->getResolutionPair().first), 
+			static_cast<Util::real>(mEngineConfig->getResolutionPair().second));
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::loadConfigs()
@@ -92,15 +108,6 @@ namespace Engine
 
 		mPluginConfig->parse();
 		WHISPERWIND_LOG(TO_UNICODE("Plugin config parse done!"));
-	}
-	//---------------------------------------------------------------------
-	void EngineManager::setup()
-	{
-		/// Do init here,DONOT put it in constructor.
-		init();
-
-		loadPlugins();
-		loadResources();
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::run()

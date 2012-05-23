@@ -26,8 +26,11 @@ THE SOFTWARE
 #define _FBX_XML_CONVERTER_H_
 
 #include <fbxsdk.h>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "Util.h"
+#include "XmlManipulator.h"
 
 namespace Tool
 {
@@ -41,6 +44,9 @@ namespace Tool
 	public:
 		Util::Wstring convertToXml();
 
+	public:
+		SET_VALUE(bool, UVInverse);
+
 	private:
 		void doWalk(FbxNode * fbxNode);
 		void processMesh(FbxNode * fbxNode);
@@ -51,6 +57,60 @@ namespace Tool
 
 		Util::String mPath;
 		Util::XmlWriterPtr mXmlWriter;
+		Util::XmlNode * mMeshNode;
+
+		bool mUVInverse;
+
+	private:
+		template<typename FbxSurfaceType>
+		void fillParams(FbxSurfaceMaterial * fbxMaterial, Util::XmlNode * materialNode)
+		{
+			mXmlWriter->appendAttribute(materialNode, "effect", "default.fx"); 
+			mXmlWriter->appendAttribute(materialNode, "technique", "basic"); 
+
+			/// TODO:Now only for the diffuse map.
+			FbxProperty fbxProperty = fbxMaterial->FindProperty(FbxLayerElement::sTextureChannelNames[0]);
+			if (fbxProperty.IsValid())
+			{
+				FbxTexture * fbxTexture = FbxCast<FbxTexture>(fbxProperty.GetSrcObject(FbxTexture::ClassId, 0));
+				if (fbxTexture)
+				{
+					FbxFileTexture * fbxFileTexture = FbxCast<FbxFileTexture>(fbxTexture);
+					if (fbxFileTexture)
+					{
+						Util::XmlNode * textureNode = mXmlWriter->appendNode(materialNode, "texture");
+						mXmlWriter->appendAttribute(textureNode, "name", "diffuseTexture");
+
+						Util::String str(fbxFileTexture->GetFileName());
+						Util::StringVector strVec;
+						boost::algorithm::split(strVec, str, boost::is_any_of("/\\"));
+						mXmlWriter->appendAttribute(textureNode, "value", strVec.rbegin()->c_str());
+					}
+				}
+			}
+
+			Util::XmlNode * ambientNode = mXmlWriter->appendNode(materialNode, "param");
+			Util::XmlNode * diffuseNode = mXmlWriter->appendNode(materialNode, "param");
+
+			Util::String value;
+			FbxDouble3 vec3;
+
+			vec3 = static_cast<FbxSurfaceType *>(fbxMaterial)->Ambient;
+			value = boost::lexical_cast<Util::String>(vec3[0]) + ",";
+			value += boost::lexical_cast<Util::String>(vec3[1]) + ",";
+			value += boost::lexical_cast<Util::String>(vec3[2]);
+			mXmlWriter->appendAttribute(ambientNode, "name", "ambient");
+			mXmlWriter->appendAttribute(ambientNode, "value", value.c_str());
+
+			vec3 = static_cast<FbxSurfaceType *>(fbxMaterial)->Diffuse;
+			value = boost::lexical_cast<Util::String>(vec3[0]) + ",";
+			value += boost::lexical_cast<Util::String>(vec3[1]) + ",";
+			value += boost::lexical_cast<Util::String>(vec3[2]);
+			mXmlWriter->appendAttribute(diffuseNode, "name", "diffuse");
+			mXmlWriter->appendAttribute(diffuseNode, "value", value.c_str());
+
+			/// TODO:transparent.
+		}
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(FbxXmlConverter);

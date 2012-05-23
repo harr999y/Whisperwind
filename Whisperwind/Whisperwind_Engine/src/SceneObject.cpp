@@ -24,11 +24,15 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/foreach.hpp>
+#include <boost/typeof/typeof.hpp>
 
 #include "DebugDefine.h"
+#include "MathDefine.h"
 #include "SceneComponent.h"
 #include "EngineManager.h"
+#include "Renderable.h"
 #include "RenderSystem.h"
+#include "Camera.h"
 #include "SceneObject.h"
 
 namespace Engine
@@ -37,7 +41,24 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneObject::addToRenderQueue()
 	{
-		EngineManager::getSingleton().getRenderSystem()->addToRenderQueue(mRenderable);
+		BOOST_AUTO(it, mRenderableMap.begin());
+		for (it; it != mRenderableMap.end(); ++it)
+		{
+			RenderablePtr & renderable = it->second;
+
+			if (mAttachedSceneNode)
+			{
+				XMMATRIX matrix = XMMatrixTranslationFromVector(mAttachedSceneNode->getPosition()) *
+					XMMatrixRotationQuaternion(mAttachedSceneNode->getOrientation());
+
+				CameraPtr & camera = EngineManager::getSingleton().getCamera();
+				matrix *= camera->getViewMatrix() * camera->getProjMatrix();
+
+				renderable->setWorldViewProj(matrix);
+			}
+
+			EngineManager::getSingleton().getRenderSystem()->addToRenderQueue(renderable);
+		}
 	}
 	//---------------------------------------------------------------------
 	void SceneObject::preUpdate( Util::time elapsedTime )
@@ -81,6 +102,20 @@ namespace Engine
 	void SceneObject::unRegComponent(ComponentType type)
 	{
 		mSceneComponents[type] = NULL_SCENE_COMPONENT;
+	}
+	//---------------------------------------------------------------------
+	void SceneObject::addRenderable(const Util::Wstring & name, const RenderablePtr & renderable)
+	{
+		WHISPERWIND_ASSERT(mRenderableMap.find(name) == mRenderableMap.end());
+
+		mRenderableMap.insert(RenderableMap::value_type(name, renderable));
+	}
+	//---------------------------------------------------------------------
+	RenderablePtr & SceneObject::getRenderable(const Util::Wstring & name)
+	{
+		WHISPERWIND_ASSERT(mRenderableMap.find(name) != mRenderableMap.end());
+
+		return mRenderableMap[name];
 	}
 
 }

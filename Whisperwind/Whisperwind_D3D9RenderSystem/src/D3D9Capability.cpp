@@ -42,7 +42,7 @@ namespace Engine
 		mCapVec.resize(CAPABILITIES_MAX);
 		/// Fill default value.
 		mCapVec[UNKNOWN_FORMAT].SupportedFormat = D3DFMT_UNKNOWN;
-		mCapVec[DEPTH_STENCIL].SupportedFormat = D3DFMT_D24S8;
+		mCapVec[DEPTH_STENCIL].SupportedFormat = D3DFMT_D16;
 		mCapVec[BACK_BUFFER].SupportedFormat = D3DFMT_X8R8G8B8; /// TODO!
 
 		doChecks();

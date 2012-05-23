@@ -76,6 +76,7 @@
       <PreprocessorDefinitions>FBXSDK_SHARED;FBXSDK_NEW_API;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../Whisperwind_Util/include;./include;../Whisperwind_Dependencies/FBX/include;../Whisperwind_Dependencies;../Whisperwind_Engine/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -89,13 +90,11 @@
   <ItemGroup>
     <ClInclude Include="include\FbxXmlConverter.h" />
     <ClInclude Include="include\MeshConverterForwardDeclare.h" />
-    <ClInclude Include="include\WmeshXmlConverter.h" />
     <ClInclude Include="include\XmlWmeshConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FbxXmlConverter.cpp" />
     <ClCompile Include="src\RunConverter.cpp" />
-    <ClCompile Include="src\WmeshXmlConverter.cpp" />
     <ClCompile Include="src\XmlWmeshConverter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

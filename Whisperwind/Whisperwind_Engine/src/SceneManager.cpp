@@ -27,6 +27,9 @@ THE SOFTWARE
 #include <boost/typeof/typeof.hpp>
 
 #include "DebugDefine.h"
+#include "EngineManager.h"
+#include "Resource.h"
+#include "ResourceManager.h"
 #include "SceneNode.h"
 #include "SceneObject.h"
 #include "SceneObjectFactory.h"
@@ -114,12 +117,15 @@ namespace Engine
 		mSceneObjectFactoryMap.insert(SceneObjectFactoryMap::value_type(factory->getName(), factory));
 	}
 	//---------------------------------------------------------------------
-	SceneObjectPtr & SceneManager::createSceneObject(const Util::Wstring & type, const Util::Wstring & name)
+	SceneObjectPtr & SceneManager::createSceneObject(const Util::Wstring & type, const Util::Wstring & name, const Util::Wstring & resourceName)
 	{
 		WHISPERWIND_ASSERT(mSceneObjectFactoryMap.find(type) != mSceneObjectFactoryMap.end());
 		WHISPERWIND_ASSERT(mSceneObjectMap.find(name) == mSceneObjectMap.end());
 
-		mSceneObjectMap.insert(SceneObjectMap::value_type(name, mSceneObjectFactoryMap[type]->create(name)));
+		const ResourceManagerPtr & rm = EngineManager::getSingleton().getResourceManager(); 
+		ResourcePtr resource = rm->loadResource(resourceName);
+
+		mSceneObjectMap.insert(SceneObjectMap::value_type(name, mSceneObjectFactoryMap[type]->create(name, resource)));
 
 		return mSceneObjectMap[name];
 	}
@@ -150,6 +156,12 @@ namespace Engine
 		}
 
 		mSceneObjectMap.clear();
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::loadScene(const Util::Wstring & scene)
+	{
+		const ResourceManagerPtr & rm = EngineManager::getSingleton().getResourceManager();
+		rm->loadResource(scene);
 	}
 
 }

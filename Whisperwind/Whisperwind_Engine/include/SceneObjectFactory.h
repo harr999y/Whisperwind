@@ -41,7 +41,10 @@ namespace Engine
 		{}
 
 	public:
-		virtual SceneObjectPtr create(const Util::Wstring & objName) = 0;
+		inline SceneObjectPtr create(const Util::Wstring & objName, const ResourcePtr & resource);
+
+	private:
+		virtual SceneObjectPtr create_impl(const Util::Wstring & objName, const ResourcePtr & resource) = 0;
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);

@@ -28,21 +28,19 @@ THE SOFTWARE
 #include "Viewport.h"
 #include "Camera.h"
 
-namespace GamePlay
+namespace Engine
 {
-	static const Util::real MOVE_SPEED = 2.0f;
 	//---------------------------------------------------------------------
-	Camera::Camera(Util::real nearCilp, Util::real farClip) :
+	Camera::Camera(Util::real nearCilp, Util::real farClip, Util::real width, Util::real height) :
         mNearClip(nearCilp),
 	    mFarClip(farClip),
 		mUpDirection(0.0f, 1.0f, 0.0f),
 		mNeedUpdateViewMatrix(true),
 		mPitchRadians(0.0f),
-		mYawRadians(0.0f)
+		mYawRadians(0.0f),
+		mMoveSpeed(1.0f)
 	{
-		mViewport = Engine::EngineManager::getSingleton().getRenderSystem()->getViewport();
-
-		mAspect = static_cast<Util::real>(mViewport->getWidth()) / static_cast<Util::real>(mViewport->getHeight());
+		mAspect = width / height;
 
 		XMStoreFloat4(&mOrientation, XMQuaternionIdentity());
 
@@ -95,13 +93,13 @@ namespace GamePlay
 
 		XMFLOAT3 translationVec(0.0f, 0.0f, 0.0f);
 		if (mIsMoveDirection[0])
-			translationVec.z += MOVE_SPEED;
+			translationVec.z += mMoveSpeed;
 		if (mIsMoveDirection[1])
-			translationVec.z -= MOVE_SPEED;
+			translationVec.z -= mMoveSpeed;
 		if (mIsMoveDirection[2])
-			translationVec.x -= MOVE_SPEED;
+			translationVec.x -= mMoveSpeed;
 		if (mIsMoveDirection[3])
-			translationVec.x += MOVE_SPEED;
+			translationVec.x += mMoveSpeed;
 
 		XMVECTOR vector = XMVector3Rotate(XMLoadFloat3(&translationVec), XMLoadFloat4(&mOrientation)) * deltaTime + XMLoadFloat3(&mPosition);
 		XMVECTOR pos = XMLoadFloat3(&mPosition);
@@ -149,21 +147,6 @@ namespace GamePlay
 	void Camera::update(Util::time elapsedTime)
 	{
 		doMove(elapsedTime);
-	}
-	//---------------------------------------------------------------------
-	Util::u_int Camera::getKeyCombinationFromEvent(const OIS::KeyEvent & arg) const
-	{
-		Util::u_int flag = 0;
-		if (OIS::KC_W == arg.key)
-			flag |= MD_FORWARD;
-		else if (OIS::KC_S == arg.key)
-			flag |= MD_BACK;
-		else if (OIS::KC_A == arg.key)
-			flag |= MD_LEFT;
-		else if (OIS::KC_D == arg.key)
-			flag |= MD_RIGHT;
-
-		return flag;
 	}
 
 }

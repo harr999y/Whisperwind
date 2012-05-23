@@ -12,18 +12,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Actor.h" />
-    <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\GamePlayFramework.h" />
     <ClInclude Include="include\GamePlayForwardDeclare.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Actor.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\GamePlayFramework.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\bin\Config\GamePlayConfig.cfg" />
-    <None Include="..\bin\media\Effects\Test.fx" />
+    <None Include="..\bin\media\Effects\default.fx" />
+    <None Include="..\bin\media\Scenes\test.wscene">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C438CBE8-938E-469E-B7F2-4208F63E2E71}</ProjectGuid>
@@ -117,7 +118,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>../lib/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>Whisperwind_Util.lib;Whisperwind_Engine.lib;OIS.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Whisperwind_Util.lib;Whisperwind_Engine.lib;OIS.lib;boost_serialization-vc100-mt-1_49.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../lib/$(configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

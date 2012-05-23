@@ -50,118 +50,137 @@ namespace Tool
 		Util::XmlNode * meshNode = mXmlReader->getFirstNode(rootNode, "mesh");
 		IF_NULL_EXCEPTION(rootNode, (mPath + " donnot have mesh node!").c_str());
 
-		Engine::RenderableMapping rm;
+		Engine::RenderableMappingVector rmVec;
 
-		Util::XmlNode * materialNode = mXmlReader->getFirstNode(meshNode, "material");
+		Util::XmlNode * submeshNode = mXmlReader->getFirstNode(meshNode, "submesh");
+		while (submeshNode)
+		{
+			Engine::RenderableMappingPtr rm = boost::make_shared<Engine::RenderableMapping>();
+			doConvert(submeshNode, rm);
+			rmVec.push_back(rm);
+
+			submeshNode = mXmlReader->getNextSiblingNode(submeshNode);
+		}
+
+		boost::algorithm::erase_last(mPath, ".xml");
+ 		std::ofstream ofs(mPath, std::ios::out | std::ios::trunc | std::ios::binary);
+ 		boost::archive::binary_oarchive oa(ofs);
+ 		oa << rmVec;
+		ofs.close();
+	}
+	//---------------------------------------------------------------------
+	void XmlWmeshConverter::doConvert(const Util::XmlNode * submeshNode, Engine::RenderableMappingPtr & rm)
+	{
+		rm->RenderableName = Util::StringToWstring(mXmlReader->getAttribute(submeshNode, "name"));
+
+		Util::XmlNode * materialNode = mXmlReader->getFirstNode(submeshNode, "material");
 		if (materialNode)
 		{
-			rm.EffectName = mXmlReader->getAttribute(materialNode, "effect");
-			rm.TechniqueName = mXmlReader->getAttribute(materialNode, "technique");
+			rm->EffectName = mXmlReader->getAttribute(materialNode, "effect");
+			rm->TechniqueName = mXmlReader->getAttribute(materialNode, "technique");
 
 			Engine::EffectParamValuePair pvPair;
 			{
 				Util::XmlNode * paramNode = mXmlReader->getFirstNode(materialNode, "param");
-				if (paramNode)
+				while (paramNode)
 				{
-					do 
-					{
-						pvPair.first = mXmlReader->getAttribute(paramNode, "name");
-						pvPair.second = mXmlReader->getAttribute(paramNode, "value");
-						if (boost::algorithm::find_first(pvPair.second, ".dds") ||
-							 boost::algorithm::find_first(pvPair.second, ".tga") ||
-							 boost::algorithm::find_first(pvPair.second, ".jpg"))
-						{
-							rm.ParamTextureVec.push_back(pvPair);
-						}
-						else
-						{
-							rm.ParamValueVec.push_back(pvPair);
-						}
+					pvPair.first = mXmlReader->getAttribute(paramNode, "name");
+					pvPair.second = mXmlReader->getAttribute(paramNode, "value");
+					rm->ParamValueVec.push_back(pvPair);
 
-						paramNode = mXmlReader->getNextSiblingNode(paramNode);
-					} while (paramNode);
+					paramNode = mXmlReader->getNextSiblingNode(paramNode);
+				}
+
+				Util::XmlNode * textureNode = mXmlReader->getFirstNode(materialNode, "texture");
+				while (textureNode)
+				{
+					pvPair.first = mXmlReader->getAttribute(textureNode, "name");
+					pvPair.second = mXmlReader->getAttribute(textureNode, "value");
+					rm->ParamTextureVec.push_back(pvPair);
+
+					textureNode = mXmlReader->getNextSiblingNode(textureNode);
 				}
 			}
 		}
 
-		Util::XmlNode * vbNode = mXmlReader->getFirstNode(meshNode, "vertexbuffer");
+		Util::XmlNode * vbNode = mXmlReader->getFirstNode(submeshNode, "vertexbuffer");
 		IF_NULL_EXCEPTION(vbNode, mPath + " donnot have vertexbuffer!");
 		{
 			Util::u_int vertexCount = boost::lexical_cast<Util::u_int>(mXmlReader->getAttribute(vbNode, "vertexcount"));
-			rm.VertexBound.VertexCount = vertexCount;
+			rm->VertexBound.VertexCount = vertexCount;
 
 			Util::XmlNode * vertexNode = mXmlReader->getFirstNode(vbNode, "vertex");
 			IF_NULL_EXCEPTION(vertexNode, mPath + " donnot have vertex!");
 
 			Util::s_int16 vertexSize = 0;
- 			{
- 				/// NOTE:Just now what I need is only position,normal and texcoord,so I write just like this.
- 				if (mXmlReader->getFirstNode(vertexNode, "position"))
- 				{
- 					Engine::VertexElement vertexElem(0, 0, Engine::VET_FLOAT3, Engine::VEU_POSITION, 0);
- 					rm.VertexBound.VertexElemVec.push_back(vertexElem);
+			{
+				/// NOTE:Just now what I need is only position,normal and texcoord,so I write just like this.
+				if (mXmlReader->getFirstNode(vertexNode, "position"))
+				{
+					Engine::VertexElement vertexElem(0, 0, Engine::VET_FLOAT3, Engine::VEU_POSITION, 0);
+					rm->VertexBound.VertexElemVec.push_back(vertexElem);
 
 					vertexSize += 3;
- 				}
- 				if (mXmlReader->getFirstNode(vertexNode, "normal"))
- 				{
- 					Engine::VertexElement vertexElem(0, vertexSize * 4, Engine::VET_FLOAT3, Engine::VEU_NORMAL, 0);
- 					rm.VertexBound.VertexElemVec.push_back(vertexElem);
+				}
+				if (mXmlReader->getFirstNode(vertexNode, "normal"))
+				{
+					Engine::VertexElement vertexElem(0, vertexSize * 4, Engine::VET_FLOAT3, Engine::VEU_NORMAL, 0);
+					rm->VertexBound.VertexElemVec.push_back(vertexElem);
 
 					vertexSize += 3;
- 				}
- 				if (mXmlReader->getFirstNode(vertexNode, "texcoord"))
- 				{
- 					Engine::VertexElement vertexElem(0, vertexSize * 4, Engine::VET_FLOAT2, Engine::VEU_TEXTURE_COORD, 0);
- 					rm.VertexBound.VertexElemVec.push_back(vertexElem);
+				}
+				if (mXmlReader->getFirstNode(vertexNode, "texcoord"))
+				{
+					Engine::VertexElement vertexElem(0, vertexSize * 4, Engine::VET_FLOAT2, Engine::VEU_TEXTURE_COORD, 0);
+					rm->VertexBound.VertexElemVec.push_back(vertexElem);
 
 					vertexSize += 2;
- 				}
- 			}
+				}
+			}
 
 			Engine::Uint8Vector dataVec((sizeof(Util::real) / sizeof(Engine::Uint8Vector::value_type)) * vertexSize * vertexCount);
 			Util::real * data = reinterpret_cast<Util::real *>(dataVec.data());
- 			do 
- 			{
- 				/// position
- 				Util::XmlNode * positionNode = mXmlReader->getFirstNode(vertexNode, "position");
- 				if (positionNode)
- 				{
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "x"));
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "y"));
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "z"));
- 				}
- 
- 				/// normal
- 				Util::XmlNode * normalNode = mXmlReader->getFirstNode(vertexNode, "normal");
- 				if (normalNode)
- 				{
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(normalNode, "x"));
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(normalNode, "y"));
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(normalNode, "z"));
- 				}
- 
- 				/// texcoord
- 				Util::XmlNode * texcoordNode = mXmlReader->getFirstNode(vertexNode, "texcoord");
- 				if (texcoordNode)
- 				{
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(texcoordNode, "u"));
- 					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(texcoordNode, "v"));
- 				}
- 
- 				vertexNode = mXmlReader->getNextSiblingNode(vertexNode);
- 			} while (vertexNode);
+			do 
+			{
+				/// position
+				Util::XmlNode * positionNode = mXmlReader->getFirstNode(vertexNode, "position");
+				if (positionNode)
+				{
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "x"));
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "y"));
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "z"));
+				}
 
- 			Engine::BufferData vbBufData;
- 			vbBufData.DataSize = sizeof(Util::real) * vertexSize * vertexCount;
- 			vbBufData.DataVec = dataVec;
- 			vbBufData.Stride = sizeof(Util::real) * vertexSize;
- 			rm.VertexBound.VertexDataVec.push_back(vbBufData);
- 
- 			rm.VertexBound.VertexUsage = Engine::BUF_STATIC;
+				/// normal
+				Util::XmlNode * normalNode = mXmlReader->getFirstNode(vertexNode, "normal");
+				if (normalNode)
+				{
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(normalNode, "x"));
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(normalNode, "y"));
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(normalNode, "z"));
+				}
+
+				/// texcoord
+				Util::XmlNode * texcoordNode = mXmlReader->getFirstNode(vertexNode, "texcoord");
+				if (texcoordNode)
+				{
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(texcoordNode, "u"));
+					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(texcoordNode, "v"));
+				}
+
+				vertexNode = mXmlReader->getNextSiblingNode(vertexNode);
+			} while (vertexNode);
+
+			Engine::BufferData vbBufData;
+			vbBufData.DataSize = sizeof(Util::real) * vertexSize * vertexCount;
+			vbBufData.DataVec = dataVec;
+			vbBufData.Stride = sizeof(Util::real) * vertexSize;
+			rm->VertexBound.VertexDataVec.push_back(vbBufData);
+
+			rm->VertexBound.VertexUsage = Engine::BUF_STATIC;
 		}
 
-		Util::XmlNode * trianglesNode = mXmlReader->getFirstNode(meshNode, "triangles");
+		Util::XmlNode * trianglesNode = mXmlReader->getFirstNode(submeshNode, "triangles");
 		if (trianglesNode)
 		{
 			Util::u_int triangleCount = boost::lexical_cast<Util::u_int>(mXmlReader->getAttribute(trianglesNode, "trianglescount"));
@@ -170,33 +189,22 @@ namespace Tool
 				Util::u_int indexCount = triangleCount * 3;
 				if (indexCount < 65536)
 				{
-					rm.IndexBound = getIndexMapping<Util::u_int16>(trianglesNode, indexCount);
+					rm->IndexBound = getIndexMapping<Util::u_int16>(trianglesNode, indexCount);
 
-					rm.IndexBound.IndexFmt = Engine::INDEX_16;
+					rm->IndexBound.IndexFmt = Engine::INDEX_16;
 				}
 				else
 				{
-					rm.IndexBound = getIndexMapping<Util::u_int>(trianglesNode, indexCount);
+					rm->IndexBound = getIndexMapping<Util::u_int>(trianglesNode, indexCount);
 
-					rm.IndexBound.IndexFmt = Engine::INDEX_32;
+					rm->IndexBound.IndexFmt = Engine::INDEX_32;
 				}
 			}
 
-			rm.PrimCount = triangleCount;
-			rm.IndexBound.IndexUsage = Engine::BUF_STATIC;
-			rm.PrimType = Engine::PT_TRIANGLE_LIST;
+			rm->PrimCount = triangleCount;
+			rm->IndexBound.IndexUsage = Engine::BUF_STATIC;
+			rm->PrimType = Engine::PT_TRIANGLE_LIST;
 		}
-
-		boost::algorithm::erase_last(mPath, ".xml");
- 		std::ofstream ofs(mPath, std::ios::out | std::ios::trunc | std::ios::binary);
- 		boost::archive::binary_oarchive oa(ofs);
- 		oa << rm;
-		ofs.close();
-
-		std::ifstream ifs(mPath, std::ios::binary);
-		boost::archive::binary_iarchive is(ifs);
-		Engine::RenderableMapping irm;
-		is >> irm;
 	}
 
 }

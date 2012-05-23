@@ -1,0 +1,17 @@
+<root>
+  <scene name="test1">
+    <camera position="0.0,4.0,27.0" lookat="0.0,4.0,50.0" move_speed="20.0" />
+    <node name="test" node_type="static" position="0.0,0.0,0.0" orientation="0.0,0.0,0.0,1.0" >
+      <object name="test" type="actor" resource="test.wmesh" />
+    </node>
+    <node name="test1" node_type="static" position="0.0,0.0,10.0" orientation="0.0,0.0,0.0,1.0" >
+      <object name="test1" type="actor" resource="test.wmesh" />
+    </node>
+    <node name="test2" node_type="static" position="0.0,0.0,20.0" orientation="0.0,0.0,0.0,1.0" >
+      <object name="test2" type="actor" resource="test.wmesh" />
+    </node>
+    <node name="test3" node_type="static" position="0.0,0.0,30.0" orientation="0.0,0.0,0.0,1.0" >
+      <object name="test3" type="actor" resource="test.wmesh" />
+    </node>
+  </scene>
+</root>

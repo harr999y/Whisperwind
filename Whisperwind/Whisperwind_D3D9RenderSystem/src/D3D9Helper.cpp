@@ -144,6 +144,11 @@ namespace Engine
 
 		/// Effect
 		{
+			if (rm->EffectName.empty())
+			{
+				WHISPERWIND_EXCEPTION("No effect!");
+			}
+
 			if (effectMap.find(rm->EffectName) == effectMap.end())
 			{
 #ifdef WHISPERWIND_DEBUG
@@ -155,6 +160,8 @@ namespace Engine
 				Util::Wstring effectPath = EngineManager::getSingleton().getResourceManager()->getResourcePath(Util::StringToWstring(rm->EffectName));
 				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), effectPath.c_str(), 
 					NULL, NULL, shaderFlags, NULL, &effect, NULL));
+				DX_IF_NULL_DEBUG_PRINT(effect);
+
 				ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
 				effectMap.insert(ID3DXEffectMap::value_type(rm->EffectName, effectPtr));
 
@@ -168,6 +175,11 @@ namespace Engine
 
 		/// Technique
 		{
+			if (rm->TechniqueName.empty())
+			{
+				WHISPERWIND_EXCEPTION("No technique!");
+			}
+
 			D3DXHANDLE tech = d3d9Renderable->getEffect()->GetTechniqueByName(rm->TechniqueName.c_str());
 			DX_IF_NULL_DEBUG_PRINT(tech);
 

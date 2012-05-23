@@ -34,7 +34,6 @@ namespace Engine
 	enum ComponentType
 	{
 		CT_PHYSICABLE,
-		CT_SOUNDABLE,
 		CT_MAX
 	};
 

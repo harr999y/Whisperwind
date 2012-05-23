@@ -56,9 +56,11 @@ namespace Engine
 		SceneNodePtr & getSceneNode(const Util::Wstring & name);
 		void destroySceneNode(const Util::Wstring & name);
 
-		SceneObjectPtr & createSceneObject(const Util::Wstring & type, const Util::Wstring & name);
+		SceneObjectPtr & createSceneObject(const Util::Wstring & type, const Util::Wstring & name, const Util::Wstring & resourceName);
 		SceneObjectPtr & getSceneObject(const Util::Wstring & name);
 		void destroySceneObject(const Util::Wstring & name);
+
+		void loadScene(const Util::Wstring & scene);
 
 		template <typename CallBack>
 		void regPreUpdateCallback(CallBack cb) { mPreCallback = cb; }

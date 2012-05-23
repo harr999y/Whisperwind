@@ -189,7 +189,7 @@ namespace Engine
 		Util::u_int d3d9Flag = D3D9FormatMappingFactory::getD3D9ClearFrameFlag(flag);
 
 		DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->Clear(
-			0, NULL, d3d9Flag, ColorPredefines::WHITE, zValue, stencilValue));
+			0, NULL, d3d9Flag, ColorPredefines::BLACK, zValue, stencilValue));
 	}
 	//---------------------------------------------------------------------
 	bool D3D9RenderSystem::isPaused_impl()
@@ -205,7 +205,7 @@ namespace Engine
   			(D3DPOOL_DEFAULT == D3D9Helper::getCreationPool(rm->IndexBound.IndexUsage)))
 		{
 			if (mRenderableMappingMap.find(rm) == mRenderableMappingMap.end())
-				mRenderableMappingMap.insert(RenderableMappingMap::value_type(rm, d3d9Renderable));
+				mRenderableMappingMap.insert(RenderableMappingWeakMap::value_type(rm, d3d9Renderable));
 		}
 
 		return d3d9Renderable;
@@ -226,7 +226,7 @@ namespace Engine
 		d3d9RtPtr->setTexture(texPtr);
 
 		if (mRenderTextureMappingMap.find(rtm) == mRenderTextureMappingMap.end())
-			mRenderTextureMappingMap.insert(RenderTextureMappingMap::value_type(rtm, d3d9RtPtr));
+			mRenderTextureMappingMap.insert(RenderTextureMappingWeakMap::value_type(rtm, d3d9RtPtr));
 
 		return d3d9RtPtr;
 	}
@@ -254,7 +254,7 @@ namespace Engine
 		d3d9RtPtr->setTexture(texturePtr);
 
 		if (mRenderTextureFileMap.find(path) == mRenderTextureFileMap.end())
-			mRenderTextureFileMap.insert(RenderTextureFileMap::value_type(path, d3d9RtPtr));
+			mRenderTextureFileMap.insert(RenderTextureFileWeakMap::value_type(path, d3d9RtPtr));
 
 		return d3d9RtPtr;
 	}
@@ -273,7 +273,7 @@ namespace Engine
 		d3d9RtPtr->setSurface(surfacePtr);
 
 		if (mRenderTargetMappingMap.find(rtm) == mRenderTargetMappingMap.end())
-			mRenderTargetMappingMap.insert(RenderTargetMappingMap::value_type(rtm, d3d9RtPtr));
+			mRenderTargetMappingMap.insert(RenderTargetMappingWeakMap::value_type(rtm, d3d9RtPtr));
 
 		return d3d9RtPtr;
 	}

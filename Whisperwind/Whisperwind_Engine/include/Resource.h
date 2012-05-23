@@ -31,13 +31,16 @@ namespace Engine
 {
 	class WHISPERWIND_API Resource
 	{
-	public:
+	protected:
 		Resource()
 		{}
 
-	protected:
-		~Resource()
+		virtual ~Resource()
 		{}
+
+	private:
+		friend class ResourceManager;
+		virtual void load(const Util::Wstring & resourcePath) = 0;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Resource);

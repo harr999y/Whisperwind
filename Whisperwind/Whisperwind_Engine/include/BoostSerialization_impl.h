@@ -67,6 +67,7 @@ namespace Engine
 	template<class Archive>
 	void serialize(Archive & ar, Engine::RenderableMapping & rm, const Util::u_int /*version*/)
 	{
+		ar & rm.RenderableName;
 		ar & rm.VertexBound;
 		ar & rm.IndexBound;
 		ar & rm.EffectName;

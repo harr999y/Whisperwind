@@ -25,7 +25,6 @@ THE SOFTWARE
 #ifndef _SCENE_NODE_H_
 #define _SCENE_NODE_H_
 
-#include <boost/function.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
 #include "Util.h"
@@ -37,12 +36,7 @@ namespace Engine
 	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>
 	{
 	protected:
-		SceneNode(const Util::Wstring & name, Util::u_int nodeType) :
-		    mName(name),
-			mPosition(0.0f, 0.0f, 0.0f),
-			mRelativePosition(0.0f, 0.0f, 0.0f),
-			mNodeType(nodeType)
-		{}
+		SceneNode(const Util::Wstring & name, Util::u_int nodeType);
 
 		virtual ~SceneNode();
 
@@ -54,18 +48,22 @@ namespace Engine
 		bool getChildNode(const Util::Wstring & name, SceneNodePtr & outChildNode) const;
 		bool getParentNode(SceneNodePtr & outParentNode) const;
 		void setParentNode(const SceneNodePtr & parentNode);
+
+		void update();
 		void addToRenderQueue();
+
 		XMVECTOR getPosition() const;
 		void setPosition(FXMVECTOR position);
 		XMVECTOR getRelativePosition() const;
 		void setRelativePosition(FXMVECTOR relPosition);
+		XMVECTOR getOrientation() const;
+		void setOrientation(FXMVECTOR orientation);
+		XMVECTOR getRelativeOrientation() const;
+		void setRelativeOrientation(FXMVECTOR relOrientation);
 
-		/// I don't use ref here,because ref cannot auto convert derived class ptr of SceneObject to SceneObjectPtr.
-		void attachSceneObject(SceneObjectPtr sceneObj);
+		void attachSceneObject(SceneObjectPtr & sceneObj);
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
 		void dettachAllSceneObject();
-
-		void update(bool updateChildPosition);
 
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
@@ -85,6 +83,8 @@ namespace Engine
 		Util::u_int mNodeType;
 		XMFLOAT3 mPosition;
 		XMFLOAT3 mRelativePosition;
+		XMFLOAT4 mOrientation;
+		XMFLOAT4 mRelativeOrientation;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneNode);

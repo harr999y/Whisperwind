@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include "MathDefine.h"
 #include "Renderable.h"
 
 namespace Engine
@@ -43,15 +44,12 @@ namespace Engine
 		setTexture_impl(paramName, texture);
 	}
 	//---------------------------------------------------------------------
-	void Renderable::preRender(Util::time elapsedTime)
+	void Renderable::preRender(Util::time /*elapsedTime*/)
 	{
-		if (mPreRenderCallback)
-			mPreRenderCallback(elapsedTime);
+		this->setEffectSemanticValue("WorldViewProj", static_cast<void *>(&mWorldViewProj));
 	}
 	//---------------------------------------------------------------------
-	void Renderable::postRender(Util::time elapsedTime)
-	{
-		if (mPostRenderCallback)
-			mPostRenderCallback(elapsedTime);
-	}
+	void Renderable::postRender(Util::time /*elapsedTime*/)
+	{}
+
 }

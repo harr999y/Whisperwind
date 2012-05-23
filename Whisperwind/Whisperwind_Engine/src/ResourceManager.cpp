@@ -25,9 +25,13 @@ THE SOFTWARE
 
 #include <boost/make_shared.hpp>
 #include <boost/foreach.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "ExceptionDefine.h"
+#include "DebugDefine.h"
 #include "ResourceConfig.h"
+#include "MeshResource.h"
+#include "SceneResource.h"
 #include "ResourceManager.h"
 
 namespace
@@ -42,6 +46,8 @@ namespace Engine
 #else
 	static const Util::String RESOURCE_CONFIG_PATH("../config/Resource.cfg");
 #endif
+	static const Util::String WMESH_SUFFIX(".wmesh");
+	static const Util::String WSCENE_SUFFIX(".wscene");
 	//---------------------------------------------------------------------
 	ResourceManager::ResourceManager()
 	{
@@ -83,6 +89,31 @@ namespace Engine
 		}
 
 		return mFilePathMap[name];
+	}
+	//---------------------------------------------------------------------
+	ResourcePtr ResourceManager::loadResource(const Util::Wstring & resource)
+	{
+		/// TODO:Seperate impl bellow.
+		if (boost::algorithm::find_first(resource, WMESH_SUFFIX))
+		{
+			ResourcePtr mesh = boost::make_shared<MeshResource>();
+			mesh->load(this->getResourcePath(resource));
+
+			WHISPERWIND_ASSERT(mesh);
+
+			return mesh;
+		}
+		else if (boost::algorithm::find_first(resource, WSCENE_SUFFIX))
+		{
+			ResourcePtr scene = boost::make_shared<SceneResource>();
+			scene->load(this->getResourcePath(resource));
+
+			WHISPERWIND_ASSERT(scene);
+
+			return scene;
+		}
+
+		WHISPERWIND_EXCEPTION(Util::WstringToString(resource) + " isn't a surpport format!");
 	}
 
 }
