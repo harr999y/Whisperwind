@@ -60,7 +60,13 @@ namespace Tool
 
 		FbxImporter * sceneImporter = FbxImporter::Create(mFbxManager, "");
 		IF_NULL_EXCEPTION(sceneImporter, (filePath + " FbxImporter create failed!").c_str());
-		IF_FALSE_EXCEPTION(sceneImporter->Initialize(filePath.c_str(), -1, fbxIos), (filePath + " parse error!").c_str());
+
+		Util::Wstring wpath = Util::StringToWstring(filePath);
+		char * utf8Path;
+		FbxWCToUTF8(wpath.c_str(), utf8Path);
+		IF_FALSE_EXCEPTION(sceneImporter->Initialize(utf8Path, -1, fbxIos), (filePath + " parse error!").c_str());
+		WHISPERWIND_DELETE(utf8Path);
+
 		sceneImporter->Import(mFbxScene);
 		sceneImporter->Destroy();
 	}
@@ -82,7 +88,7 @@ namespace Tool
 
 		FbxNode * rootNode = mFbxScene->GetRootNode();
 		IF_NULL_EXCEPTION(rootNode, (mPath + " Get FBX root node failed!").c_str());
-		for (int it = 0; it < rootNode->GetChildCount(); ++it)
+		for (Util::s_int it = 0; it < rootNode->GetChildCount(); ++it)
 		{
 			doWalk(rootNode->GetChild(it));
 		}
@@ -113,7 +119,7 @@ namespace Tool
 			}
 		}
 		
-		for (int it = 0; it < fbxNode->GetChildCount(); ++it)
+		for (Util::s_int it = 0; it < fbxNode->GetChildCount(); ++it)
 		{
 			doWalk(fbxNode->GetChild(it));
 		}
