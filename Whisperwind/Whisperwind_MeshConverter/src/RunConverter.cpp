@@ -37,20 +37,23 @@ int main(int argc, char ** argv)
 {
 	try
 	{
-		if (argc > 3)
-		{
-			WHISPERWIND_EXCEPTION("Too many args!");
-		}
-		else if (argc <= 1)
-		{
-			WHISPERWIND_EXCEPTION("You should assign a file path,the best way is dragging the file to the exe or write a bat.");
-		}
-
 		if (boost::algorithm::find_first(argv[1], ".fbx") || boost::algorithm::find_first(argv[1], ".FBX"))
 		{
+			if (argc != 4)
+			{
+				WHISPERWIND_EXCEPTION("The command line is Whisperwind_MeshConverter sourcefile uv_inverse=bool scale=%f.");
+			}
+
 			Tool::FbxXmlConverter fbx2XmlConverter(argv[1]);
-			if ((argc == 3) && (boost::algorithm::equals(argv[2], "uv_inverse")))
-				fbx2XmlConverter.setUVInverse(true);
+			{
+				Util::String param(argv[2]);
+				boost::algorithm::erase_first(param, "uv_inverse=");
+				fbx2XmlConverter.setUVInverse(boost::lexical_cast<bool>(param));
+
+				param = argv[3];
+				boost::algorithm::erase_first(param, "scale=");
+				fbx2XmlConverter.setScaleFactor(boost::lexical_cast<Util::real>(param));
+			}
 			Util::Wstring xmlPath = fbx2XmlConverter.convertToXml();
 
 			Tool::XmlWmeshConverter xml2WmeshConverter(Util::WstringToString(xmlPath));
@@ -58,6 +61,11 @@ int main(int argc, char ** argv)
 		}
 		else if (boost::algorithm::find_first(argv[1], ".wmesh.xml"))
 		{
+			if (argc != 2)
+			{
+				WHISPERWIND_EXCEPTION("The command line is Whisperwind_MeshConverter sourcefile.");
+			}
+
 			Tool::XmlWmeshConverter xml2WmeshConverter(argv[1]);
 			xml2WmeshConverter.converteToWmesh();
 		}
@@ -71,8 +79,9 @@ int main(int argc, char ** argv)
 #ifdef WHISPERWIND_DEBUG
 		DEBUG_PRINT_RED(boost::diagnostic_information_what(e));
 #else
-		WHISPERWIND_LOG(Util::StringToWstring(boost::diagnostic_information_what(e)));
-		::MessageBox(NULL, TO_UNICODE("Xml to wmesh failed!"), TO_UNICODE("Error!"), MB_OK);		
+		Util::Wstring error(Util::StringToWstring(boost::diagnostic_information_what(e)));
+		WHISPERWIND_LOG(error);
+		::MessageBox(NULL, error.c_str(), TO_UNICODE("Xml to wmesh failed!"), MB_OK);		
 #endif
 	}
 

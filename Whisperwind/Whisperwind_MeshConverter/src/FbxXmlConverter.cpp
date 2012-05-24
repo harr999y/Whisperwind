@@ -42,7 +42,8 @@ namespace Tool
 	FbxXmlConverter::FbxXmlConverter(const Util::String & filePath)  :
         mPath(filePath),
 		mMeshNode(NULL),
-		mUVInverse(false)
+		mUVInverse(false),
+		mScaleFactor(1.0f)
 	{
 		mFbxManager = FbxManager::Create();
 		IF_NULL_EXCEPTION(mFbxManager, (filePath + " FbxManager create failed!").c_str());
@@ -346,9 +347,9 @@ namespace Tool
 					/// Position
 					Util::XmlNode * positionNode = mXmlWriter->appendNode(vertexNode, "position");
 					/// NOTE:Here convert to left-hand axis.
-					mXmlWriter->appendAttribute(positionNode, "x", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][0]).c_str());
-					mXmlWriter->appendAttribute(positionNode, "y", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][2]).c_str());
-					mXmlWriter->appendAttribute(positionNode, "z", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][1]).c_str());
+					mXmlWriter->appendAttribute(positionNode, "x", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][0] * mScaleFactor).c_str());
+					mXmlWriter->appendAttribute(positionNode, "y", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][2] * mScaleFactor).c_str());
+					mXmlWriter->appendAttribute(positionNode, "z", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][1] * mScaleFactor).c_str());
 
 					/// Normal
 					FbxGeometryElementNormal * fbxNormals = fbxMesh->GetElementNormal(0);

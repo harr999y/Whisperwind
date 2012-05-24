@@ -1,52 +1,52 @@
 <root>
   <scene name="test1">
-    <camera position="0.0,4.0,27.0" lookat="0.0,4.0,50.0" move_speed="20.0" />
+    <camera position="0.0,4.0,27.0" lookat="0.0,4.0,50.0" move_speed="50.0" />
     <node name="test" node_type="static" position="0.0,0.0,0.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="test" type="actor" resource="wanmei_1.wmesh" />
     </node>
-    <node name="test1" node_type="static" position="0.0,0.0,10.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="test1" node_type="static" position="0.0,0.0,110.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="test1" type="actor" resource="Ð¡ºÚ.wmesh" />
     </node>
-    <node name="test2" node_type="static" position="0.0,0.0,20.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="test2" node_type="static" position="0.0,0.0,120.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="test2" type="actor" resource="wanmei_2.wmesh" />
     </node>
-    <node name="test3" node_type="static" position="10.0,0.0,30.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="test3" node_type="static" position="10.0,0.0,130.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="test3" type="actor" resource="wanmei_3.wmesh" />
     </node>
-    <node name="test4" node_type="static" position="0.0,0.0,130.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="test4" node_type="static" position="50.0,0.0,230.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="test4" type="actor" resource="wanmei_4.wmesh" />
     </node>
-    <node name="wanmei_5" node_type="static" position="0.0,10.0,110.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_5" node_type="static" position="50.0,10.0,150.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_5" type="actor" resource="wanmei_5.wmesh" />
     </node>
-    <node name="wanmei_6" node_type="static" position="30.0,0.0,10.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_6" node_type="static" position="130.0,0.0,120.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_6" type="actor" resource="wanmei_6.wmesh" />
     </node>
-    <node name="wanmei_7" node_type="static" position="0.0,20.0,30.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_7" node_type="static" position="130.0,20.0,30.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_7" type="actor" resource="wanmei_7.wmesh" />
     </node>
-    <node name="wanmei_8" node_type="static" position="50.0,0.0,2.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_8" node_type="static" position="150.0,0.0,2.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_8" type="actor" resource="wanmei_8.wmesh" />
     </node>
-    <node name="wanmei_9" node_type="static" position="0.0,0.0,40.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_9" node_type="static" position="230.0,0.0,140.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_9" type="actor" resource="wanmei_9.wmesh" />
     </node>
-    <node name="wanmei_10" node_type="static" position="10.0,0.0,50.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_10" node_type="static" position="-110.0,0.0,-50.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_10" type="actor" resource="wanmei_10.wmesh" />
     </node>
-    <node name="wanmei_11" node_type="static" position="10.0,0.0,60.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_11" node_type="static" position="-210.0,0.0,-160.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_11" type="actor" resource="wanmei_11.wmesh" />
     </node>
-    <node name="wanmei_12" node_type="static" position="20.0,0.0,70.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_12" node_type="static" position="-120.0,0.0,170.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_12" type="actor" resource="wanmei_12.wmesh" />
     </node>
-    <node name="wanmei_13" node_type="static" position="30.0,0.0,80.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_13" node_type="static" position="-130.0,0.0,80.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_13" type="actor" resource="wanmei_13.wmesh" />
     </node>
-    <node name="wanmei_14" node_type="static" position="50.0,0.0,90.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_14" node_type="static" position="-50.0,0.0,90.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_14" type="actor" resource="wanmei_14.wmesh" />
     </node>
-    <node name="wanmei_15" node_type="static" position="-10.0,0.0,50.0" orientation="0.0,0.0,0.0,1.0" >
+    <node name="wanmei_15" node_type="static" position="-10.0,0.0,0.0" orientation="0.0,0.0,0.0,1.0" >
       <object name="wanmei_15" type="actor" resource="wanmei_15.wmesh" />
     </node>
     <node name="wanmei_16" node_type="static" position="-20.0,0.0,50.0" orientation="0.0,0.0,0.0,1.0" >

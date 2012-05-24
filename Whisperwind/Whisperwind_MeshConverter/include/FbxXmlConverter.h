@@ -46,6 +46,7 @@ namespace Tool
 
 	public:
 		SET_VALUE(bool, UVInverse);
+		SET_VALUE(Util::real, ScaleFactor);
 
 	private:
 		void doWalk(FbxNode * fbxNode);
@@ -60,6 +61,7 @@ namespace Tool
 		Util::XmlNode * mMeshNode;
 
 		bool mUVInverse;
+		Util::real mScaleFactor;
 
 	private:
 		template<typename FbxSurfaceType>
