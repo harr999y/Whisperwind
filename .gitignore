@@ -21,10 +21,12 @@
 *.exp
 *.exe
 *.html
-/Whisperwind/Whisperwind_Dependencies/Visual Leak Detector
+Whisperwind/Whisperwind_Dependencies/Visual Leak Detector
 Whisperwind/Whisperwind_Dependencies/FBX/include
 Whisperwind/Whisperwind_Dependencies/FBX/lib
 *.ib_pdb_index
 *.fxo
 *.cache
 *.enc
+/Whisperwind/bin/media
+*.i
