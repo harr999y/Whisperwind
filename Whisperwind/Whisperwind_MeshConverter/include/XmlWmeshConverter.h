@@ -44,7 +44,7 @@ namespace Tool
 		void converteToWmesh();
 
 	private:
-		void doConvert(const Util::XmlNode * submeshNode, Engine::RenderableMappingPtr & rm);
+		void doConvert(const Util::XmlNode * submeshNode, Engine::SubMeshPtr & sm);
 
 	private:
 		Util::XmlReaderPtr mXmlReader;

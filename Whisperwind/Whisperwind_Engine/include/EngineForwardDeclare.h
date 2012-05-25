@@ -50,6 +50,8 @@ namespace Engine
 	class SceneObjectFactory;
 	class SceneComponent;
 	class Resource;
+	class SubMesh;
+	class Mesh;
 	class MeshResource;
 	class SceneResource;
 	class ResourceManager;
@@ -73,7 +75,6 @@ namespace Engine
 	typedef boost::unordered_map<Util::Wstring, RenderablePtr> RenderableMap;
 	typedef boost::weak_ptr<Renderable> RenderableWeakPtr;
 	typedef boost::shared_ptr<RenderableMapping> RenderableMappingPtr;
-	typedef std::vector<RenderableMappingPtr> RenderableMappingVector;
 	typedef boost::unordered_map<RenderableMappingPtr, RenderableWeakPtr> RenderableMappingWeakMap;
 	typedef boost::shared_ptr<RenderTextureMapping> RenderTextureMappingPtr;
 	typedef boost::shared_ptr<RenderTargetMapping> RenderTargetMappingPtr;
@@ -95,6 +96,9 @@ namespace Engine
 	typedef boost::unordered_map<Util::Wstring, SceneObjectFactoryPtr> SceneObjectFactoryMap;
 	typedef boost::shared_ptr<SceneComponent> SceneComponentPtr;
 	typedef boost::shared_ptr<Resource> ResourcePtr;
+	typedef boost::shared_ptr<SubMesh> SubMeshPtr;
+	typedef std::vector<SubMeshPtr> SubMeshVector;
+	typedef boost::shared_ptr<Mesh> MeshPtr;
 	typedef boost::shared_ptr<MeshResource> MeshResourcePtr;
 	typedef boost::shared_ptr<SceneResource> SceneResourcePtr;
 	typedef boost::shared_ptr<ResourceManager> ResourceManagerPtr;

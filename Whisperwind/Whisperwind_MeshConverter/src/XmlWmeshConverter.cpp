@@ -29,8 +29,10 @@ THE SOFTWARE
 
 #include "ExceptionDefine.h"
 #include "StringConverter.h"
+#include "AABB.h"
+#include "EngineSerialization_impl.h"
 #include "RenderMappingDefines.h"
-#include "BoostSerialization_impl.h"
+#include "Mesh.h"
 #include "XmlWmeshConverter.h"
 
 namespace Tool
@@ -50,27 +52,40 @@ namespace Tool
 		Util::XmlNode * meshNode = mXmlReader->getFirstNode(rootNode, "mesh");
 		IF_NULL_EXCEPTION(rootNode, (mPath + " donnot have mesh node!").c_str());
 
-		Engine::RenderableMappingVector rmVec;
-
-		Util::XmlNode * submeshNode = mXmlReader->getFirstNode(meshNode, "submesh");
-		while (submeshNode)
+		Engine::MeshPtr mesh = boost::make_shared<Engine::Mesh>();
 		{
-			Engine::RenderableMappingPtr rm = boost::make_shared<Engine::RenderableMapping>();
-			doConvert(submeshNode, rm);
-			rmVec.push_back(rm);
+			Util::AABBPtr meshAABB = boost::make_shared<Util::AABB>();
 
-			submeshNode = mXmlReader->getNextSiblingNode(submeshNode);
+			Engine::SubMeshVector smVec;
+
+			Util::XmlNode * submeshNode = mXmlReader->getFirstNode(meshNode, "submesh");
+			while (submeshNode)
+			{
+				Engine::SubMeshPtr sm = boost::make_shared<Engine::SubMesh>();
+
+				doConvert(submeshNode, sm);
+				smVec.push_back(sm);
+
+				meshAABB->merge(sm->getAABB());
+
+				submeshNode = mXmlReader->getNextSiblingNode(submeshNode);
+			}
+
+			mesh->setSubMeshVec(smVec);
+			mesh->setAABB(meshAABB);
 		}
 
 		boost::algorithm::erase_last(mPath, ".xml");
  		std::ofstream ofs(mPath, std::ios::out | std::ios::trunc | std::ios::binary);
  		boost::archive::binary_oarchive oa(ofs);
- 		oa << rmVec;
+ 		oa << BOOST_SERIALIZATION_NVP(mesh);
 		ofs.close();
 	}
 	//---------------------------------------------------------------------
-	void XmlWmeshConverter::doConvert(const Util::XmlNode * submeshNode, Engine::RenderableMappingPtr & rm)
+	void XmlWmeshConverter::doConvert(const Util::XmlNode * submeshNode, Engine::SubMeshPtr & sm)
 	{
+		Engine::RenderableMappingPtr rm = boost::make_shared<Engine::RenderableMapping>();
+
 		rm->RenderableName = Util::StringToWstring(mXmlReader->getAttribute(submeshNode, "name"));
 
 		Util::XmlNode * materialNode = mXmlReader->getFirstNode(submeshNode, "material");
@@ -140,15 +155,25 @@ namespace Tool
 
 			Engine::Uint8Vector dataVec((sizeof(Util::real) / sizeof(Engine::Uint8Vector::value_type)) * vertexSize * vertexCount);
 			Util::real * data = reinterpret_cast<Util::real *>(dataVec.data());
+			Util::AABBPtr aabb = boost::make_shared<Util::AABB>();
 			do 
 			{
 				/// position
 				Util::XmlNode * positionNode = mXmlReader->getFirstNode(vertexNode, "position");
 				if (positionNode)
 				{
-					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "x"));
-					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "y"));
-					*(data++) = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "z"));
+					Util::real x = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "x"));
+					Util::real y = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "y"));
+					Util::real z = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(positionNode, "z"));
+
+					*(data++) = x;
+					*(data++) = y;
+					*(data++) = z;
+
+					/// do calc subMesh's AABB here.
+					{
+						aabb->addPoint(XMVectorSet(x, y, z, 0.0f));
+					}
 				}
 
 				/// normal
@@ -178,6 +203,8 @@ namespace Tool
 			rm->VertexBound.VertexDataVec.push_back(vbBufData);
 
 			rm->VertexBound.VertexUsage = Engine::BUF_STATIC;
+
+			sm->setAABB(aabb);
 		}
 
 		Util::XmlNode * trianglesNode = mXmlReader->getFirstNode(submeshNode, "triangles");
@@ -205,6 +232,8 @@ namespace Tool
 			rm->IndexBound.IndexUsage = Engine::BUF_STATIC;
 			rm->PrimType = Engine::PT_TRIANGLE_LIST;
 		}
+
+		sm->setRenderableMapping(rm);
 	}
 
 }

@@ -22,36 +22,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _SCENE_OBJECT_FACTORY_H_
-#define _SCENE_OBJECT_FACTORY_H_
+#ifndef _UTIL_SERIALIZATION_H_
+#define _UTIL_SERIALIZATION_H_
 
 #include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "BoostSerialization.h"
+#include "MathDefine.h"
 
-namespace Engine
+/// cannot write in Util namespace.
+template<class Archive>
+void serialize(Archive & ar, XMFLOAT3 & float3, const Util::u_int /*version*/)
 {
-	class WHISPERWIND_API SceneObjectFactory
-	{
-	protected:
-		explicit SceneObjectFactory(const Util::Wstring & name) :
-		    mName(name)
-		{}
-
-		virtual ~SceneObjectFactory()
-		{}
-
-	public:
-		inline SceneObjectPtr create(const Util::Wstring & objName, const ResourcePtr & resource);
-
-	private:
-		virtual SceneObjectPtr create_impl(const Util::Wstring & objName, const ResourcePtr & resource) = 0;
-
-	public:
-		GET_CONST_VALUE(Util::Wstring, Name);
-
-	protected:
-		Util::Wstring mName;
-	};
+	ar & float3.x;
+	ar & float3.y;
+	ar & float3.z;
 }
+
+ namespace Util
+ {
+ 	template<class Archive>
+ 	void serialize(Archive & ar, AABB & aabb, const u_int /*version*/)
+ 	{
+ 		ar & aabb.mMinPoint;
+ 		ar & aabb.mMaxPoint;
+ 		ar & aabb.mCenterPoint;
+ 		ar & aabb.mIsInvalid;
+ 	}
+ }
 
 #endif

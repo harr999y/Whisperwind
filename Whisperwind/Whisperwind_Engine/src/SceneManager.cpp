@@ -27,6 +27,7 @@ THE SOFTWARE
 #include <boost/typeof/typeof.hpp>
 
 #include "DebugDefine.h"
+#include "LogManager.h"
 #include "EngineManager.h"
 #include "Resource.h"
 #include "ResourceManager.h"
@@ -86,7 +87,7 @@ namespace Engine
 	{
 		while (!mSceneNodeMap.empty())
 		{
-			destroySceneNode((mSceneNodeMap.begin())->second->getName());
+			destroySceneNode((mSceneNodeMap.begin())->first);
 		}
 
 		destroyAllSceneNode_impl();
@@ -162,6 +163,8 @@ namespace Engine
 	{
 		const ResourceManagerPtr & rm = EngineManager::getSingleton().getResourceManager();
 		rm->loadResource(scene);
+
+		WHISPERWIND_LOG(scene + TO_UNICODE(" scene load done!"));
 	}
 
 }

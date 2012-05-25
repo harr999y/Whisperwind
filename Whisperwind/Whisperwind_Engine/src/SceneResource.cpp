@@ -25,8 +25,10 @@ THE SOFTWARE
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/make_shared.hpp>
 
 #include "ExceptionDefine.h"
+#include "DebugDefine.h"
 #include "StringConverter.h"
 #include "MathDefine.h"
 #include "Camera.h"
@@ -37,103 +39,124 @@ THE SOFTWARE
 
 namespace Engine
 {
-	/// TODO:Need to remove when scene manager have a root node!
-	static SceneNodePtr NULL_SCENE_NODE;
 	//---------------------------------------------------------------------
 	void SceneResource::load(const Util::Wstring & resourcePath)
 	{
 		Util::String strPath = Util::WstringToString(resourcePath);
-		Util::XmlReader xmlReader(strPath);
+		mXmlReader = boost::make_shared<Util::XmlReader>(strPath);
 
-		Util::XmlNode * rootNode = xmlReader.getRootNode();
+		Util::XmlNode * rootNode = mXmlReader->getRootNode();
 		IF_NULL_EXCEPTION(rootNode, strPath + " donnot have root node!");
 
-		Util::XmlNode * sceneNode = xmlReader.getFirstNode(rootNode, "scene");
+		Util::XmlNode * sceneNode = mXmlReader->getFirstNode(rootNode, "scene");
 		IF_NULL_EXCEPTION(sceneNode, strPath + " donnot have scene node!");
 
-		Util::XmlNode * cameraNode = xmlReader.getFirstNode(sceneNode, "camera");
+		Util::XmlNode * cameraNode = mXmlReader->getFirstNode(sceneNode, "camera");
 		IF_NULL_EXCEPTION(cameraNode, strPath + " donnot have camera node!");
-		processCamera(xmlReader, cameraNode);
+		processCamera(cameraNode);
 
-		Util::XmlNode * snNode = xmlReader.getFirstNode(sceneNode, "node");
+		Util::XmlNode * snNode = mXmlReader->getFirstNode(sceneNode, "node");
 		while (snNode)
 		{
-			processSceneNode(xmlReader, snNode, NULL_SCENE_NODE);
+			processSceneNode(snNode);
 
-			snNode = xmlReader.getNextSiblingNode(snNode);
+			snNode = mXmlReader->getNextSiblingNode(snNode);
 		}
 	}
 	//---------------------------------------------------------------------
-	void SceneResource::processCamera(const Util::XmlReader & xmlReader, const Util::XmlNode * cameraNode)
+	void SceneResource::processCamera(const Util::XmlNode * cameraNode)
 	{
 		CameraPtr & camera = EngineManager::getSingleton().getCamera();
 		
 		/// postion
 		{
-			Util::String posStr(xmlReader.getAttribute(cameraNode, "position"));
+			Util::String posStr(mXmlReader->getAttribute(cameraNode, "position"));
 			camera->setPosition(Util::StringToVector(posStr, 3));
 		}
 
 		/// lookat
 		{
-			Util::String str(xmlReader.getAttribute(cameraNode, "lookat"));
+			Util::String str(mXmlReader->getAttribute(cameraNode, "lookat"));
 			camera->lookAt(Util::StringToVector(str, 3));
 		}
 		
 		/// movespeed
 		{
-			Util::String str(xmlReader.getAttribute(cameraNode, "move_speed"));
+			Util::String str(mXmlReader->getAttribute(cameraNode, "move_speed"));
 			camera->setMoveSpeed(boost::lexical_cast<Util::real>(str));
 		}
 	}
 	//---------------------------------------------------------------------
-	void SceneResource::processSceneNode(const Util::XmlReader & xmlReader, const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode)
+	void SceneResource::processSceneNode(const Util::XmlNode * snNode) const
 	{
-		Util::Wstring name = Util::StringToWstring(xmlReader.getAttribute(snNode, "name"));
+		WHISPERWIND_ASSERT(snNode);
 
-		SceneNodePtr sceneNode;
-		if (!parentSceneNode)
-		{
-			NodeType nodeType = boost::algorithm::equals(xmlReader.getAttribute(snNode, "node_type"), "static") ? NT_STATIC : NT_DYNAMIC;
+		Util::Wstring name = Util::StringToWstring(mXmlReader->getAttribute(snNode, "name"));
+		NodeType nodeType = boost::algorithm::equals(mXmlReader->getAttribute(snNode, "node_type"), "static") ? NT_STATIC : NT_DYNAMIC;
 
-			sceneNode = EngineManager::getSingleton().getSceneManager()->createSceneNode(name, nodeType);
-		}
-		else
-		{
-			sceneNode = parentSceneNode->createChildNode(name);
-		}
+		SceneNodePtr & sceneNode = EngineManager::getSingleton().getSceneManager()->createSceneNode(name, nodeType);
+
+		processSceneNodeContent(snNode, sceneNode, false);
+	}
+	//---------------------------------------------------------------------
+	void SceneResource::processSceneNodeContent(const Util::XmlNode * snNode, SceneNodePtr & sceneNode, bool isChild) const
+	{
+		WHISPERWIND_ASSERT(snNode);
 
 		/// node property
 		{
-			Util::String posStr(xmlReader.getAttribute(snNode, "position"));
-			sceneNode->setPosition(Util::StringToVector(posStr, 3));
+			Util::String posStr(mXmlReader->getAttribute(snNode, "position"));
+			XMVECTOR posVec = Util::StringToVector(posStr, 3);
 
-			Util::String orientStr(xmlReader.getAttribute(snNode, "orientation"));
-			sceneNode->setOrientation(Util::StringToVector(orientStr, 4));
+			Util::String orientStr(mXmlReader->getAttribute(snNode, "orientation"));
+			XMVECTOR orientVec = Util::StringToVector(orientStr, 4);
+
+			if (!isChild)
+			{
+				sceneNode->setPosition(posVec);
+				sceneNode->setOrientation(orientVec);
+			}
+			else
+			{
+				sceneNode->setRelativePosition(posVec);
+				sceneNode->setRelativeOrientation(orientVec);
+			}
 		}
 
-		Util::XmlNode * soNode = xmlReader.getFirstNode(snNode, "object");
-		while (soNode)
-		{
-			processSceneObject(xmlReader, soNode, sceneNode);
-
-			soNode = xmlReader.getNextSiblingNode(soNode);
-		}
-
-		Util::XmlNode * snChildNode = xmlReader.getFirstNode(snNode, "node");
+		Util::XmlNode * snChildNode = mXmlReader->getFirstNode(snNode, "child_node");
 		while (snChildNode)
 		{
-			processSceneNode(xmlReader, snChildNode, sceneNode);
+			processChildSceneNode(snChildNode, sceneNode);
 
-			snChildNode = xmlReader.getNextSiblingNode(snChildNode);
+			snChildNode = mXmlReader->getNextSiblingNode(snChildNode);
+		}
+
+		Util::XmlNode * soNode = mXmlReader->getFirstNode(snNode, "object");
+		while (soNode)
+		{
+			processSceneObject(soNode, sceneNode);
+
+			soNode = mXmlReader->getNextSiblingNode(soNode);
 		}
 	}
 	//---------------------------------------------------------------------
-	void SceneResource::processSceneObject(const Util::XmlReader & xmlReader, const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode)
+	void SceneResource::processChildSceneNode(const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode) const
 	{
-		Util::Wstring name = Util::StringToWstring(xmlReader.getAttribute(soNode, "name"));
-		Util::Wstring type = Util::StringToWstring(xmlReader.getAttribute(soNode, "type"));
-		Util::Wstring resource = Util::StringToWstring(xmlReader.getAttribute(soNode, "resource"));
+		WHISPERWIND_ASSERT(snNode);
+
+		Util::Wstring name = Util::StringToWstring(mXmlReader->getAttribute(snNode, "name"));
+		SceneNodePtr & sceneNode = parentSceneNode->createChildNode(name);
+
+		processSceneNodeContent(snNode, sceneNode, true);
+	}
+	//---------------------------------------------------------------------
+	void SceneResource::processSceneObject(const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode) const
+	{
+		WHISPERWIND_ASSERT(soNode);
+
+		Util::Wstring name = Util::StringToWstring(mXmlReader->getAttribute(soNode, "name"));
+		Util::Wstring type = Util::StringToWstring(mXmlReader->getAttribute(soNode, "type"));
+		Util::Wstring resource = Util::StringToWstring(mXmlReader->getAttribute(soNode, "resource"));
 
 		SceneObjectPtr & object = EngineManager::getSingleton().getSceneManager()->createSceneObject(type, name, resource);
 		parentSceneNode->attachSceneObject(object);

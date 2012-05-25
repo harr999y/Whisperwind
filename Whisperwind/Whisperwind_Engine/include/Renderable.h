@@ -55,6 +55,7 @@ namespace Engine
 
 	public:
 		SET_GET_CONST_VALUE(RenderType, RenderType);
+		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
 
 	private:
 		virtual void setEffectSemanticValue_impl(const Util::String & semanticName, const void * data) = 0;
@@ -65,6 +66,7 @@ namespace Engine
 	private:
 		RenderType mRenderType;
 		XMFLOAT4X4 mWorldViewProj;
+		Util::AABBPtr mAABB;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Renderable);

@@ -22,61 +22,60 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _MESH_H_
+#define _MESH_H_
 
-#include "BoostSerialization.h"
-#include "RenderMappingDefines.h"
+#include <utility>
+
+#include "Util.h"
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
-	template<class Archive>
-	void serialize(Archive & ar, Engine::VertexElement & ve, const Util::u_int /*version*/)
+	class WHISPERWIND_API SubMesh
 	{
-		ar & ve.StreamIndex;
-		ar & ve.Offset;
-		ar & ve.Type;
-		ar & ve.Usage;
-		ar & ve.UsageIndex;
-	}
+	public:
+		SubMesh()
+		{}
 
-	template<class Archive>
-	void serialize(Archive & ar, Engine::BufferData & bd, const Util::u_int /*version*/)
-	{
-		ar & bd.DataVec;
-		ar & bd.DataSize;
-		ar & bd.Stride;
-	}
+		~SubMesh()
+		{}
 
-	template<class Archive>
-	void serialize(Archive & ar, Engine::VertexMapping & vm, const Util::u_int /*version*/)
-	{
-		ar & vm.VertexCount;
-		ar & vm.VertexDataVec;
-		ar & vm.VertexElemVec;
-		ar & vm.VertexUsage;
-	}
+	public:
+		SET_GET_CONST_VALUE(RenderableMappingPtr, RenderableMapping);
+		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
 
-	template<class Archive>
-	void serialize(Archive & ar, Engine::IndexMapping & im, const Util::u_int /*version*/)
-	{
-		ar & im.HasIndex;
-		ar & im.IndexData;
-		ar & im.IndexFmt;
-		ar & im.IndexUsage;
-	}
+	private:
+		RenderableMappingPtr mRenderableMapping;
+		Util::AABBPtr mAABB;
 
-	template<class Archive>
-	void serialize(Archive & ar, Engine::RenderableMapping & rm, const Util::u_int /*version*/)
+	private:
+		DISALLOW_COPY_AND_ASSIGN(SubMesh);
+		BOOST_SERIALIZATION_NONINSTRUSIVE_FRIEND_FUNC(SubMesh);
+	};
+
+	class WHISPERWIND_API Mesh
 	{
-		ar & rm.RenderableName;
-		ar & rm.VertexBound;
-		ar & rm.IndexBound;
-		ar & rm.EffectName;
-		ar & rm.TechniqueName;
-		ar & rm.PrimType;
-		ar & rm.PrimCount;
-		ar & rm.RenderingType;
-		ar & rm.ParamTextureVec;
-		ar & rm.ParamValueVec;
-	}
+	public:
+		Mesh()
+		{}
+
+		~Mesh()
+		{}
+
+	public:
+		SET_GET_CONST_VALUE(SubMeshVector, SubMeshVec);
+		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
+
+	private:
+		SubMeshVector mSubMeshVec;
+		Util::AABBPtr mAABB;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Mesh);
+		BOOST_SERIALIZATION_NONINSTRUSIVE_FRIEND_FUNC(Mesh);
+	};
 
 }
+
+#endif

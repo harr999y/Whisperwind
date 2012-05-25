@@ -27,9 +27,11 @@ THE SOFTWARE
 #include <boost/foreach.hpp>
 
 #include "CheckedCast.h"
+#include "AABB.h"
 #include "EngineManager.h"
 #include "RenderSystem.h"
 #include "Renderable.h"
+#include "Mesh.h"
 #include "MeshResource.h"
 #include "GamePlayForwardDeclare.h"
 #include "Actor.h"
@@ -56,18 +58,27 @@ namespace GamePlay
 	//---------------------------------------------------------------------
 	Engine::SceneObjectPtr ActorFactory::create_impl(const Util::Wstring & objName, const Engine::ResourcePtr & resource)
 	{
-		Engine::MeshResourcePtr mesh = Util::checkedPtrCast<Engine::MeshResource>(resource);
-		const Engine::RenderableMappingVector & rmVec = mesh->getRenderableMappingVec();
+		Engine::MeshResourcePtr meshRes = Util::checkedPtrCast<Engine::MeshResource>(resource);
+		const Engine::MeshPtr & mesh = meshRes->getMesh();
 
 		ActorPtr actor = boost::make_shared<Actor>(objName);
 
-		BOOST_FOREACH(const Engine::RenderableMappingPtr & rm, rmVec)
+		const Engine::SubMeshVector & smVec = mesh->getSubMeshVec();
+		BOOST_FOREACH(const Engine::SubMeshPtr & sm, smVec)
 		{
+			const Engine::RenderableMappingPtr & rm = sm->getRenderableMapping();
+
 			Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 
 			if (renderable)
+			{
+				renderable->setAABB(renderable->getAABB());
+
 				actor->addRenderable(rm->RenderableName, renderable);
+			}
 		}
+
+		actor->setAABB(mesh->getAABB());
 
 		return actor;
 	}

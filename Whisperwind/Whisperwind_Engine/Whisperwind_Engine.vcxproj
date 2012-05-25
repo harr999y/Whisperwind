@@ -11,13 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\BoostSerialization_impl.h" />
+    <ClInclude Include="include\EngineSerialization_impl.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\EngineConfigDefines.h" />
     <ClInclude Include="include\EngineConfig.h" />
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
+    <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\MeshResource.h" />
     <ClInclude Include="include\RenderQueue.h" />
     <ClInclude Include="include\RenderTarget.h" />

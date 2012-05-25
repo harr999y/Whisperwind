@@ -25,8 +25,10 @@ THE SOFTWARE
 
 #include <fstream>
 
+#include "AABB.h"
 #include "StringConverter.h"
-#include "BoostSerialization_impl.h"
+#include "EngineSerialization_impl.h"
+#include "Mesh.h"
 #include "MeshResource.h"
 
 namespace Engine
@@ -37,7 +39,7 @@ namespace Engine
 		std::ifstream ifs(Util::WstringToString(resourcePath), std::ios::binary);
 		boost::archive::binary_iarchive is(ifs);
 
-		is >> mRenderableMappingVec;
+		is >> BOOST_SERIALIZATION_NVP(mMesh);
 	}
 
 }

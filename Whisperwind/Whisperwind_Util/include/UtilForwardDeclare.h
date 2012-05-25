@@ -40,6 +40,10 @@ namespace Util
 
 	class Timer;
 	typedef boost::shared_ptr<Timer> TimerPtr;
+
+	class AABB;
+	typedef boost::shared_ptr<AABB> AABBPtr;
+	
 }
 
 #endif

@@ -88,6 +88,12 @@
     <ClInclude Include="include\BoostSerialization.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="include\AABB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UtilSerialization_impl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Boost.data_time.cpp">
@@ -110,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="src\XmlWriter.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AABB.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

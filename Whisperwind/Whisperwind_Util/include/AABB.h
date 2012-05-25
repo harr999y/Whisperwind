@@ -22,36 +22,58 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _SCENE_OBJECT_FACTORY_H_
-#define _SCENE_OBJECT_FACTORY_H_
+#ifndef _AABB_H_
+#define _AABB_H_
 
 #include "Util.h"
-#include "EngineForwardDeclare.h"
+#include "MathDefine.h"
 
-namespace Engine
+namespace Util
 {
-	class WHISPERWIND_API SceneObjectFactory
+	class WHISPERWIND_API AABB
 	{
-	protected:
-		explicit SceneObjectFactory(const Util::Wstring & name) :
-		    mName(name)
+	public:
+		AABB() :
+		    mMinPoint(0.0f, 0.0f, 0.0f),
+			mMaxPoint(0.0f, 0.0f, 0.0f),
+			mCenterPoint(0.0f, 0.0f, 0.0f),
+			mIsInvalid(true)
 		{}
 
-		virtual ~SceneObjectFactory()
+		AABB(FXMVECTOR minPoint, FXMVECTOR maxPoint);
+
+		~AABB()
 		{}
 
 	public:
-		inline SceneObjectPtr create(const Util::Wstring & objName, const ResourcePtr & resource);
+		void merge(const AABBPtr & aabb);
+		void merge(FXMVECTOR minPoint, FXMVECTOR maxPoint);
+		void addPoint(FXMVECTOR point);
+		void move(FXMVECTOR trans);
+		void rotate(FXMVECTOR quat);
+		void reset();
+
+	public:
+		GET_CONST_VALUE(XMFLOAT3, MinPoint);
+		GET_CONST_VALUE(XMFLOAT3, MaxPoint);
+		GET_CONST_VALUE(XMFLOAT3, CenterPoint);
+		GET_CONST_VALUE(bool, IsInvalid);
 
 	private:
-		virtual SceneObjectPtr create_impl(const Util::Wstring & objName, const ResourcePtr & resource) = 0;
+		void calcCenterPoint();
 
-	public:
-		GET_CONST_VALUE(Util::Wstring, Name);
+	private:
+		XMFLOAT3 mMinPoint;
+		XMFLOAT3 mMaxPoint;
+		XMFLOAT3 mCenterPoint;
 
-	protected:
-		Util::Wstring mName;
+		bool mIsInvalid;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(AABB);
+		BOOST_SERIALIZATION_NONINSTRUSIVE_FRIEND_FUNC(AABB);
 	};
+
 }
 
 #endif

@@ -100,14 +100,17 @@
     <ClInclude Include="include\SceneObjectFactory.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="include\BoostSerialization_impl.h">
-      <Filter>Engine Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="include\SceneResource.h">
       <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mesh.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EngineSerialization_impl.h">
+      <Filter>Engine Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

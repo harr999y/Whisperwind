@@ -47,12 +47,16 @@ namespace Engine
 	private:
 		virtual void load(const Util::Wstring & resourcePath);
 
-		void processCamera(const Util::XmlReader & xmlReader, const Util::XmlNode * cameraNode);
-		void processSceneNode(const Util::XmlReader & xmlReader, const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode);
-		void processSceneObject(const Util::XmlReader & xmlReader, const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode);
+		void processCamera( const Util::XmlNode * cameraNode);
+		void processSceneNode(const Util::XmlNode * snNode) const;
+		void processChildSceneNode(const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode) const;
+		void processSceneObject(const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode) const;
+
+		void processSceneNodeContent(const Util::XmlNode * snNode, SceneNodePtr & sceneNode, bool isChild) const;
 
 	private:
 		CameraPtr mCamera;
+		Util::XmlReaderPtr mXmlReader;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneResource);

@@ -37,9 +37,7 @@ namespace Engine
 	{
 		SceneNodePtr & sceneNode = EngineManager::getSingleton().getSceneManager()->createSceneNode(name, NT_AS_CHILD | mNodeType);
 
-		mChildSceneNodeVec.push_back(sceneNode);
 		sceneNode->setParentNode(this->shared_from_this());
-		addChildNode(sceneNode);
 
 		return sceneNode;
 	}

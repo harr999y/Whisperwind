@@ -25,8 +25,11 @@ THE SOFTWARE
 
 #include <algorithm>
 #include <boost/typeof/typeof.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
 
 #include "DebugDefine.h"
+#include "AABB.h"
 #include "SceneObject.h"
 #include "SceneManager.h"
 #include "SceneNode.h"
@@ -43,6 +46,8 @@ namespace Engine
 	{
 		XMStoreFloat4(&mOrientation, XMQuaternionIdentity());
 		XMStoreFloat4(&mRelativeOrientation, XMQuaternionIdentity());
+
+		mAABB = boost::make_shared<Util::AABB>();
 	}
 	//---------------------------------------------------------------------
 	SceneNode::~SceneNode()
@@ -61,6 +66,9 @@ namespace Engine
 		mSceneObjectVec.push_back(sceneObj);
 
 		sceneObj->setAttachedSceneNode(this->shared_from_this());
+
+		/// calc AABB
+		mergeAABBFromSceneObject(sceneObj);
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::dettachSceneObject(SceneObjectPtr & sceneObj)
@@ -70,6 +78,8 @@ namespace Engine
 		sceneObj->setAttachedSceneNode(NULL_SCENE_NODE);
 
 		mSceneObjectVec.erase(std::find(mSceneObjectVec.begin(), mSceneObjectVec.end(), sceneObj));
+
+		reCalcAABB();
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::dettachAllSceneObject()
@@ -96,14 +106,17 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setParentNode(const SceneNodePtr & parentNode)
 	{
+		SceneNodePtr me = this->shared_from_this();
 		if (mParentNode)
 		{
-			SceneNodePtr me = this->shared_from_this();
 			mParentNode->removeChildNode(me);
+			mParentNode.reset();
 		}
 
+		if (parentNode)
+			parentNode->addChildNode(me);
+
 		mParentNode = parentNode;
-		mParentNode->addChildNode(this->shared_from_this());
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::removeChildNode(SceneNodePtr & childNode)
@@ -111,8 +124,8 @@ namespace Engine
 		BOOST_AUTO(childIt, std::find(mChildSceneNodeVec.begin(), mChildSceneNodeVec.end(), childNode));
 		if (childIt != mChildSceneNodeVec.end())
 		{
-			childNode->setParentNode(NULL_SCENE_NODE);
 			mChildSceneNodeVec.erase(childIt);
+			childNode->setParentNode(NULL_SCENE_NODE);
 		}
 	}
 	//---------------------------------------------------------------------
@@ -152,10 +165,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::addToRenderQueue()
 	{
-		BOOST_AUTO(it, mSceneObjectVec.begin());
-		for (it; it != mSceneObjectVec.end(); ++it)
+		BOOST_FOREACH(const SceneObjectPtr & so, mSceneObjectVec)
 		{
-			(*it)->addToRenderQueue();
+			so->addToRenderQueue();
 		}
 	}
 	//---------------------------------------------------------------------
@@ -169,12 +181,14 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setPosition(FXMVECTOR position)
 	{
+		mAABB->move(position - XMLoadFloat3(&mPosition));
+
 		XMStoreFloat3(&mPosition, position);
 
 		if (mParentNode)
 			XMStoreFloat3(&mRelativePosition, position - mParentNode->getPosition());
 
-		mNeedUpdateChilds = true;
+		setNeedUpdateChilds();
 	}
 	//---------------------------------------------------------------------
 	XMVECTOR SceneNode::getRelativePosition() const
@@ -188,12 +202,14 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
 
+		mAABB->move(relPosition - XMLoadFloat3(&mRelativePosition));
+
 		XMStoreFloat3(&mRelativePosition, relPosition);
 
 		if (mParentNode)
 			XMStoreFloat3(&mPosition, relPosition + mParentNode->getPosition());
 
-		mNeedUpdateChilds = true;
+		setNeedUpdateChilds();
 	}
 	//---------------------------------------------------------------------
 	XMVECTOR SceneNode::getOrientation() const
@@ -206,12 +222,14 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setOrientation(FXMVECTOR orientation)
 	{
+		mAABB->rotate(XMQuaternionMultiply(XMQuaternionInverse(XMLoadFloat4(&mOrientation)), orientation));
+
 		XMStoreFloat4(&mOrientation, orientation);
 
 		if (mParentNode)
 			XMStoreFloat4(&mRelativeOrientation, XMQuaternionMultiply(XMQuaternionInverse(mParentNode->getOrientation()), orientation));
 
-		mNeedUpdateChilds = true;
+		setNeedUpdateChilds();
 	}
 	//---------------------------------------------------------------------
 	XMVECTOR SceneNode::getRelativeOrientation() const
@@ -225,20 +243,30 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
 
+		mAABB->rotate(XMQuaternionMultiply(XMQuaternionInverse(XMLoadFloat4(&mRelativeOrientation)), relOrientation));
+
 		XMStoreFloat4(&mRelativeOrientation, relOrientation);
 
 		if (mParentNode)
 			XMStoreFloat4(&mOrientation, XMQuaternionMultiply(mParentNode->getOrientation(), relOrientation));
 
+		setNeedUpdateChilds();
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::setNeedUpdateChilds()
+	{
 		mNeedUpdateChilds = true;
+
+		if (mParentNode)
+			mParentNode->setNeedUpdateChilds();
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::update()
 	{
 		if (mParentNode)
 		{
-			XMStoreFloat3(&mPosition, mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition));
-			XMStoreFloat4(&mOrientation, XMQuaternionMultiply(mParentNode->getOrientation(), XMLoadFloat4(&mRelativeOrientation)));
+			this->setPosition(mParentNode->getPosition() + XMLoadFloat3(&mRelativePosition));
+			this->setOrientation(XMQuaternionMultiply(mParentNode->getOrientation(), XMLoadFloat4(&mRelativeOrientation)));
 		}
 		
 		if (mNeedUpdateChilds)
@@ -248,6 +276,29 @@ namespace Engine
 			{
 				(*it)->update();
 			}
+		}
+
+		mNeedUpdateChilds = false;
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::mergeAABBFromSceneObject(const SceneObjectPtr & so)
+	{
+		XMVECTOR minPoint = XMVector3Rotate(XMLoadFloat3(&(so->getAABB()->getMinPoint())), XMLoadFloat4(&mOrientation)) + 
+			XMLoadFloat3(&mPosition);
+
+		XMVECTOR maxPoint = XMVector3Rotate(XMLoadFloat3(&(so->getAABB()->getMaxPoint())), XMLoadFloat4(&mOrientation)) + 
+			XMLoadFloat3(&mPosition);
+
+		mAABB->merge(minPoint, maxPoint);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::reCalcAABB()
+	{
+		mAABB->reset();
+
+		BOOST_FOREACH(const SceneObjectPtr & so, mSceneObjectVec)
+		{
+			mergeAABBFromSceneObject(so);
 		}
 	}
 

@@ -68,11 +68,18 @@ namespace Engine
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
 		GET_CONST_VALUE(Util::u_int, NodeType);
+		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
 
 	protected:
 		virtual SceneNodePtr & createChildNode_impl(const Util::Wstring & name) = 0;
 
 		void addChildNode(const SceneNodePtr & childNode);
+
+	private:
+		void setNeedUpdateChilds();
+		
+		void mergeAABBFromSceneObject(const SceneObjectPtr & so);
+		void reCalcAABB();
 
 	protected:
 		SceneObjectVector mSceneObjectVec;
@@ -85,6 +92,7 @@ namespace Engine
 		XMFLOAT3 mRelativePosition;
 		XMFLOAT4 mOrientation;
 		XMFLOAT4 mRelativeOrientation;
+		Util::AABBPtr mAABB;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneNode);

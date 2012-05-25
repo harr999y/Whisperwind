@@ -41,13 +41,13 @@ namespace Engine
 		{}
 
 	public:
-		GET_CONST_VALUE(RenderableMappingVector, RenderableMappingVec);
+		GET_CONST_VALUE(MeshPtr, Mesh);
 
 	private:
 		virtual void load(const Util::Wstring & resourcePath);
 
 	private:
-		RenderableMappingVector mRenderableMappingVec;
+		MeshPtr mMesh;
 	};
 }
 

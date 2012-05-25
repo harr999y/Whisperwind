@@ -55,6 +55,7 @@ namespace Engine
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
 		GET_VALUE(SceneNodePtr, AttachedSceneNode);
+		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
 
 	protected:
 		void addRenderable(const Util::Wstring & name, const RenderablePtr & renderable);
@@ -76,6 +77,7 @@ namespace Engine
 		SceneComponentPtr mSceneComponents[CT_MAX];
 		SceneNodePtr mAttachedSceneNode;
 		Util::Wstring mName;
+		Util::AABBPtr mAABB;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneObject);
