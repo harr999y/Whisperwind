@@ -56,7 +56,7 @@ namespace Engine
 		SET_GET_CONST_VALUE(bool, QuitLooping);
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
 		SET_GET_CONST_VALUE(PluginConfigPtr, PluginConfig);
-		GET_VALUE(CameraPtr, Camera);
+		SET_GET_VALUE(CameraPtr, Camera);
 
 	private:
 		void init();

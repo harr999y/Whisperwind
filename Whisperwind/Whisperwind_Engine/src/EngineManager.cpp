@@ -96,12 +96,6 @@ namespace Engine
 		mTimer = boost::make_shared<Util::WindowsTimer>();
 
 		loadConfigs();
-
-		mCamera = boost::make_shared<Camera>(
-			1.0f, 
-			2000.0f, 
-			static_cast<Util::real>(mEngineConfig->getResolutionPair().first), 
-			static_cast<Util::real>(mEngineConfig->getResolutionPair().second));
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::loadConfigs()

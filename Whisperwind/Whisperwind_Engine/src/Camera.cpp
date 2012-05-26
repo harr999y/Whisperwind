@@ -23,43 +23,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
+#include <boost/make_shared.hpp>
+
 #include "EngineManager.h"
 #include "RenderSystem.h"
 #include "Viewport.h"
+#include "Frustum.h"
 #include "Camera.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	Camera::Camera(Util::real nearCilp, Util::real farClip, Util::real width, Util::real height) :
-        mNearClip(nearCilp),
-	    mFarClip(farClip),
+	Camera::Camera(Util::real nearCilp, Util::real farClip, const Util::UintPair & leftTop, const Util::UintPair & rightButtom) :
 		mUpDirection(0.0f, 1.0f, 0.0f),
-		mNeedUpdateViewMatrix(true),
 		mPitchRadians(0.0f),
 		mYawRadians(0.0f),
-		mMoveSpeed(1.0f)
+		mMoveSpeed(1.0f),
+		mNeedUpdateView(true)
 	{
-		mAspect = width / height;
+		mFrustum = boost::make_shared<Frustum>(nearCilp, farClip, 
+			static_cast<Util::real>(rightButtom.first) - static_cast<Util::real>(leftTop.first), 
+			static_cast<Util::real>(rightButtom.second) - static_cast<Util::real>(leftTop.second));
+
+		mViewport = boost::make_shared<Viewport>(leftTop, rightButtom);
 
 		XMStoreFloat4(&mOrientation, XMQuaternionIdentity());
 
 		mIsMoveDirection[0] = mIsMoveDirection[1] = mIsMoveDirection[2] = mIsMoveDirection[3] = false;
-
-		XMStoreFloat4x4(&mProjMatrix, XMMatrixPerspectiveFovLH(XM_PI / 2.0, mAspect, mNearClip, mFarClip));
-	}
-	//---------------------------------------------------------------------
-	XMMATRIX Camera::getViewMatrix()
-	{
-		if (mNeedUpdateViewMatrix)
-			XMStoreFloat4x4(&mViewMatrix, XMMatrixLookAtLH(XMLoadFloat3(&mPosition), XMLoadFloat3(&mLookAt), XMLoadFloat3(&mUpDirection)));
-
-		return XMLoadFloat4x4(&mViewMatrix);
-	}
-	//---------------------------------------------------------------------
-	XMMATRIX Camera::getProjMatrix() const
-	{		
-		return XMLoadFloat4x4(&mProjMatrix);
 	}
 	//---------------------------------------------------------------------
 	void Camera::move(Util::u_int moveDirection)
@@ -106,6 +96,8 @@ namespace Engine
 		XMVECTOR lookAt = vector - pos + XMLoadFloat3(&mLookAt);
 		XMStoreFloat3(&mPosition, vector);
 		XMStoreFloat3(&mLookAt, lookAt);
+
+		mNeedUpdateView = true;
 	}
 	//---------------------------------------------------------------------
 	void Camera::rotate(Util::real pitchAngle, Util::real yawAngle/*, Util::real zoom*/)
@@ -132,7 +124,7 @@ namespace Engine
 		/// update orientation
 		XMStoreFloat4(&mOrientation, XMQuaternionRotationMatrix(rotMatrix));
 
-		mNeedUpdateViewMatrix = true;
+		mNeedUpdateView = true;
 	}
 	//---------------------------------------------------------------------
 	void Camera::lookAt(FXMVECTOR destVec)
@@ -140,13 +132,18 @@ namespace Engine
 		XMStoreFloat3(&mLookAt, destVec);
 
 		XMStoreFloat3(&mPosLookDelta, XMLoadFloat3(&mLookAt) - XMLoadFloat3(&mPosition));
-
-		mNeedUpdateViewMatrix = true;
 	}
 	//---------------------------------------------------------------------
 	void Camera::update(Util::time elapsedTime)
 	{
 		doMove(elapsedTime);
+
+		if (!mNeedUpdateView)
+			return;
+
+		mFrustum->setViewParams(XMLoadFloat3(&mPosition), XMLoadFloat3(&mLookAt), XMLoadFloat3(&mUpDirection));
+
+		mNeedUpdateView = false;
 	}
 
 }

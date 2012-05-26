@@ -22,38 +22,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _VIEWPORT_H_
-#define _VIEWPORT_H_
 
-#include "Util.h"
+#include "Frustum.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API Viewport
+	//---------------------------------------------------------------------
+	Frustum::Frustum(Util::real nearCilp, Util::real farClip, Util::real width, Util::real height) :
+        mNearClip(nearCilp),
+		mFarClip(farClip)
 	{
-	public:
-		Viewport(const Util::UintPair & leftTop, const Util::UintPair & rightButtom) :
-		    mTop(leftTop.first),
-			mLeft(leftTop.second),
-			mRight(rightButtom.first),
-			mButtom(rightButtom.second)
-		{}
+		mAspect = width / height;
 
-	public:
-		SET_GET_CONST_VALUE(Util::u_int, Top);
-		SET_GET_CONST_VALUE(Util::u_int, Left);
-		SET_GET_CONST_VALUE(Util::u_int, Right);
-		SET_GET_CONST_VALUE(Util::u_int, Buttom);
+		XMStoreFloat4x4(&mProjMatrix, XMMatrixPerspectiveFovLH(XM_PI / 2.0, mAspect, mNearClip, mFarClip));
+	}
 
-	private:
-		Util::u_int mTop;
-		Util::u_int mLeft;
-		Util::u_int mRight;
-		Util::u_int mButtom;
+	//---------------------------------------------------------------------
+	void Frustum::setViewParams(FXMVECTOR pos, FXMVECTOR lookAt, FXMVECTOR upDir)
+	{
+		XMStoreFloat4x4(&mViewMatrix, XMMatrixLookAtLH(pos, lookAt, upDir));
+	}
 
-	private:
-		DISALLOW_COPY_AND_ASSIGN(Viewport);
-	};
 }
-
-#endif

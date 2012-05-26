@@ -58,6 +58,7 @@ namespace Engine
 	class ResourceConfig;
 	class RenderQueue;
 	class Viewport;
+	class Frustum;
 	class Camera;
 	class Actor;
 	class ActorFactory;
@@ -109,6 +110,7 @@ namespace Engine
 	typedef boost::shared_ptr<ResourceManager> ResourceManagerPtr;
 	typedef boost::shared_ptr<RenderQueue> RenderQueuePtr;
 	typedef boost::shared_ptr<Viewport> ViewportPtr;
+	typedef boost::shared_ptr<Frustum> FrustumPtr;
 	typedef boost::shared_ptr<Camera> CameraPtr;
 	typedef boost::shared_ptr<Actor> ActorPtr;
 	typedef boost::shared_ptr<ActorFactory> ActorFactoryPtr;

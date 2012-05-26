@@ -22,38 +22,40 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _VIEWPORT_H_
-#define _VIEWPORT_H_
+#ifndef _FRUSTUM_H_
+#define _FRUSTUM_H_
 
 #include "Util.h"
+#include "MathDefine.h"
 
 namespace Engine
 {
-	class WHISPERWIND_API Viewport
+	class WHISPERWIND_API Frustum
 	{
 	public:
-		Viewport(const Util::UintPair & leftTop, const Util::UintPair & rightButtom) :
-		    mTop(leftTop.first),
-			mLeft(leftTop.second),
-			mRight(rightButtom.first),
-			mButtom(rightButtom.second)
+		Frustum(Util::real nearCilp, Util::real farClip, Util::real width, Util::real height);
+
+		~Frustum()
 		{}
 
 	public:
-		SET_GET_CONST_VALUE(Util::u_int, Top);
-		SET_GET_CONST_VALUE(Util::u_int, Left);
-		SET_GET_CONST_VALUE(Util::u_int, Right);
-		SET_GET_CONST_VALUE(Util::u_int, Buttom);
+		XMMATRIX getViewMatrix() const { return XMLoadFloat4x4(&mViewMatrix); };
+		XMMATRIX getProjMatrix() const { return XMLoadFloat4x4(&mProjMatrix); };
+
+		inline void setViewParams(FXMVECTOR pos, FXMVECTOR lookAt, FXMVECTOR upDir);
 
 	private:
-		Util::u_int mTop;
-		Util::u_int mLeft;
-		Util::u_int mRight;
-		Util::u_int mButtom;
+		Util::real mNearClip;
+		Util::real mFarClip;
+		Util::real mAspect;
+
+		XMFLOAT4X4 mProjMatrix;
+		XMFLOAT4X4 mViewMatrix;
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(Viewport);
+		DISALLOW_COPY_AND_ASSIGN(Frustum);
 	};
+
 }
 
 #endif

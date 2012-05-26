@@ -41,7 +41,6 @@ namespace Engine
 		mOpaqueRenderQueue = boost::make_shared<RenderQueue>();
 		mTransparentRenderQueue = boost::make_shared<RenderQueue>();
 		mEngineConfig = EngineManager::getSingleton().getEngineConfig();
-		mViewport = boost::make_shared<Viewport>(0, 0, mEngineConfig->getResolutionPair().first, mEngineConfig->getResolutionPair().second);
 
 		init_impl();
 	}

@@ -175,7 +175,7 @@ namespace Engine
 
 		WHISPERWIND_LOG(scene + TO_UNICODE(" scene load done!"));
 
-		/// TODO:Now put here.
+		/// TODO:Now put it here.
 		createDebugRendering();
 	}
 	//---------------------------------------------------------------------

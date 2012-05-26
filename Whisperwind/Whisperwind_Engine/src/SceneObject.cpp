@@ -33,6 +33,7 @@ THE SOFTWARE
 #include "Renderable.h"
 #include "RenderSystem.h"
 #include "Camera.h"
+#include "Frustum.h"
 #include "SceneObject.h"
 
 namespace Engine
@@ -51,8 +52,8 @@ namespace Engine
 				XMMATRIX matrix = XMMatrixTranslationFromVector(mAttachedSceneNode->getPosition()) *
 					XMMatrixRotationQuaternion(mAttachedSceneNode->getOrientation());
 
-				CameraPtr & camera = EngineManager::getSingleton().getCamera();
-				matrix *= camera->getViewMatrix() * camera->getProjMatrix();
+				FrustumPtr & frustum = EngineManager::getSingleton().getCamera()->getFrustum();
+				matrix *= frustum->getViewMatrix() * frustum->getProjMatrix();
 
 				renderable->setWorldViewProj(matrix);
 			}

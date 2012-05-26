@@ -46,6 +46,7 @@ namespace Util
 	typedef signed __int8 s_int8;
 
 	typedef std::pair<Util::u_int, Util::u_int> UintPair;
+	typedef std::pair<Util::real, Util::real> RealPair;
 
 	/** The common classes defines. */
 	typedef std::string String;

@@ -23,14 +23,14 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{516635bf-8a56-40b5-ba08-a94cc7200bfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{165467d0-530d-4630-be24-72044d020664}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DebugRendering">
       <UniqueIdentifier>{67ade00a-c2a2-4a45-aeaf-f6c3fe205b3f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor">
       <UniqueIdentifier>{71cde1c6-60e4-414c-954c-b22e717ffc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{165467d0-530d-4630-be24-72044d020664}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +97,6 @@
     <ClInclude Include="include\RenderQueue.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="include\Viewport.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="include\ResourceManager.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -107,7 +104,7 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\Camera.h">
-      <Filter>Camera</Filter>
+      <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="include\SceneResource.h">
       <Filter>Resource</Filter>
@@ -126,6 +123,12 @@
     </ClInclude>
     <ClInclude Include="include\DebugResource.h">
       <Filter>DebugRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Viewport.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Frustum.h">
+      <Filter>View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -184,7 +187,7 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
-      <Filter>Camera</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneResource.cpp">
       <Filter>Resource</Filter>
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="src\DebugResource.cpp">
       <Filter>DebugRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Frustum.cpp">
+      <Filter>View</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

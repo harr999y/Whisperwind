@@ -41,14 +41,13 @@ namespace Engine
 	class WHISPERWIND_API Camera
 	{
 	public:
-		Camera(Util::real nearCilp, Util::real farClip, Util::real width, Util::real height);
+		Camera(Util::real nearCilp, Util::real farClip, const Util::UintPair & leftTop, const Util::UintPair & rightButtom);
 
 		~Camera()
 		{}
 
 	public:
-		XMMATRIX getViewMatrix();
-		XMMATRIX getProjMatrix() const;
+
 		void move(Util::u_int moveDirection);
 		void stopMove(Util::u_int moveDirection);
 		void rotate(Util::real pitchAngle, Util::real yawAngle/*, Util::real zoom*/);
@@ -59,9 +58,9 @@ namespace Engine
 		XMVECTOR getPosition() { return XMLoadFloat3(&mPosition); }
 
 	public:
-		SET_VALUE(Util::real, MoveSpeed);
-		SET_VALUE(Util::real, NearClip);
-		SET_VALUE(Util::real, FarClip);
+		SET_GET_CONST_VALUE(Util::real, MoveSpeed);
+		GET_VALUE(ViewportPtr, Viewport);
+		GET_VALUE(FrustumPtr, Frustum);
 
 	private:
 		void doMove(Util::time deltaTime);
@@ -76,16 +75,13 @@ namespace Engine
 		bool mIsMoveDirection[4]; /// The sequence is forward,back,left,right.
 		Util::real mMoveSpeed;
 
-		Util::real mNearClip;
-		Util::real mFarClip;
-		Util::real mAspect;
-
-		XMFLOAT4X4 mProjMatrix;
-		XMFLOAT4X4 mViewMatrix;
-		bool mNeedUpdateViewMatrix;
-
 		Util::real mPitchRadians;
 		Util::real mYawRadians;
+
+		ViewportPtr mViewport;
+		FrustumPtr mFrustum;
+
+		bool mNeedUpdateView;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Camera);
