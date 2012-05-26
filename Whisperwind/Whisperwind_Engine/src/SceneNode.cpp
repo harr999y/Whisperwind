@@ -181,8 +181,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setPosition(FXMVECTOR position)
 	{
-		mAABB->move(position - XMLoadFloat3(&mPosition));
-
 		XMStoreFloat3(&mPosition, position);
 
 		if (mParentNode)
@@ -202,8 +200,6 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
 
-		mAABB->move(relPosition - XMLoadFloat3(&mRelativePosition));
-
 		XMStoreFloat3(&mRelativePosition, relPosition);
 
 		if (mParentNode)
@@ -222,8 +218,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setOrientation(FXMVECTOR orientation)
 	{
-		mAABB->rotate(XMQuaternionMultiply(XMQuaternionInverse(XMLoadFloat4(&mOrientation)), orientation));
-
 		XMStoreFloat4(&mOrientation, orientation);
 
 		if (mParentNode)
@@ -242,8 +236,6 @@ namespace Engine
 	void SceneNode::setRelativeOrientation(FXMVECTOR relOrientation)
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
-
-		mAABB->rotate(XMQuaternionMultiply(XMQuaternionInverse(XMLoadFloat4(&mRelativeOrientation)), relOrientation));
 
 		XMStoreFloat4(&mRelativeOrientation, relOrientation);
 
@@ -283,13 +275,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::mergeAABBFromSceneObject(const SceneObjectPtr & so)
 	{
-		XMVECTOR minPoint = XMVector3Rotate(XMLoadFloat3(&(so->getAABB()->getMinPoint())), XMLoadFloat4(&mOrientation)) + 
-			XMLoadFloat3(&mPosition);
+		if (!so->getAABB())
+			return;
 
-		XMVECTOR maxPoint = XMVector3Rotate(XMLoadFloat3(&(so->getAABB()->getMaxPoint())), XMLoadFloat4(&mOrientation)) + 
-			XMLoadFloat3(&mPosition);
-
-		mAABB->merge(minPoint, maxPoint);
+		mAABB->merge(so->getAABB());
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::reCalcAABB()

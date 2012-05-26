@@ -22,62 +22,45 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _GAMEPLAY_FRAMEWORK_H_
-#define _GAMEPLAY_FRAMEWORK_H_
-
-#pragma warning(push, 3)
-#include <OIS/includes/OIS.h>
-#pragma warning(pop)
+#ifndef _ACTOR_H_
+#define _ACTOR_H_
 
 #include "Util.h"
-/// TODO!
 #include "EngineForwardDeclare.h"
-#include "SceneComponent.h"
-#include "GamePlayForwardDeclare.h"
+#include "SceneObject.h"
+#include "SceneObjectFactory.h"
 
-namespace GamePlay
+namespace Engine
 {
-	class WHISPERWIND_API GamePlayFramework : public OIS::KeyListener, public OIS::MouseListener
+	class Actor : public SceneObject
 	{
 	public:
-		explicit GamePlayFramework(const Util::Wstring & name);
-		~GamePlayFramework();
+		Actor (const Util::Wstring & name) :
+		    SceneObject(name)
+		{}
+
+		~Actor()
+		{}
+			
+	private:
+		virtual void preUpdate_impl(Util::time elapsedTime);
+		virtual void postUpdate_impl(Util::time elapsedTime);
+
+		friend class ActorFactory;
+	};
+
+	class ActorFactory : public SceneObjectFactory
+	{
+	public:
+		ActorFactory();
+
+		~ActorFactory()
+		{}
 
 	public:
-		void run();
-
-		/// TODO!
-		void preUpdate(Util::time elapsedTime);
-		void postUpdate(Util::time elapsedTime);
-
-		virtual bool keyPressed(const OIS::KeyEvent & arg);
-		virtual bool keyReleased(const OIS::KeyEvent & arg);
-		virtual bool mouseMoved(const OIS::MouseEvent & arg);
-		virtual bool mousePressed(const OIS::MouseEvent & arg, OIS::MouseButtonID id);
-		virtual bool mouseReleased(const OIS::MouseEvent & arg, OIS::MouseButtonID id);
-
-	private:
-		void initInput();
-		void createScene();
-		void destroyScene();
-
-		Util::u_int getKeyCombinationFromEvent(const OIS::KeyEvent & arg) const;
-
-	private:
-		Engine::CameraPtr mCamera;
-
-		typedef boost::shared_ptr<OIS::InputManager> InputManagerPtr;
-		typedef boost::shared_ptr<OIS::Keyboard> KeyboardPtr;
-		typedef boost::shared_ptr<OIS::Mouse> MousePtr;
- 		InputManagerPtr mInputManager;
- 		KeyboardPtr mKeyboard;
- 		MousePtr mMouse;
-
-		bool mRightMouseDown;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(GamePlayFramework);
+		virtual SceneObjectPtr create_impl(const Util::Wstring & objName, const ResourcePtr & resource);
 	};
+
 }
 
 #endif

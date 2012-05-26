@@ -41,6 +41,7 @@ namespace Engine
 		SET_GET_CONST_VALUE(bool, FullScreen);
 		SET_GET_CONST_VALUE(bool, VSync);
 		SET_GET_CONST_VALUE(bool, PerfHUD);
+		SET_GET_CONST_VALUE(bool, DebugRendering);
 		SET_GET_CONST_VALUE(Util::UintPair, ResolutionPair);
 		SET_GET_CONST_VALUE(Util::u_int, MultiSampleQuality);
 		SET_GET_CONST_VALUE(Util::u_int, MultiSampleType);
@@ -52,6 +53,7 @@ namespace Engine
 		bool mFullScreen;
 		bool mVSync;
 		bool mPerfHUD;
+		bool mDebugRendering;
 		Util::UintPair mResolutionPair;
 		Util::u_int mMultiSampleQuality;
 		Util::u_int mMultiSampleType;

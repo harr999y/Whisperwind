@@ -59,6 +59,11 @@ namespace Engine
 	class RenderQueue;
 	class Viewport;
 	class Camera;
+	class Actor;
+	class ActorFactory;
+	class DebugFactory;
+	class DebugObject;
+	class DebugResource;
 
 	/** For the unordered_maps nowadays.
 	@note:
@@ -105,6 +110,11 @@ namespace Engine
 	typedef boost::shared_ptr<RenderQueue> RenderQueuePtr;
 	typedef boost::shared_ptr<Viewport> ViewportPtr;
 	typedef boost::shared_ptr<Camera> CameraPtr;
+	typedef boost::shared_ptr<Actor> ActorPtr;
+	typedef boost::shared_ptr<ActorFactory> ActorFactoryPtr;
+	typedef boost::shared_ptr<DebugObject> DebugObjectPtr;
+	typedef boost::shared_ptr<DebugFactory> DebugFactoryPtr;
+	typedef boost::shared_ptr<DebugResource> DebugResourcePtr;
 
 }
 

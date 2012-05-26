@@ -11,16 +11,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Actor.h" />
     <ClInclude Include="include\GamePlayFramework.h" />
     <ClInclude Include="include\GamePlayForwardDeclare.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\Actor.cpp" />
     <ClCompile Include="src\GamePlayFramework.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\bin\Config\GamePlayConfig.cfg" />
+    <None Include="..\bin\media\Effects\DebugAABB.fx" />
     <None Include="..\bin\media\Effects\default.fx" />
     <None Include="..\bin\media\Scenes\test.wscene">
       <SubType>Designer</SubType>

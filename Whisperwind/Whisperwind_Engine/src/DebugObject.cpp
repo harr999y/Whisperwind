@@ -22,23 +22,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _ENGINE_CONFIG_DEFINES_H_
-#define _ENGINE_CONFIG_DEFINES_H_
 
-#include "Util.h"
+#include <boost/make_shared.hpp>
+
+#include "CheckedCast.h"
+#include "AABB.h"
+#include "EngineManager.h"
+#include "RenderSystem.h"
+#include "RenderMappingDefines.h"
+#include "DebugResource.h"
+#include "DebugObject.h"
 
 namespace Engine
 {
-	struct EngineConfigDefine
+	//---------------------------------------------------------------------
+	// Debug factory
+	//---------------------------------------------------------------------
+	static const Util::Wstring DEBUG_FACTORY_NAME(TO_UNICODE("debug"));
+	//---------------------------------------------------------------------
+	DebugFactory::DebugFactory() :
+	    SceneObjectFactory(DEBUG_FACTORY_NAME)
+	{}
+	//---------------------------------------------------------------------
+	SceneObjectPtr DebugFactory::create_impl(const Util::Wstring & objName, const ResourcePtr & resource)
 	{
-		static const Util::String FULL_SCREEN;
-		static const Util::String RESOLUTION;
-		static const Util::String MULTI_SAMPLE_QUALITY;
-		static const Util::String MULTI_SAMPLE_TYPE;
-		static const Util::String VSYNC;
-		static const Util::String PERF_HUD;
-		static const Util::String DEBUG_RENDERING;
-	};
-}
+		DebugResourcePtr debugRes = Util::checkedPtrCast<DebugResource>(resource);
+		const RenderableMappingPtr & rm = debugRes->getRenderableMapping();
 
-#endif
+		RenderablePtr renderable = EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
+
+		DebugObjectPtr debugObj = boost::make_shared<DebugObject>(objName);
+		debugObj->addRenderable(rm->RenderableName, renderable);
+
+		return debugObj;
+	}
+
+}

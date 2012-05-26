@@ -32,6 +32,7 @@ THE SOFTWARE
 #include "ResourceConfig.h"
 #include "MeshResource.h"
 #include "SceneResource.h"
+#include "DebugResource.h"
 #include "ResourceManager.h"
 
 namespace
@@ -46,8 +47,8 @@ namespace Engine
 #else
 	static const Util::String RESOURCE_CONFIG_PATH("../config/Resource.cfg");
 #endif
-	static const Util::String WMESH_SUFFIX(".wmesh");
-	static const Util::String WSCENE_SUFFIX(".wscene");
+	static const Util::Wstring WMESH_SUFFIX(TO_UNICODE(".wmesh"));
+	static const Util::Wstring WSCENE_SUFFIX(TO_UNICODE(".wscene"));
 	//---------------------------------------------------------------------
 	ResourceManager::ResourceManager()
 	{
@@ -101,6 +102,16 @@ namespace Engine
 		{
 			ResourcePtr scene = boost::make_shared<SceneResource>();
 			scene->load(this->getResourcePath(resource));
+
+			WHISPERWIND_ASSERT(scene);
+
+			return scene;
+		}
+		else if (boost::algorithm::find_first(resource, DebugResource::DEBUG_NODE_SUFFIX) ||
+			boost::algorithm::find_first(resource, DebugResource::DEBUG_OBJECT_SUFFIX))
+		{
+			ResourcePtr scene = boost::make_shared<DebugResource>();
+			scene->load(resource);
 
 			WHISPERWIND_ASSERT(scene);
 

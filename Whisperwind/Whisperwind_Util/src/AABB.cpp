@@ -39,7 +39,7 @@ namespace Util
 	//---------------------------------------------------------------------
 	void AABB::merge(const AABBPtr & aabb)
 	{
-		if (aabb->getIsInvalid())
+		if (aabb && aabb->getIsInvalid())
 			return;
 
 		merge(XMLoadFloat3(&aabb->getMinPoint()), XMLoadFloat3(&aabb->getMaxPoint()));

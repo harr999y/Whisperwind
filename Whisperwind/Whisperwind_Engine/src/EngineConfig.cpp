@@ -85,5 +85,10 @@ namespace Engine
 		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::PERF_HUD + " parse failed!");
 		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setPerfHUD(boost::lexical_cast<bool>(valueStr));
+
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::DEBUG_RENDERING);
+		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::DEBUG_RENDERING + " parse failed!");
+		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
+		setDebugRendering(boost::lexical_cast<bool>(valueStr));
 	}
 }

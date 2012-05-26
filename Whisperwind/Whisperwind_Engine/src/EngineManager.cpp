@@ -40,6 +40,8 @@ THE SOFTWARE
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Camera.h"
+#include "Actor.h"
+#include "DebugObject.h"
 #include "EngineManager.h"
 
 namespace Engine
@@ -81,6 +83,7 @@ namespace Engine
 
 		loadPlugins();
 		loadResources();
+		regSceneObjectFactories();
 	}
 	//---------------------------------------------------------------------
 	void EngineManager::init()
@@ -166,6 +169,14 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void EngineManager::loadResources()
 	{}
+	//---------------------------------------------------------------------
+	void EngineManager::regSceneObjectFactories()
+	{
+		mSceneManager->regSceneObjectFactory(boost::make_shared<ActorFactory>());
+
+		if (mEngineConfig->getDebugRendering())
+			mSceneManager->regSceneObjectFactory(boost::make_shared<DebugFactory>());
+	}
 	//---------------------------------------------------------------------
 	void EngineManager::clearResources()
 	{}

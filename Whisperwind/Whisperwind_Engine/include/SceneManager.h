@@ -81,6 +81,9 @@ namespace Engine
 		virtual void destroySceneNode_impl(const Util::Wstring & name) = 0;
 		virtual void destroyAllSceneNode_impl() = 0;
 
+	private:
+		void createDebugRendering();
+
 	protected:
 		/// Save all nodes.CANNOT use to do anything unless find or destroy!
 		SceneNodeMap mSceneNodeMap;

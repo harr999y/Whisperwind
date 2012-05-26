@@ -33,10 +33,9 @@ THE SOFTWARE
 #include "Renderable.h"
 #include "Mesh.h"
 #include "MeshResource.h"
-#include "GamePlayForwardDeclare.h"
 #include "Actor.h"
 
-namespace GamePlay
+namespace Engine
 {
 	//---------------------------------------------------------------------
 	// Actor
@@ -53,22 +52,22 @@ namespace GamePlay
 	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("actor"));
 	//---------------------------------------------------------------------
 	ActorFactory::ActorFactory() : 
-	    Engine::SceneObjectFactory(ACTOR_FACTORY_NAME)
+	    SceneObjectFactory(ACTOR_FACTORY_NAME)
 	{}
 	//---------------------------------------------------------------------
-	Engine::SceneObjectPtr ActorFactory::create_impl(const Util::Wstring & objName, const Engine::ResourcePtr & resource)
+	SceneObjectPtr ActorFactory::create_impl(const Util::Wstring & objName, const ResourcePtr & resource)
 	{
-		Engine::MeshResourcePtr meshRes = Util::checkedPtrCast<Engine::MeshResource>(resource);
-		const Engine::MeshPtr & mesh = meshRes->getMesh();
+		MeshResourcePtr meshRes = Util::checkedPtrCast<MeshResource>(resource);
+		const MeshPtr & mesh = meshRes->getMesh();
 
 		ActorPtr actor = boost::make_shared<Actor>(objName);
 
-		const Engine::SubMeshVector & smVec = mesh->getSubMeshVec();
-		BOOST_FOREACH(const Engine::SubMeshPtr & sm, smVec)
+		const SubMeshVector & smVec = mesh->getSubMeshVec();
+		BOOST_FOREACH(const SubMeshPtr & sm, smVec)
 		{
-			const Engine::RenderableMappingPtr & rm = sm->getRenderableMapping();
+			const RenderableMappingPtr & rm = sm->getRenderableMapping();
 
-			Engine::RenderablePtr renderable = Engine::EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
+			RenderablePtr renderable = EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 
 			if (renderable)
 			{

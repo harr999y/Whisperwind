@@ -63,6 +63,7 @@ namespace Engine
 		void loadConfigs();
 		void loadPlugins();
 		void loadResources();
+		void regSceneObjectFactories();
 
 		void clearResources();
 		void clearPlugins();

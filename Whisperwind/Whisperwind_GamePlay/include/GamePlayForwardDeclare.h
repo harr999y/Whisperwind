@@ -30,11 +30,6 @@ THE SOFTWARE
 namespace GamePlay
 {
 	class GamePlayFramework;
-	class Actor;
-	class ActorFactory;
-
-	typedef boost::shared_ptr<Actor> ActorPtr;
-	typedef boost::shared_ptr<ActorFactory> ActorFactoryPtr;
 
 }
 

@@ -27,10 +27,14 @@ THE SOFTWARE
 #include <boost/typeof/typeof.hpp>
 
 #include "DebugDefine.h"
+#include "ExceptionDefine.h"
 #include "LogManager.h"
+#include "StringConverter.h"
 #include "EngineManager.h"
+#include "EngineConfig.h"
 #include "Resource.h"
 #include "ResourceManager.h"
+#include "DebugResource.h"
 #include "SceneNode.h"
 #include "SceneObject.h"
 #include "SceneObjectFactory.h"
@@ -54,6 +58,8 @@ namespace Engine
 		WHISPERWIND_ASSERT(mSceneNodeMap.find(name) == mSceneNodeMap.end());
 
 		SceneNodePtr sceneNode = createSceneNode_impl(name, nodeType);
+		IF_NULL_EXCEPTION(sceneNode, Util::WstringToString(name) + " node create failed!" );
+
 		mSceneNodeMap.insert(SceneNodeMap::value_type(name, sceneNode));
 
 		return mSceneNodeMap[name];
@@ -126,7 +132,10 @@ namespace Engine
 		const ResourceManagerPtr & rm = EngineManager::getSingleton().getResourceManager(); 
 		ResourcePtr resource = rm->loadResource(resourceName);
 
-		mSceneObjectMap.insert(SceneObjectMap::value_type(name, mSceneObjectFactoryMap[type]->create(name, resource)));
+		const SceneObjectPtr & obj = mSceneObjectFactoryMap[type]->create(name, resource);
+		IF_NULL_EXCEPTION(obj, Util::WstringToString(name) + " object create failed!" );
+
+		mSceneObjectMap.insert(SceneObjectMap::value_type(name, obj));
 
 		return mSceneObjectMap[name];
 	}
@@ -165,6 +174,29 @@ namespace Engine
 		rm->loadResource(scene);
 
 		WHISPERWIND_LOG(scene + TO_UNICODE(" scene load done!"));
+
+		/// TODO:Now put here.
+		createDebugRendering();
+	}
+	//---------------------------------------------------------------------
+	void SceneManager::createDebugRendering()
+	{
+		if (!EngineManager::getSingleton().getEngineConfig()->getDebugRendering())
+			return;
+
+		BOOST_AUTO(nodePair, mSceneNodeMap.begin());
+		for (nodePair; nodePair != mSceneNodeMap.end(); ++nodePair)
+		{
+			const Util::Wstring & name = nodePair->second->getName();
+
+			SceneObjectPtr & obj = this->createSceneObject(TO_UNICODE("debug"), 
+				name + TO_UNICODE("_debugAABB"), name + DebugResource::DEBUG_NODE_SUFFIX);
+
+			SceneNodePtr & childNode = nodePair->second->createChildNode(name + TO_UNICODE("_AABBchild"));
+			WHISPERWIND_ASSERT(childNode);
+
+			childNode->attachSceneObject(obj);
+		}
 	}
 
 }

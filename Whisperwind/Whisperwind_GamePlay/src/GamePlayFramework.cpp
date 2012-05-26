@@ -32,7 +32,6 @@ THE SOFTWARE
 #include "SceneManager.h"
 #include "WindowsEventHandle.h"
 #include "GamePlayForwardDeclare.h"
-#include "Actor.h"
 #include "Camera.h"
 #include "GamePlayFramework.h"
 
@@ -57,8 +56,6 @@ namespace GamePlay
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
 		engineMgr.setup();
-
-		engineMgr.getSceneManager()->regSceneObjectFactory(boost::make_shared<ActorFactory>());
 
 		initInput();
 

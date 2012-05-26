@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Actor.h" />
+    <ClInclude Include="include\DebugObject.h" />
+    <ClInclude Include="include\DebugResource.h" />
     <ClInclude Include="include\EngineSerialization_impl.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Config.h" />
@@ -41,7 +44,10 @@
     <ClInclude Include="include\WindowsHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Actor.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\DebugObject.cpp" />
+    <ClCompile Include="src\DebugResource.cpp" />
     <ClCompile Include="src\EngineConfigDefines.cpp" />
     <ClCompile Include="src\MeshResource.cpp" />
     <ClCompile Include="src\PluginConfig.cpp" />

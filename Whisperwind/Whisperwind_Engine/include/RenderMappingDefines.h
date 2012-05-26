@@ -185,7 +185,7 @@ namespace Engine
 	struct RenderableMapping
 	{
 		RenderableMapping() :
-			PrimType(PT_TRIANGLE_STRIP),
+			PrimType(PT_TRIANGLE_LIST),
 			RenderingType(RT_OPAQUE),
 			PrimCount(0)
 		{}

@@ -10,9 +10,6 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{94193523-e291-46c8-b334-0d90acdb03cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor">
-      <UniqueIdentifier>{e5451ff5-482a-42ef-acfd-1fbc6169dbca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GamePlayConfig">
       <UniqueIdentifier>{3f4eccc7-49ba-4ba9-9fed-8746a308af37}</UniqueIdentifier>
     </Filter>
@@ -27,16 +24,10 @@
     <ClInclude Include="include\GamePlayForwardDeclare.h">
       <Filter>GamePlay Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\Actor.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GamePlayFramework.cpp">
       <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="include\Actor.cpp">
-      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +39,9 @@
     </None>
     <None Include="..\bin\media\Scenes\test.wscene">
       <Filter>SceneContent</Filter>
+    </None>
+    <None Include="..\bin\media\Effects\DebugAABB.fx">
+      <Filter>Effects</Filter>
     </None>
   </ItemGroup>
 </Project>
