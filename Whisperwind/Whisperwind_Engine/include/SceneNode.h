@@ -65,14 +65,14 @@ namespace Engine
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
 		void dettachAllSceneObject();
 
+		void setAABB(const Util::AABBPtr & aabb);
+
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
 		GET_CONST_VALUE(Util::u_int, NodeType);
-		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
+		GET_CONST_VALUE(Util::AABBPtr, AABB);
 
 	protected:
-		virtual SceneNodePtr & createChildNode_impl(const Util::Wstring & name) = 0;
-
 		void addChildNode(const SceneNodePtr & childNode);
 
 	private:
@@ -80,6 +80,10 @@ namespace Engine
 		
 		void mergeAABBFromSceneObject(const SceneObjectPtr & so);
 		void reCalcAABB();
+
+		/// May needed for derived class.
+		virtual void updatedAABB()
+		{}
 
 	protected:
 		SceneObjectVector mSceneObjectVec;

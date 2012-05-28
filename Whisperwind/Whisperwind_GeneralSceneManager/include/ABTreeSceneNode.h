@@ -22,51 +22,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _DEBUG_OBJECT_H_
-#define _DEBUG_OBJECT_H_
+#ifndef _ABTREE_SCENE_NODE_H_
+#define _ABTREE_SCENE_NODE_H_
 
 #include "Util.h"
-#include "EngineForwardDeclare.h"
-#include "SceneObject.h"
-#include "SceneObjectFactory.h"
+#include "GeneralForwardDeclare.h"
+#include "SceneNode.h"
 
 namespace Engine
 {
-	class DebugObject : public SceneObject
+	class ABTreeSceneNode : public SceneNode
 	{
 	public:
-		DebugObject(const Util::Wstring & name) :
-		    SceneObject(name)
+		ABTreeSceneNode(const Util::Wstring & name, Util::u_int nodeType) :
+		    SceneNode(name, nodeType)
 		{}
 
-		~DebugObject()
-		{}
-
-	public:
-		virtual void addToRenderQueue();
-
-	private:
-		virtual void preUpdate_impl(Util::time /*elapsedTime*/)
-		{}
-		virtual void postUpdate_impl(Util::time /*elapsedTime*/)
-		{}
-
-		friend class DebugFactory;
-	};
-
-	class DebugFactory : public SceneObjectFactory
-	{
-	public:
-		DebugFactory();
-
-		~DebugFactory()
+		~ABTreeSceneNode()
 		{}
 
 	private:
-		virtual SceneObjectPtr create_impl(const Util::Wstring & objName, const Engine::ResourcePtr & resource);
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(DebugFactory);
+		virtual void updatedAABB();
 	};
 
 }

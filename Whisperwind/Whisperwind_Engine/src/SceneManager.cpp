@@ -176,26 +176,21 @@ namespace Engine
 		WHISPERWIND_LOG(scene + TO_UNICODE(" scene load done!"));
 
 		/// TODO:Now put it here.
-		createDebugRendering();
+		if (EngineManager::getSingleton().getEngineConfig()->getDebugRendering())
+			createDebugRendering();
 	}
 	//---------------------------------------------------------------------
 	void SceneManager::createDebugRendering()
 	{
-		if (!EngineManager::getSingleton().getEngineConfig()->getDebugRendering())
-			return;
-
 		BOOST_AUTO(nodePair, mSceneNodeMap.begin());
 		for (nodePair; nodePair != mSceneNodeMap.end(); ++nodePair)
 		{
 			const Util::Wstring & name = nodePair->second->getName();
 
-			SceneObjectPtr & obj = this->createSceneObject(TO_UNICODE("debug"), 
-				name + TO_UNICODE("_debugAABB"), name + DebugResource::DEBUG_NODE_SUFFIX);
+			SceneObjectPtr & obj = this->createSceneObject(DebugResource::getDebugCreateType(), 
+				name + TO_UNICODE("_debugAABB"), name + DebugResource::getDebugNodeSuffix());
 
-			SceneNodePtr & childNode = nodePair->second->createChildNode(name + TO_UNICODE("_AABBchild"));
-			WHISPERWIND_ASSERT(childNode);
-
-			childNode->attachSceneObject(obj);
+			nodePair->second->attachSceneObject(obj);
 		}
 	}
 

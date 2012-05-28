@@ -21,7 +21,16 @@
     <ClInclude Include="include\GeneralPlugin.h">
       <Filter>Dll Plugin</Filter>
     </ClInclude>
-    <ClInclude Include="include\GeneralSceneNode.h">
+    <ClInclude Include="include\LooseOctree.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OctreeSceneNode.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ABTreeSceneNode.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ABTree.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +44,16 @@
     <ClCompile Include="src\GeneralPlugin.cpp">
       <Filter>Dll Plugin</Filter>
     </ClCompile>
-    <ClCompile Include="src\GeneralSceneNode.cpp">
+    <ClCompile Include="src\LooseOctree.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OctreeSceneNode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ABTreeSceneNode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ABTree.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

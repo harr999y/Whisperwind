@@ -25,6 +25,7 @@ THE SOFTWARE
 #ifndef _GENERAL_FORWARD_DECLARE_H_
 #define _GENERAL_FORWARD_DECLARE_H_
 
+#include <utility>
 #include <boost/shared_ptr.hpp>
 
 namespace Engine
@@ -32,9 +33,20 @@ namespace Engine
 	class GeneralSceneManager;
 	typedef boost::shared_ptr<GeneralSceneManager> GeneralSceneManagerPtr;
 
-	class GeneralSceneNode;
-	typedef boost::shared_ptr<GeneralSceneNode> GeneralSceneNodePtr;
+	class ABTreeSceneNode;
+	typedef boost::shared_ptr<ABTreeSceneNode> ABTreeSceneNodePtr;
 
+	class ABTree;
+	typedef boost::shared_ptr<ABTree> ABTreePtr;
+
+	class OctreeSceneNode;
+	typedef boost::shared_ptr<OctreeSceneNode> OctreeSceneNodePtr;
+
+	class LooseOctree;
+	typedef boost::shared_ptr<LooseOctree> LooseOctreePtr;
+
+	class LooseOctreeZone;
+	typedef boost::shared_ptr<LooseOctreeZone> LooseOctreeZonePtr;
 }
 
 #endif

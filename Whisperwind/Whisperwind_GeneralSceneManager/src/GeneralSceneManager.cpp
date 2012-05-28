@@ -27,14 +27,24 @@ THE SOFTWARE
 #include <boost/typeof/typeof.hpp>
 #include <boost/foreach.hpp>
 
-#include "SceneNode.h"
 #include "SceneObject.h"
-#include "GeneralSceneNode.h"
+#include "Camera.h"
+#include "Frustum.h"
+#include "EngineManager.h"
+#include "ABTreeSceneNode.h"
+#include "ABTree.h"
+#include "OctreeSceneNode.h"
+#include "LooseOctree.h"
 #include "GeneralSceneManager.h"
 
 namespace Engine
 {
-	static const Util::Wstring ROOT_SCENE_NODE_NAME(TO_UNICODE("SceneGraphRoot"));
+	//---------------------------------------------------------------------
+	GeneralSceneManager::GeneralSceneManager()
+	{
+		mLooseOctree = boost::make_shared<LooseOctree>();
+		mABTree = boost::make_shared<ABTree>();
+	}
 	//---------------------------------------------------------------------
 	GeneralSceneManager::~GeneralSceneManager()
 	{
@@ -44,18 +54,18 @@ namespace Engine
 	//---------------------------------------------------------------------
 	SceneNodePtr GeneralSceneManager::createSceneNode_impl(const Util::Wstring & name, Util::u_int nodeType)
 	{
-		GeneralSceneNodePtr sceneNode = boost::make_shared<GeneralSceneNode>(name, nodeType);
+		SceneNodePtr sceneNode;
 
 		if ((NT_DYNAMIC & nodeType) != 0)
 		{
+			sceneNode = boost::make_shared<ABTreeSceneNode>(name, nodeType);
+
 			if (0 == (NT_AS_CHILD & nodeType))
 				mSceneGraphVec.push_back(sceneNode);
-
-			mDynamicSpatialPartitionVec.push_back(sceneNode);
 		}
 		else if ((NT_STATIC & nodeType) != 0)
 		{
-			mStaticSpatialPartitionVec.push_back(sceneNode);
+			sceneNode = boost::make_shared<OctreeSceneNode>(name, nodeType);
 		}
 
 		return sceneNode;
@@ -84,35 +94,20 @@ namespace Engine
 				}
 			}
 
-			BOOST_AUTO(it, mStaticSpatialPartitionVec.begin());
-			for ( ; it != mStaticSpatialPartitionVec.end(); ++ it)
-			{
-				if (name == (*it)->getName())
-				{
-					mStaticSpatialPartitionVec.erase(it);
-					break;
-				}
-			}
+			mABTree->removeSceneNode(node);
 		}
 		else if ((nodeType & NT_STATIC) != 0)
 		{
-			BOOST_AUTO(it, mDynamicSpatialPartitionVec.begin());
-			for ( ; it != mDynamicSpatialPartitionVec.end(); ++ it)
-			{
-				if (name == (*it)->getName())
-				{
-					mDynamicSpatialPartitionVec.erase(it);
-					break;
-				}
-			}
+			mLooseOctree->removeOctreeNode(node);
 		}
 	}
 	//---------------------------------------------------------------------
 	void GeneralSceneManager::destroyAllSceneNode_impl()
 	{
 		mSceneGraphVec.clear();
-		mStaticSpatialPartitionVec.clear();
-		mDynamicSpatialPartitionVec.clear();
+
+		mABTree->removeAllSceneNode();
+		mLooseOctree->removeAllOctreeNode();
 	}
 	//---------------------------------------------------------------------
 	void GeneralSceneManager::preUpdate_impl(Util::time elapsedTime)
@@ -130,19 +125,23 @@ namespace Engine
 		
 		/// TODO:Find visibilty
 		{
-			/// StaticSpatialPartitionVec
+			const FrustumPtr & frustum = EngineManager::getSingleton().getCamera()->getFrustum();
+
+			/// ABTree
 			{
-				BOOST_AUTO(it, mStaticSpatialPartitionVec.begin());
-				for (it; it != mStaticSpatialPartitionVec.end(); ++it)
+				const SceneNodeVector & snVec = mABTree->findVisibles(frustum);
+				BOOST_AUTO(it, snVec.begin());
+				for (it; it != snVec.end(); ++it)
 				{
 					(*it)->addToRenderQueue();
 				}
 			}
 
-			/// DynamicSpatialPartitionVec
+			/// LooseOctree
 			{
-				BOOST_AUTO(it, mDynamicSpatialPartitionVec.begin());
-				for (it; it != mDynamicSpatialPartitionVec.end(); ++it)
+				const SceneNodeVector & snVec = mLooseOctree->findVisibles(frustum);
+				BOOST_AUTO(it, snVec.begin());
+				for (it; it != snVec.end(); ++it)
 				{
 					(*it)->addToRenderQueue();
 				}
@@ -171,6 +170,13 @@ namespace Engine
 		{
 			(*it)->update();
 		}
+	}
+	//---------------------------------------------------------------------
+	void GeneralSceneManager::createDebugRendering()
+	{
+		SceneManager::createDebugRendering();
+
+		mLooseOctree->createDebugRendering();
 	}
 
 }

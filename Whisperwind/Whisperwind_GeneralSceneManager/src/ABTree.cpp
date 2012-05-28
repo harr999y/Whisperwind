@@ -22,53 +22,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _DEBUG_OBJECT_H_
-#define _DEBUG_OBJECT_H_
 
-#include "Util.h"
-#include "EngineForwardDeclare.h"
-#include "SceneObject.h"
-#include "SceneObjectFactory.h"
+#include "ABTree.h"
 
 namespace Engine
 {
-	class DebugObject : public SceneObject
+	//---------------------------------------------------------------------
+	void ABTree::addSceneNode(const SceneNodePtr & node)
 	{
-	public:
-		DebugObject(const Util::Wstring & name) :
-		    SceneObject(name)
-		{}
-
-		~DebugObject()
-		{}
-
-	public:
-		virtual void addToRenderQueue();
-
-	private:
-		virtual void preUpdate_impl(Util::time /*elapsedTime*/)
-		{}
-		virtual void postUpdate_impl(Util::time /*elapsedTime*/)
-		{}
-
-		friend class DebugFactory;
-	};
-
-	class DebugFactory : public SceneObjectFactory
+		node;
+	}
+	//---------------------------------------------------------------------
+	void ABTree::removeSceneNode(const SceneNodePtr & node)
 	{
-	public:
-		DebugFactory();
+		node;
+	}
+	//---------------------------------------------------------------------
+	void ABTree::removeAllSceneNode()
+	{
 
-		~DebugFactory()
-		{}
-
-	private:
-		virtual SceneObjectPtr create_impl(const Util::Wstring & objName, const Engine::ResourcePtr & resource);
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(DebugFactory);
-	};
+	}
+	//---------------------------------------------------------------------
+	const SceneNodeVector & ABTree::findVisibles(const FrustumPtr & frustum) const
+	{
+		frustum;
+		return mVisibleNodeVec;
+	}
 
 }
-
-#endif

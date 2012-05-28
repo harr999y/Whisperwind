@@ -24,19 +24,44 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/make_shared.hpp>
+#include <boost/typeof/typeof.hpp>
 
 #include "CheckedCast.h"
 #include "AABB.h"
 #include "EngineManager.h"
 #include "RenderSystem.h"
 #include "RenderMappingDefines.h"
+#include "Renderable.h"
+#include "Camera.h"
+#include "Frustum.h"
 #include "DebugResource.h"
 #include "DebugObject.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	// Debug factory
+	// DebugObject
+	//---------------------------------------------------------------------
+	void DebugObject::addToRenderQueue()
+	{
+		BOOST_AUTO(it, mRenderableMap.begin());
+		for (it; it != mRenderableMap.end(); ++it)
+		{
+			RenderablePtr & renderable = it->second;
+
+			if (mAttachedSceneNode)
+			{
+				FrustumPtr & frustum = EngineManager::getSingleton().getCamera()->getFrustum();
+
+				renderable->setWorldViewProj(frustum->getViewProjMatrix());
+			}
+
+			EngineManager::getSingleton().getRenderSystem()->addToRenderQueue(renderable);
+		}
+	}
+
+	//---------------------------------------------------------------------
+	// DebugFactory
 	//---------------------------------------------------------------------
 	static const Util::Wstring DEBUG_FACTORY_NAME(TO_UNICODE("debug"));
 	//---------------------------------------------------------------------

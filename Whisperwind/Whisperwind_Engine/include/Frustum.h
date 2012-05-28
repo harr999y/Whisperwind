@@ -30,6 +30,13 @@ THE SOFTWARE
 
 namespace Engine
 {
+	enum VisibilityType
+	{
+		VT_FULL,
+		VT_PARTIAL,
+		VT_NONE
+	};
+
 	class WHISPERWIND_API Frustum
 	{
 	public:
@@ -38,11 +45,34 @@ namespace Engine
 		~Frustum()
 		{}
 
-	public:
-		XMMATRIX getViewMatrix() const { return XMLoadFloat4x4(&mViewMatrix); };
-		XMMATRIX getProjMatrix() const { return XMLoadFloat4x4(&mProjMatrix); };
+	private:
+		enum FrustumSide
+		{
+			FS_TOP,
+			FS_BUTTOM,
+			FS_LEFT,
+			FS_RIGHT,
+			FS_FRONT,
+			FS_BACK,
+			FS_COUNT
+		};
 
-		inline void setViewParams(FXMVECTOR pos, FXMVECTOR lookAt, FXMVECTOR upDir);
+		enum LocateSide
+		{
+			LS_POSITIVE,
+			LS_NEGATIVE,
+			LS_INTERSECT
+		};
+
+	public:
+		void setViewParams(FXMVECTOR pos, FXMVECTOR lookAt, FXMVECTOR upDir);
+		XMMATRIX getViewMatrix() const { return XMLoadFloat4x4(&mViewMatrix); };
+		XMMATRIX getViewProjMatrix() const { return XMLoadFloat4x4(&mViewProjMatrix); };
+
+		VisibilityType isVisible(const Util::AABBPtr & aabb);
+
+	private:
+		LocateSide testContainState(FXMVECTOR plane, const Util::AABBPtr & aabb);
 
 	private:
 		Util::real mNearClip;
@@ -51,6 +81,9 @@ namespace Engine
 
 		XMFLOAT4X4 mProjMatrix;
 		XMFLOAT4X4 mViewMatrix;
+		XMFLOAT4X4 mViewProjMatrix;
+
+		XMFLOAT4 mPlanes[FS_COUNT];
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(Frustum);

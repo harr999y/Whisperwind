@@ -54,18 +54,22 @@ namespace Util
 		void reset();
 
 	public:
-		GET_CONST_VALUE(XMFLOAT3, MinPoint);
-		GET_CONST_VALUE(XMFLOAT3, MaxPoint);
-		GET_CONST_VALUE(XMFLOAT3, CenterPoint);
+		XMVECTOR getMinPoint() { return XMLoadFloat3(&mMinPoint); }
+		XMVECTOR getMaxPoint() { return XMLoadFloat3(&mMaxPoint); }
+		XMVECTOR getCenterPoint() { return XMLoadFloat3(&mCenterPoint); }
+		XMVECTOR getHalfSize() { return XMLoadFloat3(&mHalfSize); }
+		XMVECTOR getSize() { return getMaxPoint() - getMinPoint(); }
+
 		GET_CONST_VALUE(bool, IsInvalid);
 
 	private:
-		void calcCenterPoint();
+		void calcCenterAndHalfSize();
 
 	private:
 		XMFLOAT3 mMinPoint;
 		XMFLOAT3 mMaxPoint;
 		XMFLOAT3 mCenterPoint;
+		XMFLOAT3 mHalfSize;
 
 		bool mIsInvalid;
 

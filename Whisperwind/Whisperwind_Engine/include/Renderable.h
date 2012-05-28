@@ -36,7 +36,7 @@ namespace Engine
 	{
 	protected:
 		Renderable() : 
-			 mRenderType(RT_OPAQUE)
+		    mRenderType(RT_OPAQUE)
 		{}
 
 		virtual ~Renderable()

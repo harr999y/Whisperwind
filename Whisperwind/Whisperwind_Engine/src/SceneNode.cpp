@@ -32,6 +32,7 @@ THE SOFTWARE
 #include "AABB.h"
 #include "SceneObject.h"
 #include "SceneManager.h"
+#include "EngineManager.h"
 #include "SceneNode.h"
 
 namespace Engine
@@ -94,7 +95,11 @@ namespace Engine
 	//---------------------------------------------------------------------
 	SceneNodePtr & SceneNode::createChildNode(const Util::Wstring & name)
 	{
-		return createChildNode_impl(name);
+		SceneNodePtr & sceneNode = EngineManager::getSingleton().getSceneManager()->createSceneNode(name, NT_AS_CHILD | mNodeType);
+
+		sceneNode->setParentNode(this->shared_from_this());
+
+		return sceneNode;
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::addChildNode(const SceneNodePtr & childNode)
@@ -181,6 +186,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setPosition(FXMVECTOR position)
 	{
+		mAABB->move(position - XMLoadFloat3(&mPosition));
+
 		XMStoreFloat3(&mPosition, position);
 
 		if (mParentNode)
@@ -200,6 +207,8 @@ namespace Engine
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
 
+		mAABB->move(relPosition - XMLoadFloat3(&mRelativePosition));
+
 		XMStoreFloat3(&mRelativePosition, relPosition);
 
 		if (mParentNode)
@@ -218,6 +227,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setOrientation(FXMVECTOR orientation)
 	{
+		mAABB->rotate(XMQuaternionMultiply(XMQuaternionInverse(XMLoadFloat4(&mOrientation)), orientation));
+
 		XMStoreFloat4(&mOrientation, orientation);
 
 		if (mParentNode)
@@ -236,6 +247,8 @@ namespace Engine
 	void SceneNode::setRelativeOrientation(FXMVECTOR relOrientation)
 	{
 		WHISPERWIND_ASSERT(mParentNode != NULL);
+
+		mAABB->rotate(XMQuaternionMultiply(XMQuaternionInverse(XMLoadFloat4(&mRelativeOrientation)), relOrientation));
 
 		XMStoreFloat4(&mRelativeOrientation, relOrientation);
 
@@ -275,10 +288,15 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::mergeAABBFromSceneObject(const SceneObjectPtr & so)
 	{
-		if (!so->getAABB())
-			return;
+		const Util::AABBPtr & aabb = so->getAABB();
+		IF_NULL_RETURN(aabb);
 
-		mAABB->merge(so->getAABB());
+		aabb->move(XMLoadFloat3(&mPosition));
+		aabb->rotate(XMLoadFloat4(&mOrientation));
+
+		mAABB->merge(aabb);
+
+		updatedAABB();
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::reCalcAABB()
@@ -289,6 +307,13 @@ namespace Engine
 		{
 			mergeAABBFromSceneObject(so);
 		}
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::setAABB(const Util::AABBPtr & aabb)
+	{
+		mAABB = aabb;
+
+		updatedAABB();
 	}
 
 }

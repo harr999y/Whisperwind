@@ -11,16 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ABTree.h" />
     <ClInclude Include="include\GeneralForwardDeclare.h" />
     <ClInclude Include="include\GeneralPlugin.h" />
     <ClInclude Include="include\GeneralSceneManager.h" />
-    <ClInclude Include="include\GeneralSceneNode.h" />
+    <ClInclude Include="include\ABTreeSceneNode.h" />
+    <ClInclude Include="include\LooseOctree.h" />
+    <ClInclude Include="include\OctreeSceneNode.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ABTree.cpp" />
     <ClCompile Include="src\GeneralPlugin.cpp" />
     <ClCompile Include="src\GeneralPluginDll.cpp" />
     <ClCompile Include="src\GeneralSceneManager.cpp" />
-    <ClCompile Include="src\GeneralSceneNode.cpp" />
+    <ClCompile Include="src\ABTreeSceneNode.cpp" />
+    <ClCompile Include="src\LooseOctree.cpp" />
+    <ClCompile Include="src\OctreeSceneNode.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE5F2EF9-BE93-4D46-B5EF-2B8A7B06C3BD}</ProjectGuid>

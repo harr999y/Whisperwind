@@ -107,8 +107,8 @@ namespace Engine
 
 			return scene;
 		}
-		else if (boost::algorithm::find_first(resource, DebugResource::DEBUG_NODE_SUFFIX) ||
-			boost::algorithm::find_first(resource, DebugResource::DEBUG_OBJECT_SUFFIX))
+		else if (boost::algorithm::find_first(resource, DebugResource::getDebugNodeSuffix()) ||
+			boost::algorithm::find_first(resource, DebugResource::getDebugObjectSuffix()))
 		{
 			ResourcePtr scene = boost::make_shared<DebugResource>();
 			scene->load(resource);

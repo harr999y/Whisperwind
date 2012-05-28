@@ -34,15 +34,16 @@ namespace Util
 		XMStoreFloat3(&mMinPoint, minPoint);
 		XMStoreFloat3(&mMaxPoint, maxPoint);
 
-		calcCenterPoint();
+		calcCenterAndHalfSize();
 	}
 	//---------------------------------------------------------------------
 	void AABB::merge(const AABBPtr & aabb)
 	{
-		if (aabb && aabb->getIsInvalid())
-			return;
+		IF_NULL_RETURN(aabb);
 
-		merge(XMLoadFloat3(&aabb->getMinPoint()), XMLoadFloat3(&aabb->getMaxPoint()));
+		IF_FALSE_RETURN(!aabb->getIsInvalid());
+
+		merge(aabb->getMinPoint(), aabb->getMaxPoint());
 	}
 	//---------------------------------------------------------------------
 	void AABB::merge(FXMVECTOR minPoint, FXMVECTOR maxPoint)
@@ -57,15 +58,22 @@ namespace Util
 		mMaxPoint.y = XMMax(XMVectorGetY(maxPoint), mMaxPoint.y);
 		mMaxPoint.z = XMMax(XMVectorGetZ(maxPoint), mMaxPoint.z);
 
-		calcCenterPoint();
+		calcCenterAndHalfSize();
 
 		mIsInvalid = false;
 	}
 	//---------------------------------------------------------------------
 	void AABB::addPoint(FXMVECTOR point)
 	{
-		if (XMVector3NearEqual(point, XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f), XMVectorSet(0.01f, 0.01f, 0.01f, 0.01f)))
+		if (mIsInvalid)
+		{
+			XMStoreFloat3(&mMinPoint, point);
+			XMStoreFloat3(&mMaxPoint, point);
+
+			mIsInvalid = false;
+
 			return;
+		}
 
 		/// For minpoint
 		mMinPoint.x = XMMin(XMVectorGetX(point), mMinPoint.x);
@@ -77,16 +85,18 @@ namespace Util
 		mMaxPoint.y = XMMax(XMVectorGetY(point), mMaxPoint.y);
 		mMaxPoint.z = XMMax(XMVectorGetZ(point), mMaxPoint.z);
 
-		calcCenterPoint();
+		calcCenterAndHalfSize();
 
 		mIsInvalid = false;
 	}
 	//---------------------------------------------------------------------
-	void AABB::calcCenterPoint()
+	void AABB::calcCenterAndHalfSize()
 	{
-		mCenterPoint.x = (mMinPoint.x + mMaxPoint.x) / 2.0f;
-		mCenterPoint.y = (mMinPoint.y + mMaxPoint.y) / 2.0f;
-		mCenterPoint.z = (mMinPoint.z + mMaxPoint.z) / 2.0f;
+		XMVECTOR minPoint = XMLoadFloat3(&mMinPoint);
+		XMVECTOR maxPoint = XMLoadFloat3(&mMaxPoint);
+
+		XMStoreFloat3(&mCenterPoint, (minPoint + maxPoint) * 0.5f);
+		XMStoreFloat3(&mHalfSize, (maxPoint - minPoint)  * 0.5f);
 	}
 	//---------------------------------------------------------------------
 	void AABB::move(FXMVECTOR trans)
@@ -94,15 +104,42 @@ namespace Util
 		XMStoreFloat3(&mMinPoint, XMLoadFloat3(&mMinPoint) + trans);
 		XMStoreFloat3(&mMaxPoint, XMLoadFloat3(&mMaxPoint) + trans);
 
-		calcCenterPoint();
+		calcCenterAndHalfSize();
 	}
 	//---------------------------------------------------------------------
 	void AABB::rotate(FXMVECTOR quat)
 	{
-		XMStoreFloat3(&mMinPoint, XMVector3Rotate(XMLoadFloat3(&mMinPoint), quat));
-		XMStoreFloat3(&mMaxPoint, XMVector3Rotate(XMLoadFloat3(&mMaxPoint) , quat));
+		XMVECTOR oldMin = XMLoadFloat3(&mMinPoint);
+		XMVECTOR oldMax = XMLoadFloat3(&mMaxPoint);
+		XMVECTOR point;
 
-		calcCenterPoint();
+		this->reset();
+
+		point = oldMin;
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetZ(point, XMVectorGetZ(oldMax));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetY(point, XMVectorGetY(oldMax));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetZ(point, XMVectorGetZ(oldMin));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetX(point, XMVectorGetX(oldMax));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetZ(point, XMVectorGetZ(oldMax));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetY(point, XMVectorGetY(oldMin));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		point = XMVectorSetZ(point, XMVectorGetZ(oldMin));
+		this->addPoint(XMVector3Rotate(point, quat));
+
+		calcCenterAndHalfSize();
 	}
 	//---------------------------------------------------------------------
 	void AABB::reset()
@@ -110,6 +147,7 @@ namespace Util
 		mMinPoint.x = mMinPoint.y = mMinPoint.z = 0.0f;
 		mMaxPoint.x = mMaxPoint.y = mMaxPoint.z = 0.0f;
 		mCenterPoint.x = mCenterPoint.y = mCenterPoint.z = 0.0f;
+		mHalfSize.x = mHalfSize.y = mHalfSize.z = 0.0f;
 
 		mIsInvalid = true;
 	}

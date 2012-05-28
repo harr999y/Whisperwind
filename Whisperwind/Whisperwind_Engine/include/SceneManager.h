@@ -73,6 +73,8 @@ namespace Engine
 		void destroyAllSceneNode();
 		void destroyAllSceneObject();
 
+		virtual void createDebugRendering();
+
 	private:
 		virtual void init_impl() = 0;
 		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name, Util::u_int nodeType) = 0;
@@ -80,9 +82,6 @@ namespace Engine
 		virtual void postUpdate_impl(Util::time elapsedTime) = 0;
 		virtual void destroySceneNode_impl(const Util::Wstring & name) = 0;
 		virtual void destroyAllSceneNode_impl() = 0;
-
-	private:
-		void createDebugRendering();
 
 	protected:
 		/// Save all nodes.CANNOT use to do anything unless find or destroy!

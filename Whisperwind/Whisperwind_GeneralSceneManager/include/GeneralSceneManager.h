@@ -39,10 +39,13 @@ namespace Engine
 	class GeneralSceneManager : public SceneManager, public boost::enable_shared_from_this<GeneralSceneManager>
 	{
 	public:
-		GeneralSceneManager()
-		{}
+		GeneralSceneManager();
 
 		~GeneralSceneManager();
+
+	public:
+		GET_VALUE(ABTreePtr, ABTree);
+		GET_VALUE(LooseOctreePtr, LooseOctree);
 
 	private:
 		virtual SceneNodePtr createSceneNode_impl(const Util::Wstring & name, Util::u_int nodeType);
@@ -54,13 +57,15 @@ namespace Engine
 
 		void updateSceneGraph();
 
+		virtual void createDebugRendering();
+
 	private:
 		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
 		SceneNodeVector mSceneGraphVec;
 		/// For the dymamic objects which need to do dynamic spatial partition.DONNOT care about the position.
-		SceneNodeVector mDynamicSpatialPartitionVec;
+		ABTreePtr mABTree;
 		/// For the static objects which only need to do static spatial partition.DONNOT care about the position.
-		SceneNodeVector mStaticSpatialPartitionVec;
+		LooseOctreePtr mLooseOctree;
 	};
 }
 

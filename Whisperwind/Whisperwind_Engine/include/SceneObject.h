@@ -43,7 +43,7 @@ namespace Engine
 		{}
 
 	public:
-		void addToRenderQueue();
+		virtual void addToRenderQueue();
 		RenderablePtr & getRenderable(const Util::Wstring & name);
 
 		void preUpdate(Util::time elapsedTime);

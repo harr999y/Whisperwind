@@ -53,7 +53,7 @@ namespace Engine
 					XMMatrixRotationQuaternion(mAttachedSceneNode->getOrientation());
 
 				FrustumPtr & frustum = EngineManager::getSingleton().getCamera()->getFrustum();
-				matrix *= frustum->getViewMatrix() * frustum->getProjMatrix();
+				matrix *= frustum->getViewProjMatrix();
 
 				renderable->setWorldViewProj(matrix);
 			}

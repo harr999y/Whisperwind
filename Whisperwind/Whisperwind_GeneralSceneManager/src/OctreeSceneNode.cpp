@@ -22,31 +22,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _GENERAL_SCENE_NODE_H_
-#define _GENERAL_SCENE_NODE_H_
 
-#include "Util.h"
-#include "GeneralForwardDeclare.h"
-#include "SceneNode.h"
+#include "CheckedCast.h"
+#include "AABB.h"
+#include "EngineManager.h"
+#include "SceneManager.h"
+#include "GeneralSceneManager.h"
+#include "LooseOctree.h"
+#include "OctreeSceneNode.h"
 
 namespace Engine
 {
-	class GeneralSceneNode : public SceneNode
+	//---------------------------------------------------------------------
+	void OctreeSceneNode::updatedAABB()
 	{
-	public:
-		GeneralSceneNode(const Util::Wstring & name, Util::u_int nodeType) :
-		    SceneNode(name, nodeType)
-		{}
+		IF_FALSE_RETURN(!mAABB->getIsInvalid());
 
-		~GeneralSceneNode()
-		{}
+		GeneralSceneManagerPtr gsMgr = Util::checkedPtrCast<GeneralSceneManager>(EngineManager::getSingleton().getSceneManager());
+		LooseOctreePtr & octree = gsMgr->getLooseOctree();
 
-	private:
-		virtual SceneNodePtr & createChildNode_impl(const Util::Wstring & name);
-		virtual void preUpdate_impl(Util::time elapsedTime);
-		virtual void postUpdate_impl(Util::time elapsedTime);
-	};
+		if (mZone && !mZone->isInside(mAABB))
+		{
+			SceneNodePtr me = this->shared_from_this(); 
+
+			mZone->removeOctreeNode(me);
+
+			octree->addOctreeNode(Util::checkedPtrCast<OctreeSceneNode>(me));
+		}
+		else if (!mZone)
+		{
+			SceneNodePtr me = this->shared_from_this(); 
+			octree->addOctreeNode(Util::checkedPtrCast<OctreeSceneNode>(me));
+		}
+	}
 
 }
-
-#endif

@@ -47,6 +47,11 @@ namespace Engine
 		{}
 
 	public:
+		WHISPERWIND_API static const Util::Wstring & getDebugCreateType();
+		WHISPERWIND_API static const Util::Wstring & getDebugNodeSuffix();
+		WHISPERWIND_API static const Util::Wstring & getDebugObjectSuffix();
+
+	public:
 		GET_CONST_VALUE(RenderableMappingPtr, RenderableMapping);
 
 	private:
@@ -54,13 +59,17 @@ namespace Engine
 
 		void constructRenderableMapping(const Util::AABBPtr & aabb, DebugType type);
 
-	public:
-		static const Util::Wstring DEBUG_NODE_SUFFIX;
-		static const Util::Wstring DEBUG_OBJECT_SUFFIX;
-
 	private:
 		RenderableMappingPtr mRenderableMapping;
+
+		/// NOTE:Since be used as dll exported,we cannot just export these members as public.
+		/// We must use non-inline access functions to get them and exported the functions.
+		/// So why? Just look here as I donnot know clearly: http://stackoverflow.com/questions/2479784/exporting-static-data-in-a-dll
+		static const Util::Wstring mDebugCreateType;
+		static const Util::Wstring mDebugNodeSuffix;
+		static const Util::Wstring mDebugObjectSuffix;
 	};
+
 }
 
 #endif

@@ -44,18 +44,19 @@ namespace Engine
 	static const Util::String RENDERABLE_TECHNIQUE("GreenTech");
 	static const Util::Wstring AUTO_RENDERABLE_NAME_SUFFIX(TO_UNICODE("_AABBRenderable"));
 	//---------------------------------------------------------------------
-	const Util::Wstring DebugResource::DEBUG_NODE_SUFFIX(TO_UNICODE(".debug_node"));
-	const Util::Wstring DebugResource::DEBUG_OBJECT_SUFFIX(TO_UNICODE(".debug_object"));
+	const Util::Wstring DebugResource::mDebugCreateType(TO_UNICODE("debug"));
+	const Util::Wstring DebugResource::mDebugNodeSuffix(TO_UNICODE(".debug_node"));
+	const Util::Wstring DebugResource::mDebugObjectSuffix(TO_UNICODE(".debug_object"));
 	//---------------------------------------------------------------------
 	void DebugResource::load(const Util::Wstring & name)
 	{
 		const SceneManagerPtr & sceneMgr = EngineManager::getSingleton().getSceneManager();
 		Util::AABBPtr aabb;
 
-		if (boost::algorithm::find_first(name, DEBUG_NODE_SUFFIX))
+		if (boost::algorithm::find_first(name, mDebugNodeSuffix))
 		{
 			Util::Wstring nodeName = name;
-			boost::algorithm::erase_first(nodeName, DEBUG_NODE_SUFFIX);
+			boost::algorithm::erase_first(nodeName, mDebugNodeSuffix);
 
 			const SceneNodePtr & node = sceneMgr->getSceneNode(nodeName);
 			WHISPERWIND_ASSERT(node);
@@ -64,10 +65,10 @@ namespace Engine
 
 			constructRenderableMapping(aabb, DT_NODE);
 		}
-		else if (boost::algorithm::find_first(name, DEBUG_OBJECT_SUFFIX))
+		else if (boost::algorithm::find_first(name, mDebugObjectSuffix))
 		{
 			Util::Wstring objName = name;
-			boost::algorithm::erase_first(objName, DEBUG_OBJECT_SUFFIX);
+			boost::algorithm::erase_first(objName, mDebugObjectSuffix);
 
 			const SceneNodePtr & node = sceneMgr->getSceneNode(objName);
 			WHISPERWIND_ASSERT(node);
@@ -98,8 +99,11 @@ namespace Engine
 			vec.resize(bd.DataSize);
 			Util::real * data = reinterpret_cast<Util::real *>(vec.data());
 			{
-				const XMFLOAT3 & minPoint = aabb->getMinPoint();
-				const XMFLOAT3 & maxPoint = aabb->getMaxPoint();
+				XMFLOAT3 minPoint;
+				XMStoreFloat3(&minPoint, aabb->getMinPoint());
+
+				XMFLOAT3 maxPoint;
+				XMStoreFloat3(&maxPoint, aabb->getMaxPoint());
 
 				/// 1
 				*(data++) = minPoint.x;
@@ -207,6 +211,21 @@ namespace Engine
 		}
 
 		mRenderableMapping = rm;
+	}
+	//---------------------------------------------------------------------
+	const Util::Wstring & DebugResource::getDebugCreateType()
+	{
+		return mDebugCreateType;
+	}
+	//---------------------------------------------------------------------
+	const Util::Wstring & DebugResource::getDebugNodeSuffix()
+	{
+		return mDebugNodeSuffix;
+	}
+	//---------------------------------------------------------------------
+	const Util::Wstring & DebugResource::getDebugObjectSuffix()
+	{
+		return mDebugObjectSuffix;
 	}
 
 }

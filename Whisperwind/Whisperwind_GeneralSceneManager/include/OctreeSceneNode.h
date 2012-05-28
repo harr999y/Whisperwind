@@ -22,30 +22,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
+#ifndef _OCTREE_SCENE_NODE_H_
+#define _OCTREE_SCENE_NODE_H_
 
-#include <algorithm>
-
-#include "DebugDefine.h"
-#include "SceneManager.h"
-#include "EngineManager.h"
-#include "GeneralSceneNode.h"
+#include "Util.h"
+#include "SceneNode.h"
+#include "GeneralForwardDeclare.h"
 
 namespace Engine
 {
-	//---------------------------------------------------------------------
-	SceneNodePtr & GeneralSceneNode::createChildNode_impl(const Util::Wstring & name)
+	class OctreeSceneNode : public SceneNode
 	{
-		SceneNodePtr & sceneNode = EngineManager::getSingleton().getSceneManager()->createSceneNode(name, NT_AS_CHILD | mNodeType);
+	public:
+		OctreeSceneNode(const Util::Wstring & name, Util::u_int nodeType) :
+		    SceneNode(name, nodeType)
+		{}
 
-		sceneNode->setParentNode(this->shared_from_this());
+		~OctreeSceneNode()
+		{}
 
-		return sceneNode;
-	}
-	//---------------------------------------------------------------------
-	void GeneralSceneNode::preUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-	//---------------------------------------------------------------------
-	void GeneralSceneNode::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
+	public:
+		SET_GET_VALUE(LooseOctreeZonePtr, Zone);
 
+	private:
+		virtual void updatedAABB();
+
+	private:
+		LooseOctreeZonePtr mZone;
+	};
 }
+
+#endif
