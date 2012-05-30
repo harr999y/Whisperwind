@@ -26,11 +26,11 @@
     <Filter Include="DebugRendering">
       <UniqueIdentifier>{67ade00a-c2a2-4a45-aeaf-f6c3fe205b3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor">
-      <UniqueIdentifier>{71cde1c6-60e4-414c-954c-b22e717ffc0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="View">
       <UniqueIdentifier>{165467d0-530d-4630-be24-72044d020664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{71cde1c6-60e4-414c-954c-b22e717ffc0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +116,7 @@
       <Filter>Engine Header</Filter>
     </ClInclude>
     <ClInclude Include="include\Actor.h">
-      <Filter>Actor</Filter>
+      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\DebugObject.h">
       <Filter>DebugRendering</Filter>
@@ -193,7 +193,7 @@
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="src\Actor.cpp">
-      <Filter>Actor</Filter>
+      <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\DebugObject.cpp">
       <Filter>DebugRendering</Filter>

@@ -52,6 +52,9 @@ namespace Engine
 		void createDebugRendering();
 
 	private:
+		void createRootZone();
+
+	private:
 		LooseOctreeZonePtr mRootZone;
 		SceneNodeVector mVisibleNodeVec;
 

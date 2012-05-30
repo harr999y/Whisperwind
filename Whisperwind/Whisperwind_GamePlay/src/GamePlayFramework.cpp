@@ -55,6 +55,7 @@ namespace GamePlay
 	void GamePlayFramework::run()
 	{
 		Engine::EngineManager & engineMgr = Engine::EngineManager::getSingleton();
+
 		engineMgr.setup();
 
 		initInput();

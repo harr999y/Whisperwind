@@ -47,7 +47,8 @@ namespace Engine
 	private:
 		virtual void load(const Util::Wstring & resourcePath);
 
-		void processCamera( const Util::XmlNode * cameraNode);
+		void processScene( const Util::XmlNode * sceneNode) const;
+		void processCamera( const Util::XmlNode * cameraNode) const;
 		void processSceneNode(const Util::XmlNode * snNode) const;
 		void processChildSceneNode(const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode) const;
 		void processSceneObject(const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode) const;

@@ -51,8 +51,20 @@ namespace Engine
 		Util::XmlNode * sceneNode = mXmlReader->getFirstNode(rootNode, "scene");
 		IF_NULL_EXCEPTION(sceneNode, strPath + " donnot have scene node!");
 
+		processScene(sceneNode);
+	}
+	//---------------------------------------------------------------------
+	void SceneResource::processScene( const Util::XmlNode * sceneNode) const
+	{
+		Util::String worldSizeStr(mXmlReader->getAttribute(sceneNode, "world_size"));
+		IF_FALSE_EXCEPTION(!worldSizeStr.empty(), "Current scene donnot have world_size attribute!");
+
+		Util::real worldSize = boost::lexical_cast<Util::real>(worldSizeStr);
+		EngineManager::getSingleton().getSceneManager()->setWorldSize(worldSize);
+
 		Util::XmlNode * cameraNode = mXmlReader->getFirstNode(sceneNode, "camera");
-		IF_NULL_EXCEPTION(cameraNode, strPath + " donnot have camera node!");
+		IF_NULL_EXCEPTION(cameraNode, "Current scene donnot have camera node!");
+
 		processCamera(cameraNode);
 
 		Util::XmlNode * snNode = mXmlReader->getFirstNode(sceneNode, "node");
@@ -64,7 +76,7 @@ namespace Engine
 		}
 	}
 	//---------------------------------------------------------------------
-	void SceneResource::processCamera(const Util::XmlNode * cameraNode)
+	void SceneResource::processCamera(const Util::XmlNode * cameraNode) const
 	{
 		CameraPtr camera;
 

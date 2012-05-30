@@ -34,7 +34,7 @@ namespace Engine
 {
 	
 	/** This structure has been refered to Clayman's very article:http://blog.csdn.net/soilwork/article/details/4131367
-	      Thanks very much!
+	      Thanks very much Clayman!
 	*/
 	class GeneralSceneManager : public SceneManager, public boost::enable_shared_from_this<GeneralSceneManager>
 	{
@@ -60,11 +60,11 @@ namespace Engine
 		virtual void createDebugRendering();
 
 	private:
-		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position.
+		/// Just for the dynamic objects which have transform hierarchy ralationships with others.And only care about the position and orientation.
 		SceneNodeVector mSceneGraphVec;
-		/// For the dymamic objects which need to do dynamic spatial partition.DONNOT care about the position.
+		/// For the dymamic objects which need to do dynamic spatial partition.DONNOT care about the position and orientation.
 		ABTreePtr mABTree;
-		/// For the static objects which only need to do static spatial partition.DONNOT care about the position.
+		/// For the static objects which only need to do static spatial partition.DONNOT care about the position and orientation.
 		LooseOctreePtr mLooseOctree;
 	};
 }

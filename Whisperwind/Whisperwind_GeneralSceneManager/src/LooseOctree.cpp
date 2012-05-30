@@ -44,7 +44,7 @@ THE SOFTWARE
 
 namespace Engine
 {
-	static const Util::real WORLD_SIZE = 20000.0f;
+	static Util::real WORLD_SIZE = 20000.0f;
 	static const Util::u_int MAX_OCTREE_DEEP = 8;
 	static const Util::real LOOSE_K = 2.0f;
 	static const LooseOctreeZonePtr NULL_ZONE;
@@ -230,8 +230,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void LooseOctreeZone::walkOctree(const FrustumPtr & frustum, SceneNodeVector & outNodeVec)
 	{
-		if (isEmpty())
-			return;
+		IF_FALSE_RETURN(!isEmpty());
 
 		VisibilityType vt = frustum->isVisible(getCullAABB());
 
@@ -317,7 +316,13 @@ namespace Engine
 	// LooseOctree
 	//---------------------------------------------------------------------
 	LooseOctree::LooseOctree()
+	{}
+	//---------------------------------------------------------------------
+	void LooseOctree::createRootZone()
 	{
+		/// Sorry for the globle variable.
+		WORLD_SIZE = EngineManager::getSingleton().getSceneManager()->getWorldSize();
+
 		Util::real size = WORLD_SIZE * 0.5f;
 		mRootZone = boost::make_shared<LooseOctreeZone>(
 			XMVectorSet(-size, -size, -size, 0.0f),
@@ -327,6 +332,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void LooseOctree::addOctreeNode(const OctreeSceneNodePtr & node)
 	{
+		if (!mRootZone)
+			createRootZone();
+
 		const Util::AABBPtr & aabb = node->getAABB();
 		
 		/// TODO:Now donnot handle the node outside root zone.

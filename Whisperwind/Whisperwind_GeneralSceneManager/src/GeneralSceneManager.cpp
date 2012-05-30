@@ -123,11 +123,10 @@ namespace Engine
 			}
 		}
 		
-		/// TODO:Find visibilty
 		{
 			const FrustumPtr & frustum = EngineManager::getSingleton().getCamera()->getFrustum();
 
-			/// ABTree
+			/// TODO:ABTree
 			{
 				const SceneNodeVector & snVec = mABTree->findVisibles(frustum);
 				BOOST_AUTO(it, snVec.begin());

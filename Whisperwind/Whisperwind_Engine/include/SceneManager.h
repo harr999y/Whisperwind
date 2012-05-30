@@ -42,7 +42,8 @@ namespace Engine
 	class WHISPERWIND_API SceneManager
 	{
 	protected:
-		SceneManager()
+		SceneManager() :
+		    mWorldSize(0.0f)
 		{}
 
 		virtual ~SceneManager();
@@ -69,6 +70,9 @@ namespace Engine
 
 		void regSceneObjectFactory(const SceneObjectFactoryPtr & factory);
 
+	public:
+		SET_GET_CONST_VALUE(Util::real, WorldSize);
+
 	protected:
 		void destroyAllSceneNode();
 		void destroyAllSceneObject();
@@ -94,6 +98,8 @@ namespace Engine
 		Callback mPostCallback;
 
 		SceneObjectFactoryMap mSceneObjectFactoryMap;
+
+		Util::real mWorldSize;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneManager);
