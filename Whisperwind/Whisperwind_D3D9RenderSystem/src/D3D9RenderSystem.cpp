@@ -395,7 +395,7 @@ namespace Engine
 		/// Renderable
 		{
 			BOOST_AUTO(it, mRenderableMappingMap.begin());
-			for (it; it != mRenderableMappingMap.end(); ++it)
+			for (it; it != mRenderableMappingMap.end();)
 			{
 				RenderableWeakPtr renderableWeak = it->second;
 				if (!renderableWeak.expired())
@@ -403,10 +403,12 @@ namespace Engine
 					RenderablePtr renderable = renderableWeak.lock();
 					D3D9RenderablePtr d3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(renderable);
 					d3d9Renderable->onDeviceLost();
+
+					++it;
 				}
 				else
 				{
-					mRenderableMappingMap.erase(it);
+					it = mRenderableMappingMap.erase(it);
 				}
 			}
 		}
@@ -414,7 +416,7 @@ namespace Engine
 		/// Texture from file
 		{
 			BOOST_AUTO(it, mRenderTextureFileMap.begin());
-			for (it; it != mRenderTextureFileMap.end(); ++it)
+			for (it; it != mRenderTextureFileMap.end();)
 			{
 				RenderTextureWeakPtr textureWeak = it->second;
 				if (!textureWeak.expired())
@@ -422,10 +424,12 @@ namespace Engine
 					RenderTexturePtr texture = textureWeak.lock();
 					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
 					d3d9Texture->onDeviceLost();
+
+					++it;
 				}
 				else
 				{
-					mRenderTextureFileMap.erase(it);
+					it = mRenderTextureFileMap.erase(it);
 				}
 			}
 		}
@@ -433,7 +437,7 @@ namespace Engine
 		/// Texture from creating
 		{
 			BOOST_AUTO(it, mRenderTextureMappingMap.begin());
-			for (it; it != mRenderTextureMappingMap.end(); ++it)
+			for (it; it != mRenderTextureMappingMap.end();)
 			{
 				RenderTextureWeakPtr textureWeak = it->second;
 				if (!textureWeak.expired())
@@ -441,10 +445,12 @@ namespace Engine
 					RenderTexturePtr texture = textureWeak.lock();
 					D3D9RenderTexturePtr d3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(texture);
 					d3d9Texture->onDeviceLost();
+
+					++it;
 				}
 				else
 				{
-					mRenderTextureMappingMap.erase(it);
+					it = mRenderTextureMappingMap.erase(it);
 				}
 			}
 		}
@@ -452,7 +458,7 @@ namespace Engine
 		/// Render target
 		{
 			BOOST_AUTO(it, mRenderTargetMappingMap.begin());
-			for (it; it != mRenderTargetMappingMap.end(); ++it)
+			for (it; it != mRenderTargetMappingMap.end();)
 			{
 				RenderTargetWeakPtr targetWeak = it->second;
 				if (!targetWeak.expired())
@@ -460,10 +466,12 @@ namespace Engine
 					RenderTargetPtr target = targetWeak.lock();
 					D3D9RenderTargetPtr d3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(target);
 					d3d9Target->onDeviceLost();
+
+					++it;
 				}
 				else
 				{
-					mRenderTargetMappingMap.erase(it);
+					it = mRenderTargetMappingMap.erase(it);
 				}
 			}
 		}
@@ -483,7 +491,7 @@ namespace Engine
 		/// Renderable
 		{
 			BOOST_AUTO(it, mRenderableMappingMap.begin());
-			for (it; it != mRenderableMappingMap.end(); ++it)
+			for (it; it != mRenderableMappingMap.end();)
 			{
 				const RenderableMappingPtr & renderableMapping = it->first;
 				RenderableWeakPtr renderableWeak = it->second;
@@ -494,10 +502,12 @@ namespace Engine
 
 					D3D9RenderablePtr newD3d9Renderable = Util::checkedPtrCast<D3D9Renderable>(this->createRenderable(renderableMapping));
 					d3d9Renderable->onDeviceReset(newD3d9Renderable);
+
+					++it;
 				}
 				else
 				{
-					mRenderableMappingMap.erase(it);
+					it = mRenderableMappingMap.erase(it);
 				}
 			}
 		}
@@ -505,7 +515,7 @@ namespace Engine
 		/// Texture from file
 		{
 			BOOST_AUTO(it, mRenderTextureFileMap.begin());
-			for (it; it != mRenderTextureFileMap.end(); ++it)
+			for (it; it != mRenderTextureFileMap.end();)
 			{
 				const Util::Wstring & wstr = it->first;
 				RenderTextureWeakPtr textureWeak = it->second;
@@ -516,10 +526,12 @@ namespace Engine
 
 					D3D9RenderTexturePtr newD3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(this->createRenderTextureFromFile(wstr));
 					d3d9Texture->onDeviceReset(newD3d9Texture);
+
+					++it;
 				}
 				else
 				{
-					mRenderTextureFileMap.erase(it);
+					it = mRenderTextureFileMap.erase(it);
 				}
 			}
 		}
@@ -527,7 +539,7 @@ namespace Engine
 		/// Texture from creating
 		{
 			BOOST_AUTO(it, mRenderTextureMappingMap.begin());
-			for (it; it != mRenderTextureMappingMap.end(); ++it)
+			for (it; it != mRenderTextureMappingMap.end();)
 			{
 				const RenderTextureMappingPtr & textureMapping = it->first;
 				RenderTextureWeakPtr textureWeak = it->second;
@@ -538,10 +550,12 @@ namespace Engine
 
 					D3D9RenderTexturePtr newD3d9Texture = Util::checkedPtrCast<D3D9RenderTexture>(this->createRenderTexture(textureMapping));
 					d3d9Texture->onDeviceReset(newD3d9Texture);
+
+					++it;
 				}
 				else
 				{
-					mRenderTextureMappingMap.erase(it);
+					it = mRenderTextureMappingMap.erase(it);
 				}
 			}
 		}
@@ -549,7 +563,7 @@ namespace Engine
 		/// Render target
 		{
 			BOOST_AUTO(it, mRenderTargetMappingMap.begin());
-			for (it; it != mRenderTargetMappingMap.end(); ++it)
+			for (it; it != mRenderTargetMappingMap.end();)
 			{
 				const RenderTargetMappingPtr & targetMapping = it->first;
 				RenderTargetWeakPtr targetWeak = it->second;
@@ -560,10 +574,12 @@ namespace Engine
 
 					D3D9RenderTargetPtr newD3d9Target = Util::checkedPtrCast<D3D9RenderTarget>(this->createRenderTarget(targetMapping));
 					d3d9Target->onDeviceReset(newD3d9Target);
+
+					++it;
 				}
 				else
 				{
-					mRenderTargetMappingMap.erase(it);
+					it = mRenderTargetMappingMap.erase(it);
 				}
 			}
 		}

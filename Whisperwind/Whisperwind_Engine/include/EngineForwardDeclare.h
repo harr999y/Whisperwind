@@ -65,6 +65,10 @@ namespace Engine
 	class DebugFactory;
 	class DebugObject;
 	class DebugResource;
+	struct LightInfo;
+	class Light;
+	class DirectionalLight;
+	class PointLight;
 
 	/** For the unordered_maps nowadays.
 	@note:
@@ -117,6 +121,10 @@ namespace Engine
 	typedef boost::shared_ptr<DebugObject> DebugObjectPtr;
 	typedef boost::shared_ptr<DebugFactory> DebugFactoryPtr;
 	typedef boost::shared_ptr<DebugResource> DebugResourcePtr;
+	typedef boost::shared_ptr<Light> LightPtr;
+	typedef std::vector<LightPtr> LightVector;
+	typedef boost::shared_ptr<DirectionalLight> DirectionalLightPtr;
+	typedef boost::shared_ptr<PointLight> PointLightPtr;
 
 }
 

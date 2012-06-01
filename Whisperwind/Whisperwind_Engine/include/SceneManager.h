@@ -32,13 +32,6 @@ THE SOFTWARE
 
 namespace Engine
 {
-	enum NodeType
-	{
-		NT_STATIC = 1 << 0,
-		NT_DYNAMIC = 1 << 1,
-		NT_AS_CHILD = 1 << 2
-	};
-
 	class WHISPERWIND_API SceneManager
 	{
 	protected:
@@ -60,6 +53,11 @@ namespace Engine
 		SceneObjectPtr & createSceneObject(const Util::Wstring & type, const Util::Wstring & name, const Util::Wstring & resourceName);
 		SceneObjectPtr & getSceneObject(const Util::Wstring & name);
 		void destroySceneObject(const Util::Wstring & name);
+
+		/// NOTE:Light is also an object,so you can get/delete it by the same method just like an object.
+		/// TODO:Maybe need to merge with createSceneObject.
+		SceneObjectPtr & createLight(const Util::Wstring & name, const LightInfo & lightInfo);
+		LightVector getAffectedLights(const Util::AABBPtr & aabb);
 
 		void loadScene(const Util::Wstring & scene);
 
@@ -90,6 +88,7 @@ namespace Engine
 	protected:
 		/// Save all nodes.CANNOT use to do anything unless find or destroy!
 		SceneNodeMap mSceneNodeMap;
+		/// Save all objects.CANNOT use to do anything unless find or destroy!
 		SceneObjectMap mSceneObjectMap;
 
 	private:
@@ -99,11 +98,14 @@ namespace Engine
 
 		SceneObjectFactoryMap mSceneObjectFactoryMap;
 
+		Util::WstringVector mLightNamesVec;
+
 		Util::real mWorldSize;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneManager);
 	};
+
 }
 
 #endif

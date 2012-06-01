@@ -130,6 +130,9 @@
     <ClInclude Include="include\Frustum.h">
       <Filter>View</Filter>
     </ClInclude>
+    <ClInclude Include="include\Light.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EngineManager.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="src\Frustum.cpp">
       <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -31,10 +31,12 @@ THE SOFTWARE
 #include "DebugDefine.h"
 #include "StringConverter.h"
 #include "MathDefine.h"
-#include "Camera.h"
 #include "EngineManager.h"
 #include "SceneManager.h"
 #include "SceneObject.h"
+#include "SceneNode.h"
+#include "Light.h"
+#include "Camera.h"
 #include "SceneResource.h"
 
 namespace Engine
@@ -170,6 +172,14 @@ namespace Engine
 
 			soNode = mXmlReader->getNextSiblingNode(soNode);
 		}
+
+		Util::XmlNode * lightNode = mXmlReader->getFirstNode(snNode, "light");
+		while (lightNode)
+		{
+			processLight(lightNode, sceneNode);
+
+			lightNode = mXmlReader->getNextSiblingNode(lightNode);
+		}
 	}
 	//---------------------------------------------------------------------
 	void SceneResource::processChildSceneNode(const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode) const
@@ -192,6 +202,37 @@ namespace Engine
 
 		SceneObjectPtr & object = EngineManager::getSingleton().getSceneManager()->createSceneObject(type, name, resource);
 		parentSceneNode->attachSceneObject(object);
+	}
+	//---------------------------------------------------------------------
+	void SceneResource::processLight(const Util::XmlNode * lightNode, SceneNodePtr & parentSceneNode) const
+	{
+		Util::String typeStr(mXmlReader->getAttribute(lightNode, "type"));
+		LightInfo lightInfo;
+		
+		Util::String str;
+		if (boost::algorithm::equals("directional_light", typeStr))
+		{
+			lightInfo.Type = LT_DIRECTIONAL;
+
+			str = mXmlReader->getAttribute(lightNode, "direction");
+			XMStoreFloat3(&lightInfo.Direction, Util::StringToVector(str, 3));
+		}
+		else if (boost::algorithm::equals("point_light", typeStr))
+		{
+			lightInfo.Type = LT_POINT;
+
+			str = mXmlReader->getAttribute(lightNode, "effect_distance");
+			lightInfo.EffectDistance = boost::lexical_cast<Util::real>(str);
+		}
+
+		str = mXmlReader->getAttribute(lightNode, "color");
+		XMStoreFloat3(&lightInfo.Color, Util::StringToVector(str, 3));
+
+		Util::Wstring name = Util::StringToWstring(mXmlReader->getAttribute(lightNode, "name"));
+
+		SceneObjectPtr light = EngineManager::getSingleton().getSceneManager()->createLight(name, lightInfo);
+
+		parentSceneNode->attachSceneObject(light);
 	}
 
 }

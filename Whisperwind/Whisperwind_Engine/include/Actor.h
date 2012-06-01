@@ -32,7 +32,7 @@ THE SOFTWARE
 
 namespace Engine
 {
-	class Actor : public SceneObject
+	class WHISPERWIND_API Actor : public SceneObject
 	{
 	public:
 		Actor (const Util::Wstring & name) :

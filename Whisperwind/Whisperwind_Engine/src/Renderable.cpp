@@ -27,6 +27,8 @@ THE SOFTWARE
 
 #include "MathDefine.h"
 #include "AABB.h"
+#include "SceneNode.h"
+#include "Light.h"
 #include "Renderable.h"
 
 namespace Engine

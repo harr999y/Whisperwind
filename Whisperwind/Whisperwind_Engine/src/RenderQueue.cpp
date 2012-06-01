@@ -26,8 +26,10 @@ THE SOFTWARE
 #include <boost/foreach.hpp>
 
 #include "EngineManager.h"
+#include "SceneManager.h"
 #include "RenderSystem.h"
 #include "Renderable.h"
+#include "Light.h"
 #include "RenderQueue.h"
 
 namespace Engine
@@ -43,7 +45,16 @@ namespace Engine
 		BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
 		{
 			renderable->preRender(elapsedTime);
-			EngineManager::getSingleton().getRenderSystem()->render(renderable);
+
+			/// For forward lighting.
+			LightVector lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(renderable->getAABB());
+			BOOST_FOREACH(const LightPtr & light, lightVec)
+			{
+				light->affectRenderable(renderable);
+
+				EngineManager::getSingleton().getRenderSystem()->render(renderable);
+			}
+
 			renderable->postRender(elapsedTime);
 		}
 
@@ -54,4 +65,5 @@ namespace Engine
 	{
 		/// TODO!
 	}
+
 }

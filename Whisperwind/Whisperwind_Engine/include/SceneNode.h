@@ -33,6 +33,13 @@ THE SOFTWARE
 
 namespace Engine
 {
+	enum NodeType
+	{
+		NT_STATIC = 1 << 0,
+		NT_DYNAMIC = 1 << 1,
+		NT_AS_CHILD = 1 << 2
+	};
+
 	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>
 	{
 	protected:

@@ -23,63 +23,70 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
 
-#include <boost/make_shared.hpp>
-#include <boost/foreach.hpp>
-
-#include "CheckedCast.h"
 #include "AABB.h"
-#include "EngineManager.h"
-#include "RenderSystem.h"
 #include "Renderable.h"
-#include "Mesh.h"
-#include "MeshResource.h"
-#include "Actor.h"
+#include "Light.h"
 
 namespace Engine
 {
 	//---------------------------------------------------------------------
-	// Actor
+	// Light
 	//---------------------------------------------------------------------
-	void Actor::preUpdate_impl(Util::time /*elapsedTime*/)
-	{}
+	Light::Light(LightType lightType, const Util::Wstring & name) :
+        SceneObject(name),
+	    mType(lightType),
+	    mColor(0.0f, 0.0f, 0.0f)
+    {}
 	//---------------------------------------------------------------------
-	void Actor::postUpdate_impl(Util::time /*elapsedTime*/)
-	{}
-
-	//---------------------------------------------------------------------
-	// Actor factory
-	//---------------------------------------------------------------------
-	static const Util::Wstring ACTOR_FACTORY_NAME(TO_UNICODE("actor"));
-	//---------------------------------------------------------------------
-	ActorFactory::ActorFactory() : 
-	    SceneObjectFactory(ACTOR_FACTORY_NAME)
-	{}
-	//---------------------------------------------------------------------
-	SceneObjectPtr ActorFactory::create_impl(const Util::Wstring & objName, const ResourcePtr & resource)
+	bool Light::isAffected(const Util::AABBPtr & aabb)
 	{
-		MeshResourcePtr meshRes = Util::checkedPtrCast<MeshResource>(resource);
-		const MeshPtr & mesh = meshRes->getMesh();
+		return isAffected_impl(aabb);
+	}
+	//---------------------------------------------------------------------
+	void Light::affectRenderable(const RenderablePtr & renderable)
+	{
+		renderable->setEffectSemanticValue("LightColor", static_cast<void *>(&mColor));
 
-		ActorPtr actor = boost::make_shared<Actor>(objName);
+		affectRenderable_impl(renderable);
+	}
 
-		const SubMeshVector & smVec = mesh->getSubMeshVec();
-		BOOST_FOREACH(const SubMeshPtr & sm, smVec)
+	//---------------------------------------------------------------------
+	// DirectionalLight
+	//---------------------------------------------------------------------
+	bool DirectionalLight::isAffected_impl(const Util::AABBPtr & /*aabb*/)
+	{
+		/// TODO!
+		return true;
+	}
+	//---------------------------------------------------------------------
+	void DirectionalLight::affectRenderable_impl(const RenderablePtr & renderable)
+	{
+		renderable->setEffectSemanticValue("LightDirection", static_cast<void *>(&mDirection));
+	}
+
+	//---------------------------------------------------------------------
+	// PointLight
+	//---------------------------------------------------------------------
+	bool PointLight::isAffected_impl(const Util::AABBPtr & /*aabb*/)
+	{
+		/// TODO!
+// 		if (mAttachedSceneNode && aabb &&
+// 			(XMVectorGetX(XMVector3LengthEst(mAttachedSceneNode->getPosition() - aabb->getCenterPoint())) < mEffectDistance))
+// 		{
+// 			return true;
+// 		}
+
+		return true;
+	}
+	//---------------------------------------------------------------------
+	void PointLight::affectRenderable_impl(const RenderablePtr & renderable)
+	{
+		if (mAttachedSceneNode && renderable->getAABB())
 		{
-			const RenderableMappingPtr & rm = sm->getRenderableMapping();
+			XMVECTOR dir = renderable->getAABB()->getCenterPoint() - mAttachedSceneNode->getPosition();
 
-			RenderablePtr renderable = EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
-
-			if (renderable)
-			{
-				renderable->setAABB(sm->getAABB());
-
-				actor->addRenderable(rm->RenderableName, renderable);
-			}
+			renderable->setEffectSemanticValue("LightDirection", static_cast<void *>(&dir));
 		}
-
-		actor->setAABB(mesh->getAABB());
-
-		return actor;
 	}
 
 }

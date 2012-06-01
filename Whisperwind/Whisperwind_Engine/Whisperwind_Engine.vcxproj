@@ -22,6 +22,7 @@
     <ClInclude Include="include\EngineForwardDeclare.h" />
     <ClInclude Include="include\EngineManager.h" />
     <ClInclude Include="include\Frustum.h" />
+    <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\MeshResource.h" />
     <ClInclude Include="include\RenderQueue.h" />
@@ -51,6 +52,7 @@
     <ClCompile Include="src\DebugResource.cpp" />
     <ClCompile Include="src\EngineConfigDefines.cpp" />
     <ClCompile Include="src\Frustum.cpp" />
+    <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\MeshResource.cpp" />
     <ClCompile Include="src\PluginConfig.cpp" />
     <ClCompile Include="src\Config.cpp">

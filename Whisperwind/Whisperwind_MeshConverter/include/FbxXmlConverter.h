@@ -81,7 +81,7 @@ namespace Tool
 					if (fbxFileTexture)
 					{
 						Util::XmlNode * textureNode = mXmlWriter->appendNode(materialNode, "texture");
-						mXmlWriter->appendAttribute(textureNode, "name", "diffuseTexture");
+						mXmlWriter->appendAttribute(textureNode, "name", "diffuse_texture");
 
 						Util::String str(fbxFileTexture->GetFileName());
 						Util::StringVector strVec;

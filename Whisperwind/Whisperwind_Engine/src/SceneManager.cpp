@@ -30,6 +30,8 @@ THE SOFTWARE
 #include "ExceptionDefine.h"
 #include "LogManager.h"
 #include "StringConverter.h"
+#include "CheckedCast.h"
+#include "MathDefine.h"
 #include "EngineManager.h"
 #include "EngineConfig.h"
 #include "Resource.h"
@@ -38,6 +40,7 @@ THE SOFTWARE
 #include "SceneNode.h"
 #include "SceneObject.h"
 #include "SceneObjectFactory.h"
+#include "Light.h"
 #include "SceneManager.h"
 
 namespace Engine
@@ -166,6 +169,74 @@ namespace Engine
 		}
 
 		mSceneObjectMap.clear();
+	}
+	//---------------------------------------------------------------------
+	SceneObjectPtr & SceneManager::createLight(const Util::Wstring & name, const LightInfo & lightInfo)
+	{
+		WHISPERWIND_ASSERT(mSceneObjectMap.find(name) == mSceneObjectMap.end());
+
+		LightPtr light;
+		switch (lightInfo.Type)
+		{
+		case LT_DIRECTIONAL:
+			{
+				DirectionalLightPtr dirLight = boost::make_shared<DirectionalLight>(name);
+				dirLight->setDirection(lightInfo.Direction);
+
+				light = dirLight;
+
+				break;
+			}
+		case LT_POINT:
+			{
+				PointLightPtr pointLight = boost::make_shared<PointLight>(name);
+				pointLight->setEffectDistance(lightInfo.EffectDistance);
+
+				light = pointLight;
+
+				break;
+			}
+		default:
+			{
+				WHISPERWIND_ASSERT(false && "Donnot have this light type!");
+				break;
+			}
+		}
+
+		light->setColor(lightInfo.Color);
+
+		mSceneObjectMap.insert(SceneObjectMap::value_type(name, light));
+
+		mLightNamesVec.push_back(name);
+
+		return mSceneObjectMap[name]	;
+	}
+	//---------------------------------------------------------------------
+	LightVector SceneManager::getAffectedLights(const Util::AABBPtr & /*aabb*/)
+	{
+		LightVector lightVec;
+		LightPtr light;
+
+		BOOST_AUTO(it, mLightNamesVec.begin());
+		for (it; it != mLightNamesVec.end();)
+		{
+			if (mSceneObjectMap.find(*it) == mSceneObjectMap.end())
+			{
+				it = mLightNamesVec.erase(it);
+
+				continue;
+			}
+
+			const SceneObjectPtr & obj = mSceneObjectMap[*it];
+			light = Util::checkedPtrCast<Light>(obj);
+
+			if (light->isAffected(obj->getAABB()))
+				lightVec.push_back(light);
+
+			++it;
+		}
+
+		return lightVec;
 	}
 	//---------------------------------------------------------------------
 	void SceneManager::loadScene(const Util::Wstring & scene)
