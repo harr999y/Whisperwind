@@ -321,7 +321,7 @@ namespace Tool
 							value = boost::lexical_cast<Util::String>(vec3[0]) + ",";
 							value += boost::lexical_cast<Util::String>(vec3[1]) + ",";
 							value += boost::lexical_cast<Util::String>(vec3[2]);
-							mXmlWriter->appendAttribute(specularNode, "name", "specular");
+							mXmlWriter->appendAttribute(specularNode, "name", "kSpecular");
 							mXmlWriter->appendAttribute(specularNode, "value", value.c_str());
 						}
 						else if (fbxMaterial->GetClassId().Is(FbxSurfaceLambert::ClassId))

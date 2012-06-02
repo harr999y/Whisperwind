@@ -206,7 +206,7 @@ namespace Engine
 				boost::algorithm::split(strVec, value, boost::is_any_of(","));
 
 				Util::size_t size = strVec.size();
-				d3d9Renderable->getEffect()->GetParameterDesc(pair.first.c_str(), &paramDesc);
+				DX_IF_FAILED_DEBUG_PRINT(d3d9Renderable->getEffect()->GetParameterDesc(pair.first.c_str(), &paramDesc));
 				switch (paramDesc.Type)
 				{
 				case D3DXPT_BOOL:

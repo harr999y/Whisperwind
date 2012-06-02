@@ -101,14 +101,14 @@ namespace Tool
 			value = boost::lexical_cast<Util::String>(vec3[0]) + ",";
 			value += boost::lexical_cast<Util::String>(vec3[1]) + ",";
 			value += boost::lexical_cast<Util::String>(vec3[2]);
-			mXmlWriter->appendAttribute(ambientNode, "name", "ambient");
+			mXmlWriter->appendAttribute(ambientNode, "name", "kAmbient");
 			mXmlWriter->appendAttribute(ambientNode, "value", value.c_str());
 
 			vec3 = static_cast<FbxSurfaceType *>(fbxMaterial)->Diffuse;
 			value = boost::lexical_cast<Util::String>(vec3[0]) + ",";
 			value += boost::lexical_cast<Util::String>(vec3[1]) + ",";
 			value += boost::lexical_cast<Util::String>(vec3[2]);
-			mXmlWriter->appendAttribute(diffuseNode, "name", "diffuse");
+			mXmlWriter->appendAttribute(diffuseNode, "name", "kDiffuse");
 			mXmlWriter->appendAttribute(diffuseNode, "value", value.c_str());
 
 			/// TODO:transparent.

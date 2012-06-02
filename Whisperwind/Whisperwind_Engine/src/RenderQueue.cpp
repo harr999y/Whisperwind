@@ -47,7 +47,7 @@ namespace Engine
 			renderable->preRender(elapsedTime);
 
 			/// For forward lighting.
-			LightVector lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(renderable->getAABB());
+			const LightVector & lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(renderable->getAABB());
 			if (lightVec.empty())
 			{
 				EngineManager::getSingleton().getRenderSystem()->render(renderable);

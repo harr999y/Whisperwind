@@ -212,9 +212,12 @@ namespace Engine
 		return mSceneObjectMap[name]	;
 	}
 	//---------------------------------------------------------------------
-	LightVector SceneManager::getAffectedLights(const Util::AABBPtr & aabb)
+	const LightVector & SceneManager::getAffectedLights(const Util::AABBPtr & aabb)
 	{
-		LightVector lightVec;
+		/// Static for perfomance.
+		static LightVector lightVec;
+		lightVec.clear();
+
 		LightPtr light;
 
 		BOOST_AUTO(it, mLightNamesVec.begin());

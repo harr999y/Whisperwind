@@ -57,7 +57,7 @@ namespace Engine
 		/// NOTE:Light is also an object,so you can get/delete it by the same method just like an object.
 		/// TODO:Maybe need to merge with createSceneObject.
 		SceneObjectPtr & createLight(const Util::Wstring & name, const LightInfo & lightInfo);
-		LightVector getAffectedLights(const Util::AABBPtr & aabb);
+		const LightVector & getAffectedLights(const Util::AABBPtr & aabb);
 
 		void loadScene(const Util::Wstring & scene);
 

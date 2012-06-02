@@ -25,6 +25,8 @@ THE SOFTWARE
 
 #include "AABB.h"
 #include "Renderable.h"
+#include "EngineManager.h"
+#include "Camera.h"
 #include "Light.h"
 
 namespace Engine
@@ -47,7 +49,12 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void Light::affectRenderable(const RenderablePtr & renderable)
 	{
+		/// Set light color.
 		renderable->setEffectSemanticValue("LightColor", static_cast<void *>(&mColor));
+
+		/// Set eye position.
+		XMVECTOR eyePos(EngineManager::getSingleton().getCamera()->getPosition());
+		renderable->setEffectSemanticValue("EyePosition", static_cast<void *>(&eyePos));
 
 		affectRenderable_impl(renderable);
 	}
