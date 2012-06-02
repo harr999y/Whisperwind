@@ -64,7 +64,7 @@ namespace Engine
 		{}
 
 	public:
-		SET_GET_CONST_VALUE(SubMeshVector, SubMeshVec);
+		SET_GET_VALUE(SubMeshVector, SubMeshVec);
 		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
 
 	private:

@@ -43,5 +43,8 @@
     <None Include="..\bin\media\Effects\DebugAABB.fx">
       <Filter>Effects</Filter>
     </None>
+    <None Include="..\bin\media\Effects\DebugNormal.fx">
+      <Filter>Effects</Filter>
+    </None>
   </ItemGroup>
 </Project>

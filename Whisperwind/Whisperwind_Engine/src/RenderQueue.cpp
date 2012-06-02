@@ -48,11 +48,18 @@ namespace Engine
 
 			/// For forward lighting.
 			LightVector lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(renderable->getAABB());
-			BOOST_FOREACH(const LightPtr & light, lightVec)
+			if (lightVec.empty())
 			{
-				light->affectRenderable(renderable);
-
 				EngineManager::getSingleton().getRenderSystem()->render(renderable);
+			}
+			else
+			{
+				BOOST_FOREACH(const LightPtr & light, lightVec)
+				{
+					light->affectRenderable(renderable);
+
+					EngineManager::getSingleton().getRenderSystem()->render(renderable);
+				}
 			}
 
 			renderable->postRender(elapsedTime);

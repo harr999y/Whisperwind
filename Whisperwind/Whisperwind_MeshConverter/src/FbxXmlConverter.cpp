@@ -79,6 +79,9 @@ namespace Tool
 	//---------------------------------------------------------------------
 	Util::Wstring FbxXmlConverter::convertToXml()
 	{
+		FbxGeometryConverter converter(mFbxManager);
+		converter.SplitMeshesPerMaterial(mFbxScene);
+
 		/// save to xml
 		mXmlWriter = boost::make_shared<Util::XmlWriter>();
 		mXmlWriter->setConvertUtf8ToAnsi(true);
@@ -356,37 +359,10 @@ namespace Tool
 					mXmlWriter->appendAttribute(positionNode, "x", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][0] * mScaleFactor).c_str());
 					mXmlWriter->appendAttribute(positionNode, "y", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][2] * mScaleFactor).c_str());
 					mXmlWriter->appendAttribute(positionNode, "z", boost::lexical_cast<Util::String>(vertexBuf[vertexIt][1] * mScaleFactor).c_str());
-
-					/// Normal
-					FbxGeometryElementNormal * fbxNormals = fbxMesh->GetElementNormal(0);
-					if (fbxNormals)
-					{
-						Util::XmlNode * normalNode = mXmlWriter->appendNode(vertexNode, "normal");
-
-						FbxVector4 normal;
-						FbxLayerElement::EMappingMode emMode = fbxNormals->GetMappingMode();
-						FbxLayerElement::EReferenceMode erMode = fbxNormals->GetReferenceMode();
-						if ((emMode == FbxGeometryElement::eByControlPoint) || (emMode == FbxGeometryElement::eByPolygonVertex))
-						{
-							if (erMode == FbxLayerElement::eDirect)
-							{
-								normal = fbxNormals->GetDirectArray().GetAt(vertexIt);
-							}
-							else if (erMode == FbxLayerElement::eIndexToDirect)
-							{
-								Util::u_int id = fbxNormals->GetIndexArray().GetAt(vertexIt);
-								normal = fbxNormals->GetDirectArray().GetAt(id);
-							}
-
-							mXmlWriter->appendAttribute(normalNode, "x", boost::lexical_cast<Util::String>(normal[0]).c_str());
-							mXmlWriter->appendAttribute(normalNode, "y", boost::lexical_cast<Util::String>(normal[1]).c_str());
-							mXmlWriter->appendAttribute(normalNode, "z", boost::lexical_cast<Util::String>(normal[2]).c_str());
-						}
-					}
 				}
 
-				/// UV
-				/// NOTE:Now only surpport one texcoord!
+				/// UV and Normal
+				/// NOTE:Now only surpport one texcoord and one normal!
 				Util::u_int polygonCount = fbxMesh->GetPolygonCount();
 				for (Util::u_int polygonIt = 0; polygonIt < polygonCount; ++polygonIt)
 				{
@@ -400,6 +376,7 @@ namespace Tool
 						if (-1 == vertexIt)
 							continue;
 
+						/// UV
 						FbxGeometryElementUV * fbxUVs = fbxMesh->GetElementUV(0);
 						if (fbxUVs)
 						{		
@@ -453,6 +430,44 @@ namespace Tool
 									mXmlWriter->appendAttribute(uvNode, "v", boost::lexical_cast<Util::String>(1 - uv[1]).c_str());
 								else
 									mXmlWriter->appendAttribute(uvNode, "v", boost::lexical_cast<Util::String>(uv[1]).c_str());
+							}
+						}
+
+						/// Normal
+						FbxGeometryElementNormal * fbxNormals = fbxMesh->GetElementNormal(0);
+						if (fbxNormals)
+						{
+							FbxVector4 normal;
+							FbxLayerElement::EMappingMode emMode = fbxNormals->GetMappingMode();
+							FbxLayerElement::EReferenceMode erMode = fbxNormals->GetReferenceMode();
+							if (emMode == FbxGeometryElement::eByControlPoint)
+							{
+								if (erMode == FbxLayerElement::eDirect)
+								{
+									normal = fbxNormals->GetDirectArray().GetAt(vertexIt);
+								}
+								else if (erMode == FbxLayerElement::eIndexToDirect)
+								{
+									Util::u_int id = fbxNormals->GetIndexArray().GetAt(vertexIt);
+									normal = fbxNormals->GetDirectArray().GetAt(id);
+								}
+							}
+							else if (emMode == FbxGeometryElement::eByPolygonVertex)
+							{
+								Util::s_int normalIndex = fbxMesh->GetPolygonVertex(polygonIt, polygonIndex);
+								if (-1 == normalIndex)
+									continue;
+
+								normal = fbxNormals->GetDirectArray().GetAt(normalIndex);
+							}
+
+							if (!vertexNodeVec[vertexIt]->first_node("normal"))
+							{
+								Util::XmlNode * normalNode = mXmlWriter->appendNode(vertexNodeVec[vertexIt], "normal");
+								
+								mXmlWriter->appendAttribute(normalNode, "x", boost::lexical_cast<Util::String>(normal[0]).c_str());
+								mXmlWriter->appendAttribute(normalNode, "y", boost::lexical_cast<Util::String>(normal[2]).c_str());
+								mXmlWriter->appendAttribute(normalNode, "z", boost::lexical_cast<Util::String>(normal[1]).c_str());
 							}
 						}
 					}

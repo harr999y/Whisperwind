@@ -33,5 +33,6 @@ namespace Engine
 	const Util::String EngineConfigDefine::MULTI_SAMPLE_TYPE = "MultiSampleType";
 	const Util::String EngineConfigDefine::VSYNC = "VSync";
 	const Util::String EngineConfigDefine::PERF_HUD = "PerfHUD";
-	const Util::String EngineConfigDefine::DEBUG_RENDERING = "DebugRendering";
+	const Util::String EngineConfigDefine::DEBUG_AABB = "DebugAABB";
+	const Util::String EngineConfigDefine::DEBUG_NORMAL = "DebugNormal";
 }

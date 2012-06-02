@@ -45,6 +45,7 @@ namespace Engine
 	public:
 		virtual void addToRenderQueue();
 		RenderablePtr & getRenderable(const Util::Wstring & name);
+		void updateRenderableFromSceneNode(const SceneNodePtr & sn);
 
 		void preUpdate(Util::time elapsedTime);
 		void postUpdate(Util::time elapsedTime);

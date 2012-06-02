@@ -41,7 +41,8 @@ namespace Engine
 	    Config(name),
 		mFullScreen(false),
 		mVSync(false),
-		mPerfHUD(false)
+		mPerfHUD(false),
+		mDebugNormal(false)
 	{}
 	//---------------------------------------------------------------------
 	void  EngineConfig::parse_impl()
@@ -82,13 +83,25 @@ namespace Engine
 		setVSync(boost::lexical_cast<bool>(valueStr));
 
 		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::PERF_HUD);
-		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::PERF_HUD + " parse failed!");
-		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
-		setPerfHUD(boost::lexical_cast<bool>(valueStr));
+		if (node)
+		{
+			valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
+			setPerfHUD(boost::lexical_cast<bool>(valueStr));
+		}
 
-		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::DEBUG_RENDERING);
-		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::DEBUG_RENDERING + " parse failed!");
-		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
-		setDebugRendering(boost::lexical_cast<bool>(valueStr));
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::DEBUG_AABB);
+		if (node)
+		{
+			valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
+			setDebugRendering(boost::lexical_cast<bool>(valueStr));
+		}
+
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::DEBUG_NORMAL);
+		if (node)
+		{
+			valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
+			setDebugNormal(boost::lexical_cast<bool>(valueStr));
+		}
 	}
+
 }

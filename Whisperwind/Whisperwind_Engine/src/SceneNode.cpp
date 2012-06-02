@@ -297,6 +297,8 @@ namespace Engine
 		mAABB->merge(aabb);
 
 		updatedAABB();
+
+		so->updateRenderableFromSceneNode(this->shared_from_this());
 	}
 	//---------------------------------------------------------------------
 	void SceneNode::reCalcAABB()

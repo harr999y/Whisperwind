@@ -46,6 +46,8 @@ namespace Engine
 	private:
 		virtual void load(const Util::Wstring & resourcePath);
 
+		void processNormalDebug();
+
 	private:
 		MeshPtr mMesh;
 	};

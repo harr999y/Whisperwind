@@ -28,6 +28,7 @@ THE SOFTWARE
 
 #include "DebugDefine.h"
 #include "MathDefine.h"
+#include "AABB.h"
 #include "SceneComponent.h"
 #include "EngineManager.h"
 #include "Renderable.h"
@@ -117,6 +118,22 @@ namespace Engine
 		WHISPERWIND_ASSERT(mRenderableMap.find(name) != mRenderableMap.end());
 
 		return mRenderableMap[name];
+	}
+	//---------------------------------------------------------------------
+	void SceneObject::updateRenderableFromSceneNode(const SceneNodePtr & sn)
+	{
+		XMVECTOR nodePos = sn->getPosition();
+		XMVECTOR nodeOrientation = sn->getOrientation();
+
+		BOOST_AUTO(it, mRenderableMap.begin());
+		for (it; it != mRenderableMap.end(); ++it)
+		{
+			const Util::AABBPtr & renderableAABB = it->second->getAABB();
+			IF_NULL_CONTINUE(renderableAABB);
+
+			renderableAABB->move(nodePos);
+			renderableAABB->rotate(nodeOrientation);
+		}
 	}
 
 }

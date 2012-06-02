@@ -40,6 +40,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	bool Light::isAffected(const Util::AABBPtr & aabb)
 	{
+		IF_NULL_RETURN_FALSE(aabb);
+
 		return isAffected_impl(aabb);
 	}
 	//---------------------------------------------------------------------

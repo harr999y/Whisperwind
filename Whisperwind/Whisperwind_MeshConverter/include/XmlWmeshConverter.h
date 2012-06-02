@@ -61,7 +61,7 @@ namespace Tool
 
 			indexBound.HasIndex = true;
 
-			Engine::Uint8Vector dataVec((sizeof(type) / sizeof(Engine::Uint8Vector::value_type)) * indexCount);
+			Engine::Uint8Vector dataVec((sizeof(type) / sizeof(Engine::Uint8Vector::value_type)) * indexCount, 0);
 			type * data = reinterpret_cast<type *>(dataVec.data());
 
 			Util::XmlNode * triNode = mXmlReader->getFirstNode(trianglesNode, "triangle");

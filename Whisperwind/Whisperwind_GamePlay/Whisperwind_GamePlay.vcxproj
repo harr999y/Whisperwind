@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Include="..\bin\Config\GamePlayConfig.cfg" />
     <None Include="..\bin\media\Effects\DebugAABB.fx" />
+    <None Include="..\bin\media\Effects\DebugNormal.fx" />
     <None Include="..\bin\media\Effects\default.fx" />
     <None Include="..\bin\media\Scenes\test.wscene">
       <SubType>Designer</SubType>

@@ -212,7 +212,7 @@ namespace Engine
 		return mSceneObjectMap[name]	;
 	}
 	//---------------------------------------------------------------------
-	LightVector SceneManager::getAffectedLights(const Util::AABBPtr & /*aabb*/)
+	LightVector SceneManager::getAffectedLights(const Util::AABBPtr & aabb)
 	{
 		LightVector lightVec;
 		LightPtr light;
@@ -230,7 +230,7 @@ namespace Engine
 			const SceneObjectPtr & obj = mSceneObjectMap[*it];
 			light = Util::checkedPtrCast<Light>(obj);
 
-			if (light->isAffected(obj->getAABB()))
+			if (light->isAffected(aabb))
 				lightVec.push_back(light);
 
 			++it;

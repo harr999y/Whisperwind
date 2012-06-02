@@ -153,7 +153,7 @@ namespace Tool
 				}
 			}
 
-			Engine::Uint8Vector dataVec((sizeof(Util::real) / sizeof(Engine::Uint8Vector::value_type)) * vertexSize * vertexCount);
+			Engine::Uint8Vector dataVec((sizeof(Util::real) / sizeof(Engine::Uint8Vector::value_type)) * vertexSize * vertexCount, 0);
 			Util::real * data = reinterpret_cast<Util::real *>(dataVec.data());
 			Util::AABBPtr aabb = boost::make_shared<Util::AABB>();
 			do 
