@@ -64,7 +64,7 @@ namespace Engine
 		rm->RenderableName = (mMesh->getSubMeshVec())[0]->getRenderableMapping()->RenderableName + 
 			TO_UNICODE("_normal_debug");
 		rm->EffectName = "DebugNormal.fx";
-		rm->TechniqueName = "YellowTech";
+		rm->TechniqueName = "BasicTech";
 		rm->IndexBound.HasIndex = false;
 		rm->PrimType = PT_LINE_LIST;
 		rm->VertexBound.VertexUsage = BUF_STATIC;
