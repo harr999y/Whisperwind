@@ -143,6 +143,19 @@ namespace
 		return D3DFMT_UNKNOWN;
 	}
 	//---------------------------------------------------------------------
+	D3DBLEND translateBlendFactor(BlendFactor factor)
+	{
+		switch (factor)
+		{
+			CASE_MATCH_RETURN(BF_ZERO, D3DBLEND_ZERO);
+			CASE_MATCH_RETURN(BF_ONE, D3DBLEND_ONE);
+			CASE_UNMATCH_ASSERT;
+		}
+
+		WHISPERWIND_ASSERT(false);
+		return D3DBLEND_FORCE_DWORD;
+	}
+	//---------------------------------------------------------------------
 #undef CASE_MATCH_RETURN
 #undef CASE_UNMATCH_ASSERT
 }
@@ -204,4 +217,10 @@ namespace Engine
 	{
 		return translatePixelFormat(fmt);
 	}
+	//---------------------------------------------------------------------
+	D3DBLEND D3D9FormatMappingFactory::getBlendFactor(BlendFactor factor)
+	{
+		return translateBlendFactor(factor);
+	}
+
 }

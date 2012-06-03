@@ -49,7 +49,9 @@ namespace Engine
 		inline void setEffectSemanticValue(const Util::String & semanticName, const void * data);
 		inline void setEffectParamValue(const Util::String & paramName, const void * data);
 		inline void setTexture(const Util::String & paramName, const RenderTexturePtr & texture);
-		inline void setRenderTarget(const Util::String & paramName, const RenderTexturePtr & texture);
+		inline void setRenderTarget(Util::u_int index, const RenderTargetPtr & target);
+		inline void setBlendFactor(BlendFactor srcFactor, BlendFactor destFactor);
+		inline void closeBlend();
 
 		void preRender(Util::time elapsedTime);
 		void postRender(Util::time elapsedTime);
@@ -63,6 +65,8 @@ namespace Engine
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data) = 0;
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture) = 0;
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target) = 0;
+		virtual void setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor) = 0;
+		virtual void closeBlend_impl() = 0;
 
 	private:
 		RenderType mRenderType;

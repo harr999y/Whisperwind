@@ -97,6 +97,8 @@ namespace Engine
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture);
 		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target);
+		virtual void setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor);
+		virtual void closeBlend_impl();
 
 		EffectHandleSize getEffectHandleSize(const Util::String & paramName);
 

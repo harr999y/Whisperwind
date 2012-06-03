@@ -47,6 +47,21 @@ namespace Engine
 	void Renderable::setTexture(const Util::String & paramName, const RenderTexturePtr & texture)
 	{
 		setTexture_impl(paramName, texture);
+	}	
+	//---------------------------------------------------------------------
+	void Renderable::setRenderTarget(Util::u_int index, const RenderTargetPtr & target)
+	{
+		setRenderTarget_impl(index, target);
+	}
+	//---------------------------------------------------------------------
+	void Renderable::setBlendFactor(BlendFactor srcFactor, BlendFactor destFactor)
+	{
+		setBlendFactor_impl(srcFactor, destFactor);
+	}
+	//---------------------------------------------------------------------
+	void Renderable::closeBlend()
+	{
+		closeBlend_impl();
 	}
 	//---------------------------------------------------------------------
 	void Renderable::preRender(Util::time /*elapsedTime*/)

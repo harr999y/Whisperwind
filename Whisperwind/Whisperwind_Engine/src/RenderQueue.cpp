@@ -54,12 +54,18 @@ namespace Engine
 			}
 			else
 			{
-				BOOST_FOREACH(const LightPtr & light, lightVec)
+				for (Util::u_int lightIt = 0; lightIt < lightVec.size(); ++lightIt)
 				{
-					light->affectRenderable(renderable);
+					lightVec[lightIt]->affectRenderable(renderable);
+
+					if (lightIt >= 1)
+						renderable->setBlendFactor(BF_ONE, BF_ONE);
 
 					EngineManager::getSingleton().getRenderSystem()->render(renderable);
 				}
+
+				if (lightVec.size() >=1)
+					renderable->closeBlend();
 			}
 
 			renderable->postRender(elapsedTime);

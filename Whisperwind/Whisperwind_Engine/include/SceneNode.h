@@ -64,7 +64,9 @@ namespace Engine
 	        MoveSpeed(0.0f),
 			RotateSpeed(0.0f),
 			CurrentPoint(-1),
-			TrackMode(NTM_AS_WORLD)
+			TrackMode(NTM_AS_WORLD),
+			RestTrans(0.0f),
+			CurrentDirection(0.0f, 0.0f, 0.0f)
 		{}
 
 		bool isEmpty() { return ControllPointVec.empty(); }
@@ -74,6 +76,8 @@ namespace Engine
 		Util::real RotateSpeed;
 		NodeControllPointVector ControllPointVec;
 		Util::s_int CurrentPoint;
+		Util::real RestTrans;
+		XMFLOAT3 CurrentDirection;
 	};
 
 	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>

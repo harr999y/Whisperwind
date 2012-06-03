@@ -70,7 +70,12 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void DirectionalLight::affectRenderable_impl(const RenderablePtr & renderable)
 	{
-		renderable->setEffectSemanticValue("LightDirection", static_cast<void *>(&mDirection));
+		/// TODO!
+		if (mAttachedSceneNode)
+		{
+			XMVECTOR pos = mAttachedSceneNode->getPosition();
+			renderable->setEffectSemanticValue("LightPosition", static_cast<void *>(&pos));
+		}
 	}
 
 	//---------------------------------------------------------------------
@@ -90,11 +95,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void PointLight::affectRenderable_impl(const RenderablePtr & renderable)
 	{
-		if (mAttachedSceneNode && renderable->getAABB())
+		if (mAttachedSceneNode)
 		{
-			XMVECTOR dir = renderable->getAABB()->getCenterPoint() - mAttachedSceneNode->getPosition();
-
-			renderable->setEffectSemanticValue("LightDirection", static_cast<void *>(&dir));
+			XMVECTOR pos = mAttachedSceneNode->getPosition();
+			renderable->setEffectSemanticValue("LightPosition", static_cast<void *>(&pos));
 		}
 	}
 

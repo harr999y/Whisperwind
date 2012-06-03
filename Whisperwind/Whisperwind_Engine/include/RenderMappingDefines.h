@@ -101,6 +101,12 @@ namespace Engine
 		RPF_MAX
 	};
 
+	enum BlendFactor
+	{
+		BF_ZERO,
+		BF_ONE,
+	};
+
 	enum TextureCreateFlag
 	{
 		TCF_RENDERTARGET = 1 << 0,

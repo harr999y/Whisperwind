@@ -39,6 +39,7 @@ namespace Engine
 		static D3DPRIMITIVETYPE getD3D9PrimType(PrimitiveType primType);
 		static Util::u_int getD3D9TextureCreateFlag(Util::u_int flag);
 		static D3DFORMAT getD3D9PixelFormat(RenderPixelFormat fmt);
+		static D3DBLEND getBlendFactor(BlendFactor factor);
 
 	private:
 		MAKE_STATIC_CLASS(D3D9FormatMappingFactory);

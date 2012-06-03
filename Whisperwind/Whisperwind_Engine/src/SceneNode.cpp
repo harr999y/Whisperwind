@@ -348,10 +348,7 @@ namespace Engine
 	{
 		/// TODO:Orientation.
 
-		static XMVECTOR direction = XMVectorZero();
-		static Util::real restTrans = 0.0f;
-
-		if (restTrans <= 0.0f)
+		if (mNodeTrack.RestTrans <= 0.0f)
 		{
 			if ((static_cast<Util::s_int>(mNodeTrack.ControllPointVec.size()) - 1) == mNodeTrack.CurrentPoint)
 				mNodeTrack.CurrentPoint = 0;
@@ -361,18 +358,18 @@ namespace Engine
 			const NodeControllPoint & currentPoint = mNodeTrack.ControllPointVec[mNodeTrack.CurrentPoint];
 
 			XMVECTOR deltaTrans = XMLoadFloat3(&currentPoint.Position) - this->getPosition();
-			restTrans = XMVectorGetX(XMVector3Length(deltaTrans));
-			direction = XMVector3Normalize(deltaTrans);
+			mNodeTrack.RestTrans = XMVectorGetX(XMVector3Length(deltaTrans));
+			XMStoreFloat3(&mNodeTrack.CurrentDirection, XMVector3Normalize(deltaTrans));
 		}
 
 		Util::real trans = elapsedTime * mNodeTrack.MoveSpeed;
 
 		if (NTM_AS_WORLD == mNodeTrack.TrackMode)
-			this->move(trans * direction);
+			this->move(trans * XMLoadFloat3(&mNodeTrack.CurrentDirection));
 
 		/// TODO:else if (NTM_AS_PARENT == mNodeTrack.TrackMode)
 
-		restTrans -= trans;
+		mNodeTrack.RestTrans -= trans;
 
 		mNeedUpdateChilds = true;
 	}
