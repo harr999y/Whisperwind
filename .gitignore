@@ -30,3 +30,4 @@ Whisperwind/Whisperwind_Dependencies/FBX/lib
 *.enc
 /Whisperwind/bin/media
 *.i
+/Whisperwind/bin/media.7z

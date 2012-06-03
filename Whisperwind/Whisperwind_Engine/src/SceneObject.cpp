@@ -50,8 +50,10 @@ namespace Engine
 
 			if (mAttachedSceneNode)
 			{
-				XMMATRIX matrix = XMMatrixTranslationFromVector(mAttachedSceneNode->getPosition()) *
-					XMMatrixRotationQuaternion(mAttachedSceneNode->getOrientation());
+				XMMATRIX matrix = XMMatrixTranslationFromVector(mAttachedSceneNode->getPosition());
+				renderable->setWorldMatrix(matrix);
+
+				matrix *= XMMatrixRotationQuaternion(mAttachedSceneNode->getOrientation());
 
 				FrustumPtr & frustum = EngineManager::getSingleton().getCamera()->getFrustum();
 				matrix *= frustum->getViewProjMatrix();

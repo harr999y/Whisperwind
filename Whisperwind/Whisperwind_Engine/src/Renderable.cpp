@@ -52,6 +52,7 @@ namespace Engine
 	void Renderable::preRender(Util::time /*elapsedTime*/)
 	{
 		this->setEffectSemanticValue("WorldViewProj", static_cast<void *>(&mWorldViewProj));
+		this->setEffectSemanticValue("World", static_cast<void *>(&mWorldMatrix));
 	}
 	//---------------------------------------------------------------------
 	void Renderable::postRender(Util::time /*elapsedTime*/)

@@ -44,6 +44,7 @@ namespace Engine
 
 	public:
 		void setWorldViewProj(CXMMATRIX wvp) { XMStoreFloat4x4(&mWorldViewProj, wvp); }
+		void setWorldMatrix(CXMMATRIX world) { XMStoreFloat4x4(&mWorldMatrix, world); }
 
 		inline void setEffectSemanticValue(const Util::String & semanticName, const void * data);
 		inline void setEffectParamValue(const Util::String & paramName, const void * data);
@@ -66,6 +67,7 @@ namespace Engine
 	private:
 		RenderType mRenderType;
 		XMFLOAT4X4 mWorldViewProj;
+		XMFLOAT4X4 mWorldMatrix;
 		Util::AABBPtr mAABB;
 
 	private:
