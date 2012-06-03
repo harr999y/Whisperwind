@@ -47,10 +47,10 @@ namespace Engine
 		Util::String strPath = Util::WstringToString(resourcePath);
 		mXmlReader = boost::make_shared<Util::XmlReader>(strPath);
 
-		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		const Util::XmlNode * rootNode = mXmlReader->getRootNode();
 		IF_NULL_EXCEPTION(rootNode, strPath + " donnot have root node!");
 
-		Util::XmlNode * sceneNode = mXmlReader->getFirstNode(rootNode, "scene");
+		const Util::XmlNode * sceneNode = mXmlReader->getFirstNode(rootNode, "scene");
 		IF_NULL_EXCEPTION(sceneNode, strPath + " donnot have scene node!");
 
 		processScene(sceneNode);
@@ -64,12 +64,12 @@ namespace Engine
 		Util::real worldSize = boost::lexical_cast<Util::real>(worldSizeStr);
 		EngineManager::getSingleton().getSceneManager()->setWorldSize(worldSize);
 
-		Util::XmlNode * cameraNode = mXmlReader->getFirstNode(sceneNode, "camera");
+		const Util::XmlNode * cameraNode = mXmlReader->getFirstNode(sceneNode, "camera");
 		IF_NULL_EXCEPTION(cameraNode, "Current scene donnot have camera node!");
 
 		processCamera(cameraNode);
 
-		Util::XmlNode * snNode = mXmlReader->getFirstNode(sceneNode, "node");
+		const Util::XmlNode * snNode = mXmlReader->getFirstNode(sceneNode, "node");
 		while (snNode)
 		{
 			processSceneNode(snNode);
@@ -157,7 +157,7 @@ namespace Engine
 			}
 		}
 
-		Util::XmlNode * snChildNode = mXmlReader->getFirstNode(snNode, "child_node");
+		const Util::XmlNode * snChildNode = mXmlReader->getFirstNode(snNode, "child_node");
 		while (snChildNode)
 		{
 			processChildSceneNode(snChildNode, sceneNode);
@@ -165,7 +165,7 @@ namespace Engine
 			snChildNode = mXmlReader->getNextSiblingNode(snChildNode);
 		}
 
-		Util::XmlNode * soNode = mXmlReader->getFirstNode(snNode, "object");
+		const Util::XmlNode * soNode = mXmlReader->getFirstNode(snNode, "object");
 		while (soNode)
 		{
 			processSceneObject(soNode, sceneNode);
@@ -173,12 +173,20 @@ namespace Engine
 			soNode = mXmlReader->getNextSiblingNode(soNode);
 		}
 
-		Util::XmlNode * lightNode = mXmlReader->getFirstNode(snNode, "light");
+		const Util::XmlNode * lightNode = mXmlReader->getFirstNode(snNode, "light");
 		while (lightNode)
 		{
 			processLight(lightNode, sceneNode);
 
 			lightNode = mXmlReader->getNextSiblingNode(lightNode);
+		}
+
+		const Util::XmlNode * trackNode = mXmlReader->getFirstNode(snNode, "node_track");
+		while (trackNode)
+		{
+			processNodeTrack(trackNode, sceneNode);
+
+			trackNode = mXmlReader->getNextSiblingNode(trackNode);
 		}
 	}
 	//---------------------------------------------------------------------
@@ -233,6 +241,32 @@ namespace Engine
 		SceneObjectPtr light = EngineManager::getSingleton().getSceneManager()->createLight(name, lightInfo);
 
 		parentSceneNode->attachSceneObject(light);
+	}
+	//---------------------------------------------------------------------
+	void SceneResource::processNodeTrack(const Util::XmlNode * trackNode, SceneNodePtr & parentSceneNode) const
+	{
+		NodeTrack & nodeTrack = parentSceneNode->getNodeTrack();
+
+		Util::String trackModeStr(mXmlReader->getAttribute(trackNode, "track_mode"));
+		if (boost::algorithm::equals("as_world", trackModeStr))
+			nodeTrack.TrackMode = NTM_AS_WORLD;
+		else if (boost::algorithm::equals("as_parent", trackModeStr))
+			nodeTrack.TrackMode = NTM_AS_PARENT;
+
+		nodeTrack.MoveSpeed = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(trackNode, "move_speed"));
+		nodeTrack.RotateSpeed = boost::lexical_cast<Util::real>(mXmlReader->getAttribute(trackNode, "rotate_speed"));
+
+		const Util::XmlNode * controllPointNode = mXmlReader->getFirstNode(trackNode, "controll_point");
+		while (controllPointNode)
+		{
+			NodeControllPoint controllPoint;
+			XMStoreFloat3(&controllPoint.Position, Util::StringToVector(mXmlReader->getAttribute(controllPointNode, "position"), 3));
+			XMStoreFloat4(&controllPoint.Orientation, Util::StringToVector(mXmlReader->getAttribute(controllPointNode, "orientation"), 4));
+
+			parentSceneNode->addTrackPoint(controllPoint);
+
+			controllPointNode = mXmlReader->getNextSiblingNode(controllPointNode);
+		}
 	}
 
 }

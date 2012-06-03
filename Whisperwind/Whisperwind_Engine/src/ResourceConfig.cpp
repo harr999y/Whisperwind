@@ -38,10 +38,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void ResourceConfig::parse_impl()
 	{
-		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		const Util::XmlNode * rootNode = mXmlReader->getRootNode();
 		IF_NULL_EXCEPTION(rootNode, "Resource config donnot have root node!");
 
-		Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, FOLDER);
+		const Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, FOLDER);
 		while (node)
 		{
 			mFolderVec.push_back(std::make_pair(

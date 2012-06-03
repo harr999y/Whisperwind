@@ -47,10 +47,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void  EngineConfig::parse_impl()
 	{
-		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		const Util::XmlNode * rootNode = mXmlReader->getRootNode();
 		IF_NULL_EXCEPTION(rootNode, "Engine config donnot have root!");
 
-		Util::XmlNode * node = NULL;
+		const Util::XmlNode * node = NULL;
 		Util::String valueStr;
 
 		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::FULL_SCREEN);

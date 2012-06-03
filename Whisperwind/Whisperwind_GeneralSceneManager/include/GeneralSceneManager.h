@@ -55,7 +55,7 @@ namespace Engine
 		virtual void destroySceneNode_impl(const Util::Wstring & name);
 		virtual void destroyAllSceneNode_impl();
 
-		void updateSceneGraph();
+		void updateSceneGraph(Util::time elapsedTime);
 
 		virtual void createDebugRendering();
 

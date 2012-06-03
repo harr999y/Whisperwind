@@ -34,10 +34,10 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void PluginConfig::parse_impl()
 	{
-		Util::XmlNode * rootNode = mXmlReader->getRootNode();
+		const Util::XmlNode * rootNode = mXmlReader->getRootNode();
 		IF_NULL_EXCEPTION(rootNode, "Plugin config donnot have root node!");
 
-		Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, NODE_NAME);
+		const Util::XmlNode * node = mXmlReader->getFirstNode(rootNode, NODE_NAME);
 		IF_FALSE_EXCEPTION(node, "Plugin config " + NODE_NAME + " parse failed!");
 
 		try

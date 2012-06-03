@@ -30,7 +30,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void ABTree::addSceneNode(const SceneNodePtr & node)
 	{
-		node;
+		mVisibleNodeVec.push_back(node);
 	}
 	//---------------------------------------------------------------------
 	void ABTree::removeSceneNode(const SceneNodePtr & node)
@@ -40,7 +40,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void ABTree::removeAllSceneNode()
 	{
-
+		mVisibleNodeVec.clear();
 	}
 	//---------------------------------------------------------------------
 	const SceneNodeVector & ABTree::findVisibles(const FrustumPtr & frustum) const

@@ -53,6 +53,7 @@ namespace Engine
 		void processChildSceneNode(const Util::XmlNode * snNode, SceneNodePtr & parentSceneNode) const;
 		void processSceneObject(const Util::XmlNode * soNode, SceneNodePtr & parentSceneNode) const;
 		void processLight(const Util::XmlNode * lightNode, SceneNodePtr & parentSceneNode) const;
+		void processNodeTrack(const Util::XmlNode * trackNode, SceneNodePtr & parentSceneNode) const;
 
 		void processSceneNodeContent(const Util::XmlNode * snNode, SceneNodePtr & sceneNode, bool isChild) const;
 

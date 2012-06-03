@@ -69,6 +69,8 @@ namespace Engine
 	class Light;
 	class DirectionalLight;
 	class PointLight;
+	struct NodeControllPoint;
+	struct NodeTrack;
 
 	/** For the unordered_maps nowadays.
 	@note:
@@ -125,6 +127,7 @@ namespace Engine
 	typedef std::vector<LightPtr> LightVector;
 	typedef boost::shared_ptr<DirectionalLight> DirectionalLightPtr;
 	typedef boost::shared_ptr<PointLight> PointLightPtr;
+	typedef std::vector<NodeControllPoint> NodeControllPointVector;
 
 }
 

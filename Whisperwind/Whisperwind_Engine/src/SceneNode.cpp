@@ -258,6 +258,22 @@ namespace Engine
 		setNeedUpdateChilds();
 	}
 	//---------------------------------------------------------------------
+	void SceneNode::move(FXMVECTOR trans)
+	{
+		if (!mParentNode)
+			setPosition(XMLoadFloat3(&mPosition) + trans);
+		else
+			setRelativePosition(XMLoadFloat3(&mRelativePosition) + trans);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::rotate(FXMVECTOR orientation)
+	{
+		if (!mParentNode)
+			setOrientation(XMQuaternionMultiply(XMLoadFloat4(&mOrientation), orientation));
+		else
+			setRelativePosition(XMQuaternionMultiply(XMLoadFloat4(&mRelativeOrientation), orientation));
+	}
+	//---------------------------------------------------------------------
 	void SceneNode::setNeedUpdateChilds()
 	{
 		mNeedUpdateChilds = true;
@@ -266,7 +282,7 @@ namespace Engine
 			mParentNode->setNeedUpdateChilds();
 	}
 	//---------------------------------------------------------------------
-	void SceneNode::update()
+	void SceneNode::update(Util::time elapsedTime)
 	{
 		if (mParentNode)
 		{
@@ -274,12 +290,15 @@ namespace Engine
 			this->setOrientation(XMQuaternionMultiply(mParentNode->getOrientation(), XMLoadFloat4(&mRelativeOrientation)));
 		}
 		
+		if (!mNodeTrack.isEmpty())
+			updateNodeTrack(elapsedTime);
+
 		if (mNeedUpdateChilds)
 		{
 			BOOST_AUTO(it, mChildSceneNodeVec.begin());
 			for (it; it != mChildSceneNodeVec.end(); ++it)
 			{
-				(*it)->update();
+				(*it)->update(elapsedTime);
 			}
 		}
 
@@ -313,9 +332,49 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void SceneNode::setAABB(const Util::AABBPtr & aabb)
 	{
+		IF_FALSE_RETURN(aabb && !aabb->getIsInvalid());
+
 		mAABB = aabb;
 
 		updatedAABB();
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::addTrackPoint(const NodeControllPoint & point)
+	{
+		mNodeTrack.ControllPointVec.push_back(point);
+	}
+	//---------------------------------------------------------------------
+	void SceneNode::updateNodeTrack(Util::time elapsedTime)
+	{
+		/// TODO:Orientation.
+
+		static XMVECTOR direction = XMVectorZero();
+		static Util::real restTrans = 0.0f;
+
+		if (restTrans <= 0.0f)
+		{
+			if ((static_cast<Util::s_int>(mNodeTrack.ControllPointVec.size()) - 1) == mNodeTrack.CurrentPoint)
+				mNodeTrack.CurrentPoint = 0;
+			else
+				++mNodeTrack.CurrentPoint;
+
+			const NodeControllPoint & currentPoint = mNodeTrack.ControllPointVec[mNodeTrack.CurrentPoint];
+
+			XMVECTOR deltaTrans = XMLoadFloat3(&currentPoint.Position) - this->getPosition();
+			restTrans = XMVectorGetX(XMVector3Length(deltaTrans));
+			direction = XMVector3Normalize(deltaTrans);
+		}
+
+		Util::real trans = elapsedTime * mNodeTrack.MoveSpeed;
+
+		if (NTM_AS_WORLD == mNodeTrack.TrackMode)
+			this->move(trans * direction);
+
+		/// TODO:else if (NTM_AS_PARENT == mNodeTrack.TrackMode)
+
+		restTrans -= trans;
+
+		mNeedUpdateChilds = true;
 	}
 
 }

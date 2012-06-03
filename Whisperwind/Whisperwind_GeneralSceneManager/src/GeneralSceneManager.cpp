@@ -60,6 +60,8 @@ namespace Engine
 		{
 			sceneNode = boost::make_shared<ABTreeSceneNode>(name, nodeType);
 
+			mABTree->addSceneNode(sceneNode);
+
 			if (0 == (NT_AS_CHILD & nodeType))
 				mSceneGraphVec.push_back(sceneNode);
 		}
@@ -112,7 +114,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void GeneralSceneManager::preUpdate_impl(Util::time elapsedTime)
 	{
-		updateSceneGraph();
+		updateSceneGraph(elapsedTime);
 		
 		/// Scene object
 		{
@@ -150,8 +152,6 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void GeneralSceneManager::postUpdate_impl(Util::time elapsedTime)
 	{
-		updateSceneGraph();
-
 		/// Scene object
 		{
 			BOOST_AUTO(it, mSceneObjectMap.begin());
@@ -162,12 +162,12 @@ namespace Engine
 		}
 	}
 	//---------------------------------------------------------------------
-	void GeneralSceneManager::updateSceneGraph()
+	void GeneralSceneManager::updateSceneGraph(Util::time elapsedTime)
 	{
 		BOOST_AUTO(it, mSceneGraphVec.begin());
 		for (it; it != mSceneGraphVec.end(); ++it)
 		{
-			(*it)->update();
+			(*it)->update(elapsedTime);
 		}
 	}
 	//---------------------------------------------------------------------

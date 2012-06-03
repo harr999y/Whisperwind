@@ -25,6 +25,7 @@ THE SOFTWARE
 #ifndef _SCENE_NODE_H_
 #define _SCENE_NODE_H_
 
+#include <utility>
 #include <boost/enable_shared_from_this.hpp>
 
 #include "Util.h"
@@ -38,6 +39,41 @@ namespace Engine
 		NT_STATIC = 1 << 0,
 		NT_DYNAMIC = 1 << 1,
 		NT_AS_CHILD = 1 << 2
+	};
+
+	enum NodeTrackMode
+	{
+		NTM_AS_PARENT,
+		NTM_AS_WORLD
+	};
+
+	struct NodeControllPoint
+	{
+		NodeControllPoint() :
+	        Position(0.0f, 0.0f, 0.0f),
+			Orientation(0.0f, 0.0f, 0.0f, 1.0f)
+		{}
+
+		XMFLOAT3 Position;
+		XMFLOAT4 Orientation;
+	};
+
+	struct NodeTrack
+	{
+		NodeTrack() :
+	        MoveSpeed(0.0f),
+			RotateSpeed(0.0f),
+			CurrentPoint(-1),
+			TrackMode(NTM_AS_WORLD)
+		{}
+
+		bool isEmpty() { return ControllPointVec.empty(); }
+
+		NodeTrackMode TrackMode;
+		Util::real MoveSpeed;
+		Util::real RotateSpeed;
+		NodeControllPointVector ControllPointVec;
+		Util::s_int CurrentPoint;
 	};
 
 	class WHISPERWIND_API SceneNode : public boost::enable_shared_from_this<SceneNode>
@@ -56,7 +92,7 @@ namespace Engine
 		bool getParentNode(SceneNodePtr & outParentNode) const;
 		void setParentNode(const SceneNodePtr & parentNode);
 
-		void update();
+		void update(Util::time elapsedTime);
 		void addToRenderQueue();
 
 		XMVECTOR getPosition() const;
@@ -68,26 +104,33 @@ namespace Engine
 		XMVECTOR getRelativeOrientation() const;
 		void setRelativeOrientation(FXMVECTOR relOrientation);
 
+		void move(FXMVECTOR trans);
+		void rotate(FXMVECTOR orientation);
+
 		void attachSceneObject(SceneObjectPtr & sceneObj);
 	    void dettachSceneObject(SceneObjectPtr & sceneObj);
 		void dettachAllSceneObject();
 
 		void setAABB(const Util::AABBPtr & aabb);
 
+		void addTrackPoint(const NodeControllPoint & point);
+
 	public:
 		GET_CONST_VALUE(Util::Wstring, Name);
 		GET_CONST_VALUE(Util::u_int, NodeType);
 		GET_CONST_VALUE(Util::AABBPtr, AABB);
+		GET_VALUE(NodeTrack, NodeTrack);
 
 	protected:
 		void addChildNode(const SceneNodePtr & childNode);
 
 	private:
 		void setNeedUpdateChilds();
+
+		void updateNodeTrack(Util::time elapsedTime);
 		
 		void mergeAABBFromSceneObject(const SceneObjectPtr & so);
 		void reCalcAABB();
-
 		/// May needed for derived class.
 		virtual void updatedAABB()
 		{}
@@ -104,6 +147,7 @@ namespace Engine
 		XMFLOAT4 mOrientation;
 		XMFLOAT4 mRelativeOrientation;
 		Util::AABBPtr mAABB;
+		NodeTrack mNodeTrack;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(SceneNode);
