@@ -26,7 +26,7 @@ THE SOFTWARE
 #define _RENDER_TEXTURE_H_
 
 #include "Util.h"
-#include "RenderMappingDefines.h"
+#include "EngineForwardDeclare.h"
 
 namespace Engine
 {
@@ -38,6 +38,9 @@ namespace Engine
 
 		virtual ~RenderTexture()
 		{}
+
+	public:
+		static const RenderTexturePtr & getNullRenderTexture();
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(RenderTexture);

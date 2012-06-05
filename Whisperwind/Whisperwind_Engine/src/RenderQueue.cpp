@@ -24,16 +24,25 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/foreach.hpp>
+#include <boost/make_shared.hpp>
 
+#include "MathDefine.h"
 #include "EngineManager.h"
+#include "EngineConfig.h"
 #include "SceneManager.h"
 #include "RenderSystem.h"
 #include "Renderable.h"
 #include "Light.h"
+#include "RenderMappingHelper.h"
+#include "RenderTexture.h"
+#include "Camera.h"
+#include "Frustum.h"
 #include "RenderQueue.h"
 
 namespace Engine
 {
+	//---------------------------------------------------------------------
+	// RenderQueue
 	//---------------------------------------------------------------------
 	void RenderQueue::addRenderable(const RenderablePtr & renderable)
 	{
@@ -42,15 +51,31 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void RenderQueue::render(Util::time elapsedTime)
 	{
+		render_impl(elapsedTime);
+	}
+	//---------------------------------------------------------------------
+	void RenderQueue::sort()
+	{
+		/// TODO!
+	}
+
+	//---------------------------------------------------------------------
+	// ForwardRenderQueue
+	//---------------------------------------------------------------------
+	void ForwardRenderQueue::render_impl(Util::time elapsedTime)
+	{
+		IF_FALSE_RETURN(!mRenderableVec.empty());
+
+		const RenderSystemPtr & rs = EngineManager::getSingleton().getRenderSystem();
+
 		BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
 		{
 			renderable->preRender(elapsedTime);
 
-			/// For forward lighting.
 			const LightVector & lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(renderable->getAABB());
 			if (lightVec.empty())
 			{
-				EngineManager::getSingleton().getRenderSystem()->render(renderable);
+				rs->render(renderable);
 			}
 			else
 			{
@@ -59,13 +84,13 @@ namespace Engine
 					lightVec[lightIt]->affectRenderable(renderable);
 
 					if (lightIt >= 1)
-						renderable->setBlendFactor(BF_ONE, BF_ONE);
+						rs->setBlendFactor(BF_ONE, BF_ONE);
 
-					EngineManager::getSingleton().getRenderSystem()->render(renderable);
+					rs->render(renderable);
 				}
 
 				if (lightVec.size() >=1)
-					renderable->closeBlend();
+					rs->closeBlend();
 			}
 
 			renderable->postRender(elapsedTime);
@@ -73,10 +98,129 @@ namespace Engine
 
 		mRenderableVec.clear();
 	}
+
 	//---------------------------------------------------------------------
-	void RenderQueue::sort()
+	// DeferredRenderQueue
+	//---------------------------------------------------------------------
+	DeferredRenderQueue::DeferredRenderQueue()
 	{
-		/// TODO!
+		/// GBuffer
+ 		{
+ 			const EngineConfigPtr & engineConfig = EngineManager::getSingleton().getEngineConfig();
+ 			RenderTextureMappingPtr texMapping = boost::make_shared<RenderTextureMapping>();
+ 			texMapping->Width = engineConfig->getResolutionPair().first;
+ 			texMapping->Height = engineConfig->getResolutionPair().second;
+ 			texMapping->Usage = TCF_RENDERTARGET;
+ 			texMapping->Format = RPF_A16B16G16R16F;
+ 
+ 			mGBufferTexture = EngineManager::getSingleton().getRenderSystem()->createRenderTexture(texMapping);
+ 		}
+
+		/// LightingPass
+		{
+			const EngineConfigPtr & engineConfig = EngineManager::getSingleton().getEngineConfig();
+			RenderTextureMappingPtr texMapping = boost::make_shared<RenderTextureMapping>();
+			texMapping->Width = engineConfig->getResolutionPair().first;
+			texMapping->Height = engineConfig->getResolutionPair().second;
+			texMapping->Usage = TCF_RENDERTARGET;
+			texMapping->Format = RPF_A8R8G8B8;
+
+			mLightingPassTexture = EngineManager::getSingleton().getRenderSystem()->createRenderTexture(texMapping);
+		}
+
+		constructScreenQuadRenderable();
+	}
+	//---------------------------------------------------------------------
+	DeferredRenderQueue::~DeferredRenderQueue()
+	{
+		mGBufferTexture.reset();
+		mLightingPassTexture.reset();
+		mScreenQuadRenderable.reset();
+	}
+	//---------------------------------------------------------------------
+	void DeferredRenderQueue::render_impl(Util::time elapsedTime)
+	{
+		IF_FALSE_RETURN(!mRenderableVec.empty());
+
+		const RenderSystemPtr & rs = EngineManager::getSingleton().getRenderSystem();
+
+		/// 1.Construct GBuffer.
+ 		{
+ 			rs->setRenderTarget(0, mGBufferTexture);
+ 			rs->clearFrame(FCF_TARGET | FCF_ZBUFFER);
+ 
+ 			BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
+ 			{
+ 				renderable->setEffect("DefferdLighting.fx");
+ 				renderable->setTechnique("StoreGBuffer");
+ 
+ 				renderable->preRender(elapsedTime);
+ 
+ 				rs->render(renderable);
+ 
+ 				renderable->postRender(elapsedTime);
+ 			}
+ 			rs->setRenderTarget(0, RenderTexture::getNullRenderTexture());
+ 		}
+
+		/// 2.Lighting pass.
+ 		{
+ 			rs->setRenderTarget(0, mLightingPassTexture);
+ 			rs->clearFrame(FCF_TARGET | FCF_ZBUFFER);
+ 
+			XMMATRIX viewMatrix = EngineManager::getSingleton().getCamera()->getFrustum()->getViewMatrix();
+			XMVECTOR determinant = XMMatrixDeterminant(viewMatrix);
+			XMMATRIX inverseViewMatrix = XMMatrixInverse(&determinant, viewMatrix);
+
+ 			/// TODO:Now do a hack to find affected lights.
+ 			const LightVector & lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(mRenderableVec[0]->getAABB());
+ 			BOOST_FOREACH(const LightPtr & light, lightVec)
+ 			{
+ 				mScreenQuadRenderable->preRender(elapsedTime);
+ 
+ 				light->affectRenderable(mScreenQuadRenderable);
+ 
+				mScreenQuadRenderable->setTexture("lighting_pass_texture", mGBufferTexture);
+				mScreenQuadRenderable->setEffectSemanticValue("InverseView", &inverseViewMatrix);
+
+ 				rs->render(mScreenQuadRenderable);
+ 
+ 				mScreenQuadRenderable->postRender(elapsedTime);
+ 			}
+ 			rs->setRenderTarget(0, RenderTexture::getNullRenderTexture());
+ 		}
+
+		/// 3.Shading pass.
+		{
+			rs->setRenderTarget(0, RenderTexture::getNullRenderTexture());
+
+			BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
+			{
+				renderable->setEffect("DefferdLighting.fx");
+				renderable->setTechnique("ShadingPass");
+
+				renderable->preRender(elapsedTime);
+
+				renderable->setTexture("lighting_pass_texture", mLightingPassTexture);
+
+				rs->render(renderable);
+
+				renderable->postRender(elapsedTime);
+			}
+		}
+
+		mRenderableVec.clear();
+	}
+	//---------------------------------------------------------------------
+	void DeferredRenderQueue::constructScreenQuadRenderable()
+	{
+		RenderableMappingPtr rm = RenderMappingHelper::makeScreenQuadRenderMapping();
+
+		rm->EffectName = "DefferdLighting.fx";
+		rm->TechniqueName = "LightingPass";
+		rm->RenderableName = TO_UNICODE("LightPassRenderable");
+
+		mScreenQuadRenderable = EngineManager::getSingleton().getRenderSystem()->createRenderable(rm);
 	}
 
 }

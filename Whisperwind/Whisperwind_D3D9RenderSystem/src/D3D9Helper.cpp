@@ -57,7 +57,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	// D3D9Helper
 	//---------------------------------------------------------------------
-	RenderablePtr D3D9Helper::createD3D9Renderable(const IDirect3DDevice9Ptr & device, ID3DXEffectMap & effectMap, const RenderableMappingPtr & rm)
+	ID3DXEffectMap D3D9Helper::mEffectMap;
+	//---------------------------------------------------------------------
+	RenderablePtr D3D9Helper::createD3D9Renderable(const IDirect3DDevice9Ptr & device, const RenderableMappingPtr & rm)
 	{
 		/// check
 #ifdef WHISPERWIND_DEBUG
@@ -149,28 +151,8 @@ namespace Engine
 				WHISPERWIND_EXCEPTION("No effect!");
 			}
 
-			if (effectMap.find(rm->EffectName) == effectMap.end())
-			{
-#ifdef WHISPERWIND_DEBUG
-				DWORD shaderFlags = D3DXSHADER_DEBUG | D3DXSHADER_SKIPOPTIMIZATION;
-#else
-				DWORD shaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
-#endif
-				ID3DXEffect * effect = NULL;
-				Util::Wstring effectPath = EngineManager::getSingleton().getResourceManager()->getResourcePath(Util::StringToWstring(rm->EffectName));
-				DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), effectPath.c_str(), 
-					NULL, NULL, shaderFlags, NULL, &effect, NULL));
-				DX_IF_NULL_DEBUG_PRINT(effect);
-
-				ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
-				effectMap.insert(ID3DXEffectMap::value_type(rm->EffectName, effectPtr));
-
-				d3d9Renderable->setEffect(effectPtr);
-			}
-			else
-			{
-				d3d9Renderable->setEffect(effectMap[rm->EffectName]);
-			}
+			const ID3DXEffectPtr & effect = createD3D9Effect(device, rm->EffectName);
+			d3d9Renderable->setEffect(effect);
 		}
 
 		/// Technique
@@ -265,6 +247,28 @@ namespace Engine
 		}
 
 		return d3d9Renderable;
+	}
+	//---------------------------------------------------------------------
+	const ID3DXEffectPtr & D3D9Helper::createD3D9Effect(const IDirect3DDevice9Ptr & device, const Util::String & effectName)
+	{
+		if (mEffectMap.find(effectName) == mEffectMap.end())
+		{
+#ifdef WHISPERWIND_DEBUG
+			DWORD shaderFlags = D3DXSHADER_DEBUG | D3DXSHADER_SKIPOPTIMIZATION;
+#else
+			DWORD shaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
+#endif
+			ID3DXEffect * effect = NULL;
+			Util::Wstring effectPath = EngineManager::getSingleton().getResourceManager()->getResourcePath(Util::StringToWstring(effectName));
+			DX_IF_FAILED_DEBUG_PRINT(D3DXCreateEffectFromFile(device.get(), effectPath.c_str(), 
+				NULL, NULL, shaderFlags, NULL, &effect, NULL));
+			DX_IF_NULL_DEBUG_PRINT(effect);
+
+			ID3DXEffectPtr effectPtr = Util::makeCOMPtr(effect);
+			mEffectMap.insert(ID3DXEffectMap::value_type(effectName, effectPtr));
+		}
+
+		return mEffectMap[effectName];
 	}
 	//---------------------------------------------------------------------
 	Util::u_int D3D9Helper::getPrimCount(D3DPRIMITIVETYPE type, Util::u_int vertexCount)

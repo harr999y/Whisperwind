@@ -36,6 +36,7 @@ namespace Engine
 		explicit PluginConfig(const Util::String & name) :
 		    Config(name)
 		{}
+
 		~PluginConfig()
 		{}
 

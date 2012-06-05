@@ -25,6 +25,7 @@
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\MeshResource.h" />
+    <ClInclude Include="include\RenderMappingHelper.h" />
     <ClInclude Include="include\RenderQueue.h" />
     <ClInclude Include="include\RenderTarget.h" />
     <ClInclude Include="include\RenderTexture.h" />
@@ -61,6 +62,8 @@
     <ClCompile Include="src\EngineConfig.cpp" />
     <ClCompile Include="src\EngineManager.cpp" />
     <ClCompile Include="src\Renderable.cpp" />
+    <ClCompile Include="src\RenderMappingHelper.cpp" />
+    <ClCompile Include="src\RenderNullObject.cpp" />
     <ClCompile Include="src\RenderQueue.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\ResourceConfig.cpp" />

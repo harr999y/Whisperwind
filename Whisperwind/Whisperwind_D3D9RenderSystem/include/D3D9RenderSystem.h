@@ -51,10 +51,16 @@ namespace Engine
 		virtual void present_impl();
 		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue);
 		virtual bool isPaused_impl();
+
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm);
 		virtual RenderTexturePtr createRenderTexture_impl(const RenderTextureMappingPtr & rtm);
 		virtual RenderTexturePtr createRenderTextureFromFile_impl(const Util::Wstring & path);
 		virtual RenderTargetPtr createRenderTarget_impl(const RenderTargetMappingPtr & rtm);
+
+		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target);
+		virtual void setRenderTarget_impl(Util::u_int index, const RenderTexturePtr & texture);
+		virtual void setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor);
+		virtual void closeBlend_impl();
 
 		void createDevice(HWND window);
 		void onDeviceLost();
@@ -67,12 +73,12 @@ namespace Engine
 
 	private:
 		HWND mWindow;
+		IDirect3DSurface9Ptr mBackBufferSurface;
 		IDirect3D9Ptr mD3D;
 		IDirect3DDevice9Ptr mD3DDevice;
 		D3D9CapabilityPtr mCapability;
 		bool mIsDeviceLost;
 		D3DPRESENT_PARAMETERS mPresentParameters;  /// Keep for device reset.
-		ID3DXEffectMap mEffectMap;
 		RenderableMappingWeakMap mRenderableMappingMap;
 		RenderTextureMappingWeakMap mRenderTextureMappingMap;
 		RenderTextureFileWeakMap mRenderTextureFileMap;

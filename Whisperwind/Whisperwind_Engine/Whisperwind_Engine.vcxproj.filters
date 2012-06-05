@@ -133,6 +133,9 @@
     <ClInclude Include="include\Light.h">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\RenderMappingHelper.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EngineManager.cpp">
@@ -209,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="src\Light.cpp">
       <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderMappingHelper.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderNullObject.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

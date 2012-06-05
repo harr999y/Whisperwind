@@ -36,6 +36,7 @@ namespace Engine
 		static const Util::String MULTI_SAMPLE_QUALITY;
 		static const Util::String MULTI_SAMPLE_TYPE;
 		static const Util::String VSYNC;
+		static const Util::String DEFFERD_RENDERING;
 		static const Util::String PERF_HUD;
 		static const Util::String DEBUG_AABB;
 		static const Util::String DEBUG_NORMAL;

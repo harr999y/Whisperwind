@@ -28,6 +28,11 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
+	D3D9RenderTarget::~D3D9RenderTarget()
+	{
+		mSurface.reset();
+	}
+	//---------------------------------------------------------------------
 	void D3D9RenderTarget::onDeviceLost()
 	{
 		mSurface.reset();

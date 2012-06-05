@@ -51,9 +51,14 @@ namespace Engine
 	class D3D9Helper
 	{
 	public:
-		static RenderablePtr createD3D9Renderable(const IDirect3DDevice9Ptr & device, ID3DXEffectMap & effectMap, const RenderableMappingPtr & rm);
+		static RenderablePtr createD3D9Renderable(const IDirect3DDevice9Ptr & device, const RenderableMappingPtr & rm);
+		static const ID3DXEffectPtr & createD3D9Effect(const IDirect3DDevice9Ptr & device, const Util::String & effectName);
 		static Util::u_int getPrimCount(D3DPRIMITIVETYPE type, Util::u_int vertexCount);
 		static D3DPOOL getCreationPool(BufferUsageFlag flag);
+		static ID3DXEffectMap & getEffectMap() { return mEffectMap; }
+
+	private:
+		static ID3DXEffectMap mEffectMap;
 
 	private:
 		MAKE_STATIC_CLASS(D3D9Helper);

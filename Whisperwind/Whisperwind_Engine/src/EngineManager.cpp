@@ -190,7 +190,6 @@ namespace Engine
 	void EngineManager::clearConfigs()
 	{
 		mEngineConfig.reset();
-		mPluginConfig.reset();
 	}
 
 }

@@ -54,13 +54,14 @@ namespace Engine
 	//---------------------------------------------------------------------
 	D3D9RenderSystem::~D3D9RenderSystem()
 	{
-		mEngineConfig.reset();
+		D3D9Helper::getEffectMap().clear();
+
 		mCapability.reset();
-		mEffectMap.clear();
 		mRenderableMappingMap.clear();
 		mRenderTextureFileMap.clear();
 		mRenderTextureMappingMap.clear();
 		mRenderTargetMappingMap.clear();
+		mBackBufferSurface.reset();
 		mD3DDevice.reset();
 		mD3D.reset();
 		::DestroyWindow(mWindow);
@@ -102,7 +103,7 @@ namespace Engine
 				mD3DDevice->SetIndices(d3d9Renderable->getIndexBuffer().get());
 			}
 
-			ID3DXEffectPtr effect = d3d9Renderable->getEffect();
+			const ID3DXEffectPtr & effect = d3d9Renderable->getEffect();
 			effect->SetTechnique(d3d9Renderable->getTechnique());
 
 			/// set texture/param etc.
@@ -199,7 +200,7 @@ namespace Engine
 	//---------------------------------------------------------------------
 	RenderablePtr D3D9RenderSystem::createRenderable_impl(const RenderableMappingPtr & rm)
 	{
-		RenderablePtr d3d9Renderable = D3D9Helper::createD3D9Renderable(mD3DDevice, mEffectMap, rm);
+		RenderablePtr d3d9Renderable = D3D9Helper::createD3D9Renderable(mD3DDevice, rm);
 
   		if ((D3DPOOL_DEFAULT == D3D9Helper::getCreationPool(rm->VertexBound.VertexUsage)) ||
   			(D3DPOOL_DEFAULT == D3D9Helper::getCreationPool(rm->IndexBound.IndexUsage)))
@@ -278,6 +279,54 @@ namespace Engine
 		return d3d9RtPtr;
 	}
 	//---------------------------------------------------------------------
+	void D3D9RenderSystem::setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target)
+	{
+		D3D9RenderTargetPtr d3d9SurfacePtr = Util::checkedPtrCast<D3D9RenderTarget>(target);
+		if (d3d9SurfacePtr)
+		{
+			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, d3d9SurfacePtr->getSurface().get()))
+		}
+		else
+		{
+			if (0 == index)
+				DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, mBackBufferSurface.get()))
+			else
+				DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, NULL));
+		}
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::setRenderTarget_impl(Util::u_int index, const RenderTexturePtr & texture)
+	{
+		D3D9RenderTexturePtr d3d9TexturePtr = Util::checkedPtrCast<D3D9RenderTexture>(texture);
+		if (d3d9TexturePtr)
+		{
+			const IDirect3DTexture9Ptr & texture = d3d9TexturePtr->getTexture();
+			PDIRECT3DSURFACE9 surface;
+			texture->GetSurfaceLevel(0, &surface);
+
+			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, surface));
+		}
+		else
+		{
+			if (0 == index)
+				DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, mBackBufferSurface.get()))
+			else
+				DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, NULL));
+		}
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor)
+	{
+		mD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+		mD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3D9FormatMappingFactory::getBlendFactor(srcFactor));
+		mD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3D9FormatMappingFactory::getBlendFactor(destFactor));
+	}
+	//---------------------------------------------------------------------
+	void D3D9RenderSystem::closeBlend_impl()
+	{
+		mD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	}
+	//---------------------------------------------------------------------
 	void D3D9RenderSystem::createDevice(HWND window)
 	{
 		Util::s_int vpType = 0;
@@ -343,6 +392,10 @@ namespace Engine
 		}
 		mD3DDevice = Util::makeCOMPtr(d3dDevice);
 
+		PDIRECT3DSURFACE9 bbSurface;
+		mD3DDevice->GetRenderTarget(0, &bbSurface);
+		mBackBufferSurface = Util::makeCOMPtr(bbSurface);
+
 		WHISPERWIND_LOG(TO_UNICODE("Create device done!"));
 	}
 	//---------------------------------------------------------------------
@@ -385,8 +438,9 @@ namespace Engine
 	{
 		/// Effect
 		{
-			BOOST_AUTO(it, mEffectMap.begin());
-			for (it; it != mEffectMap.end(); ++it)
+			const ID3DXEffectMap & effectMap = D3D9Helper::getEffectMap();
+			BOOST_AUTO(it, effectMap.begin());
+			for (it; it != effectMap.end(); ++it)
 			{
 				it->second->OnLostDevice();
 			}
@@ -481,8 +535,9 @@ namespace Engine
 	{
 		/// Effect
 		{
-			BOOST_AUTO(it, mEffectMap.begin());
-			for (it; it != mEffectMap.end(); ++it)
+			const ID3DXEffectMap & effectMap = D3D9Helper::getEffectMap();
+			BOOST_AUTO(it, effectMap.begin());
+			for (it; it != effectMap.end(); ++it)
 			{
 				it->second->OnResetDevice();
 			}

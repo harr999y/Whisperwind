@@ -43,15 +43,15 @@ namespace Engine
 		{}
 
 	public:
-		void setWorldViewProj(CXMMATRIX wvp) { XMStoreFloat4x4(&mWorldViewProj, wvp); }
+		void setWorldViewProj(CXMMATRIX wvp) { XMStoreFloat4x4(&mWorldViewProjMatrix, wvp); }
 		void setWorldMatrix(CXMMATRIX world) { XMStoreFloat4x4(&mWorldMatrix, world); }
+		void setWorldViewMatrix(CXMMATRIX worldView) { XMStoreFloat4x4(&mWorldViewMatrix, worldView); }
 
+		inline void setEffect(const Util::String & effectName);
+		inline void setTechnique(const Util::String & techName);
 		inline void setEffectSemanticValue(const Util::String & semanticName, const void * data);
 		inline void setEffectParamValue(const Util::String & paramName, const void * data);
 		inline void setTexture(const Util::String & paramName, const RenderTexturePtr & texture);
-		inline void setRenderTarget(Util::u_int index, const RenderTargetPtr & target);
-		inline void setBlendFactor(BlendFactor srcFactor, BlendFactor destFactor);
-		inline void closeBlend();
 
 		void preRender(Util::time elapsedTime);
 		void postRender(Util::time elapsedTime);
@@ -61,16 +61,16 @@ namespace Engine
 		SET_GET_CONST_VALUE(Util::AABBPtr, AABB);
 
 	private:
+		virtual void setEffect_impl(const Util::String & effectName) = 0;
+		virtual void setTechnique_impl(const Util::String & techName) = 0;
 		virtual void setEffectSemanticValue_impl(const Util::String & semanticName, const void * data) = 0;
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data) = 0;
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture) = 0;
-		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target) = 0;
-		virtual void setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor) = 0;
-		virtual void closeBlend_impl() = 0;
 
 	private:
 		RenderType mRenderType;
-		XMFLOAT4X4 mWorldViewProj;
+		XMFLOAT4X4 mWorldViewProjMatrix;
+		XMFLOAT4X4 mWorldViewMatrix;
 		XMFLOAT4X4 mWorldMatrix;
 		Util::AABBPtr mAABB;
 

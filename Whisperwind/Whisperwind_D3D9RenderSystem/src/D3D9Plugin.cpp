@@ -38,9 +38,9 @@ namespace Engine
 
 		EngineManager & engineMgr = EngineManager::getSingleton();
 		d3d9RS->setEngineConfig(engineMgr.getEngineConfig());
-		d3d9RS->init();
-
 		engineMgr.setRenderSystem(d3d9RS);
+
+		d3d9RS->init();
 	}
 	//---------------------------------------------------------------------
 	void D3D9Plugin::uninstall()

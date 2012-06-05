@@ -93,12 +93,11 @@ namespace Engine
 		SET_GET_VALUE(ParamTexturePairVector, ParamTexturePairVec);
 
 	private:
+		virtual void setEffect_impl(const Util::String & effectName);
+		virtual void setTechnique_impl(const Util::String & techName);
 		virtual void setEffectSemanticValue_impl(const Util::String & semanticName, const void * data);
 		virtual void setEffectParamValue_impl(const Util::String & paramName, const void * data);
 		virtual void setTexture_impl(const Util::String & paramName, const RenderTexturePtr & texture);
-		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target);
-		virtual void setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor);
-		virtual void closeBlend_impl();
 
 		EffectHandleSize getEffectHandleSize(const Util::String & paramName);
 

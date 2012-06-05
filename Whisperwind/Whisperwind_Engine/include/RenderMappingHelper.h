@@ -22,29 +22,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 -------------------------------------------------------------------------*/
-#ifndef _RENDER_TARGET_H_
-#define _RENDER_TARGET_H_
+#ifndef _RENDER_MAPPING_HELPER_H_
+#define _RENDER_MAPPING_HELPER_H_
 
 #include "Util.h"
 #include "EngineForwardDeclare.h"
 
 namespace Engine
 {
-	/** NOTE: Only use when we need multisampled rendertarget. */
-	class WHISPERWIND_API RenderTarget
+	class WHISPERWIND_API RenderMappingHelper
 	{
-	protected:
-		RenderTarget()
-		{}
-
-		virtual ~RenderTarget()
-		{}
-
 	public:
-		static const RenderTargetPtr & getNullRenderTarget();
+		static RenderableMappingPtr makeAABBRenderMapping(const Util::AABBPtr & aabb);
+		static RenderableMappingPtr makeScreenQuadRenderMapping();
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(RenderTarget);
+		MAKE_STATIC_CLASS(RenderMappingHelper);
 	};
 }
 

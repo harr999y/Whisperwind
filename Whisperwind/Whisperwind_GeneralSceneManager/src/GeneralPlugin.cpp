@@ -37,9 +37,9 @@ namespace Engine
 		GeneralSceneManagerPtr octreeSm = boost::make_shared<GeneralSceneManager>();
 
 		EngineManager & engineMgr = EngineManager::getSingleton();
-		octreeSm->init();
-
 		engineMgr.setSceneManager(octreeSm);
+
+		octreeSm->init();
 	}
 	//---------------------------------------------------------------------
 	void GeneralPlugin::uninstall()

@@ -38,6 +38,21 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
+	void D3D9Renderable::setEffect_impl(const Util::String & effectName)
+	{
+		mEffect = D3D9Helper::createD3D9Effect(mD3DDevice, effectName);
+	}
+	//---------------------------------------------------------------------
+	void D3D9Renderable::setTechnique_impl(const Util::String & techName)
+	{
+		WHISPERWIND_ASSERT(!techName.empty());
+
+		D3DXHANDLE tech = mEffect->GetTechniqueByName(techName.c_str());
+		DX_IF_NULL_DEBUG_PRINT(tech);
+
+		mTechnique = tech;
+	}
+	//---------------------------------------------------------------------
 	void D3D9Renderable::setEffectSemanticValue_impl(const Util::String & semanticName, const void * data)
 	{
 		WHISPERWIND_ASSERT(data != NULL);
@@ -65,27 +80,6 @@ namespace Engine
 			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(ehs.Handle, d3d9TexPtr->getTexture().get()))
 		else
 			DX_IF_FAILED_DEBUG_PRINT(mEffect->SetTexture(ehs.Handle, NULL));
-	}
-	//---------------------------------------------------------------------
-	void D3D9Renderable::setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target)
-	{
-		D3D9RenderTargetPtr d3d9SurfacePtr = Util::checkedPtrCast<D3D9RenderTarget>(target);
-		if (d3d9SurfacePtr)
-			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, d3d9SurfacePtr->getSurface().get()))
-		else
-			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, NULL))
-	}
-	//---------------------------------------------------------------------
-	void D3D9Renderable::setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor)
-	{
-		mD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-		mD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3D9FormatMappingFactory::getBlendFactor(srcFactor));
-		mD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3D9FormatMappingFactory::getBlendFactor(destFactor));
-	}
-	//---------------------------------------------------------------------
-	void D3D9Renderable::closeBlend_impl()
-	{
-		mD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	}
 	//---------------------------------------------------------------------
 	EffectHandleSize D3D9Renderable::getEffectHandleSize(const Util::String & paramName)
@@ -133,4 +127,5 @@ namespace Engine
 
 		mIndexBuffer = newRenderable->getIndexBuffer();
 	}
+
 }

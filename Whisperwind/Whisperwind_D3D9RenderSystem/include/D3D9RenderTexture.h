@@ -37,8 +37,7 @@ namespace Engine
 		D3D9RenderTexture()
 		{}
 
-		~D3D9RenderTexture()
-		{}
+		~D3D9RenderTexture();
 
 	public:
 		void onDeviceLost();
@@ -50,6 +49,7 @@ namespace Engine
 	private:
 		IDirect3DTexture9Ptr mTexture;
 	};
+
 }
 
 #endif

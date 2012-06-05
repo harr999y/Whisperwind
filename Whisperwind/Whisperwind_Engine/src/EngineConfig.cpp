@@ -42,7 +42,8 @@ namespace Engine
 		mFullScreen(false),
 		mVSync(false),
 		mPerfHUD(false),
-		mDebugNormal(false)
+		mDebugNormal(false),
+		mDefferdRendering(true)
 	{}
 	//---------------------------------------------------------------------
 	void  EngineConfig::parse_impl()
@@ -81,6 +82,13 @@ namespace Engine
 		IF_FALSE_EXCEPTION(node, "Engine config " + EngineConfigDefine::VSYNC + " parse failed!");
 		valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
 		setVSync(boost::lexical_cast<bool>(valueStr));
+
+		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::DEFFERD_RENDERING);
+		if (node)
+		{
+			valueStr = mXmlReader->getAttribute(node, CONFIG_VALUE);
+			setDefferdRendering(boost::lexical_cast<bool>(valueStr));
+		}
 
 		node = mXmlReader->getFirstNode(rootNode, EngineConfigDefine::PERF_HUD);
 		if (node)

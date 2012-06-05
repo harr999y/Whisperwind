@@ -44,6 +44,7 @@ namespace Engine
 		SET_GET_CONST_VALUE(bool, PerfHUD);
 		SET_GET_CONST_VALUE(bool, DebugRendering);
 		SET_GET_CONST_VALUE(bool, DebugNormal);
+		SET_GET_CONST_VALUE(bool, DefferdRendering);
 		SET_GET_CONST_VALUE(Util::UintPair, ResolutionPair);
 		SET_GET_CONST_VALUE(Util::u_int, MultiSampleQuality);
 		SET_GET_CONST_VALUE(Util::u_int, MultiSampleType);
@@ -57,6 +58,7 @@ namespace Engine
 		bool mPerfHUD;
 		bool mDebugRendering;
 		bool mDebugNormal;
+		bool mDefferdRendering;
 		Util::UintPair mResolutionPair;
 		Util::u_int mMultiSampleQuality;
 		Util::u_int mMultiSampleType;

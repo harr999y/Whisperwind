@@ -34,6 +34,16 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
+	void Renderable::setEffect(const Util::String & effectName)
+	{
+		setEffect_impl(effectName);
+	}
+	//---------------------------------------------------------------------
+	void Renderable::setTechnique(const Util::String & techName)
+	{
+		setTechnique_impl(techName);
+	}
+	//---------------------------------------------------------------------
 	void Renderable::setEffectSemanticValue( const Util::String & semanticName, const void * data )
 	{
 		setEffectSemanticValue_impl(semanticName, data);
@@ -49,24 +59,10 @@ namespace Engine
 		setTexture_impl(paramName, texture);
 	}	
 	//---------------------------------------------------------------------
-	void Renderable::setRenderTarget(Util::u_int index, const RenderTargetPtr & target)
-	{
-		setRenderTarget_impl(index, target);
-	}
-	//---------------------------------------------------------------------
-	void Renderable::setBlendFactor(BlendFactor srcFactor, BlendFactor destFactor)
-	{
-		setBlendFactor_impl(srcFactor, destFactor);
-	}
-	//---------------------------------------------------------------------
-	void Renderable::closeBlend()
-	{
-		closeBlend_impl();
-	}
-	//---------------------------------------------------------------------
 	void Renderable::preRender(Util::time /*elapsedTime*/)
 	{
-		this->setEffectSemanticValue("WorldViewProj", static_cast<void *>(&mWorldViewProj));
+		this->setEffectSemanticValue("WorldViewProj", static_cast<void *>(&mWorldViewProjMatrix));
+		this->setEffectSemanticValue("WorldView", static_cast<void *>(&mWorldViewMatrix));
 		this->setEffectSemanticValue("World", static_cast<void *>(&mWorldMatrix));
 	}
 	//---------------------------------------------------------------------

@@ -25,7 +25,6 @@ THE SOFTWARE
 #ifndef _D3D9_RENDER_TARGET_H_
 #define _D3D9_RENDER_TARGET_H_
 
-#include "Util.h"
 #include "RenderTarget.h"
 #include "D3D9ForwardDeclare.h"
 #include "D3D9Typedefs.h"
@@ -38,8 +37,7 @@ namespace Engine
 		D3D9RenderTarget()
 		{}
 
-		~D3D9RenderTarget()
-		{}
+		~D3D9RenderTarget();
 
 	public:
 		void onDeviceLost();
@@ -50,10 +48,8 @@ namespace Engine
 
 	private:
 		IDirect3DSurface9Ptr mSurface;
-
-	private:
-		DISALLOW_COPY_AND_ASSIGN(D3D9RenderTarget);
 	};
+
 }
 
 #endif

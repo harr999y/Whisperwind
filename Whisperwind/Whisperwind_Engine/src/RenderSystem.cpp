@@ -36,13 +36,24 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
+	RenderSystem::~RenderSystem()
+	{
+		mOpaqueRenderQueue.reset();
+		mTransparentRenderQueue.reset();	
+	}
+	//---------------------------------------------------------------------
 	void RenderSystem::init()
 	{
-		mOpaqueRenderQueue = boost::make_shared<RenderQueue>();
-		mTransparentRenderQueue = boost::make_shared<RenderQueue>();
 		mEngineConfig = EngineManager::getSingleton().getEngineConfig();
 
 		init_impl();
+
+		if (mEngineConfig->getDefferdRendering())
+			mOpaqueRenderQueue = boost::make_shared<DeferredRenderQueue>();
+		else
+			mOpaqueRenderQueue = boost::make_shared<ForwardRenderQueue>();
+
+		mTransparentRenderQueue = boost::make_shared<ForwardRenderQueue>();
 	}
 	//---------------------------------------------------------------------
 	bool RenderSystem::beginRendering()
@@ -95,6 +106,26 @@ namespace Engine
 		return createRenderTarget_impl(rtm);
 	}
 	//---------------------------------------------------------------------
+	void RenderSystem::setRenderTarget(Util::u_int index, const RenderTargetPtr & target)
+	{
+		setRenderTarget_impl(index, target);
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::setRenderTarget(Util::u_int index, const RenderTexturePtr & texture)
+	{
+		setRenderTarget_impl(index, texture);
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::setBlendFactor(BlendFactor srcFactor, BlendFactor destFactor)
+	{
+		setBlendFactor_impl(srcFactor, destFactor);
+	}
+	//---------------------------------------------------------------------
+	void RenderSystem::closeBlend()
+	{
+		closeBlend_impl();
+	}
+	//---------------------------------------------------------------------
 	void RenderSystem::addToRenderQueue(const RenderablePtr & renderable)
 	{
 		if (RT_OPAQUE == renderable->getRenderType())
@@ -110,6 +141,7 @@ namespace Engine
 		IF_FALSE_RETURN(this->beginRendering());
 
 		mOpaqueRenderQueue->render(elapsedTime);
+
 		mTransparentRenderQueue->render(elapsedTime);
 
 		this->endRendering();

@@ -31,11 +31,10 @@ namespace Engine
 {
 	class WHISPERWIND_API Config
 	{
-	public:
+	protected:
 		explicit Config(const Util::String & name);
 
-	protected:
-		~Config()
+		virtual ~Config()
 		{}
 
 	public:

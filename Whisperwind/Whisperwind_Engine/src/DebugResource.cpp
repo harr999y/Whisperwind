@@ -24,16 +24,15 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include <boost/algorithm/string.hpp>
-#include <boost/make_shared.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include "DebugDefine.h"
-#include "AABB.h"
 #include "EngineManager.h"
 #include "SceneManager.h"
 #include "SceneNode.h"
 #include "SceneObject.h"
 #include "RenderMappingDefines.h"
+#include "RenderMappingHelper.h"
 #include "DebugResource.h"
 
 namespace Engine
@@ -81,99 +80,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	void DebugResource::constructRenderableMapping(const Util::AABBPtr & aabb, DebugType type)
 	{
-		RenderableMappingPtr rm = boost::make_shared<RenderableMapping>();
+		RenderableMappingPtr rm = RenderMappingHelper::makeAABBRenderMapping(aabb);
 
-		/// VertexMapping
-		{
-			VertexMapping & vm = rm->VertexBound;
-
-			vm.VertexCount = 8;
-
-			VertexElement ve(0, 0, VET_FLOAT3, VEU_POSITION, 0);
-			vm.VertexElemVec.push_back(ve);
-
-			BufferData bd;
-			bd.DataSize = 96;
-			bd.Stride = 12;
-			Uint8Vector & vec = bd.DataVec;
-			vec.resize(bd.DataSize);
-			Util::real * data = reinterpret_cast<Util::real *>(vec.data());
-			{
-				XMFLOAT3 minPoint;
-				XMStoreFloat3(&minPoint, aabb->getMinPoint());
-
-				XMFLOAT3 maxPoint;
-				XMStoreFloat3(&maxPoint, aabb->getMaxPoint());
-
-				/// 1
-				*(data++) = minPoint.x;
-				*(data++) = minPoint.y;
-				*(data++) = minPoint.z;
-
-				/// 2
-				*(data++) = minPoint.x;
-				*(data++) = maxPoint.y;
-				*(data++) = minPoint.z;
-
-				/// 3
-				*(data++) = maxPoint.x;
-				*(data++) = minPoint.y;
-				*(data++) = minPoint.z;
-
-				/// 4
-				*(data++) = maxPoint.x;
-				*(data++) = maxPoint.y;
-				*(data++) = minPoint.z;
-
-				/// 5
-				*(data++) = maxPoint.x;
-				*(data++) = minPoint.y;
-				*(data++) = maxPoint.z;
-
-				/// 6
-				*(data++) = maxPoint.x;
-				*(data++) = maxPoint.y;
-				*(data++) = maxPoint.z;
-
-				/// 7
-				*(data++) = minPoint.x;
-				*(data++) = minPoint.y;
-				*(data++) = maxPoint.z;
-
-				/// 8
-				*(data++) = minPoint.x;
-				*(data++) = maxPoint.y;
-				*(data) = maxPoint.z;
-			}
-			vm.VertexDataVec.push_back(bd);
-		}
-		/// IndexMapping
-		{
-			IndexMapping & im = rm->IndexBound;
-
-			im.HasIndex = true;
-
-			BufferData & bd = im.IndexData;
-			bd.DataSize = 48;
-			bd.Stride = 2;
-			Uint8Vector &vec = bd.DataVec;
-			vec.resize(bd.DataSize);
-			Util::u_int16 * data = reinterpret_cast<Util::u_int16 *>(vec.data());
-			{
-				*(data++) = 0;*(data++) = 1;
-				*(data++) = 0;*(data++) = 2;
-				*(data++) = 0;*(data++) = 6;
-				*(data++) = 1;*(data++) = 3;
-				*(data++) = 1;*(data++) = 7;
-				*(data++) = 2;*(data++) = 3;
-				*(data++) = 2;*(data++) = 4;
-				*(data++) = 3;*(data++) = 5;
-				*(data++) = 4;*(data++) = 5;
-				*(data++) = 4;*(data++) = 6;
-				*(data++) = 5;*(data++) = 7;
-				*(data++) = 6;*(data) = 7;
-			}
-		}
 		/// Effect/Technique
 		{
 			rm->EffectName = EFFECT_NAME;
@@ -196,11 +104,6 @@ namespace Engine
 					break;
 				}
 			}
-		}
-		/// Prim
-		{
-			rm->PrimCount = 12;
-			rm->PrimType = PT_LINE_LIST;
 		}
 
 		/// name

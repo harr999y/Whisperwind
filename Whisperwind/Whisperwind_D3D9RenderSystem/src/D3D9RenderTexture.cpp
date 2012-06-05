@@ -28,6 +28,11 @@ THE SOFTWARE
 namespace Engine
 {
 	//---------------------------------------------------------------------
+	D3D9RenderTexture::~D3D9RenderTexture()
+	{
+		mTexture.reset();
+	}
+	//---------------------------------------------------------------------
 	void D3D9RenderTexture::onDeviceLost()
 	{
 		mTexture.reset();

@@ -32,11 +32,11 @@ namespace Engine
 {
 	class RenderQueue
 	{
-	public:
+	protected:
 		RenderQueue()
 		{}
 
-		~RenderQueue()
+		virtual ~RenderQueue()
 		{}
 
 	public:
@@ -44,14 +44,48 @@ namespace Engine
 		void render(Util::time elapsedTime);
 
 	private:
-		void sort();
+		virtual void sort();
+		virtual void render_impl(Util::time elapsedTime) = 0;
 
-	private:
+	protected:
 		RenderableVector mRenderableVec;
 
 	private:
 		DISALLOW_COPY_AND_ASSIGN(RenderQueue);
 	};
+
+	class ForwardRenderQueue : public RenderQueue
+	{
+	public:
+		ForwardRenderQueue()
+		{}
+
+		~ForwardRenderQueue()
+		{}
+
+	private:
+		virtual void render_impl(Util::time elapsedTime);
+	};
+
+	class DeferredRenderQueue : public RenderQueue
+	{
+	public:
+		DeferredRenderQueue();
+
+		~DeferredRenderQueue();
+
+	private:
+		virtual void render_impl(Util::time elapsedTime);
+
+		void constructScreenQuadRenderable();
+
+	private:
+		RenderTexturePtr mGBufferTexture;
+		RenderTexturePtr mLightingPassTexture;
+
+		RenderablePtr mScreenQuadRenderable;
+	};
+
 }
 
 #endif

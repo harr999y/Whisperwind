@@ -27,6 +27,7 @@ THE SOFTWARE
 
 #include "Util.h"
 #include "EngineForwardDeclare.h"
+#include "RenderMappingDefines.h"
 
 namespace Engine
 {
@@ -36,8 +37,7 @@ namespace Engine
 		RenderSystem()
 		{}
 
-		virtual ~RenderSystem() 
-		{}
+		virtual ~RenderSystem();
 
 	public:
 		void addToRenderQueue(const RenderablePtr & renderable);
@@ -50,10 +50,16 @@ namespace Engine
 		inline void present();
 		inline void clearFrame(Util::u_int flag, Util::real zValue = 1.0, Util::u_int stencilValue = 0);
 		inline bool isPaused();
+
 		inline RenderablePtr createRenderable(const RenderableMappingPtr & rm);
 		inline RenderTexturePtr createRenderTexture(const RenderTextureMappingPtr & rtm);
 		inline RenderTexturePtr createRenderTextureFromFile(const Util::Wstring & path);
-		inline RenderTargetPtr createRenderTarget(const RenderTargetMappingPtr & rtm);		
+		inline RenderTargetPtr createRenderTarget(const RenderTargetMappingPtr & rtm);
+
+		inline void setRenderTarget(Util::u_int index, const RenderTargetPtr & target);
+		inline void setRenderTarget(Util::u_int index, const RenderTexturePtr & texture);
+		inline void setBlendFactor(BlendFactor srcFactor, BlendFactor destFactor);
+		inline void closeBlend();
 
 	public:
 		SET_GET_CONST_VALUE(EngineConfigPtr, EngineConfig);
@@ -66,15 +72,21 @@ namespace Engine
 		virtual void present_impl() = 0;
 		virtual void clearFrame_impl(Util::u_int flag, Util::real zValue, Util::u_int stencilValue) = 0;
 		virtual bool isPaused_impl() = 0;
+
 		virtual RenderablePtr createRenderable_impl(const RenderableMappingPtr & rm) = 0;
 		virtual RenderTexturePtr createRenderTexture_impl(const RenderTextureMappingPtr & rtm) = 0;
 		virtual RenderTexturePtr createRenderTextureFromFile_impl(const Util::Wstring & path) = 0;
 		virtual RenderTargetPtr createRenderTarget_impl(const RenderTargetMappingPtr & rtm) = 0;
 
+		virtual void setRenderTarget_impl(Util::u_int index, const RenderTargetPtr & target) = 0;
+		virtual void setRenderTarget_impl(Util::u_int index, const RenderTexturePtr & texture) = 0;
+		virtual void setBlendFactor_impl(BlendFactor srcFactor, BlendFactor destFactor) = 0;
+		virtual void closeBlend_impl() = 0;
+
 	protected:
 		EngineConfigPtr mEngineConfig;
 
-	private:
+	protected:
 		RenderQueuePtr mOpaqueRenderQueue;
 		RenderQueuePtr mTransparentRenderQueue;
 
