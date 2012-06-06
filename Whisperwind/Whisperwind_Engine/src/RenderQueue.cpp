@@ -104,29 +104,18 @@ namespace Engine
 	//---------------------------------------------------------------------
 	DeferredRenderQueue::DeferredRenderQueue()
 	{
+		const EngineConfigPtr & engineConfig = EngineManager::getSingleton().getEngineConfig();
+		RenderTextureMappingPtr texMapping = boost::make_shared<RenderTextureMapping>();
+		texMapping->Width = engineConfig->getResolutionPair().first;
+		texMapping->Height = engineConfig->getResolutionPair().second;
+		texMapping->Usage = TCF_RENDERTARGET;
+		texMapping->Format = RPF_A16B16G16R16F;
+
 		/// GBuffer
- 		{
- 			const EngineConfigPtr & engineConfig = EngineManager::getSingleton().getEngineConfig();
- 			RenderTextureMappingPtr texMapping = boost::make_shared<RenderTextureMapping>();
- 			texMapping->Width = engineConfig->getResolutionPair().first;
- 			texMapping->Height = engineConfig->getResolutionPair().second;
- 			texMapping->Usage = TCF_RENDERTARGET;
- 			texMapping->Format = RPF_A16B16G16R16F;
- 
- 			mGBufferTexture = EngineManager::getSingleton().getRenderSystem()->createRenderTexture(texMapping);
- 		}
+		mGBufferTexture = EngineManager::getSingleton().getRenderSystem()->createRenderTexture(texMapping);
 
 		/// LightingPass
-		{
-			const EngineConfigPtr & engineConfig = EngineManager::getSingleton().getEngineConfig();
-			RenderTextureMappingPtr texMapping = boost::make_shared<RenderTextureMapping>();
-			texMapping->Width = engineConfig->getResolutionPair().first;
-			texMapping->Height = engineConfig->getResolutionPair().second;
-			texMapping->Usage = TCF_RENDERTARGET;
-			texMapping->Format = RPF_A8R8G8B8;
-
-			mLightingPassTexture = EngineManager::getSingleton().getRenderSystem()->createRenderTexture(texMapping);
-		}
+		mLightingPassTexture = EngineManager::getSingleton().getRenderSystem()->createRenderTexture(texMapping);
 
 		constructScreenQuadRenderable();
 	}

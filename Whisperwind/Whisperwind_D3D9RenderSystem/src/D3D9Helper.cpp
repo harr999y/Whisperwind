@@ -52,7 +52,7 @@ namespace Engine
 	// ColorPredefines
 	//---------------------------------------------------------------------
  	const D3DCOLOR ColorPredefines::WHITE = D3DCOLOR(0xFFFFFFFF);
- 	const D3DCOLOR ColorPredefines::BLACK = D3DCOLOR(0xFF000000);
+ 	const D3DCOLOR ColorPredefines::BLACK = D3DCOLOR(0x00000000);
 
 	//---------------------------------------------------------------------
 	// D3D9Helper
