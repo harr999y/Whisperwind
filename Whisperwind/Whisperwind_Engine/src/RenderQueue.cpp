@@ -102,6 +102,8 @@ namespace Engine
 	//---------------------------------------------------------------------
 	// DeferredRenderQueue
 	//---------------------------------------------------------------------
+	static const Util::String DEFERRED_RENDERING_EFFECT("DefferdLighting.fx");
+	//---------------------------------------------------------------------
 	DeferredRenderQueue::DeferredRenderQueue()
 	{
 		const EngineConfigPtr & engineConfig = EngineManager::getSingleton().getEngineConfig();
@@ -122,9 +124,9 @@ namespace Engine
 	//---------------------------------------------------------------------
 	DeferredRenderQueue::~DeferredRenderQueue()
 	{
+		mScreenQuadRenderable.reset();
 		mGBufferTexture.reset();
 		mLightingPassTexture.reset();
-		mScreenQuadRenderable.reset();
 	}
 	//---------------------------------------------------------------------
 	void DeferredRenderQueue::render_impl(Util::time elapsedTime)
@@ -140,7 +142,7 @@ namespace Engine
  
  			BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
  			{
- 				renderable->setEffect("DefferdLighting.fx");
+ 				renderable->setEffect(DEFERRED_RENDERING_EFFECT);
  				renderable->setTechnique("StoreGBuffer");
  
  				renderable->preRender(elapsedTime);
@@ -161,6 +163,9 @@ namespace Engine
 			XMVECTOR determinant = XMMatrixDeterminant(viewMatrix);
 			XMMATRIX inverseViewMatrix = XMMatrixInverse(&determinant, viewMatrix);
 
+			const Util::UintPair & res = EngineManager::getSingleton().getEngineConfig()->getResolutionPair();
+			XMVECTOR resolution = XMVectorSet(static_cast<Util::real>(res.first), static_cast<Util::real>(res.second), 0.0f, 0.0f);
+
  			/// TODO:Now do a hack to find affected lights.
  			const LightVector & lightVec = EngineManager::getSingleton().getSceneManager()->getAffectedLights(mRenderableVec[0]->getAABB());
  			BOOST_FOREACH(const LightPtr & light, lightVec)
@@ -171,6 +176,7 @@ namespace Engine
  
 				mScreenQuadRenderable->setTexture("lighting_pass_texture", mGBufferTexture);
 				mScreenQuadRenderable->setEffectSemanticValue("InverseView", &inverseViewMatrix);
+				mScreenQuadRenderable->setEffectSemanticValue("Resolution", &resolution);
 
  				rs->render(mScreenQuadRenderable);
  
@@ -185,7 +191,7 @@ namespace Engine
 
 			BOOST_FOREACH(const RenderablePtr & renderable, mRenderableVec)
 			{
-				renderable->setEffect("DefferdLighting.fx");
+				renderable->setEffect(DEFERRED_RENDERING_EFFECT);
 				renderable->setTechnique("ShadingPass");
 
 				renderable->preRender(elapsedTime);
@@ -205,7 +211,7 @@ namespace Engine
 	{
 		RenderableMappingPtr rm = RenderMappingHelper::makeScreenQuadRenderMapping();
 
-		rm->EffectName = "DefferdLighting.fx";
+		rm->EffectName = DEFERRED_RENDERING_EFFECT;
 		rm->TechniqueName = "LightingPass";
 		rm->RenderableName = TO_UNICODE("LightPassRenderable");
 

@@ -32,6 +32,9 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{71cde1c6-60e4-414c-954c-b22e717ffc0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render\Effects">
+      <UniqueIdentifier>{95a831b8-bcf1-4076-9943-990ff2944336}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\EngineForwardDeclare.h">
@@ -219,5 +222,19 @@
     <ClCompile Include="src\RenderNullObject.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\bin\media\Effects\DebugAABB.fx">
+      <Filter>Render\Effects</Filter>
+    </None>
+    <None Include="..\bin\media\Effects\default.fx">
+      <Filter>Render\Effects</Filter>
+    </None>
+    <None Include="..\bin\media\Effects\DebugNormal.fx">
+      <Filter>Render\Effects</Filter>
+    </None>
+    <None Include="..\bin\media\Effects\DefferdLighting.fx">
+      <Filter>Render\Effects</Filter>
+    </None>
   </ItemGroup>
 </Project>

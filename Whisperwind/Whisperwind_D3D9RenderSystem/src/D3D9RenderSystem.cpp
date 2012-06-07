@@ -305,6 +305,8 @@ namespace Engine
 			texture->GetSurfaceLevel(0, &surface);
 
 			DX_IF_FAILED_DEBUG_PRINT(mD3DDevice->SetRenderTarget(index, surface));
+
+			surface->Release();
 		}
 		else
 		{

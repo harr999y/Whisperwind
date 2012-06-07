@@ -7,9 +7,6 @@
     <Filter Include="GamePlay Header">
       <UniqueIdentifier>{2262c7ad-fdd9-478e-9a05-249687250530}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Effects">
-      <UniqueIdentifier>{94193523-e291-46c8-b334-0d90acdb03cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GamePlayConfig">
       <UniqueIdentifier>{3f4eccc7-49ba-4ba9-9fed-8746a308af37}</UniqueIdentifier>
     </Filter>
@@ -34,17 +31,8 @@
     <None Include="..\bin\Config\GamePlayConfig.cfg">
       <Filter>GamePlayConfig</Filter>
     </None>
-    <None Include="..\bin\media\Effects\default.fx">
-      <Filter>Effects</Filter>
-    </None>
     <None Include="..\bin\media\Scenes\test.wscene">
       <Filter>SceneContent</Filter>
-    </None>
-    <None Include="..\bin\media\Effects\DebugAABB.fx">
-      <Filter>Effects</Filter>
-    </None>
-    <None Include="..\bin\media\Effects\DebugNormal.fx">
-      <Filter>Effects</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -111,8 +111,12 @@
     <ClInclude Include="include\ApplicationCofig.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\bin\Config\EngineConfig.cfg" />
-    <None Include="..\bin\Config\EngineConfig_d.cfg" />
+    <None Include="..\bin\Config\EngineConfig.cfg">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\bin\Config\EngineConfig_d.cfg">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="..\bin\Config\Plugin.cfg" />
     <None Include="..\bin\Config\Plugin_d.cfg" />
     <None Include="..\bin\Config\Resource.cfg" />
