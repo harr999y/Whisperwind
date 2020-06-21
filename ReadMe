@@ -1,77 +1,75 @@
-������� http://lisuyong.com/2012/04/17/%E5%BC%80%E5%90%AF%E6%96%B0%E7%9A%84%E5%BE%81%E7%A8%8B-%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AEwhisperwind%E9%A3%8E%E8%AF%AD%E8%80%85%E5%90%AF%E5%8A%A8/
+开启新的征程-项目Whisperwind(风语者)启动
 
-�����µ�����-��ĿWhisperwind(������)����
+Whisperwind，风语者，或称语风，来源于War3中那个优雅的月之女祭司-泰兰德·语风(tyrande whisperwind)，也就是在Dota中我只玩的白虎，算是小小的纪念一下那曾经经历的Dota岁月吧；并且Whisperwind有风之幽灵的意思，轻盈灵动随风飘扬，与我所向往的敏捷开发神似，也寄寓了我对这个项目的寄托，我希望她能简洁，优雅，易于变化。所以果断选择了这个即使比较长的单词来作为项目名称。
 
-Whisperwind�������ߣ������磬��Դ��War3���Ǹ����ŵ���֮Ů��˾-̩���¡����(tyrande whisperwind)��Ҳ������Dota����ֻ��İ׻�������СС�ļ���һ��������������Dota���°ɣ�����Whisperwind�з�֮�������˼����ӯ�鶯���Ʈ����������������ݿ������ƣ�Ҳ��Ԣ���Ҷ������Ŀ�ļ��У���ϣ�����ܼ�࣬���ţ����ڱ仯�����Թ���ѡ���������ʹ�Ƚϳ��ĵ�������Ϊ��Ŀ���ơ�
+Whisperwind将作为我的实验园，来让我去实践各种希望尝试和需要掌握的技术，同时我会将所学到的认为非常实用的技术都集成进来，包括引擎和应用，以及能称之为游戏开发的方方面面，采用我所认为最为优雅和简洁的方式，使其易于变化且干净整洁；我将按每个阶段我所了解的最强的工业强度来规范代码编写和流程规范，虽为实验，更是一种自我强化，是一个实战演练的场所。
 
-Whisperwind����Ϊ�ҵ�ʵ��԰��������ȥʵ������ϣ�����Ժ���Ҫ���յļ�����ͬʱ�һὫ��ѧ������Ϊ�ǳ�ʵ�õļ��������ɽ��������������Ӧ�ã��Լ��ܳ�֮Ϊ��Ϸ�����ķ������棬����������Ϊ��Ϊ���źͼ��ķ�ʽ��ʹ�����ڱ仯�Ҹɾ����ࣻ�ҽ���ÿ���׶������˽����ǿ�Ĺ�ҵǿ�����淶�����д�����̹淶����Ϊʵ�飬����һ������ǿ������һ��ʵս�����ĳ�����
+Whisperwind将伴随着我的技术生涯，一路走下去，我必将将其一直更新直到我不再触碰技术。愿神保佑，我能一直坚持下去。
 
-Whisperwind���������ҵļ������ģ�һ·����ȥ���ұؽ�����һֱ����ֱ���Ҳ��ٴ���������Ը���ӣ�����һֱ�����ȥ��
+注意：若想编译请自带上Boost库，因太大没放上来。放在Whisperwind\Whisperwind_Dependencies\boost里面，只放boost源文件夹即可。开启VLD检测需要加上visual leak detector库，直接安装在Whisperwind\Whisperwind_Dependencies下即可。FBX也请将include和lib按原目录结构拷贝到Whisperwind\Whisperwind_Dependencies\FBX里。
 
-ע�⣺����������Դ���Boost�⣬��̫��û������������Whisperwind\Whisperwind_Dependencies\boost���棬ֻ��boostԴ�ļ��м��ɡ�����VLD�����Ҫ����visual leak detector�⣬ֱ�Ӱ�װ��Whisperwind\Whisperwind_Dependencies�¼��ɡ�FBXҲ�뽫include��lib��ԭĿ¼�ṹ������Whisperwind\Whisperwind_Dependencies\FBX�
+接下来罗列下目前想到的各种指标，从通用到特定：
 
-������������Ŀǰ�뵽�ĸ���ָ�꣬��ͨ�õ��ض���
+1.Whisperwind将托管在Github上。同时为了表达对Ogre的敬意，将采用MIT协议。
 
-1.Whisperwind���й���Github�ϡ�ͬʱΪ�˱����Ogre�ľ��⣬������MITЭ�顣
+2.因为是个人开发，持续集成暂时先不考虑。
 
-2.��Ϊ�Ǹ��˿���������������ʱ�Ȳ����ǡ�
+3.Unit Test针对基础库和非实时库，采用GoogleTest以及如有必要+GoogleMock。
 
-3.Unit Test��Ի�����ͷ�ʵʱ�⣬����GoogleTest�Լ����б�Ҫ+GoogleMock��
+4.文档以代码自注释为主，辅以部分Doxygen格式注释。
 
-4.�ĵ��Դ�����ע��Ϊ�������Բ���Doxygen��ʽע�͡�
+5.TDD或Scrum个人无法采用，但会趋向于敏捷开发思想，不断重构改善的循环。
 
-5.TDD��Scrum�����޷����ã��������������ݿ���˼�룬�����ع����Ƶ�ѭ����
+6.尽量以简洁为主，当需求不足以表明需要某个模式或任何复杂化的东西时，那就不用。慢慢的会重构到模式。
 
-6.�����Լ��Ϊ�������������Ա�����Ҫĳ��ģʽ���κθ��ӻ��Ķ���ʱ���ǾͲ��á������Ļ��ع���ģʽ��
+7.主语言为C++，脚本为Lua，文本为XML，压缩格式为7z。
 
-7.������ΪC++���ű�ΪLua���ı�ΪXML��ѹ����ʽΪ7z��
+8.暂时先不考虑64位开发，跨平台，跨编译器，与MAKE。
 
-8.��ʱ�Ȳ�����64λ��������ƽ̨�������������MAKE��
+9.通用库规范为：优先使用STL(VS2010)，BOOST，DirectXMath，TBB等。
 
-9.ͨ�ÿ�淶Ϊ������ʹ��STL(VS2010)��BOOST��DirectXMath��TBB�ȡ�
+10.如无性能问题，尽量采用清晰易懂的表达方式与先进易用的库。
 
-10.�����������⣬�������������׶��ı��﷽ʽ���Ƚ����õĿ⡣
+11.暂时只考虑dx9下的实现，但会尽量抽象以让其可以方便适应向dx11的转变。
 
-11.��ʱֻ����dx9�µ�ʵ�֣����ᾡ��������������Է�����Ӧ��dx11��ת�䡣
+12.内存分配在无性能问题的前提下默认采用缺省方式，有问题再换。
 
-12.�ڴ�����������������ǰ����Ĭ�ϲ���ȱʡ��ʽ���������ٻ���
+13.开发工具为：VS2010，IncrediBuild ，Windbg，DebugDiag，Application Verifier，pix，vmmap，visual leak detector，PerfHUD，FX Composer，Intel Parallel Studio XE 2011，FBX等。
 
-13.��������Ϊ��VS2010��IncrediBuild ��Windbg��DebugDiag��Application Verifier��pix��vmmap��visual leak detector��PerfHUD��FX Composer��Intel Parallel Studio XE 2011��FBX�ȡ�
+14.基本结构参考Ogre的DLL插件式体系，这样对于多种实现大有裨益。
 
-14.�����ṹ�ο�Ogre��DLL���ʽ��ϵ���������ڶ���ʵ�ִ������档
+15.异常处理看情况而定，在实时循环中拒绝使用，但初始化阶段则默认采用。
 
-15.�쳣�����������������ʵʱѭ���оܾ�ʹ�ã�����ʼ���׶���Ĭ�ϲ��á�
+16.模型格式用FBX用中间格式，通过写的Converter转为.wmesh.xml和.wmesh格式，通过boost::serialization序列化成二进制并供引擎使用。
 
-16.ģ�͸�ʽ��FBX���м��ʽ��ͨ��д��ConverterתΪ.wmesh.xml��.wmesh��ʽ��ͨ��boost::serialization���л��ɶ����Ʋ�������ʹ�á�
+17.暂不关注太多ToolChain的开发。
 
-17.�ݲ���ע̫��ToolChain�Ŀ�����
+18.除错误信息和指定信息外所有文字均用文本保存，不可硬编码。
 
-18.��������Ϣ��ָ����Ϣ���������־����ı����棬����Ӳ���롣
+19.UI暂定为采用Sflash。
 
-19.UI�ݶ�Ϊ����Sflash��
+20.采用多线程加载模型，多线程库用TBB。
 
-20.���ö��̼߳���ģ�ͣ����߳̿���TBB��
+21.编码风格结合Google编程规范与Ogre的写法。
 
-21.��������Google��̹淶��Ogre��д����
+22.物理引擎采用PhysX3.0+。
 
-22.�����������PhysX3.0+��
+23.XML用RapidXml解析。
 
-23.XML��RapidXml������
+24.Shader最低SM2.0。
 
-24.Shader���SM2.0��
+25.资源管理采用文件夹与7z压缩格式的组合方式。
 
-25.��Դ���������ļ�����7zѹ����ʽ����Ϸ�ʽ��
+26.支持热插拔，与脚本的热改动。
 
-26.֧���Ȳ�Σ���ű����ȸĶ���
+27.支持序列化。
 
-27.֧�����л���
+28.shader框架暂时采用.fx，到时有需求在更改。
 
-28.shader�����ʱ����.fx����ʱ�������ڸ��ġ�
+29.编码采用Unicode。
 
-29.�������Unicode��
+30.引擎基调偏向于ARPG游戏，应用层面也以此为主。
 
-30.�������ƫ����ARPG��Ϸ��Ӧ�ò���Ҳ�Դ�Ϊ����
+31.声音引擎采用FMOD。
 
-31.�����������FMOD��
-
-32.������
+32.待续…
