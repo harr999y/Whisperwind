@@ -72,12 +72,12 @@ THE SOFTWARE
 	/** Define DISALLOW_COPY_AND_ASSIGN macro for copy-constructor
 	and operator =. */
 #define DISALLOW_COPY_AND_ASSIGN(Type) \
-	Type(Type const &); \
-	void operator=(Type const &);
+	Type(Type const &) = delete; \
+	void operator=(Type const &) = delete;
 
 #define MAKE_STATIC_CLASS(Type) \
 	Type(); \
-	~Type(); \
+	~Type() = delete; \
 	DISALLOW_COPY_AND_ASSIGN(Type);
 
 #ifdef DLL_AS_EXPORT
